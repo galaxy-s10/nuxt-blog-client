@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import { find, register } from "../../api/user";
 export default {
   data() {
     return {

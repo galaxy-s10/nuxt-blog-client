@@ -35,7 +35,6 @@
 
 <script>
 import page from "../components/page";
-import { articlelist, articlepage } from "@/api/article";
 import { format, format1 } from "@/utils/format.js";
 export default {
   layout: "blog",

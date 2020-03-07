@@ -108,7 +108,6 @@
 </template>
 
 <script>
-import { commentlist, addcomment } from "@/api/comment";
 import { format } from "@/utils/format.js";
 import login from "../login";
 export default {
@@ -143,7 +142,7 @@ export default {
       return format(time);
     },
     // 回复留言
-    add(item) {
+    async add(item) {
       var {
         id,
         article_id,
@@ -166,26 +165,20 @@ export default {
         var to_userid = item.from_userid;
         var date = new Date();
         var date = format(date);
-        addcomment({
+        var res = await this.$axios.$post("/api/comment/add", {
           article_id,
           from_userid,
           content,
           to_commentid,
           to_userid,
           date
-        })
-          .then(res => {
-            if (res) {
-              this.$emit("reshow", article_id);
-              this.$newmessage("发表成功！", "success");
-            } else {
-              this.$newmessage(res.data, "success");
-            }
-          })
-          .catch(err => {
-            console.log("err");
-            this.$newmessage("发表失败！", "error");
-          });
+        });
+        if (res) {
+          this.$emit("reshow", article_id);
+          this.$newmessage("发表成功！", "success");
+        } else {
+          this.$newmessage(res.data, "success");
+        }
       } else {
         this.$newmessage("暂未登录，请登录！", "warning");
       }

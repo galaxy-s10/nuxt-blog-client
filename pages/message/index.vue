@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { commentlist, addcomment } from "@/api/comment";
 import { format } from "@/utils/format.js";
 import comment from "../../components/comment";
 export default {
@@ -41,9 +40,9 @@ export default {
       title: "留言板"
     };
   },
-  async asyncData({$axios}) {
+  async asyncData({ $axios }) {
     // var { lists, count } = await commentlist(-1);
-    var { lists, count } = await $axios.$get(`/api/comment?article_id=-1`)
+    var { lists, count } = await $axios.$get(`/api/comment?article_id=-1`);
     return {
       lists,
       count
@@ -52,22 +51,25 @@ export default {
   mounted() {},
   methods: {
     // 留言列表
-    commentlist(id) {
-      commentlist(id)
-        .then(res => {
-          this.lists = res.lists;
-          this.count = res.count;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    async commentlist(id) {
+      var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
+      this.lists = res.lists;
+      this.count = res.count;
+      // commentlist(id)
+      //   .then(res => {
+      //     this.lists = res.lists;
+      //     this.count = res.count;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
     },
     // 格式化时间
     format(time) {
       return format(time);
     },
     // 提交留言
-    addcomment() {
+    async addcomment() {
       if (this.$store.state.user.token) {
         var article_id = this.article_id;
         var from_userid = this.$store.state.user.token;
@@ -76,26 +78,20 @@ export default {
         var to_username = null;
         var date = new Date();
         var date = format(date);
-        addcomment({
+        var res = await this.$axios.$post("/api/comment/add", {
           article_id,
           from_userid,
           content,
           to_commentid,
           to_username,
           date
-        })
-          .then(res => {
-            if (res) {
-              this.commentlist(this.article_id);
-              this.$newmessage("发表成功！", "success");
-            } else {
-              this.$newmessage(res.data, "success");
-            }
-          })
-          .catch(err => {
-            console.log("err");
-            this.$newmessage("发表失败！", "error");
-          });
+        });
+        if (res) {
+          this.commentlist(this.article_id);
+          this.$newmessage("发表成功！", "success");
+        } else {
+          this.$newmessage(res.data, "success");
+        }
       } else {
         this.$newmessage("暂未登录，请登录！", "warning");
       }

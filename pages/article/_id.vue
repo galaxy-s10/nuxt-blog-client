@@ -34,7 +34,7 @@
           <p style="text-align:right">
             <el-button type="primary" @click="addcomment()">评论</el-button>
           </p>
-          <comment :list="list" :count="count" @reshow="commentlist" />
+          <comment :list="lists" :count="count" @reshow="commentlist" />
         </div>
       </div>
     </div>
@@ -44,8 +44,6 @@
 <script>
 import comment from "../../components/comment";
 import markdown from "../../components/markdown";
-import { findarticle } from "@/api/article";
-import { commentlist, addcomment } from "@/api/comment";
 import { format, format1 } from "@/utils/format.js";
 export default {
   layout: "blog",
@@ -73,7 +71,7 @@ export default {
     // var { lists, count } = await commentlist(params.id);
     var id = params.id;
     var data = await $axios.$get(`/api/comment?article_id=${id}`);
-    return { list: data.lists, count: data.count };
+    return { lists: data.lists, count: data.count };
   },
   async fetch({ store, params }) {
     var id = params.id;
@@ -85,7 +83,7 @@ export default {
       return format(time);
     },
     // 提交留言
-    addcomment() {
+    async addcomment() {
       if (this.$store.state.user.token) {
         var article_id = this.$route.params.id;
         var from_userid = this.$store.state.user.token;
@@ -94,40 +92,31 @@ export default {
         var to_username = null;
         var date = new Date();
         var date = format(date);
-        addcomment({
+        var res = await this.$axios.$post("/api/comment/add", {
           article_id,
           from_userid,
           content,
           to_commentid,
           to_username,
           date
-        })
-          .then(res => {
-            if (res) {
-              this.commentlist(this.$route.params.id);
-              this.$newmessage("发表成功！", "success");
-            } else {
-              this.$newmessage(res.data, "success");
-            }
-          })
-          .catch(err => {
-            console.log("err");
-            this.$newmessage("发表失败！", "error");
-          });
+        });
+        if (res) {
+          this.commentlist(this.$route.params.id);
+          this.$newmessage("发表成功！", "success");
+        } else {
+          this.$newmessage(res.data, "success");
+        }
       } else {
         this.$newmessage("暂未登录，请登录！", "warning");
       }
     },
     // 文章留言列表
-    commentlist(id) {
-      commentlist(id)
-        .then(res => {
-          this.list = res.lists;
-          this.count = res.count;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    async commentlist(id) {
+      console.log("xxxxxxxx");
+      var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
+      console.log(res);
+      this.lists = res.lists;
+      this.count = res.count;
     },
     // 文章信息
     articleinfo(id) {

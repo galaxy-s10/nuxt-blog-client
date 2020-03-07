@@ -1,5 +1,3 @@
-import { articlelist, articlepage, findarticle, articletypelist } from '@/api/article'
-
 export const state = () => ({
     // 总页数
     count: null,

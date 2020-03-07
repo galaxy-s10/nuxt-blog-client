@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { articlelist, articlepage } from "@/api/article";
 import { format1 } from "@/utils/format.js";
 export default {
   data() {

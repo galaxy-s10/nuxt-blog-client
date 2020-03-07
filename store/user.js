@@ -1,6 +1,4 @@
 import { MessageBox, Message } from 'element-ui'
-import { login, getinfo, register } from '../api/user'
-
 export const state = () => ({
     id: null,
     name: null,

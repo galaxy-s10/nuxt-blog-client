@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import { findarticle } from "@/api/article";
 import login from "../../components/login";
 export default {
   components: {

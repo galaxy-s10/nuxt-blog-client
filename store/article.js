@@ -76,7 +76,7 @@ export const actions = {
         commit('typelist', res.typelist)
     },
     async articlepage({ commit, state }, data) {
-        var { ordername, orderby, type, nowpage } = data
+        var { ordername, orderby, nowpage } = data
         if (ordername != undefined && orderby != undefined) {
             const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowpage=${nowpage}&pagesize=${state.historypagesize}`)
             commit('list', res.pagelist.rows)

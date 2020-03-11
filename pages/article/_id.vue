@@ -68,7 +68,6 @@ export default {
     };
   },
   async asyncData({ $axios, params }) {
-    // var { lists, count } = await commentlist(params.id);
     var id = params.id;
     var data = await $axios.$get(`/api/comment?article_id=${id}`);
     return { lists: data.lists, count: data.count };
@@ -112,9 +111,7 @@ export default {
     },
     // 文章留言列表
     async commentlist(id) {
-      console.log("xxxxxxxx");
       var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
-      console.log(res);
       this.lists = res.lists;
       this.count = res.count;
     },

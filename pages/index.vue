@@ -75,11 +75,11 @@ export default {
       this.$store.dispatch("article/articlelist", { type: x });
     }
   },
-  created() {
-    // this.$store.commit('nowtype',null)
-    this.$store.commit("article/nowpage", 1);
-    this.$store.dispatch("article/articlepage", { nowpage: 1 });
+  async fetch({ store, params }) {
+    await store.commit("article/nowpage", 1);
+    await store.dispatch("article/articlepage", { nowpage: 1 });
   },
+  created() {},
   mounted() {
     window.addEventListener("scroll", this.headershow);
   },
@@ -108,6 +108,7 @@ export default {
   },
   watch: {
     nowtype(newval, oldval) {
+      console.log("nowtypenowtype");
       this.$store.dispatch("article/articlepage", { nowpage: 1 });
     }
   }

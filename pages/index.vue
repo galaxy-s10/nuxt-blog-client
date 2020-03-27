@@ -36,6 +36,7 @@
 <script>
 import page from "../components/page";
 import { format, format1 } from "@/utils/format.js";
+import Cookies from "js-cookie";
 export default {
   layout: "blog",
   components: {
@@ -79,7 +80,15 @@ export default {
     await store.commit("article/nowpage", 1);
     await store.dispatch("article/articlepage", { nowpage: 1 });
   },
-  created() {},
+  created() {
+    // var token = Cookies.get("token");
+    // if (token != "null") {
+    //   console.log("开始验证token");
+    //   this.$store.dispatch("user/getInfo");
+    // } else {
+    //   console.log("没有token");
+    // }
+  },
   mounted() {
     window.addEventListener("scroll", this.headershow);
   },

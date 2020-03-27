@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       listLoading: false,
-      message: "",
+      message: null,
       isshow: ""
     };
   },
@@ -143,44 +143,49 @@ export default {
     },
     // 回复留言
     async add(item) {
-      var {
-        id,
-        article_id,
-        from_userid,
-        from_user,
-        content,
-        to_commentid,
-        to_userid,
-        date
-      } = item;
-      if (this.$store.state.user.token) {
-        var article_id = article_id;
-        var from_userid = this.$store.state.user.token;
-        var content = this.message;
-        if (to_commentid == -1) {
-          var to_commentid = id;
-        } else {
-          var to_commentid = to_commentid;
-        }
-        var to_userid = item.from_userid;
-        var date = new Date();
-        var date = format(date);
-        var res = await this.$axios.$post("/api/comment/add", {
+      if (this.message != null) {
+        var {
+          id,
           article_id,
           from_userid,
+          from_user,
           content,
           to_commentid,
           to_userid,
           date
-        });
-        if (res) {
-          this.$emit("reshow", article_id);
-          this.$newmessage("发表成功！", "success");
+        } = item;
+        if (this.$store.state.user.token) {
+          var article_id = article_id;
+          var from_userid = this.$store.state.user.id;
+          var content = this.message;
+          if (to_commentid == -1) {
+            var to_commentid = id;
+          } else {
+            var to_commentid = to_commentid;
+          }
+          var to_userid = item.from_userid;
+          var date = new Date();
+          var date = format(date);
+          var res = await this.$axios.$post("/api/comment/add", {
+            article_id,
+            from_userid,
+            content,
+            to_commentid,
+            to_userid,
+            date
+          });
+          console.log(res)
+          if (res.code) {
+            this.$emit("reshow", article_id);
+            this.$newmessage("发表成功！", "success");
+          } else {
+            this.$newmessage(res.message, "error");
+          }
         } else {
-          this.$newmessage(res.data, "success");
+          this.$newmessage("暂未登录，请登录！", "warning");
         }
       } else {
-        this.$newmessage("暂未登录，请登录！", "warning");
+        this.$newmessage("请输入留言内容~", "warning");
       }
     }
   },

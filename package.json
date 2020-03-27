@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "element-ui": "^2.13.0",
     "highlight.js": "^9.18.1",
+    "js-cookie": "^2.2.1",
     "marked": "^0.8.0",
     "nuxt": "^2.0.0",
     "vue-axios": "^2.1.5",

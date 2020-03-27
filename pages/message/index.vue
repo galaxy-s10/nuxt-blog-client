@@ -72,7 +72,7 @@ export default {
     async addcomment() {
       if (this.$store.state.user.token) {
         var article_id = this.article_id;
-        var from_userid = this.$store.state.user.token;
+        var from_userid = this.$store.state.user.id;
         var content = this.content;
         var to_commentid = -1;
         var to_username = null;

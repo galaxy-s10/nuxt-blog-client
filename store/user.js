@@ -1,4 +1,5 @@
 import { MessageBox, Message } from 'element-ui'
+import Cookies from 'js-cookie'
 export const state = () => ({
     id: null,
     name: null,
@@ -10,7 +11,14 @@ export const state = () => ({
 
 export const mutations = {
     settoken(state, res) {
-        state.token = res
+        if (res) {
+            Cookies.set('token', res)
+            state.token = res
+        } else {
+            Cookies.remove('token')
+            state.token = res
+        }
+
     },
     setname(state, res) {
         state.name = res
@@ -30,7 +38,7 @@ export const actions = {
     async login({ commit }, data) {
         const res = await this.$axios.$post('/api/user/login', data)
         if (res.token) {
-            commit('settoken', res.token.id)
+            commit('settoken', res.token)
             Message({
                 message: '登录成功！',
                 type: 'success',
@@ -50,9 +58,19 @@ export const actions = {
         commit("settoken", null)
     },
     async getInfo({ commit, state }) {
-        const res = await this.$axios.$get(`/api/user/getinfo?token=${state.token}`)
-        commit("setname", res.userinfo.username)
-        commit("setavatar", res.userinfo.avatar)
-        commit("settitle", res.userinfo.title)
-    }
+        const res = await this.$axios.$post('/api/user/getinfo')
+        if (res.code) {
+            commit("setid", res.userinfo.id)
+            commit("setname", res.userinfo.username)
+            commit("setavatar", res.userinfo.avatar)
+            commit("settitle", res.userinfo.title)
+        } else {
+            Cookies.remove('token')
+            console.log(res.message)
+        }
+    },
+    // async add({ commit }, data) {
+    //     const res = await this.$axios.$post('/api/user/add', data)
+    // }
+
 }

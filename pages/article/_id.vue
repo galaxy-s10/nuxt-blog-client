@@ -56,7 +56,7 @@ export default {
       // list: "",
       // count: null,
       comment: "",
-      content: "",
+      content: null,
       // data: null,
       articledata: null,
       xxx: null
@@ -83,9 +83,10 @@ export default {
     },
     // 提交留言
     async addcomment() {
-      if (this.$store.state.user.token) {
-        var article_id = this.$route.params.id;
-        var from_userid = this.$store.state.user.token;
+      if (this.content != null) {
+        if(this.$store.state.user.token){
+          var article_id = this.$route.params.id;
+        var from_userid = this.$store.state.user.id;
         var content = this.content;
         var to_commentid = -1;
         var to_username = null;
@@ -99,14 +100,17 @@ export default {
           to_username,
           date
         });
-        if (res) {
+        if (res.code) {
           this.commentlist(this.$route.params.id);
           this.$newmessage("发表成功！", "success");
         } else {
-          this.$newmessage(res.data, "success");
+          this.$newmessage(res.message, "error");
+        }
+        }else{
+          this.$newmessage("暂未登录，请登录！", "warning");
         }
       } else {
-        this.$newmessage("暂未登录，请登录！", "warning");
+        this.$newmessage("请输入留言内容~", "warning");
       }
     },
     // 文章留言列表

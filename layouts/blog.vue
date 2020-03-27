@@ -13,6 +13,7 @@
 
 
 <script>
+import Cookies from "js-cookie";
 import vheader from "./header";
 import typelist from "./typelist";
 import backtop from "./backtop";
@@ -28,6 +29,15 @@ export default {
     vaside,
     vmain,
     vfooter
+  },
+  created() {
+    var token = Cookies.get("token");
+    if (token != "null") {
+      console.log("开始验证token");
+      this.$store.dispatch("user/getInfo");
+    } else {
+      console.log("没有token");
+    }
   }
 };
 </script>

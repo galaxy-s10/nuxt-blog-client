@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -66,31 +67,22 @@ export default {
     };
   },
   methods: {
-    register() {
+    async register() {
       if (this.uname == "" || this.upwd == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-        find(this.uname)
-          .then(res => {
-            if (res) {
-              this.$newmessage("该用户名已经被注册了哦~", "warning");
-            } else {
-              register({ username: this.uname, password: this.upwd })
-                .then(res => {
-                  this.$newmessage(this.uname + "注册成功，请登录~", "success");
-                  setTimeout(() => {
-                    this.dialogtwo = false;
-                  }, 500);
-                })
-                .catch(err => {
-                  console.log(err);
-                  this.$newmessage("注册失败!", "error");
-                });
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        const res = await this.$axios.$post("/api/user/add", {
+          username: this.uname,
+          password: this.upwd
+        });
+        if (res.code) {
+          this.$newmessage("注册成功，请登录~", "success");
+          setTimeout(() => {
+            this.dialogtwo = false;
+          }, 500);
+        } else {
+          this.$newmessage(res.message, "error");
+        }
       }
     },
     async login() {
@@ -111,6 +103,9 @@ export default {
     },
     logout() {
       this.$store.commit("user/settoken", null);
+      this.$store.commit("user/setname", null);
+      this.$store.commit("user/setavatar", null);
+      this.$store.commit("user/settitle", null);
     },
     handleCommand(x) {
       this.title = x;
@@ -142,16 +137,24 @@ export default {
       this.visible = offsetTop < height;
     }
   },
+  created() {},
   computed: {
     name() {
-      if (this.$store.state.user.token) {
+      if (this.$store.state.user.name) {
         return this.$store.state.user.name;
       } else {
         return "登录";
       }
+
+      // var token = Cookies.get("token");
+      // if (token) {
+      //   this.$store.dispatch("user/geiInfo");
+      // } else {
+      //   return "登录";
+      // }
     },
     inout() {
-      if (!this.$store.state.user.token) {
+      if (!this.$store.state.user.name) {
         return true;
       } else {
         return false;

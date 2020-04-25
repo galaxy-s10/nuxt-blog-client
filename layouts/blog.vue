@@ -32,7 +32,7 @@ export default {
   },
   created() {
     var token = Cookies.get("token");
-    if (token != "null") {
+    if (token != undefined) {
       console.log("开始验证token");
       this.$store.dispatch("user/getInfo");
     } else {

@@ -23,7 +23,7 @@ export default {
         function format(n) {
           return n < 10 ? "0" + n : "" + n;
         }
-        var startday = new Date(2019, 9, 5, 11, 41, 3);
+        var startday = new Date(2019, 8, 5, 11, 41, 3);
         var today = new Date();
         // 将返回的毫秒数转化为秒
         var res = (today - startday) / 1000;

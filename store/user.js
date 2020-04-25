@@ -46,7 +46,7 @@ export const actions = {
             })
         } else {
             commit('settoken', res.token)
-            console.log('登录成功账号或密码错误！！')
+            console.log('账号或密码错误！！')
             Message({
                 message: '账号或密码错误！',
                 type: 'error',
@@ -58,7 +58,7 @@ export const actions = {
         commit("settoken", null)
     },
     async getInfo({ commit, state }) {
-        const res = await this.$axios.$post('/api/user/getinfo')
+        const res = await this.$axios.$get('/api/user/getinfo')
         if (res.code) {
             commit("setid", res.userinfo.id)
             commit("setname", res.userinfo.username)
@@ -66,7 +66,6 @@ export const actions = {
             commit("settitle", res.userinfo.title)
         } else {
             Cookies.remove('token')
-            console.log(res.message)
         }
     },
     // async add({ commit }, data) {

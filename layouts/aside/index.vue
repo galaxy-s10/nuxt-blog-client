@@ -66,7 +66,7 @@ export default {
       if (this.$store.state.user.token) {
         return this.$store.state.user.avatar;
       }
-      return "http://img.cdn.zhengbeining.com/比德尔.jpg";
+      return "https://img.cdn.zhengbeining.com/比德尔.jpg";
     },
     name() {
       if (this.$store.state.user.token) {
@@ -102,7 +102,7 @@ export default {
   color: #53a8ff;
 }
 .bgc {
-  background: url("http://img.cdn.zhengbeining.com/321.png") no-repeat 50%;
+  background: url("https://img.cdn.zhengbeining.com/321.png") no-repeat 50%;
   height: 120px;
   background-size: cover;
 }

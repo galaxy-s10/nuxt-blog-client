@@ -125,6 +125,12 @@ export default {
 </script>
 
 <style scoped>
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .img {
+    min-height: 150px;
+  }
+}
 .v-enter {
   transform: translateX(-10px);
   opacity: 0;

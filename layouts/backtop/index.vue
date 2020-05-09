@@ -54,19 +54,19 @@ export default {
 }
 .show {
   position: fixed;
-  top: -300px;
+  top: -700px;
   right: 10px;
   width: 100px;
-  height: 300px;
+  height: 700px;
   background: url("../../assets/imgs/gotop.png") no-repeat bottom;
   z-index: 999;
   animation: move 3s infinite linear;
   cursor: pointer;
-  transition: all 1s;
+  transition: all 0.5s;
 }
 .backtop {
   top: 0;
-  transition: all 1s;
+  transition: all 0.5s;
 }
 .minback {
   position: fixed;

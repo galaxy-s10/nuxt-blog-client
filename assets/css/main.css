@@ -204,8 +204,21 @@ body{
     margin: 0 !important
   }
   .img{
-    min-height: 150px;
+    /* min-height: 150px; */
   }
+}
+.hrclass {
+  height: 4px;
+  border: 0;
+  background-color: #ddd;
+  margin: 20px 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #fff,
+    #fff 4px,
+    transparent 0,
+    transparent 8px
+  );
 }
 
 /* 响应式布局 - 大于540px */

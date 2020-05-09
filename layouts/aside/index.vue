@@ -78,7 +78,7 @@ export default {
       if (this.$store.state.user.token) {
         return this.$store.state.user.title;
       }
-      return "记录曾经所踩过的坑~";
+      return "A Single Page App";
     },
     hotlist() {
       return this.$store.state.article.hotlist;
@@ -102,7 +102,7 @@ export default {
   color: #53a8ff;
 }
 .bgc {
-  background: url("https://img.cdn.zhengbeining.com/321.png") no-repeat 50%;
+  background: url("https://img.cdn.zhengbeining.com/bgc.jpg") no-repeat 50%;
   height: 120px;
   background-size: cover;
 }

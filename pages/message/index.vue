@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <h1 style="text-align:center;padding:10px">留言板</h1>
-    <el-divider></el-divider>
-    <div style="text-align:center;margin-bottom:30px">这里是一个留言板,想说什么就在这里留言,欢迎吐槽</div>
+    <hr class="hrclass" />
+    <div style="text-align:center;margin:30px 0">这里是一个留言板，想说什么就在这里留言，欢迎吐槽~</div>
     <el-input
       type="textarea"
       resize="none"

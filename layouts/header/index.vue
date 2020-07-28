@@ -1,59 +1,57 @@
 <template>
-  <div>
-    <transition>
-      <div v-show="visible" class="header-wrapper">
-        <div class="header" style="position:relative">
-          <div class="logo">
-            <nuxt-link tag="h2" to="/">
-              前端
-              <sup>Blog</sup>
-            </nuxt-link>
-          </div>
-          <div class="nav">
-            <ul class="navmenu">
-              <li v-for="(item,index) in navlist" :key="index" class="tcss">
-                <nuxt-link :to="item.path" tag="span">
-                  <span :class="item.icon"></span>
-                  <span style="font-size:18px">{{item.title}}</span>
-                </nuxt-link>
-              </li>
-            </ul>
-            <div class="navmenu1">
-              <el-dropdown trigger="click" @command="handleCommand">
-                <div class="el-dropdown-link" style="color:#53a8ff">
-                  {{title}}
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </div>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="(item,index) in navlist"
-                    :key="index"
-                    :command="item.title"
-                  >
-                    <nuxt-link tag="span" :to="item.path">{{item.title}}</nuxt-link>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-          <div class="search">
-            <div>
-              <el-autocomplete
-                v-model="state"
-                value-key="title"
-                suffix-icon="el-icon-search"
-                :fetch-suggestions="querySearchAsync"
-                size="small"
-                placeholder="搜索本站"
-                @select="handleSelect"
-              ></el-autocomplete>
-            </div>
-          </div>
-          <login />
+  <transition>
+    <div v-show="visible" class="header-wrapper">
+      <div class="header" style="position:relative">
+        <div class="logo">
+          <nuxt-link tag="h2" to="/">
+            Vue
+            <sup>Blog</sup>
+          </nuxt-link>
         </div>
+        <div class="nav">
+          <ul class="navmenu">
+            <li v-for="(item,index) in navlist" :key="index" class="tcss">
+              <nuxt-link :to="item.path" tag="span">
+                <span :class="item.icon"></span>
+                <span style="font-size:18px">{{item.title}}</span>
+              </nuxt-link>
+            </li>
+          </ul>
+          <div class="navmenu1">
+            <el-dropdown trigger="click" @command="handleCommand">
+              <div class="el-dropdown-link" style="color:#53a8ff">
+                {{title}}
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="(item,index) in navlist"
+                  :key="index"
+                  :command="item.title"
+                >
+                  <nuxt-link tag="span" :to="item.path">{{item.title}}</nuxt-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
+        <div class="search">
+          <div>
+            <el-autocomplete
+              v-model="state"
+              value-key="title"
+              suffix-icon="el-icon-search"
+              :fetch-suggestions="querySearchAsync"
+              size="small"
+              placeholder="搜索本站"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </div>
+        </div>
+        <login />
       </div>
-    </transition>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -74,27 +72,32 @@ export default {
       navlist: [
         {
           title: "首页",
-          icon: "el-icon-house",
+          icon: "el-icon-s-home",
           path: "/"
         },
         {
           title: "归档",
-          icon: "el-icon-cloudy",
+          icon: "el-icon-s-data",
           path: "/history"
         },
         {
+          title: "标签",
+          icon: "el-icon-s-flag",
+          path: "/tag/1"
+        },
+        {
           title: "友链",
-          icon: "el-icon-link",
+          icon: "el-icon-s-promotion",
           path: "/link"
         },
-        {
-          title: "留言板",
-          icon: "el-icon-chat-line-round",
-          path: "/message"
-        },
+        // {
+        //   title: "留言板",
+        //   icon: "el-icon-chat-line-round",
+        //   path: "/message"
+        // },
         {
           title: "关于",
-          icon: "el-icon-s-operation",
+          icon: "el-icon-share",
           path: "/about"
         }
       ]

@@ -1,24 +1,15 @@
 import { MessageBox, Message } from 'element-ui'
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
-export default function ({ $axios,store,redirect }) {
+export default function ({ $axios, store }) {
     $axios.defaults.timeout = 2000
     $axios.onRequest(config => {
-        var token = Cookies.get('token')
-        if (token != 'null' && token != undefined) {
-            store.commit("user/settoken",token);
+        var token = store.state.user.token
+        if (store.state.user.token) {
             config.headers.Authorization = `Bearer ${token}`
         }
     })
     $axios.onError(error => {
-        // const code = parseInt(error.response && error.response.status)
-        // if (code === 400) {
-        Message({
-            message: error,
-            type: 'error',
-            duration: 1000
-        })
-        // redirect('/400')
-        // }
+        return Promise.reject(error.response.data)
     })
 }

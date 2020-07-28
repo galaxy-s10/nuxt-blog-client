@@ -14,12 +14,16 @@
           </p>
           <img v-if="item.img!=null" :src="item.img" class="img1" />
           <!-- <img  v-lazy="item.img" alt="item.img" width="100%" height="460" /> -->
-          <img v-else src="../../assets/imgs/无图.png" alt />
+          <img v-else src="../../assets/imgs/nopic.png" alt />
           <div>
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
           </div>
           <div style="text-align:right;font-size:14px;">最后更新于：{{format(item.updatedAt)}}</div>
+        </div>
+        <div v-if="item.tags.length !=0">
+          <span class="el-icon-collection-tag"></span>
+          <div class="little-tag" v-for="item in item.tags" :key="item.id">{{item.name}}</div>
         </div>
         <el-divider>评论一下吧 ！</el-divider>
         <div>
@@ -32,9 +36,9 @@
             v-model="content"
           ></el-input>
           <p style="text-align:right">
-            <el-button type="primary" @click="addcomment()">评论</el-button>
+            <el-button type="primary" @click="addcomment()">提交</el-button>
           </p>
-          <comment :list="lists" :count="count" @reshow="commentlist" />
+          <comment :list="lists" :count="count" @reshow="commentlist" v-loading="isLoading" />
         </div>
       </div>
     </div>
@@ -53,13 +57,10 @@ export default {
   },
   data() {
     return {
-      // list: "",
-      // count: null,
+      isLoading: false,
       comment: "",
       content: null,
-      // data: null,
-      articledata: null,
-      xxx: null
+      articledata: null
     };
   },
   head() {
@@ -67,14 +68,11 @@ export default {
       title: this.data.rows[0].title
     };
   },
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, store }) {
     var id = params.id;
     var data = await $axios.$get(`/api/comment?article_id=${id}`);
-    return { lists: data.lists, count: data.count };
-  },
-  async fetch({ store, params }) {
-    var id = params.id;
     await store.dispatch("article/findarticle", { id });
+    return { lists: data.lists, count: data.count };
   },
   methods: {
     // 格式化日期时间
@@ -83,41 +81,44 @@ export default {
     },
     // 提交留言
     async addcomment() {
-      if (this.content != null) {
-        if(this.$store.state.user.token){
-          var article_id = this.$route.params.id;
-        var from_userid = this.$store.state.user.id;
-        var content = this.content;
-        var to_commentid = -1;
-        var to_username = null;
-        var date = new Date();
-        var date = format(date);
-        var res = await this.$axios.$post("/api/comment/add", {
-          article_id,
-          from_userid,
-          content,
-          to_commentid,
-          to_username,
-          date
-        });
-        if (res.code) {
-          this.commentlist(this.$route.params.id);
+      if (this.content != null && this.content.length >= 3) {
+        if (this.$store.state.user.token) {
+          var article_id = parseInt(this.$route.params.id);
+          var from_userid = parseInt(this.$store.state.user.id);
+          var content = this.content;
+          var to_commentid = -1;
+          var to_userid = -1;
+          try {
+            await this.$store.dispatch("comment/addComment", {
+              id: null,
+              article_id,
+              from_userid,
+              content,
+              to_commentid,
+              to_userid
+            });
+          } catch (err) {
+            this.$newmessage("", "error");
+            return;
+          }
           this.$newmessage("发表成功！", "success");
+          this.commentlist(this.$route.params.id);
         } else {
-          this.$newmessage(res.message, "error");
-        }
-        }else{
           this.$newmessage("暂未登录，请登录！", "warning");
         }
       } else {
-        this.$newmessage("请输入留言内容~", "warning");
+        this.$newmessage("请输入三个字以上留言内容~", "warning");
       }
     },
-    // 文章留言列表
+    // 留言列表
     async commentlist(id) {
+      this.isLoading = true;
       var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
-      this.lists = res.lists;
-      this.count = res.count;
+      setTimeout(() => {
+        this.isLoading = false;
+        this.lists = res.lists;
+        this.count = res.count;
+      }, 300);
     },
     // 文章信息
     articleinfo(id) {
@@ -127,7 +128,9 @@ export default {
     }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    scrollTo({ top: 0 });
+  },
   computed: {
     data() {
       return this.$store.state.article.data;
@@ -137,6 +140,15 @@ export default {
 </script>
 
 <style>
+.little-tag {
+  display: inline-block;
+  text-align: center;
+  background-color: #aaaaaa;
+  color: white;
+  padding: 0 5px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
 .img1 {
   width: 100%;
   height: 460px;

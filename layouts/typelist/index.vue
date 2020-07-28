@@ -44,7 +44,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("article/articletypelist");
+    // this.$store.dispatch("article/articletypelist");
   },
   mounted() {
     window.addEventListener("scroll", this.headershow);

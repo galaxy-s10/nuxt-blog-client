@@ -54,10 +54,10 @@ export default {
 }
 .show {
   position: fixed;
-  top: -700px;
+  top: -100%;
   right: 10px;
   width: 100px;
-  height: 700px;
+  height: 85%;
   background: url("../../assets/imgs/gotop.png") no-repeat bottom;
   z-index: 999;
   animation: move 3s infinite linear;
@@ -65,7 +65,7 @@ export default {
   transition: all 0.5s;
 }
 .backtop {
-  top: 0;
+  top: -100px;
   transition: all 0.5s;
 }
 .minback {
@@ -76,7 +76,7 @@ export default {
   height: 40px;
   border-radius: 50%;
   right: 30px;
-  bottom: 70px;
+  bottom: 40px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: all 1s;

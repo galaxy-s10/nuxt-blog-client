@@ -11,13 +11,11 @@
         <div v-for="(item,index) in list" :key="index">
           <div>
             <div style="display:flex;">
-              <!-- 作者头像，ID -->
               <div>
                 <el-avatar :size="40">
                   <img class="userlogo" v-lazy="item.from_user.avatar" />
                 </el-avatar>
               </div>
-              <!-- 名字，内容，时间 -->
               <div style="flex-grow:1;padding:5px">
                 <div style="color:#0984e3">
                   <span v-if="item.from_user.role == 'admin'" class="rank">博主</span>
@@ -25,7 +23,7 @@
                 </div>
                 <div>{{item.content}}</div>
                 <div style>
-                  <span class="el-icon-date">{{format(item.date)}}</span>
+                  <span class="el-icon-date">{{format(item.createdAt)}}</span>
                   <span style="float:right;">
                     <i class="el-icon-chat-round" style="cursor:pointer"></i>
                     <span style="margin-left:10px;cursor:pointer" @click="showinput(item.id)">回复</span>
@@ -55,13 +53,11 @@
               :key="index"
               style="background:#fbfbfb;display:flex;margin-left:40px;padding:10px 0;"
             >
-              <!-- 作者头像，ID -->
               <div>
                 <el-avatar :size="40">
                   <img class="userlogo" v-lazy="item.from_user.avatar" />
                 </el-avatar>
               </div>
-              <!-- 名字，内容，时间 -->
               <div style="flex-grow:1;padding:5px;border-bottom:1px solid #eee;">
                 <div style="color:#0984e3">
                   <span v-if="item.from_user.role == 'admin'" class="rank">博主</span>
@@ -73,7 +69,7 @@
                   {{item.content}}
                 </div>
                 <div style>
-                  <span class="el-icon-date">{{format(item.date)}}</span>
+                  <span class="el-icon-date">{{format(item.createdAt)}}</span>
                   <span style="float:right;">
                     <i class="el-icon-chat-round" style="cursor:pointer"></i>
                     <span style="margin-left:10px;cursor:pointer" @click="showinput(item.id)">回复</span>
@@ -101,9 +97,7 @@
         </div>
       </div>
     </div>
-    <div v-else style="text-align:center;padding:40px 0">
-      <h5 style="padding:0;margin:0;text-align:right"></h5>目前还没有人留言~
-    </div>
+    <div v-else style="text-align:center;padding:40px 0">目前还没有人留言~</div>
   </div>
 </template>
 
@@ -123,17 +117,6 @@ export default {
     };
   },
   methods: {
-    // 留言列表
-    commentlist(id) {
-      commentlist(id)
-        .then(res => {
-          this.list = res.lists;
-          this.count = res.count;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     // 显示留言输入框
     showinput(id) {
       this.isshow = id;
@@ -143,7 +126,7 @@ export default {
     },
     // 回复留言
     async add(item) {
-      if (this.message != null) {
+      if (this.message != null && this.message.length >= 3) {
         var {
           id,
           article_id,
@@ -151,12 +134,11 @@ export default {
           from_user,
           content,
           to_commentid,
-          to_userid,
-          date
+          to_userid
         } = item;
         if (this.$store.state.user.token) {
-          var article_id = article_id;
-          var from_userid = this.$store.state.user.id;
+          var article_id = parseInt(article_id);
+          var from_userid = parseInt(this.$store.state.user.id);
           var content = this.message;
           if (to_commentid == -1) {
             var to_commentid = id;
@@ -164,41 +146,36 @@ export default {
             var to_commentid = to_commentid;
           }
           var to_userid = item.from_userid;
-          var date = new Date();
-          var date = format(date);
-          var res = await this.$axios.$post("/api/comment/add", {
-            article_id,
-            from_userid,
-            content,
-            to_commentid,
-            to_userid,
-            date
-          });
-          console.log(res)
-          if (res.code) {
-            this.$emit("reshow", article_id);
-            this.$newmessage("发表成功！", "success");
-          } else {
-            this.$newmessage(res.message, "error");
+          try {
+            await this.$store.dispatch("comment/addComment", {
+              id: null,
+              article_id,
+              from_userid,
+              content,
+              to_commentid,
+              to_userid
+            });
+            id = this.$route.params.id ? this.$route.params.id : -1;
+            this.$newmessage("回复成功！", "success");
+            this.$emit("reshow", id);
+            this.showinput(null);
+            this.message = "";
+          } catch (err) {
+            console.log(err);
+            this.message = "";
+            return;
           }
         } else {
           this.$newmessage("暂未登录，请登录！", "warning");
         }
       } else {
-        this.$newmessage("请输入留言内容~", "warning");
+        this.$newmessage("请输入三个字以上留言内容~", "warning");
       }
     }
   },
   computed: {},
   mounted() {},
-  watch: {
-    list: function(newval, oldval) {
-      this.listLoading = true;
-      setTimeout(() => {
-        this.listLoading = false;
-      }, 500);
-    }
-  }
+  watch: {}
 };
 </script>
 

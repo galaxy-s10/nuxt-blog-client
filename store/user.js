@@ -10,66 +10,59 @@ export const state = () => ({
 
 
 export const mutations = {
-    settoken(state, res) {
-        if (res) {
-            Cookies.set('token', res)
-            state.token = res
-        } else {
-            Cookies.remove('token')
-            state.token = res
-        }
-
+    logout(state) {
+        localStorage.removeItem('token')
+        state.id = null,
+            state.name = null,
+            state.avatar = null,
+            state.title = null,
+            state.token = null
     },
-    setname(state, res) {
+    setToken(state, res) {
+        if (res == null) {
+            localStorage.removeItem('token')
+        } else {
+            state.token = res
+            localStorage.token = res
+        }
+    },
+    setName(state, res) {
         state.name = res
     },
-    setid(state, res) {
+    setId(state, res) {
         state.id = res
     },
-    settitle(state, res) {
+    setTitle(state, res) {
         state.title = res
     },
-    setavatar(state, res) {
+    setAvatar(state, res) {
         state.avatar = res
     }
 }
 
 export const actions = {
     async login({ commit }, data) {
-        const res = await this.$axios.$post('/api/user/login', data)
-        if (res.token) {
-            commit('settoken', res.token)
-            Message({
-                message: '登录成功！',
-                type: 'success',
-                duration: 1000
-            })
-        } else {
-            commit('settoken', res.token)
-            console.log('账号或密码错误！！')
-            Message({
-                message: '账号或密码错误！',
-                type: 'error',
-                duration: 1000
-            })
+        try {
+            const res = await this.$axios.$post('/api/user/login', data)
+            commit('setToken', res.token)
+            return Promise.resolve()
+        } catch (err) {
+            return Promise.reject()
         }
     },
-    logout({ commit }) {
-        commit("settoken", null)
-    },
-    async getInfo({ commit, state }) {
-        const res = await this.$axios.$get('/api/user/getinfo')
-        if (res.code) {
-            commit("setid", res.userinfo.id)
-            commit("setname", res.userinfo.username)
-            commit("setavatar", res.userinfo.avatar)
-            commit("settitle", res.userinfo.title)
-        } else {
-            Cookies.remove('token')
+    async getUserInfo({ commit, state }) {
+        try {
+            const res = await this.$axios.$get('/api/user/getuserinfo')
+            // commit("setToken", res.userinfo.id)
+            commit("setId", res.userinfo.id)
+            commit("setName", res.userinfo.username)
+            commit("setAvatar", res.userinfo.avatar)
+            commit("setTitle", res.userinfo.title)
+            return Promise.resolve()
+        } catch (err) {
+            localStorage.removeItem('token')
+            return Promise.reject()
         }
-    },
-    // async add({ commit }, data) {
-    //     const res = await this.$axios.$post('/api/user/add', data)
-    // }
+    }
 
 }

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -66,46 +66,68 @@ export default {
       dialogtwo: false
     };
   },
+  created() {},
   methods: {
+    ...mapActions({
+      userLogin: "user/login",
+      getUserInfo: "user/getUserInfo"
+    }),
+    ...mapMutations({
+      userLogout: "user/logout"
+    }),
     async register() {
       if (this.uname == "" || this.upwd == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-        const res = await this.$axios.$post("/api/user/add", {
-          username: this.uname,
-          password: this.upwd
-        });
-        if (res.code) {
-          this.$newmessage("注册成功，请登录~", "success");
-          setTimeout(() => {
-            this.dialogtwo = false;
-          }, 500);
-        } else {
-          this.$newmessage(res.message, "error");
+        try {
+          if (!(this.uname.length >= 3 && this.uname.length < 10)) {
+            throw "用户名错误：用户名要求3-10个字符";
+          }
+          // 正则匹配密码，6-12位，大小写字母和数字和下划线
+          let reg = /^\w{6,12}$/g;
+          if (!reg.test(this.upwd)) {
+            throw "密码错误：密码要求6-12位，大小写字母以及数字和下划线！";
+          }
+        } catch (err) {
+          this.$newmessage(err, "error");
+          return;
         }
+        await this.$axios
+          .$post("/api/user/add", {
+            id: null,
+            avatar: null,
+            username: this.uname,
+            password: this.upwd,
+            role: "user"
+          })
+          .then(res => {
+            this.$newmessage("注册成功，请登录~", "success");
+            setTimeout(() => {
+              this.dialogtwo = false;
+            }, 500);
+          })
+          .catch(err => {
+            this.$newmessage(err.message, "error");
+          });
       }
     },
     async login() {
       if (this.uname == "" || this.upwd == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-        await this.$store.dispatch("user/login", {
-          username: this.uname,
-          password: this.upwd
-        });
-        await this.$store.dispatch("user/getInfo");
-      }
-      if (this.$store.state.user.token) {
-        setTimeout(() => {
-          this.dialogVisible = false;
-        }, 500);
+        await this.userLogin({ username: this.uname, password: this.upwd })
+          .then(() => {
+            this.$newmessage("登录成功！", "success");
+            this.dialogVisible = false;
+            this.getUserInfo();
+          })
+          .catch(() => {
+            this.$newmessage("登录失败！", "error");
+          });
       }
     },
     logout() {
-      this.$store.commit("user/settoken", null);
-      this.$store.commit("user/setname", null);
-      this.$store.commit("user/setavatar", null);
-      this.$store.commit("user/settitle", null);
+      this.userLogout();
     },
     handleCommand(x) {
       this.title = x;
@@ -137,7 +159,7 @@ export default {
       this.visible = offsetTop < height;
     }
   },
-  created() {},
+
   computed: {
     name() {
       if (this.$store.state.user.name) {
@@ -145,13 +167,6 @@ export default {
       } else {
         return "登录";
       }
-
-      // var token = Cookies.get("token");
-      // if (token) {
-      //   this.$store.dispatch("user/geiInfo");
-      // } else {
-      //   return "登录";
-      // }
     },
     inout() {
       if (!this.$store.state.user.name) {

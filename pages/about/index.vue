@@ -41,7 +41,7 @@
           href="http://admin.zhengbeining.com"
           target="_blank"
           class="alink"
-        >http://admin.zhengbeining.com</a>，懒得注册的可以使用测试账号，账号和密码都是：123，仅user权限~
+        >http://admin.zhengbeining.com</a>
       </div>
       <h2>联系方式</h2>
       <ul>

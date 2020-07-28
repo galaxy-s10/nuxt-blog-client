@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article v-for="(item,index) in pagelist" :key="index" class="article-con">
+    <article v-for="(item, index) in pagelist" :key="index" class="article-con">
       <div class="article-l">
         <nuxt-link
           :to="`/article/${item.id}`"
@@ -10,24 +10,28 @@
         />
       </div>
       <div class="article-r">
-        <nuxt-link :to="'/article/'+item.id" tag="h2" class="overtext">{{item.title}}</nuxt-link>
+        <nuxt-link :to="'/article/' + item.id" tag="h2" class="overtext">{{ item.title }}</nuxt-link>
         <el-divider></el-divider>
-        <p>暂时无可提供的摘要</p>
+        <p v-if="item.tags.length == 0">暂时无可提供的摘要</p>
+        <div v-else class="tag">
+          <el-tag
+            v-for="item in item.tags"
+            :key="item.id"
+            class="tag-margin"
+            size="mini"
+            :disable-transitions="false"
+            :color="item.color"
+            @close="closeTag(item.id)"
+          >{{ item.name }}</el-tag>
+        </div>
         <p style="font-size:12px">
-          <span class="jgh">{{format1(item.date)}}</span>
-          <span class="jgh">{{item.click}}次浏览</span>
-          <span>{{item.Comments.length}}条评论</span>
+          <span class="jgh">{{ format1(item.date) }}</span>
+          <span class="jgh">{{ item.click }}次浏览</span>
+          <span>{{ item.comments.length }}条评论</span>
         </p>
       </div>
     </article>
     <div style="text-align:center;padding:30px 0">
-      <!-- <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="total"
-        :page-size="pagesize"
-        @current-change="currentchange"
-      ></el-pagination>-->
       <page :total="total" :pagesize="pagesize" @currentchange="currentchange" />
     </div>
   </div>
@@ -37,6 +41,7 @@
 import page from "../components/page";
 import { format, format1 } from "@/utils/format.js";
 import Cookies from "js-cookie";
+import { mapActions, mapMutations } from "vuex";
 export default {
   layout: "blog",
   components: {
@@ -53,6 +58,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      userLogin: "user/login",
+      getUserInfo: "user/getUserInfo"
+    }),
+    ...mapMutations({
+      setToken: "user/setToken",
+      logout: "user/logout"
+    }),
     // 格式化时间
     format1(time) {
       return format1(time);
@@ -80,25 +93,15 @@ export default {
     await store.commit("article/nowpage", 1);
     await store.dispatch("article/articlepage", { nowpage: 1 });
   },
-  created() {
-    // var token = Cookies.get("token");
-    // if (token != "null") {
-    //   console.log("开始验证token");
-    //   this.$store.dispatch("user/getInfo");
-    // } else {
-    //   console.log("没有token");
-    // }
-  },
+  created() {},
   mounted() {
+    scrollTo({ top: 0 });
     window.addEventListener("scroll", this.headershow);
   },
   destroyed() {
     window.removeEventListener("scroll", this.headershow);
   },
   computed: {
-    // fetch() {
-    //   this.$store.dispatch("articlepage", { pagesize: 3, nowpage: 1 });
-    // },
     pagelist() {
       return this.$store.state.article.pagelist;
     },
@@ -117,7 +120,6 @@ export default {
   },
   watch: {
     nowtype(newval, oldval) {
-      console.log("nowtypenowtype");
       this.$store.dispatch("article/articlepage", { nowpage: 1 });
     }
   }
@@ -125,6 +127,9 @@ export default {
 </script>
 
 <style scoped>
+.tag /deep/ .el-tag {
+  color: white;
+}
 /* 响应式布局 - 小于 540px */
 @media screen and (max-width: 540px) {
   .img {

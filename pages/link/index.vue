@@ -5,59 +5,18 @@
   >
     <h1 style="text-align:center;padding:10px">友链</h1>
     <hr class="hrclass" />
-    <ul style="padding:0;margin:0;overflow:hidden;margin:40px 0">
-      <li class="liitem">
-        <a href="http://lsyblog.com" class="alink" target="_bank">
+    <ul
+      style="padding:0;margin:0;overflow:hidden;margin:40px 0;display:flex:justity-content:spance-between;flex-wrap:wrap"
+    >
+      <li class="liitem" v-for="(item,index) in linkList" :key="index">
+        <a :href="item.url" class="alink" target="_bank">
           <div class="linkborder">
             <div style="flex:1">
-              <div style="color:#ffa7a6">玉捷博客</div>
-              <div class="ellipsis">不做后悔事，做了不后悔。</div>
+              <div style="color:#ffa7a6">{{item.name}}</div>
+              <div class="ellipsis">{{item.description}}</div>
             </div>
             <div>
-              <img src="../../assets/imgs/link.jpg" class="img" style="border:2px solid #eee" />
-            </div>
-          </div>
-        </a>
-      </li>
-      <li class="liitem">
-        <a href="http://47.95.198.156" class="alink" target="_bank">
-          <div class="linkborder">
-            <div style="flex:1">
-              <div style="color:#ffa7a6">元不留行</div>
-              <div class="ellipsis">不怕千万人阻挡，只怕自己投降</div>
-            </div>
-            <div>
-              <img src="../../assets/imgs/link1.jpg" class="img" style="border:2px solid #eee" />
-            </div>
-          </div>
-        </a>
-      </li>
-      <li class="liitem">
-        <a href="http://121.199.15.224" class="alink" target="_bank">
-          <div class="linkborder">
-            <div style="flex:1">
-              <div style="color:#ffa7a6">cat</div>
-              <div class="ellipsis">道阻且长，行则将至，行而不辍，未来可期</div>
-            </div>
-            <div>
-              <img src="../../assets/imgs/link2.jpg" class="img" style="border:2px solid #eee" />
-            </div>
-          </div>
-        </a>
-      </li>
-      <li class="liitem">
-        <a href="https://www.zhengbeining.com/xcx/" class="alink" target="_bank">
-          <div class="linkborder">
-            <div style="flex:1">
-              <div style="color:#ffa7a6">网易云Api</div>
-              <div class="ellipsis">进度：1%</div>
-            </div>
-            <div>
-              <img
-                src="https://img.cdn.zhengbeining.com/%E6%AF%94%E5%BE%B7%E5%B0%94.jpg"
-                class="img"
-                style="border:2px solid #eee"
-              />
+              <img :src="item.avatar" class="img" style="border:2px solid #eee" />
             </div>
           </div>
         </a>
@@ -66,6 +25,7 @@
     <div style="text-align:center;margin:30px 0">
       <h2>欢迎大家交换友链~</h2>
     </div>
+
     <el-input
       type="textarea"
       resize="none"
@@ -75,27 +35,93 @@
       v-model="content"
     ></el-input>
     <p style="text-align:right">
-      <el-button type="primary" disabled>申请</el-button>
+      <el-button type="primary" @click="addcomment()">提交</el-button>
     </p>
-    <div></div>
+    <comment :list="lists" :count="count" @reshow="commentlist" v-loading="isLoading" />
   </div>
 </template>
 
 <script>
+import { format } from "@/utils/format.js";
+import comment from "../../components/comment";
 export default {
   layout: "blog",
+  components: {
+    comment
+  },
   data() {
     return {
+      linkList: null,
+      article_id: -1,
+      messagecontent: "",
+      isshow: "",
+      isLoading: false,
       content: ""
     };
+  },
+  computed: {
+    formatDate(time) {
+      return time => {
+        return format(time);
+      };
+    }
   },
   head() {
     return {
       title: "友链"
     };
   },
-  methods: {},
-  mounted() {}
+  async asyncData({ $axios, params }) {
+    const { rows } = await $axios.$get("/api/link/list");
+    var { lists, count } = await $axios.$get(`/api/comment?article_id=-1`);
+    return {
+      linkList: rows,
+      lists,
+      count
+    };
+  },
+  methods: {
+    // 留言列表
+    async commentlist(id) {
+      this.isLoading = true;
+      var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
+      setTimeout(() => {
+        this.isLoading = false;
+        this.lists = res.lists;
+        this.count = res.count;
+      }, 300);
+    },
+    // 提交留言
+    async addcomment() {
+      if (this.$store.state.user.token) {
+        var article_id = parseInt(this.article_id);
+        var from_userid = parseInt(this.$store.state.user.id);
+        var content = this.content;
+        var to_commentid = -1;
+        var to_userid = -1;
+        if (content.length >= 3) {
+          var res = await this.$axios.$post("/api/comment/add", {
+            id: null,
+            article_id,
+            from_userid,
+            content,
+            to_commentid,
+            to_userid
+          });
+          if (res) {
+            this.commentlist(this.article_id);
+            this.$newmessage("发表成功！", "success");
+          } else {
+            this.$newmessage(res.data, "success");
+          }
+        } else {
+          this.$newmessage("请输入三个及以上内容~~~", "warning");
+        }
+      } else {
+        this.$newmessage("暂未登录，请登录！", "warning");
+      }
+    }
+  }
 };
 </script>
 
@@ -152,9 +178,10 @@ export default {
   margin-top: 10px;
 }
 .liitem {
-  width: 30%;
-  float: left;
-  margin: 5px;
+  width: 31.33%;
+  box-sizing: border-box;
+  margin: 1%;
+  display: inline-block;
   position: relative;
   list-style: none;
   overflow: hidden;

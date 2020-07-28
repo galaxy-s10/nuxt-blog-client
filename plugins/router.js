@@ -7,7 +7,7 @@ var vm = new Vue({})
 export default ({ app }) => {
     app.router.beforeEach((to, from, next) => {
         // this.$nuxt.$loading.start()
-        console.log(app)
+        // console.log(app)
         // vm.$loading();
         // NProgress.start()
         next()

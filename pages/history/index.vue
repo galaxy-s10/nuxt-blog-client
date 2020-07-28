@@ -8,7 +8,7 @@
         <el-timeline-item
           v-for="(item,index) in history"
           :key="index"
-          :timestamp="format(item.date)"
+          :timestamp="formatDate(item.date)"
         >
           <router-link :to="'/article/'+item.id" class="acss">{{item.title}}</router-link>
         </el-timeline-item>
@@ -35,12 +35,7 @@ export default {
     };
   },
   methods: {
-    // 格式化时间
-    format(time) {
-      return format(time);
-    },
     currentchange(nowpage) {
-      // this.$store.commit("article/nowpage", nowpage);
       this.$store.dispatch("article/articlepage", {
         ordername: "date",
         orderby: "desc",
@@ -50,6 +45,11 @@ export default {
   },
   created() {},
   computed: {
+    formatDate(time) {
+      return time => {
+        return format(time);
+      };
+    },
     history() {
       return this.$store.state.article.list;
     },
@@ -61,22 +61,13 @@ export default {
     }
   },
   async asyncData({ $axios, store }) {
-    // const { data } = await $axios.$get(
-    //   `article/archive?page=${store.getters.archivePage}&limit=10`
-    // );
-    // await store.commit("article/nowtype", null);
     await store.dispatch("article/articlepage", {
       ordername: "date",
       orderby: "desc",
-      nowpage:1
+      nowpage: 1
     });
   },
-  mounted() {
-    // this.$store.dispatch("article/history", {
-    //   ordername: "date",
-    //   orderby: "desc"
-    // });
-  }
+  mounted() {}
 };
 </script>
 

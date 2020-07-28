@@ -15,16 +15,13 @@
         <h1 style="display:inline-block;font-size:18px;margin:5px 0">热门文章</h1>
       </div>
       <div style="padding-left:10px;overflow:hidden">
-        <div v-for="(item,index) in hotlist" :key="index" style="margin-bottom:10px;display:flex">
+        <div
+          v-for="(item,index) in hotlist"
+          :key="index"
+          style="margin-bottom:10px;max-height:60px;display:flex"
+        >
           <div class="aside-l">
             <nuxt-link :to="'/article/'+item.id" tag="img" v-lazy="item.img" class="img1" />
-            <!-- <nuxt-link
-              v-else
-              :to="'/article/'+item.id"
-              tag="div"
-              :style="{backgroundImage:nopic}"
-              class="img1"
-            />-->
           </div>
 
           <div class="aside-r">
@@ -37,49 +34,67 @@
         </div>
       </div>
     </div>
+    <div class="hotart tag">
+      <div style="padding:10px 0 10px 10px;">
+        <!-- <span class="el-icon-trophy" style="font-size:18px;font-weight:blod;margin-right:4px"></span> -->
+        <h1 style="display:inline-block;font-size:18px;margin:5px 0">标签云</h1>
+      </div>
+      <el-tooltip
+        v-for="item in tagList"
+        :key="item.id"
+        effect="dark"
+        :content="'该标签下有'+item.articles.length+'篇文章'"
+        placement="top"
+      >
+        <el-tag
+          class="tag-margin"
+          :disable-transitions="false"
+          :color="item.color"
+          @click="tagClick(item.id)"
+        >{{item.name}}</el-tag>
+      </el-tooltip>
+    </div>
   </aside>
 </template>
 
 <script>
 import { format1 } from "@/utils/format.js";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      // nopic: "url(" + require("../../assets/imgs/无图.png") + ")"
+      // tagList: null
     };
   },
   methods: {
     format1(time) {
       return format1(time);
+    },
+    tagClick(id) {
+      this.$router.push({ path: `/tag/${id}` });
     }
   },
-  created() {
-    // this.getarticle();
-    this.$store.dispatch("article/articlehotlist", {
-      ordername: "click",
-      orderby: "desc",
-      nowpage: 1
-    });
-  },
   computed: {
-    avatar() {
-      if (this.$store.state.user.token) {
-        return this.$store.state.user.avatar;
+    ...mapState({
+      name(state) {
+        return state.user.name == null ? "VueBlog" : state.user.name;
+      },
+      avatar(state) {
+        require("../../assets/imgs/3.jpg");
+        return state.user.avatar == null
+          ? require("../../assets/imgs/3.jpg")
+          : state.user.avatar;
+      },
+      title(state) {
+        return state.user.title == null
+          ? "A Single Page App"
+          : state.user.title;
       }
-      return "https://img.cdn.zhengbeining.com/比德尔.jpg";
+    }),
+    tagList() {
+      return this.$store.state.tag.tagList;
     },
-    name() {
-      if (this.$store.state.user.token) {
-        return this.$store.state.user.name;
-      }
-      return "VueBlog";
-    },
-    title() {
-      if (this.$store.state.user.token) {
-        return this.$store.state.user.title;
-      }
-      return "A Single Page App";
-    },
+
     hotlist() {
       return this.$store.state.article.hotlist;
     }
@@ -102,7 +117,7 @@ export default {
   color: #53a8ff;
 }
 .bgc {
-  background: url("https://img.cdn.zhengbeining.com/bgc.jpg") no-repeat 50%;
+  background: url("../../assets/imgs/bgc.jpg") no-repeat 50%;
   height: 120px;
   background-size: cover;
 }
@@ -150,5 +165,21 @@ export default {
   /* padding: 2px; */
   margin-left: 10px;
   font-size: 14px;
+}
+.tag /deep/ .el-tag {
+  color: white;
+}
+.tag /deep/ .el-tag:hover {
+  cursor: pointer;
+}
+.tag /deep/ .el-tag .el-icon-close {
+  color: white;
+}
+.tag /deep/ .el-tag .el-icon-close:hover {
+  background-color: transparent;
+}
+.tag-margin {
+  display: inline-block;
+  margin: 5px 10px;
 }
 </style>

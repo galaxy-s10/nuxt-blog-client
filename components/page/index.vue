@@ -8,6 +8,7 @@
         :total="total"
         :page-size="pagesize"
         :current-page="nowpage"
+        :pager-count="5"
         @current-change="currentchange"
       ></el-pagination>
     </div>
@@ -25,12 +26,12 @@ export default {
   },
   methods: {
     currentchange(nowpage) {
-      this.$emit('currentchange', nowpage)
+      this.$emit("currentchange", nowpage);
       // this.articlepage(this.pagesize, nowpage);
     }
   },
-  computed:{
-    nowpage(){
+  computed: {
+    nowpage() {
       return this.$store.state.article.nowpage;
     }
   }

@@ -78,16 +78,16 @@ export const actions = {
     async articlepage({ commit, state }, data) {
         var { ordername, orderby, nowpage } = data
         if (ordername != undefined && orderby != undefined) {
-            const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowpage=${nowpage}&pagesize=${state.historypagesize}`)
+            const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=${state.historypagesize}`)
             commit('list', res.pagelist.rows)
             commit('count', res.pagelist.count)
         } else {
             if (state.nowtype != null) {
-                var res = await this.$axios.$get(`/api/article/page?type=${state.nowtype}&nowpage=${nowpage}&pagesize=${state.pagesize}`)
+                var res = await this.$axios.$get(`/api/article/page?type=${state.nowtype}&nowPage=${nowpage}&pageSize=${state.pagesize}`)
                 commit('pagelist', res.pagelist.rows)
                 commit('count', res.pagelist.count)
             } else {
-                var res = await this.$axios.$get(`/api/article/page?&nowpage=${nowpage}&pagesize=${state.pagesize}`)
+                var res = await this.$axios.$get(`/api/article/page?&nowPage=${nowpage}&pageSize=${state.pagesize}`)
                 commit('pagelist', res.pagelist.rows)
                 commit('count', res.pagelist.count)
             }
@@ -95,8 +95,9 @@ export const actions = {
 
     },
     async articlehotlist({ commit }, data) {
+        // console.log(data)
         var { ordername, orderby, nowpage } = data
-        const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowpage=${nowpage}&pagesize=4`)
+        const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=4`)
         commit('hotlist', res.pagelist.rows)
     },
     async findarticle({ commit }, data) {

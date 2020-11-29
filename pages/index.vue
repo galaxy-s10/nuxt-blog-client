@@ -10,7 +10,9 @@
         />
       </div>
       <div class="article-r">
-        <nuxt-link :to="'/article/' + item.id" tag="h2" class="overtext">{{ item.title }}</nuxt-link>
+        <nuxt-link :to="'/article/' + item.id" tag="h2" class="overtext">{{
+          item.title
+        }}</nuxt-link>
         <el-divider></el-divider>
         <p v-if="item.tags.length == 0">暂时无可提供的摘要</p>
         <div v-else class="tag">
@@ -22,17 +24,23 @@
             :disable-transitions="false"
             :color="item.color"
             @close="closeTag(item.id)"
-          >{{ item.name }}</el-tag>
+            >{{ item.name }}</el-tag
+          >
         </div>
-        <p style="font-size:12px">
+        <p style="font-size: 12px">
           <span class="jgh">{{ format1(item.date) }}</span>
           <span class="jgh">{{ item.click }}次浏览</span>
-          <span>{{ item.comments.length }}条评论</span>
+          <span class="jgh">{{ item.comments.length }}条评论</span>
+          <span>{{ item.stars.length }}个star</span>
         </p>
       </div>
     </article>
-    <div style="text-align:center;padding:30px 0">
-      <page :total="total" :pagesize="pagesize" @currentchange="currentchange" />
+    <div style="text-align: center; padding: 30px 0">
+      <page
+        :total="total"
+        :pagesize="pagesize"
+        @currentchange="currentchange"
+      />
     </div>
   </div>
 </template>
@@ -45,26 +53,26 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   layout: "blog",
   components: {
-    page
+    page,
   },
   data() {
     return {
-      visible: false
+      visible: false,
     };
   },
   head() {
     return {
-      title: "首页"
+      title: "首页",
     };
   },
   methods: {
     ...mapActions({
       userLogin: "user/login",
-      getUserInfo: "user/getUserInfo"
+      getUserInfo: "user/getUserInfo",
     }),
     ...mapMutations({
       setToken: "user/setToken",
-      logout: "user/logout"
+      logout: "user/logout",
     }),
     // 格式化时间
     format1(time) {
@@ -75,7 +83,7 @@ export default {
       this.$store.commit("article/nowpage", nowpage);
       this.$store.dispatch("article/articlepage", {
         nowpage,
-        type: this.$store.state.article.type
+        type: this.$store.state.article.type,
       });
     },
     headershow() {
@@ -87,7 +95,7 @@ export default {
     },
     hello(x) {
       this.$store.dispatch("article/articlelist", { type: x });
-    }
+    },
   },
   async fetch({ store, params }) {
     await store.commit("article/nowpage", 1);
@@ -116,13 +124,13 @@ export default {
     },
     nowtype() {
       return this.$store.state.article.nowtype;
-    }
+    },
   },
   watch: {
     nowtype(newval, oldval) {
       this.$store.dispatch("article/articlepage", { nowpage: 1 });
-    }
-  }
+    },
+  },
 };
 </script>
 

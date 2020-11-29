@@ -53,14 +53,16 @@ export const actions = {
     async getUserInfo({ commit, state }) {
         try {
             const res = await this.$axios.$get('/api/user/getuserinfo')
-            // commit("setToken", res.userinfo.id)
-            commit("setId", res.userinfo.id)
-            commit("setName", res.userinfo.username)
-            commit("setAvatar", res.userinfo.avatar)
-            commit("setTitle", res.userinfo.title)
+            console.log("s:::", res)
+            commit("setId", res.userInfo.id)
+            commit("setName", res.userInfo.username)
+            commit("setAvatar", res.userInfo.avatar)
+            commit("setTitle", res.userInfo.title)
             return Promise.resolve()
         } catch (err) {
-            localStorage.removeItem('token')
+            if (localStorage) {
+                localStorage.removeItem('token')
+            }
             return Promise.reject()
         }
     }

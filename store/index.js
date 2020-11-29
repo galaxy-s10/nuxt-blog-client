@@ -7,6 +7,7 @@ const actions = {
         });
         await dispatch("article/articletypelist");
         await dispatch("tag/getTagList");
+        // await dispatch("user/getUserInfo");
     },
 };
 

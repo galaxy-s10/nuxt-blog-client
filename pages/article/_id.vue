@@ -56,25 +56,30 @@
             {{ item.name }}
           </div>
         </div>
-        <el-divider>评论一下吧 ！</el-divider>
-        <div>
-          <el-input
-            type="textarea"
-            resize="none"
-            :rows="5"
-            show-word-limit
-            maxlength="200"
-            v-model="content"
-          ></el-input>
-          <p style="text-align: right">
-            <el-button type="primary" @click="addcomment()">提交</el-button>
-          </p>
-          <comment
-            :list="lists"
-            :count="count"
-            @reshow="commentlist"
-            v-loading="isLoading"
-          />
+        <div v-if="item.is_comment == 1">
+          <el-divider>评论一下吧!</el-divider>
+          <div>
+            <el-input
+              type="textarea"
+              resize="none"
+              :rows="5"
+              show-word-limit
+              maxlength="200"
+              v-model="content"
+            ></el-input>
+            <p style="text-align: right">
+              <el-button type="primary" @click="addcomment()">提交</el-button>
+            </p>
+            <comment
+              :list="lists"
+              :count="count"
+              @reshow="commentlist"
+              v-loading="isLoading"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <el-divider>该文章暂未开启评论~~~</el-divider>
         </div>
       </div>
     </div>

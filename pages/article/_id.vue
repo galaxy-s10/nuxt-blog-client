@@ -103,6 +103,8 @@ export default {
       comment: "",
       content: null,
       articledata: null,
+      lists: [],
+      count: "",
     };
   },
   head() {
@@ -121,7 +123,7 @@ export default {
     var id = params.id;
     var data = await $axios.$get(`/api/comment?article_id=${id}`);
     await store.dispatch("article/findarticle", { id });
-    return { lists: data.lists, count: data.count };
+    return { lists: data.rows, count: data.count };
   },
   methods: {
     // 格式化日期时间
@@ -170,10 +172,20 @@ export default {
       }, 300);
     },
     // 文章信息
-    articleinfo(id) {
-      findarticle(id).then((res) => {
-        this.data = res.list.rows;
-      });
+    // articleinfo(id) {
+    //   findarticle(id).then((res) => {
+    //     this.data = res.list.rows;
+    //   });
+    // },
+    // 评论
+    async getComment() {
+      var id = this.$route.params.id;
+      var data = await this.$axios.$get(`/api/comment?article_id=${id}`);
+      // await this.$store.dispatch("article/findarticle", { id });
+      console.log("data");
+      console.log(data);
+      this.lists = data.rows;
+      this.count = data.count;
     },
     // 判断是否点赞
     async zan() {
@@ -208,7 +220,8 @@ export default {
     },
     userInfo() {
       console.log("userInfo");
-      this.zan();
+      // this.zan();
+      this.getComment();
       return this.$store.state.user;
     },
   },

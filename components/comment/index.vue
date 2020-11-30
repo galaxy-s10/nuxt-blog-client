@@ -1,35 +1,65 @@
 <template>
   <div>
-    <div style="padding:20px 0;position:relative">
-      <span>Comments | {{count}} 条留言</span>
-      <div style="position:absolute;right:0;top:20px">
+    <div style="padding: 20px 0; position: relative">
+      <span>Comments | {{ count }} 条留言</span>
+      <div style="position: absolute; right: 0; top: 20px">
         <login />
       </div>
     </div>
-    <div v-if="list.length>0">
-      <div v-loading="listLoading" style="width:100%;">
-        <div v-for="(item,index) in list" :key="index">
+    <div v-if="list.length > 0">
+      <div v-loading="listLoading" style="width: 100%">
+        <div v-for="(item, index) in list" :key="index">
+          <!-- <div>{{item}}</div> -->
           <div>
-            <div style="display:flex;">
+            <div style="display: flex">
               <div>
                 <el-avatar :size="40">
                   <img class="userlogo" v-lazy="item.from_user.avatar" />
                 </el-avatar>
               </div>
-              <div style="flex-grow:1;padding:5px">
-                <div style="color:#0984e3">
-                  <span v-if="item.from_user.role == 'admin'" class="rank">博主</span>
-                  <span>{{item.from_user.username}}</span>
+              <div style="flex-grow: 1; padding: 5px">
+                <div style="color: #0984e3">
+                  <span v-if="item.from_user.role == 'admin'" class="rank"
+                    >博主</span
+                  >
+                  <span>{{ item.from_user.username }}</span>
                 </div>
-                <div>{{item.content}}</div>
+                <div>{{ item.content }}</div>
                 <div style>
-                  <span class="el-icon-date">{{format(item.createdAt)}}</span>
-                  <span style="float:right;">
-                    <i class="el-icon-chat-round" style="cursor:pointer"></i>
-                    <span style="margin-left:10px;cursor:pointer" @click="showinput(item.id)">回复</span>
+                  <span class="el-icon-date">{{ format(item.createdAt) }}</span>
+                  <span style="float: right">
+                    <i class="el-icon-chat-round" style="cursor: pointer"></i>
+                    <span
+                      style="margin-left: 10px; cursor: pointer"
+                      @click="showinput(item.id)"
+                      >回复</span
+                    >
+                    |
+                    <el-tooltip
+                      v-if="item.isStar == true"
+                      class="item"
+                      effect="dark"
+                      content="取消点赞"
+                      placement="top"
+                    >
+                      <i class="el-icon-star-on star"></i>
+                    </el-tooltip>
+                    <el-tooltip
+                      v-else
+                      class="item"
+                      effect="dark"
+                      content="赞一个"
+                      placement="top"
+                    >
+                      <i class="el-icon-star-off star"></i>
+                    </el-tooltip>
+                    {{ item.stars.length }}
                   </span>
                 </div>
-                <div style="background:#fafbfc;padding:10px;" v-show="item.id == isshow">
+                <div
+                  style="background: #fafbfc; padding: 10px"
+                  v-show="item.id == isshow"
+                >
                   <div>
                     <el-input
                       type="textarea"
@@ -39,43 +69,86 @@
                       show-word-limit
                     ></el-input>
                   </div>
-                  <div style="padding-top:5px;display:flex">
-                    <div style="margin-left:auto">
-                      <el-button type="primary" size="small" @click="add(item)">评论</el-button>
+                  <div style="padding-top: 5px; display: flex">
+                    <div style="margin-left: auto">
+                      <el-button type="primary" size="small" @click="add(item)"
+                        >评论</el-button
+                      >
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
+            <!-- children -->
             <div
-              v-for="(item,index) in item.children"
+              v-for="(item, index) in item.huifu"
               :key="index"
-              style="background:#fbfbfb;display:flex;margin-left:40px;padding:10px 0;"
+              :style="{
+                background: '#fbfbfb',
+                display: 'flex',
+                marginLeft: '40px',
+                padding: '10px 0',
+              }"
             >
               <div>
                 <el-avatar :size="40">
                   <img class="userlogo" v-lazy="item.from_user.avatar" />
                 </el-avatar>
               </div>
-              <div style="flex-grow:1;padding:5px;border-bottom:1px solid #eee;">
-                <div style="color:#0984e3">
-                  <span v-if="item.from_user.role == 'admin'" class="rank">博主</span>
-                  <span>{{item.from_user.username}}</span>
+              <div
+                :style="{
+                  flexGrow: 1,
+                  padding: '5px',
+                  borderBottom: '1px solid #eee',
+                }"
+              >
+                <div style="color: #0984e3">
+                  <span v-if="item.from_user.role == 'admin'" class="rank"
+                    >博主</span
+                  >
+                  <span>{{ item.from_user.username }}</span>
                 </div>
                 <div>
                   回复
-                  <span style="color:#48dbfb">@{{item.to_user.username}}:</span>
-                  {{item.content}}
+                  <span style="color: #48dbfb"
+                    >@{{ item.to_user.username }}:</span
+                  >
+                  {{ item.content }}
                 </div>
                 <div style>
-                  <span class="el-icon-date">{{format(item.createdAt)}}</span>
-                  <span style="float:right;">
-                    <i class="el-icon-chat-round" style="cursor:pointer"></i>
-                    <span style="margin-left:10px;cursor:pointer" @click="showinput(item.id)">回复</span>
+                  <span class="el-icon-date">{{ format(item.createdAt) }}</span>
+                  <span style="float: right">
+                    <i class="el-icon-chat-round" style="cursor: pointer"></i>
+                    <span
+                      style="margin-left: 10px; cursor: pointer"
+                      @click="showinput(item.id)"
+                      >回复 |
+                      <el-tooltip
+                        v-if="item.isStar == true"
+                        class="item"
+                        effect="dark"
+                        content="取消点赞"
+                        placement="top"
+                      >
+                        <i class="el-icon-star-on star"></i>
+                      </el-tooltip>
+                      <el-tooltip
+                        v-else
+                        class="item"
+                        effect="dark"
+                        content="赞一个"
+                        placement="top"
+                      >
+                        <i class="el-icon-star-off star"></i>
+                      </el-tooltip>
+                      {{ item.stars.length }}
+                    </span>
                   </span>
                 </div>
-                <div style="background:#fafbfc;padding:10px;" v-show="item.id == isshow">
+                <div
+                  style="background: #fafbfc; padding: 10px"
+                  v-show="item.id == isshow"
+                >
                   <div>
                     <el-input
                       type="textarea"
@@ -85,9 +158,11 @@
                       show-word-limit
                     ></el-input>
                   </div>
-                  <div style="padding-top:5px;display:flex">
-                    <div style="margin-left:auto">
-                      <el-button type="primary" size="small" @click="add(item)">评论</el-button>
+                  <div style="padding-top: 5px; display: flex">
+                    <div style="margin-left: auto">
+                      <el-button type="primary" size="small" @click="add(item)"
+                        >评论</el-button
+                      >
                     </div>
                   </div>
                 </div>
@@ -97,7 +172,9 @@
         </div>
       </div>
     </div>
-    <div v-else style="text-align:center;padding:40px 0">目前还没有人留言~</div>
+    <div v-else style="text-align: center; padding: 40px 0">
+      目前还没有人留言~
+    </div>
   </div>
 </template>
 
@@ -106,14 +183,14 @@ import { format } from "@/utils/format.js";
 import login from "../login";
 export default {
   components: {
-    login
+    login,
   },
   props: ["list", "count"],
   data() {
     return {
       listLoading: false,
       message: null,
-      isshow: ""
+      isshow: "",
     };
   },
   methods: {
@@ -134,7 +211,7 @@ export default {
           from_user,
           content,
           to_commentid,
-          to_userid
+          to_userid,
         } = item;
         if (this.$store.state.user.token) {
           var article_id = parseInt(article_id);
@@ -153,7 +230,7 @@ export default {
               from_userid,
               content,
               to_commentid,
-              to_userid
+              to_userid,
             });
             id = this.$route.params.id ? this.$route.params.id : -1;
             this.$newmessage("回复成功！", "success");
@@ -171,11 +248,11 @@ export default {
       } else {
         this.$newmessage("请输入三个字以上留言内容~", "warning");
       }
-    }
+    },
   },
   computed: {},
   mounted() {},
-  watch: {}
+  watch: {},
 };
 </script>
 

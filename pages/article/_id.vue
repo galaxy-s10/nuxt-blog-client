@@ -1,10 +1,14 @@
 <template>
   <div>
-    <div v-if="data">
-      {{ userInfo }}
-      ppp
-      {{ isStar }}
-      <div v-for="(item, index) in data.rows" :key="index" class="content">
+    <div v-if="articleData">
+      <!-- {{ userInfo }} -->
+      <!-- ppp -->
+      <!-- {{ isStar }} -->
+      <div
+        v-for="(item, index) in articleData.rows"
+        :key="index"
+        class="content"
+      >
         <div style>
           <h1 style="margin: 20px 0 10px; text-align: center">
             {{ item.title }}
@@ -24,7 +28,7 @@
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
           </div>
-          <div style="text-align: left; font-size: 14px" v-if="isStar.result">
+          <div style="text-align: left; font-size: 14px" v-if="item.isStar">
             你已经赞过这篇文章了哦~
             <el-tooltip
               class="item"
@@ -34,6 +38,7 @@
             >
               <i class="el-icon-star-on star"></i>
             </el-tooltip>
+            {{ item.stars.length }}
           </div>
           <div style="text-align: left; font-size: 14px" v-else>
             如果本文章对你有所帮助，欢迎点个赞!
@@ -45,6 +50,7 @@
             >
               <i class="el-icon-star-off star"></i>
             </el-tooltip>
+            {{ item.stars.length }}
           </div>
           <div style="text-align: right; font-size: 14px">
             最后更新于：{{ format(item.updatedAt) }}
@@ -108,8 +114,10 @@ export default {
     };
   },
   head() {
+    console.log("this.articleData.rows[0].title");
+    console.log(this.articleData);
     return {
-      title: this.data.rows[0].title,
+      title: this.articleData.rows[0] && this.articleData.rows[0].title,
     };
   },
   async asyncData({ $axios, params, store }) {
@@ -215,7 +223,7 @@ export default {
     scrollTo({ top: 0 });
   },
   computed: {
-    data() {
+    articleData() {
       return this.$store.state.article.data;
     },
     userInfo() {

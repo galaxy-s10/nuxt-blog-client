@@ -77,9 +77,11 @@
               <el-button type="primary" @click="addcomment()">提交</el-button>
             </p>
             <comment
-              :list="lists"
-              :count="count"
-              @reshow="commentlist"
+              :list="comment"
+              :allCount="allCount"
+              :pageParams="pageParams"
+              @reshow="comment"
+              @handleParentPage="parentPage"
               v-loading="isLoading"
             />
           </div>
@@ -109,31 +111,58 @@ export default {
       comment: "",
       content: null,
       articledata: null,
-      lists: [],
+      comment: [],
       count: "",
+      // query: {},
     };
   },
   head() {
-    console.log("this.articleData.rows[0].title");
-    console.log(this.articleData);
     return {
       title: this.articleData.rows[0] && this.articleData.rows[0].title,
     };
   },
   async asyncData({ $axios, params, store }) {
-    console.log("object");
-    console.log(params.id);
-    console.log(store.state.user.id);
-
-    // if(isStar.result){
-
-    // }
     var id = params.id;
-    var data = await $axios.$get(`/api/comment?article_id=${id}`);
-    await store.dispatch("article/findarticle", { id });
-    return { lists: data.rows, count: data.count };
+    let query = {
+      article_id: params.id,
+      nowPage: 1,
+      pageSize: 3,
+      childrenNowPage: 1,
+      childrenPageSize: 2,
+    };
+    // this.query = query;
+    try {
+      var data = await $axios.$get(`/api/comment`, { params: { ...query } });
+      await store.dispatch("article/findarticle", { id });
+      return {
+        query,
+        comment: data.rows,
+        allCount: data.allCount,
+        pageParams: {
+          count: data.count,
+          nowPage: data.nowPage,
+          lastPage: data.lastPage,
+          pageSize: data.pageSize,
+        },
+      };
+    } catch (err) {
+      console.log(err);
+    }
   },
   methods: {
+    async parentPage(v) {
+      console.log({ ...this.query, ...v });
+      let query = { ...this.query, ...v };
+      query.nowPage += 1;
+      // console.log(this.query, v);
+      var data = await this.$axios.$get(`/api/comment`, {
+        params: { ...query },
+      });
+      console.log(data);
+      console.log(data.rows);
+      this.comment.push(...data.rows);
+      console.log(this.comment);
+    },
     // 格式化日期时间
     format(time) {
       return format(time);
@@ -161,7 +190,7 @@ export default {
             return;
           }
           this.$newmessage("发表成功！", "success");
-          this.commentlist(this.$route.params.id);
+          // this.comment(this.$route.params.id);
         } else {
           this.$newmessage("暂未登录，请登录！", "warning");
         }
@@ -170,64 +199,54 @@ export default {
       }
     },
     // 留言列表
-    async commentlist(id) {
+    async comment(id) {
       this.isLoading = true;
       var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
       setTimeout(() => {
         this.isLoading = false;
-        this.lists = res.lists;
+        this.commentList = res.commentList;
         this.count = res.count;
       }, 300);
     },
-    // 文章信息
-    // articleinfo(id) {
-    //   findarticle(id).then((res) => {
-    //     this.data = res.list.rows;
-    //   });
-    // },
     // 评论
     async getComment() {
       var id = this.$route.params.id;
-      var data = await this.$axios.$get(`/api/comment?article_id=${id}`);
+      // var data = await this.$axios.$get(`/api/comment?article_id=${id}`);
       // await this.$store.dispatch("article/findarticle", { id });
-      console.log("data");
-      console.log(data);
-      this.lists = data.rows;
-      this.count = data.count;
-    },
-    // 判断是否点赞
-    async zan() {
-      let res = await this.$axios.$get(
-        `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
-      );
-      console.log("000");
-      console.log(res);
-      this.isStar = res;
+      // this.comment = data.rows;
+      // this.count = data.count;
+      // var id = params.id;
+      let query = {
+        article_id: id,
+        nowPage: 1,
+        pageSize: 3,
+        childrenNowPage: 1,
+        childrenPageSize: 2,
+      };
+      try {
+        var data = await this.$axios.$get(`/api/comment`, {
+          params: { ...query },
+        });
+        this.comment = data.rows;
+        this.allCount = data.allCount;
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
-  created() {
-    console.log("create");
-  },
-  async mounted() {
-    console.log("mounted");
-    console.log(this.$store);
-    var isStar = await this.$axios.$get(
-      `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.userInfo.id}`
-    );
+  created() {},
+  mounted() {
     // var isStar = await this.$axios.$get(
-    //   `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
+    //   `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.userInfo.id}`
     // );
-    console.log("isStar");
-    console.log(isStar);
     // this.isStar = isStar;
     scrollTo({ top: 0 });
   },
   computed: {
     articleData() {
-      return this.$store.state.article.data;
+      return this.$store.state.article.detail;
     },
     userInfo() {
-      console.log("userInfo");
       // this.zan();
       this.getComment();
       return this.$store.state.user;
@@ -235,8 +254,6 @@ export default {
   },
   watch: {
     userInfo(val) {
-      console.log(val);
-      console.log("监听");
       // this.zan();
     },
   },

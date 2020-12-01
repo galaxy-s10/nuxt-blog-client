@@ -12,7 +12,7 @@ export const state = () => ({
     // 热门文章列表
     hotlist: null,
     // 文章数据
-    data: null,
+    detail: null,
     // 搜索数据
     search: null,
     // 分页大小
@@ -22,7 +22,7 @@ export const state = () => ({
     // 文章类型
     typelist: null,
     history: null,
-    Detail: null
+    // Detail: null
 })
 
 export const mutations = {
@@ -41,12 +41,12 @@ export const mutations = {
     typelist(state, res) {
         state.typelist = res
     },
-    data(state, res) {
+    setDetail(state, res) {
         if (res != null) {
             // window.document.title = res.list.rows[0].title + " | vueblog"
-            state.data = res.list
+            state.detail = res.list
         } else {
-            state.data = res
+            state.detail = res
         }
     },
     search(state, res) {
@@ -87,9 +87,14 @@ export const actions = {
                 commit('pagelist', res.pagelist.rows)
                 commit('count', res.pagelist.count)
             } else {
-                var res = await this.$axios.$get(`/api/article/page?&nowPage=${nowpage}&pageSize=${state.pagesize}`)
-                commit('pagelist', res.pagelist.rows)
-                commit('count', res.pagelist.count)
+                try {
+                    var res = await this.$axios.$get(`/api/article/page?&nowPage=${nowpage}&pageSize=${state.pagesize}`)
+                    commit('pagelist', res.pagelist.rows)
+                    commit('count', res.pagelist.count)
+                } catch (err) {
+                    console.log(err)
+                }
+
             }
         }
 
@@ -97,12 +102,18 @@ export const actions = {
     async articlehotlist({ commit }, data) {
         // console.log(data)
         var { ordername, orderby, nowpage } = data
-        const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=4`)
-        commit('hotlist', res.pagelist.rows)
+        try {
+            const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=4`)
+            commit('hotlist', res.pagelist.rows)
+        } catch (err) {
+            console.log(err)
+        }
+
     },
     async findarticle({ commit }, data) {
         var { id } = data
         const res = await this.$axios.$get(`/api/article/find?id=${id}`)
-        commit('data', res)
+        console.log()
+        commit('setDetail', res)
     }
 }

@@ -77,11 +77,12 @@
               <el-button type="primary" @click="addcomment()">提交</el-button>
             </p>
             <comment
-              :list="comment"
+              :list="commentList"
               :allCount="allCount"
               :pageParams="pageParams"
               @reshow="comment"
               @handleParentPage="parentPage"
+              @handleChildrenPage="childrenPage"
               v-loading="isLoading"
             />
           </div>
@@ -108,10 +109,10 @@ export default {
     return {
       isLoading: false,
       isStar: false,
-      comment: "",
+      // comment: "",
       content: null,
       articledata: null,
-      comment: [],
+      commentList: [],
       count: "",
       // query: {},
     };
@@ -126,9 +127,9 @@ export default {
     let query = {
       article_id: params.id,
       nowPage: 1,
-      pageSize: 3,
+      pageSize: 5,
       childrenNowPage: 1,
-      childrenPageSize: 2,
+      childrenPageSize: 5,
     };
     // this.query = query;
     try {
@@ -136,7 +137,7 @@ export default {
       await store.dispatch("article/findarticle", { id });
       return {
         query,
-        comment: data.rows,
+        commentList: data.rows,
         allCount: data.allCount,
         pageParams: {
           count: data.count,
@@ -150,6 +151,29 @@ export default {
     }
   },
   methods: {
+    // 获取子评论分页
+    async childrenPage(childrenCommentId) {
+      console.log({ ...this.query, childrenCommentId });
+      let query = { ...this.query, childrenCommentId };
+      query.childrenNowPage += 1;
+      // query.childrenCommentId = childrenCommentId;
+      // console.log(this.query, v);
+      var data = await this.$axios.$get(`/api/comment/childrenPage`, {
+        params: { ...query },
+      });
+      console.log(data);
+      // this.commentList.push(...data.rows);
+      // this.allCount = data.allCount;
+      // (this.pageParams = {
+      //   count: data.count,
+      //   nowPage: data.nowPage,
+      //   lastPage: data.lastPage,
+      //   pageSize: data.pageSize,
+      // }),
+      //   console.log(this.commentList);
+    },
+
+    // 获取父评论分页
     async parentPage(v) {
       console.log({ ...this.query, ...v });
       let query = { ...this.query, ...v };
@@ -158,10 +182,15 @@ export default {
       var data = await this.$axios.$get(`/api/comment`, {
         params: { ...query },
       });
-      console.log(data);
-      console.log(data.rows);
-      this.comment.push(...data.rows);
-      console.log(this.comment);
+      this.commentList.push(...data.rows);
+      this.allCount = data.allCount;
+      (this.pageParams = {
+        count: data.count,
+        nowPage: data.nowPage,
+        lastPage: data.lastPage,
+        pageSize: data.pageSize,
+      }),
+        console.log(this.commentList);
     },
     // 格式化日期时间
     format(time) {
@@ -219,15 +248,15 @@ export default {
       let query = {
         article_id: id,
         nowPage: 1,
-        pageSize: 3,
+        pageSize: 5,
         childrenNowPage: 1,
-        childrenPageSize: 2,
+        childrenPageSize: 5,
       };
       try {
         var data = await this.$axios.$get(`/api/comment`, {
           params: { ...query },
         });
-        this.comment = data.rows;
+        this.commentList = data.rows;
         this.allCount = data.allCount;
       } catch (err) {
         console.log(err);

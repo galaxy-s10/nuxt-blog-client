@@ -23,13 +23,11 @@
                 <span>{{ item.from_user.username }}</span>
               </div>
               <div>{{ item.content }}</div>
-              <div style>
+              <div>
                 <span class="el-icon-date">{{ format(item.createdAt) }}</span>
                 <span style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span
-                    style="margin-left: 10px; cursor: pointer"
-                    @click="showinput(item.id)"
+                  <span style="cursor: pointer" @click="showinput(item.id)"
                     >回复</span
                   >
                   |
@@ -118,9 +116,7 @@
                 <span class="el-icon-date">{{ format(item.createdAt) }}</span>
                 <span style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span
-                    style="margin-left: 10px; cursor: pointer"
-                    @click="showinput(item.id)"
+                  <span style="cursor: pointer" @click="showinput(item.id)"
                     >回复 |
                     <el-tooltip
                       v-if="item.isStar == true"
@@ -175,18 +171,31 @@
               marginLeft: '40px',
             }"
           >
-            <div class="loadMore" @click="handleParentPage">
-              ---查看更多热门回复---
+            <div
+              class="loadMore"
+              @click="handleChildrenPage(item)"
+              style="cursor: pointer"
+            >
+              查看更多热门回复
             </div>
+            <!-- <div
+              v-if="pageParams.nowPage < pageParams.lastPage"
+              class="loadMore"
+              @click="handleParentPage"
+            >
+              已加载所有热门回复!
+            </div> -->
           </div>
         </div>
         <div
           v-if="pageParams.nowPage < pageParams.lastPage"
           class="loadMore"
           @click="handleParentPage"
+          style="cursor: pointer"
         >
           ---加载更多留言回复---
         </div>
+        <div v-else class="loadMore">已加载所有留言!</div>
       </div>
     </div>
     <div v-else style="text-align: center; padding: 40px 0">
@@ -211,6 +220,10 @@ export default {
     };
   },
   methods: {
+    handleChildrenPage(v) {
+      console.log(v);
+      this.$emit("handleChildrenPage", v.id);
+    },
     handleParentPage() {
       this.$emit("handleParentPage", this.pageParams);
     },
@@ -281,7 +294,6 @@ export default {
 .loadMore {
   width: 100%;
   text-align: center;
-  cursor: pointer;
 }
 .rank {
   position: relative;

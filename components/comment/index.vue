@@ -76,7 +76,6 @@
             </div>
           </div>
 
-          <!-- children -->
           <div
             v-for="(item, index) in item.huifu"
             :key="index"
@@ -164,38 +163,51 @@
             </div>
           </div>
           <div
-            v-if="item.huifu.length"
+            v-if="
+              item.huifu.length &&
+              item.huifu.length < pageParams.childrenPageSize
+            "
             :style="{
               background: '#fbfbfb',
               display: 'flex',
               marginLeft: '40px',
             }"
-          >
+          ></div>
+
+          <div v-else-if="item.huifu.length != 0">
             <div
+              v-if="item.calcSurplus == undefined || item.calcSurplus > 0"
               class="loadMore"
               @click="handleChildrenPage(item)"
               style="cursor: pointer"
             >
-              查看更多热门回复
+              查看更多热门回复{{
+                item.calcSurplus ? "(" + item.calcSurplus + ")" : ""
+              }}
             </div>
-            <!-- <div
-              v-if="pageParams.nowPage < pageParams.lastPage"
-              class="loadMore"
-              @click="handleParentPage"
-            >
-              已加载所有热门回复!
-            </div> -->
+            <div v-else class="loadMore">
+              已加载全部热门回复!
+              <el-button @click="zhedie(item)" type="text">折叠评论</el-button>
+            </div>
           </div>
         </div>
-        <div
-          v-if="pageParams.nowPage < pageParams.lastPage"
-          class="loadMore"
-          @click="handleParentPage"
-          style="cursor: pointer"
-        >
-          ---加载更多留言回复---
+
+        <div v-if="pageParams.nowPage < pageParams.lastPage" class="loadMore">
+          <el-button type="text" @click="handleParentPage"
+            >加载更多留言回复</el-button
+          >
         </div>
-        <div v-else class="loadMore">已加载所有留言!</div>
+
+        <div
+          v-else-if="
+            list.length > pageParams.pageSize &&
+            pageParams.nowPage >= pageParams.lastPage
+          "
+          class="loadMore"
+        >
+          已加载所有留言~
+        </div>
+        <!-- <div class="loadMore" v-else>已加载所有留言!</div> -->
       </div>
     </div>
     <div v-else style="text-align: center; padding: 40px 0">
@@ -220,6 +232,11 @@ export default {
     };
   },
   methods: {
+    zhedie() {
+      this.$message.success({
+        message: "敬请期待！",
+      });
+    },
     handleChildrenPage(v) {
       console.log(v);
       this.$emit("handleChildrenPage", v.id);
@@ -240,30 +257,30 @@ export default {
         var {
           id,
           article_id,
-          from_userid,
+          from_user_id,
           from_user,
           content,
-          to_commentid,
-          to_userid,
+          to_comment_id,
+          to_user_id,
         } = item;
         if (this.$store.state.user.token) {
           var article_id = parseInt(article_id);
-          var from_userid = parseInt(this.$store.state.user.id);
+          var from_user_id = parseInt(this.$store.state.user.id);
           var content = this.message;
-          if (to_commentid == -1) {
-            var to_commentid = id;
+          if (to_comment_id == -1) {
+            var to_comment_id = id;
           } else {
-            var to_commentid = to_commentid;
+            var to_comment_id = to_comment_id;
           }
-          var to_userid = item.from_userid;
+          var to_user_id = item.from_user_id;
           try {
             await this.$store.dispatch("comment/addComment", {
               id: null,
               article_id,
-              from_userid,
+              from_user_id,
               content,
-              to_commentid,
-              to_userid,
+              to_comment_id,
+              to_user_id,
             });
             id = this.$route.params.id ? this.$route.params.id : -1;
             this.$newmessage("回复成功！", "success");

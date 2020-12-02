@@ -28,13 +28,14 @@
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
           </div>
-          <div style="text-align: left; font-size: 14px" v-if="item.isStar">
+          <div style="text-align: left; font-size: 14px" v-if="isStar">
             你已经赞过这篇文章了哦~
             <el-tooltip
               class="item"
               effect="dark"
               content="取消点赞"
               placement="top"
+              @click.native="starForArticle(0, item.id)"
             >
               <i class="el-icon-star-on star"></i>
             </el-tooltip>
@@ -47,6 +48,7 @@
               effect="dark"
               content="赞一个"
               placement="top"
+              @click.native="starForArticle(1, item.id)"
             >
               <i class="el-icon-star-off star"></i>
             </el-tooltip>
@@ -80,7 +82,7 @@
               :list="commentList"
               :allCount="allCount"
               :pageParams="pageParams"
-              @reshow="comment"
+              @reshow="getComment"
               @handleParentPage="parentPage"
               @handleChildrenPage="childrenPage"
               v-loading="isLoading"
@@ -114,7 +116,7 @@ export default {
       articledata: null,
       commentList: [],
       count: "",
-      // query: {},
+      query: {},
     };
   },
   head() {
@@ -126,10 +128,10 @@ export default {
     var id = params.id;
     let query = {
       article_id: params.id,
-      nowPage: 1,
-      pageSize: 5,
-      childrenNowPage: 1,
-      childrenPageSize: 5,
+      nowPage: 1, //当前父评论页数
+      pageSize: 3, //当前父评论分页大小
+      childrenNowPage: 1, //当前子评论页数
+      childrenPageSize: 2, //当前子评论分页大小
     };
     // this.query = query;
     try {
@@ -140,7 +142,8 @@ export default {
         commentList: data.rows,
         allCount: data.allCount,
         pageParams: {
-          count: data.count,
+          ...query,
+          count: data.count, //父评论层数
           nowPage: data.nowPage,
           lastPage: data.lastPage,
           pageSize: data.pageSize,
@@ -151,26 +154,84 @@ export default {
     }
   },
   methods: {
+    // 给文章点赞/取消点赞
+    async starForArticle(type, article_id) {
+      if (this.$store.state.user.token) {
+        if (type == 1) {
+          let res = await this.$axios.$post(`/api/star/starForArticle`, {
+            article_id,
+            from_user_id: this.$store.state.user.id,
+          });
+          console.log(res);
+          this.$message.success({
+            message: res.message,
+          });
+        } else {
+          let res = await this.$axios.$delete(`/api/star/delStarForArticle`, {
+            data: { article_id, from_user_id: this.$store.state.user.id },
+          });
+          this.$message.success({
+            message: res.message,
+          });
+        }
+      } else {
+        this.$newmessage("暂未登录，请登录！", "warning");
+      }
+    },
+
+    // 给评论点赞
+    async starForComment(type, article_id, comment_id, to_user_id) {
+      if (this.$store.state.user.token) {
+        if (type == 1) {
+          let res = await this.$axios.post(`/api/star/starForComment`, {
+            data: {
+              article_id,
+              comment_id,
+              from_user_id: this.$store.state.user.id,
+              to_user_id,
+            },
+          });
+          this.$message.success({
+            message: res.message,
+          });
+        } else {
+          let res = await this.$axios.delete(`/api/star/delStarForComment`, {
+            data: {
+              article_id,
+              comment_id,
+              from_user_id: this.$store.state.user.id,
+              to_user_id,
+            },
+          });
+          this.$message.success({
+            message: res.message,
+          });
+        }
+      } else {
+        this.$newmessage("暂未登录，请登录！", "warning");
+      }
+    },
+
     // 获取子评论分页
     async childrenPage(childrenCommentId) {
       console.log({ ...this.query, childrenCommentId });
-      let query = { ...this.query, childrenCommentId };
-      query.childrenNowPage += 1;
+      this.query = { ...this.query, childrenCommentId };
+      this.query.childrenNowPage += 1;
       // query.childrenCommentId = childrenCommentId;
       // console.log(this.query, v);
       var data = await this.$axios.$get(`/api/comment/childrenPage`, {
-        params: { ...query },
+        params: { ...this.query },
       });
       console.log(data);
-      // this.commentList.push(...data.rows);
-      // this.allCount = data.allCount;
-      // (this.pageParams = {
-      //   count: data.count,
-      //   nowPage: data.nowPage,
-      //   lastPage: data.lastPage,
-      //   pageSize: data.pageSize,
-      // }),
-      //   console.log(this.commentList);
+      this.commentList.forEach((item) => {
+        if (item.id == data.to_comment_id) {
+          item.childrenNowPage = data.childrenNowPage;
+          item.childrenLastPage = data.childrenLastPage;
+          item.calcSurplus =
+            data.count - data.childrenNowPage * data.childrenPageSize;
+          item.huifu.push(...data.rows);
+        }
+      });
     },
 
     // 获取父评论分页
@@ -185,6 +246,7 @@ export default {
       this.commentList.push(...data.rows);
       this.allCount = data.allCount;
       (this.pageParams = {
+        ...this.query,
         count: data.count,
         nowPage: data.nowPage,
         lastPage: data.lastPage,
@@ -201,25 +263,25 @@ export default {
       if (this.content != null && this.content.length >= 3) {
         if (this.$store.state.user.token) {
           var article_id = parseInt(this.$route.params.id);
-          var from_userid = parseInt(this.$store.state.user.id);
+          var from_user_id = parseInt(this.$store.state.user.id);
           var content = this.content;
-          var to_commentid = -1;
-          var to_userid = -1;
+          var to_comment_id = -1;
+          var to_user_id = -1;
           try {
             await this.$store.dispatch("comment/addComment", {
               id: null,
               article_id,
-              from_userid,
+              from_user_id,
               content,
-              to_commentid,
-              to_userid,
+              to_comment_id,
+              to_user_id,
             });
           } catch (err) {
             this.$newmessage("", "error");
             return;
           }
           this.$newmessage("发表成功！", "success");
-          // this.comment(this.$route.params.id);
+          this.getComment();
         } else {
           this.$newmessage("暂未登录，请登录！", "warning");
         }
@@ -228,38 +290,48 @@ export default {
       }
     },
     // 留言列表
-    async comment(id) {
-      this.isLoading = true;
-      var res = await this.$axios.$get(`/api/comment?article_id=${id}`);
-      setTimeout(() => {
-        this.isLoading = false;
-        this.commentList = res.commentList;
-        this.count = res.count;
-      }, 300);
-    },
-    // 评论
     async getComment() {
       var id = this.$route.params.id;
-      // var data = await this.$axios.$get(`/api/comment?article_id=${id}`);
-      // await this.$store.dispatch("article/findarticle", { id });
-      // this.comment = data.rows;
-      // this.count = data.count;
-      // var id = params.id;
       let query = {
         article_id: id,
         nowPage: 1,
-        pageSize: 5,
+        pageSize: 3,
         childrenNowPage: 1,
-        childrenPageSize: 5,
+        childrenPageSize: 2,
       };
+
       try {
+        this.isLoading = true;
         var data = await this.$axios.$get(`/api/comment`, {
           params: { ...query },
         });
-        this.commentList = data.rows;
-        this.allCount = data.allCount;
+        setTimeout(() => {
+          this.isLoading = false;
+          this.pageParams = {
+            ...query,
+            count: data.count, //父评论层数
+            nowPage: data.nowPage,
+            lastPage: data.lastPage,
+            pageSize: data.pageSize,
+          };
+          this.commentList = data.rows;
+          this.allCount = data.allCount;
+        }, 300);
       } catch (err) {
         console.log(err);
+        this.isLoading = false;
+      }
+    },
+    async zan() {
+      let res = await this.$axios.$get(
+        `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
+      );
+      console.log("000");
+      console.log(res);
+      if (res.result) {
+        this.isStar = true;
+      } else {
+        this.isStar = false;
       }
     },
   },
@@ -276,14 +348,14 @@ export default {
       return this.$store.state.article.detail;
     },
     userInfo() {
-      // this.zan();
       this.getComment();
-      return this.$store.state.user;
+      this.zan();
+      return this.$store.state.user.id;
     },
   },
   watch: {
     userInfo(val) {
-      // this.zan();
+      this.zan();
     },
   },
 };

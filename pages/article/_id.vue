@@ -28,7 +28,8 @@
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
           </div>
-          <div style="text-align: left; font-size: 14px" v-if="isStar">
+          <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
+          <div style="text-align: left; font-size: 14px" v-if="item.isStar">
             你已经赞过这篇文章了哦~
             <el-tooltip
               class="item"
@@ -154,6 +155,13 @@ export default {
     }
   },
   methods: {
+    // 文章详情
+    async getArticleDetail() {
+      await this.$store.dispatch("article/findarticle", {
+        id: this.$route.params.id,
+      });
+    },
+
     // 给文章点赞/取消点赞
     async starForArticle(type, article_id) {
       if (this.$store.state.user.token) {
@@ -326,7 +334,7 @@ export default {
       let res = await this.$axios.$get(
         `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
       );
-      console.log("000");
+      console.log("赞赞赞赞赞赞赞赞赞");
       console.log(res);
       if (res.result) {
         this.isStar = true;
@@ -347,15 +355,27 @@ export default {
     articleData() {
       return this.$store.state.article.detail;
     },
+    // 如果直接使用userInfo(){}这种方式设置计算属性，get和set都会触发！
+    // userInfo: {
+    //   get: function () {
+    //     console.log("getterr");
+    //     return this.$store.state.user.id;
+    //   },
+    //   set: function () {
+    //     console.log("setterr");
+    //   },
+    // },
     userInfo() {
+      console.log("xxx");
       this.getComment();
-      this.zan();
       return this.$store.state.user.id;
     },
   },
   watch: {
     userInfo(val) {
-      this.zan();
+      // this.zan();
+      this.getComment();
+      this.getArticleDetail();
     },
   },
 };

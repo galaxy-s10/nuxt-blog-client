@@ -28,33 +28,36 @@
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
           </div>
-          <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
-          <div style="text-align: left; font-size: 14px" v-if="item.isStar">
-            你已经赞过这篇文章了哦~
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="取消点赞"
-              placement="top"
-              @click.native="starForArticle(0, item.id)"
-            >
-              <i class="el-icon-star-on star"></i>
-            </el-tooltip>
-            {{ item.stars.length }}
+          <div v-loading="loadingStar">
+            <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
+            <div style="text-align: left; font-size: 14px" v-if="item.isStar">
+              你已经赞过这篇文章了哦~
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="取消点赞"
+                placement="top"
+                @click.native="starForArticle(0, item.id)"
+              >
+                <i class="el-icon-star-on star"></i>
+              </el-tooltip>
+              {{ item.stars.length }}
+            </div>
+            <div style="text-align: left; font-size: 14px" v-else>
+              如果本文章对你有所帮助，欢迎点个赞!
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="赞一个"
+                placement="top"
+                @click.native="starForArticle(1, item.id)"
+              >
+                <i class="el-icon-star-off star"></i>
+              </el-tooltip>
+              {{ item.stars.length }}
+            </div>
           </div>
-          <div style="text-align: left; font-size: 14px" v-else>
-            如果本文章对你有所帮助，欢迎点个赞!
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="赞一个"
-              placement="top"
-              @click.native="starForArticle(1, item.id)"
-            >
-              <i class="el-icon-star-off star"></i>
-            </el-tooltip>
-            {{ item.stars.length }}
-          </div>
+
           <div style="text-align: right; font-size: 14px">
             最后更新于：{{ format(item.updatedAt) }}
           </div>
@@ -110,6 +113,7 @@ export default {
   },
   data() {
     return {
+      loadingStar: false,
       isLoading: false,
       isStar: false,
       // comment: "",
@@ -165,6 +169,7 @@ export default {
     // 给文章点赞/取消点赞
     async starForArticle(type, article_id) {
       if (this.$store.state.user.token) {
+        this.loadingStar = true;
         if (type == 1) {
           let res = await this.$axios.$post(`/api/star/starForArticle`, {
             article_id,
@@ -174,6 +179,10 @@ export default {
           this.$message.success({
             message: res.message,
           });
+          setTimeout(() => {
+            this.loadingStar = false;
+            this.getArticleDetail();
+          }, 500);
         } else {
           let res = await this.$axios.$delete(`/api/star/delStarForArticle`, {
             data: { article_id, from_user_id: this.$store.state.user.id },
@@ -181,39 +190,10 @@ export default {
           this.$message.success({
             message: res.message,
           });
-        }
-      } else {
-        this.$newmessage("暂未登录，请登录！", "warning");
-      }
-    },
-
-    // 给评论点赞
-    async starForComment(type, article_id, comment_id, to_user_id) {
-      if (this.$store.state.user.token) {
-        if (type == 1) {
-          let res = await this.$axios.post(`/api/star/starForComment`, {
-            data: {
-              article_id,
-              comment_id,
-              from_user_id: this.$store.state.user.id,
-              to_user_id,
-            },
-          });
-          this.$message.success({
-            message: res.message,
-          });
-        } else {
-          let res = await this.$axios.delete(`/api/star/delStarForComment`, {
-            data: {
-              article_id,
-              comment_id,
-              from_user_id: this.$store.state.user.id,
-              to_user_id,
-            },
-          });
-          this.$message.success({
-            message: res.message,
-          });
+          setTimeout(() => {
+            this.loadingStar = false;
+            this.getArticleDetail();
+          }, 500);
         }
       } else {
         this.$newmessage("暂未登录，请登录！", "warning");
@@ -366,8 +346,6 @@ export default {
     //   },
     // },
     userInfo() {
-      console.log("xxx");
-      this.getComment();
       return this.$store.state.user.id;
     },
   },

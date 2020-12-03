@@ -1,17 +1,22 @@
 <template>
-  <div class="fixed" :class="{hiddenMusic:hiddenMusic}">
+  <div class="fixed" :class="{ hiddenMusic: hiddenMusic }">
     <div class="songWrapper">
       <div class="songText">
-        <div class="textItem">{{songList[currentIndex].name}}</div>
-        <div class="textItem">{{songList[currentIndex].author}}</div>
+        <div class="textItem">{{ songList[currentIndex].name }}</div>
+        <div class="textItem">{{ songList[currentIndex].author }}</div>
       </div>
       <div class="songBar">
         <div class="songBarItem" ref="bar">
-          <div :style="{width:nowTime*(100/duration1)+'%'}" class="currentTime"></div>
+          <div
+            :style="{ width: nowTime * (100 / duration1) + '%' }"
+            class="currentTime"
+          ></div>
         </div>
-        <div class="text">{{duration2(nowTime)}}/{{duration2(duration)}}</div>
+        <div class="text">
+          {{ duration2(nowTime) }}/{{ duration2(duration) }}
+        </div>
       </div>
-      <div class="songImg1" :class="{disk_play:start}">
+      <div class="songImg1" :class="{ disk_play: start }">
         <div class="songImg2">
           <img
             :src="songList[currentIndex].img"
@@ -20,14 +25,14 @@
             height="90"
             class="songImg"
             ref="disk"
-            :style="{transform:matrix}"
+            :style="{ transform: matrix }"
             @click="showMusic"
           />
         </div>
       </div>
       <div class="songControl">
         <div class="pre" @click="preSong"></div>
-        <div :class="!start?'start':'stop'" @click="switchBtn()"></div>
+        <div :class="!start ? 'start' : 'stop'" @click="switchBtn()"></div>
         <div class="next" @click="nextSong"></div>
       </div>
     </div>
@@ -54,54 +59,59 @@ export default {
           name: "花 が とぶ 飛ぶ",
           author: "邱有句 / 李德奎",
           img: "https://img.cdn.zhengbeining.com/song7.jpg",
-          url: "https://img.cdn.zhengbeining.com/song7.mp3"
+          url: "https://img.cdn.zhengbeining.com/song7.mp3",
         },
         {
           name: "云村的告别",
           author: "邱有句",
           img: "https://img.cdn.zhengbeining.com/song6.jpg",
-          url: "https://img.cdn.zhengbeining.com/song6.mp3"
+          url: "https://img.cdn.zhengbeining.com/song6.mp3",
         },
         {
           name: "Cubi - BingBian病变钢琴版",
           author: "Kirito潇轩; 文武贝",
           img: "https://img.cdn.zhengbeining.com/song2.jpg",
-          url: "https://img.cdn.zhengbeining.com/song2.mp3"
+          url: "https://img.cdn.zhengbeining.com/song2.mp3",
         },
         {
           name: "僕らの手には何もないけど、",
           author: "RAM WIRE",
           img: "https://img.cdn.zhengbeining.com/song1.jpg",
-          url: "https://img.cdn.zhengbeining.com/song1.mp3"
+          url: "https://img.cdn.zhengbeining.com/song1.mp3",
         },
         {
           name: "山海皆可平",
           author: "CMJ",
           img: "https://img.cdn.zhengbeining.com/song3.jpg",
-          url: "https://img.cdn.zhengbeining.com/song3.mp3"
+          url: "https://img.cdn.zhengbeining.com/song3.mp3",
         },
         {
           name: "所念皆星河",
           author: "CMJ",
           img: "https://img.cdn.zhengbeining.com/song4.jpg",
-          url: "https://img.cdn.zhengbeining.com/song4.mp3"
+          url: "https://img.cdn.zhengbeining.com/song4.mp3",
         },
         {
           name: "蜗居背景音乐",
           author: "群星",
           img: "https://img.cdn.zhengbeining.com/song5.jpg",
-          url: "https://img.cdn.zhengbeining.com/song5.mp3"
-        }
-      ]
+          url: "https://img.cdn.zhengbeining.com/song5.mp3",
+        },
+      ],
     };
   },
   computed: {
     duration2(x) {
-      return x => this.formatTime(x);
-    }
+      return (x) => this.formatTime(x);
+    },
   },
 
   mounted() {
+    const d = window.pageXOffset || document.documentElement.offsetWidth;
+    console.log(d);
+    if (d <= 375) {
+      this.hiddenMusic = true;
+    }
     window.addEventListener("resize", () => {
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth;
@@ -131,7 +141,7 @@ export default {
         this.nextSong();
       }
     });
-    this.$refs.bar.addEventListener("click", e => {
+    this.$refs.bar.addEventListener("click", (e) => {
       setTimeout(() => {
         this.nowTime = (e.offsetX / 180) * this.duration1;
         this.audio.currentTime = this.nowTime;
@@ -162,8 +172,8 @@ export default {
         }
         this.audio
           .play()
-          .then(res => {})
-          .catch(err => {});
+          .then((res) => {})
+          .catch((err) => {});
       } else {
         this.stopRotate();
         this.audio.pause();
@@ -177,9 +187,9 @@ export default {
       setTimeout(() => {
         this.start = true;
         const styles = [...document.styleSheets];
-        styles.forEach(style => {
+        styles.forEach((style) => {
           const rules = [...style.cssRules];
-          rules.forEach(rule => {
+          rules.forEach((rule) => {
             if (rule.type === rule.KEYFRAMES_RULE && rule.name === "rotate1") {
               rule.cssRules[0].style.transform = `rotate(0deg)`;
               rule.cssRules[1].style.transform = `rotate(360deg)`;
@@ -199,8 +209,8 @@ export default {
         }, 100);
         this.audio
           .play()
-          .then(res => {})
-          .catch(err => {});
+          .then((res) => {})
+          .catch((err) => {});
       }, 500);
     },
     preSong() {
@@ -243,24 +253,21 @@ export default {
         //return (aa+','+bb+','+cc+','+dd);
       }
       this.matrix = currentMatrix;
-      var res = currentMatrix
-        .split("(")[1]
-        .split(")")[0]
-        .split(",");
+      var res = currentMatrix.split("(")[1].split(")")[0].split(",");
       var rotateDeg = getmatrix(res[0], res[1], res[2], res[3], res[4], res[5]);
       this.nowDeg = rotateDeg;
       const styles = [...document.styleSheets];
-      styles.forEach(style => {
+      styles.forEach((style) => {
         const rules = [...style.cssRules];
-        rules.forEach(rule => {
+        rules.forEach((rule) => {
           if (rule.type === rule.KEYFRAMES_RULE && rule.name === "rotate1") {
             rule.cssRules[0].style.transform = `rotate(${rotateDeg}deg)`;
             rule.cssRules[1].style.transform = `rotate(${rotateDeg + 360}deg)`;
           }
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

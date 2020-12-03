@@ -27,29 +27,32 @@
                 <span class="el-icon-date">{{ format(item.createdAt) }}</span>
                 <span style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span style="cursor: pointer" @click="showinput(item.id)"
-                    >回复</span
-                  >
-                  |
-                  <el-tooltip
-                    v-if="item.isStar == true"
-                    class="item"
-                    effect="dark"
-                    content="取消点赞"
-                    placement="top"
-                  >
-                    <i class="el-icon-star-on star"></i>
-                  </el-tooltip>
-                  <el-tooltip
-                    v-else
-                    class="item"
-                    effect="dark"
-                    content="赞一个"
-                    placement="top"
-                  >
-                    <i class="el-icon-star-off star"></i>
-                  </el-tooltip>
-                  {{ item.stars.length }}
+                  <span style="cursor: pointer" @click="showinput(item.id)">
+                    回复 </span
+                  >|
+                  <span>
+                    <el-tooltip
+                      v-if="item.isStar == true"
+                      class="item"
+                      effect="dark"
+                      content="取消点赞"
+                      placement="top"
+                      @click.native="starForComment(0, item)"
+                    >
+                      <i class="el-icon-star-on star"></i>
+                    </el-tooltip>
+                    <el-tooltip
+                      v-else
+                      class="item"
+                      effect="dark"
+                      content="赞一个"
+                      placement="top"
+                      @click.native="starForComment(1, item)"
+                    >
+                      <i class="el-icon-star-off star"></i>
+                    </el-tooltip>
+                    {{ item.stars.length }}
+                  </span>
                 </span>
               </div>
               <div
@@ -58,11 +61,13 @@
               >
                 <div>
                   <el-input
+                    ref="input1"
                     type="textarea"
                     v-model="message"
                     placeholder="请输入内容..."
                     maxlength="50"
                     show-word-limit
+                    @blur="handleBlur"
                   ></el-input>
                 </div>
                 <div style="padding-top: 5px; display: flex">
@@ -117,12 +122,14 @@
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
                   <span style="cursor: pointer" @click="showinput(item.id)"
                     >回复 |
+                    <!-- <span v-loading="loadingStar"> -->
                     <el-tooltip
                       v-if="item.isStar == true"
                       class="item"
                       effect="dark"
                       content="取消点赞"
                       placement="top"
+                      @click.native="starForComment(0, item)"
                     >
                       <i class="el-icon-star-on star"></i>
                     </el-tooltip>
@@ -132,10 +139,13 @@
                       effect="dark"
                       content="赞一个"
                       placement="top"
+                      @click.native="starForComment(1, item)"
                     >
                       <i class="el-icon-star-off star"></i>
                     </el-tooltip>
+
                     {{ item.stars.length }}
+                    <!-- </span> -->
                   </span>
                 </span>
               </div>
@@ -145,11 +155,13 @@
               >
                 <div>
                   <el-input
+                    ref="input2"
                     type="textarea"
                     v-model="message"
                     placeholder="请输入内容..."
                     maxlength="50"
                     show-word-limit
+                    @blur="handleBlur"
                   ></el-input>
                 </div>
                 <div style="padding-top: 5px; display: flex">
@@ -226,12 +238,63 @@ export default {
   props: ["list", "allCount", "pageParams"],
   data() {
     return {
+      loadingStar: false,
       listLoading: false,
       message: null,
       isshow: "",
+      autofocus: "",
     };
   },
   methods: {
+    // 给评论点赞/取消点赞
+    async starForComment(type, item) {
+      console.log(type, item);
+      // let from_user_id = this.id;
+      // let { article_id, id, from_user_id } = item;
+      // async starForComment(type, article_id, comment_id, to_user_id) {
+      if (this.$store.state.user.token) {
+        this.loadingStar = true;
+        if (type == 1) {
+          let res = await this.$axios.post(`/api/star/starForComment`, {
+            article_id: item.id,
+            comment_id: item.id,
+            from_user_id: this.$store.state.user.id,
+            to_user_id: item.from_user_id,
+          });
+          console.log(res);
+
+          setTimeout(() => {
+            this.loadingStar = false;
+            this.$message.success({
+              message: res.data.message,
+            });
+            this.$emit("reshow");
+          }, 300);
+        } else {
+          let res = await this.$axios.delete(`/api/star/delStarForComment`, {
+            data: {
+              article_id: item.id,
+              comment_id: item.id,
+              from_user_id: this.$store.state.user.id,
+              to_user_id: item.from_user_id,
+            },
+          });
+
+          setTimeout(() => {
+            this.loadingStar = false;
+            this.$message.success({
+              message: res.data.message,
+            });
+            this.$emit("reshow");
+          }, 300);
+        }
+      } else {
+        this.$newmessage("暂未登录，请登录！", "warning");
+      }
+    },
+    handleBlur() {
+      this.isshow = "";
+    },
     zhedie() {
       this.$message.success({
         message: "敬请期待！",
@@ -247,6 +310,12 @@ export default {
     // 显示留言输入框
     showinput(id) {
       this.isshow = id;
+
+      setTimeout(() => {
+        //   this.$refs.input1.focus()
+        // this.$refs.input2.focus()
+        this.autofocus = true;
+      }, 500);
     },
     format(time) {
       return format(time);
@@ -308,6 +377,9 @@ export default {
 
 
 <style scoped>
+.star {
+  cursor: pointer;
+}
 .loadMore {
   width: 100%;
   text-align: center;

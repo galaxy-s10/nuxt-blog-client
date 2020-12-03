@@ -14,7 +14,7 @@
           item.title
         }}</nuxt-link>
         <el-divider></el-divider>
-        <p v-if="item.tags.length == 0">暂时无可提供的摘要</p>
+        <p v-if="item.tags.length == 0">该文章下暂无标签</p>
         <div v-else class="tag">
           <el-tag
             v-for="item in item.tags"

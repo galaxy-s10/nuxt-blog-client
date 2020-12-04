@@ -38,10 +38,10 @@
       <div>
         Ps：后台地址：
         <a
-          href="http://admin.zhengbeining.com"
+          href="https://admin.zhengbeining.com"
           target="_blank"
           class="alink"
-        >http://admin.zhengbeining.com</a>
+        >https://admin.zhengbeining.com</a>
       </div>
       <h2>联系方式</h2>
       <ul>

@@ -28,7 +28,7 @@
           >
         </div>
         <p style="font-size: 12px">
-          <span class="jgh">{{ format1(item.date) }}</span>
+          <span class="jgh">{{ format1(item.createdAt) }}</span>
           <span class="jgh">{{ item.click }}次浏览</span>
           <span class="jgh">{{ item.comments.length }}条评论</span>
           <span>{{ item.stars.length }}个star</span>

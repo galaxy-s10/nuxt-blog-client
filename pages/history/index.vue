@@ -1,19 +1,32 @@
 <template>
-  <div style="overflow:hidden;background:white;box-shadow:0 0 5px rgba(0,0,0,.1);" class="content">
-    <div style="margin:30px;">
+  <div
+    style="
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    "
+    class="content"
+  >
+    <div style="margin: 30px">
       <el-timeline>
         <el-timeline-item>
-          <h1>目前一共{{total}}篇文章</h1>
+          <h1>目前一共{{ total }}篇文章</h1>
         </el-timeline-item>
         <el-timeline-item
-          v-for="(item,index) in history"
+          v-for="(item, index) in history"
           :key="index"
-          :timestamp="formatDate(item.date)"
+          :timestamp="formatDate(item.createdAt)"
         >
-          <router-link :to="'/article/'+item.id" class="acss">{{item.title}}</router-link>
+          <router-link :to="'/article/' + item.id" class="acss">{{
+            item.title
+          }}</router-link>
         </el-timeline-item>
       </el-timeline>
-      <page :total="total" :pagesize="pagesize" @currentchange="currentchange" />
+      <page
+        :total="total"
+        :pagesize="pagesize"
+        @currentchange="currentchange"
+      />
     </div>
   </div>
 </template>
@@ -24,29 +37,29 @@ import { format } from "@/utils/format.js";
 export default {
   layout: "blog",
   components: {
-    page
+    page,
   },
   data() {
     return {};
   },
   head() {
     return {
-      title: "归档"
+      title: "归档",
     };
   },
   methods: {
     currentchange(nowpage) {
       this.$store.dispatch("article/articlepage", {
-        ordername: "date",
+        ordername: "createdAt",
         orderby: "desc",
-        nowpage
+        nowpage,
       });
-    }
+    },
   },
   created() {},
   computed: {
     formatDate(time) {
-      return time => {
+      return (time) => {
         return format(time);
       };
     },
@@ -58,16 +71,16 @@ export default {
     },
     pagesize() {
       return this.$store.state.article.historypagesize;
-    }
+    },
   },
   async asyncData({ $axios, store }) {
     await store.dispatch("article/articlepage", {
-      ordername: "date",
+      ordername: "createdAt",
       orderby: "desc",
-      nowpage: 1
+      nowpage: 1,
     });
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 

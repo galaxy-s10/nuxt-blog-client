@@ -17,9 +17,7 @@
             </div>
             <div style="flex-grow: 1; padding: 5px">
               <div style="color: #0984e3">
-                <span v-if="item.from_user.role == 'admin'" class="rank"
-                  >博主</span
-                >
+                <span v-if="item.from_user.id == 1" class="rank">博主</span>
                 <span>{{ item.from_user.username }}</span>
               </div>
               <div>{{ item.content }}</div>
@@ -104,9 +102,7 @@
               }"
             >
               <div style="color: #0984e3">
-                <span v-if="item.from_user.role == 'admin'" class="rank"
-                  >博主</span
-                >
+                <span v-if="item.from_user.id == 1" class="rank">博主</span>
                 <span>{{ item.from_user.username }}</span>
               </div>
               <div>

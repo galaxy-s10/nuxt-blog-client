@@ -2,7 +2,7 @@
   <div>
     <div class="login">
       <el-dropdown v-if="inout" trigger="click">
-        <div class="el-dropdown-link" style="color:#53a8ff">
+        <div class="el-dropdown-link" style="color: #53a8ff">
           <a>登录</a>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
@@ -16,8 +16,8 @@
         </el-dropdown-menu>
       </el-dropdown>
       <el-dropdown v-else trigger="click">
-        <div class="el-dropdown-link" style="color:#53a8ff">
-          <a>{{name}}</a>
+        <div class="el-dropdown-link" style="color: #53a8ff">
+          <a>{{ name }}</a>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -28,7 +28,12 @@
       </el-dropdown>
     </div>
     <div class="dialog">
-      <el-dialog title="登录" :modal-append-to-body="false" :visible.sync="dialogVisible" width="30%">
+      <el-dialog
+        title="登录"
+        :modal-append-to-body="false"
+        :visible.sync="dialogVisible"
+        width="30%"
+      >
         账号：
         <el-input placeholder="请输入账号" v-model="uname"></el-input>密码：
         <el-input placeholder="请输入密码" v-model="upwd" show-password></el-input>
@@ -39,7 +44,12 @@
       </el-dialog>
     </div>
     <div class="dialog">
-      <el-dialog title="注册" :modal-append-to-body="false" :visible.sync="dialogtwo" width="30%">
+      <el-dialog
+        title="注册"
+        :modal-append-to-body="false"
+        :visible.sync="dialogtwo"
+        width="30%"
+      >
         账号：
         <el-input placeholder="请输入账号" v-model="uname"></el-input>密码：
         <el-input placeholder="请输入密码" v-model="upwd" show-password></el-input>
@@ -63,17 +73,17 @@ export default {
       visible: true,
       title: "首页",
       dialogVisible: false,
-      dialogtwo: false
+      dialogtwo: false,
     };
   },
   created() {},
   methods: {
     ...mapActions({
       userLogin: "user/login",
-      getUserInfo: "user/getUserInfo"
+      getUserInfo: "user/getUserInfo",
     }),
     ...mapMutations({
-      userLogout: "user/logout"
+      userLogout: "user/logout",
     }),
     async register() {
       if (this.uname == "" || this.upwd == "") {
@@ -98,31 +108,32 @@ export default {
             avatar: null,
             username: this.uname,
             password: this.upwd,
-            role: "user"
+            role: "user",
           })
-          .then(res => {
+          .then((res) => {
             this.$newmessage("注册成功，请登录~", "success");
             setTimeout(() => {
               this.dialogtwo = false;
             }, 500);
           })
-          .catch(err => {
+          .catch((err) => {
             this.$newmessage(err.message, "error");
           });
       }
     },
-    async login() {
+     login() {
       if (this.uname == "" || this.upwd == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-        await this.userLogin({ username: this.uname, password: this.upwd })
-          .then(() => {
-            this.$newmessage("登录成功！", "success");
+         this.userLogin({ username: this.uname, password: this.upwd })
+          .then((res) => {
+            this.$newmessage(res.message, "success");
             this.dialogVisible = false;
             this.getUserInfo();
           })
-          .catch(() => {
-            this.$newmessage("登录失败！", "error");
+          .catch((err) => {
+            console.log(err)
+            this.$newmessage(err.message, "error");
           });
       }
     },
@@ -154,10 +165,9 @@ export default {
     headershow() {
       // 头部高度为70px
       const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop < height;
-    }
+    },
   },
 
   computed: {
@@ -174,12 +184,10 @@ export default {
       } else {
         return false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
-
 
 <style>
 @media screen and (max-width: 992px) {

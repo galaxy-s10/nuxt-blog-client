@@ -45,9 +45,9 @@ export const actions = {
         try {
             const res = await this.$axios.$post('/api/user/login', data)
             commit('setToken', res.token)
-            return Promise.resolve()
+            return Promise.resolve(res)
         } catch (err) {
-            return Promise.reject()
+            return Promise.reject(err)
         }
     },
     async getUserInfo({ commit, state }) {

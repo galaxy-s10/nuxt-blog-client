@@ -15,7 +15,7 @@
           </h1>
           <p style="text-align: center; font-size: 12px">
             <span class="el-icon-date" style="margin-right: 4px"></span>
-            {{ format(item.date) }}
+            {{ format(item.createdAt) }}
           </p>
           <p style="font-size: 12px; text-align: center; margin-bottom: 20px">
             <span class="el-icon-view"></span>
@@ -68,7 +68,7 @@
             {{ item.name }}
           </div>
         </div>
-        <div v-if="item.is_comment == 1">
+        <div v-if="item.is_comment">
           <el-divider>评论一下吧!</el-divider>
           <div>
             <el-input

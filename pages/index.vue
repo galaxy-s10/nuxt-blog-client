@@ -27,20 +27,19 @@
             >{{ item.name }}</el-tag
           >
         </div>
-        <p style="font-size: 12px">
-          <span class="jgh">{{ format1(item.createdAt) }}</span>
-          <span class="jgh">{{ item.click }}次浏览</span>
-          <span class="jgh">{{ item.comments.length }}条评论</span>
-          <span>{{ item.stars.length }}个star</span>
-        </p>
+        <div style="font-size: 12px;display:flex;align-items:center;margin:10px 0">
+            <img style="width:20px;height:20px;border-radius:50%" :src="item.users[0] && item.users[0].avatar" alt="" />
+          <div class="jgh">
+          </div>
+          <div class="jgh">{{ format1(item.createdAt) }}</div>
+          <div class="jgh">{{ item.click }}次浏览</div>
+          <div class="jgh">{{ item.comments.length }}条评论</div>
+          <div>{{ item.stars.length }}个star</div>
+        </div>
       </div>
     </article>
     <div style="text-align: center; padding: 30px 0">
-      <page
-        :total="total"
-        :pagesize="pagesize"
-        @currentchange="currentchange"
-      />
+      <page :total="total" :pagesize="pagesize" @currentchange="currentchange" />
     </div>
   </div>
 </template>
@@ -89,8 +88,7 @@ export default {
     headershow() {
       // 头部高度为70px
       const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop > height;
     },
     hello(x) {

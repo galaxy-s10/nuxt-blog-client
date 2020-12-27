@@ -13,7 +13,12 @@
     <ul
       style="padding:0;margin:0;overflow:hidden;margin:40px 0;display:flex:justity-content:spance-between;flex-wrap:wrap"
     >
-      <li class="liitem" v-for="(item, index) in linkList" :key="index">
+      <li
+        class="liitem"
+        v-if="item.status"
+        v-for="(item, index) in linkList"
+        :key="index"
+      >
         <a :href="item.url" class="alink" target="_bank">
           <div class="linkborder">
             <div style="flex: 1">
@@ -21,11 +26,7 @@
               <div class="ellipsis">{{ item.description }}</div>
             </div>
             <div>
-              <img
-                :src="item.avatar"
-                class="img"
-                style="border: 2px solid #eee"
-              />
+              <img :src="item.avatar" class="img" style="border: 2px solid #eee" />
             </div>
           </div>
         </a>
@@ -216,8 +217,7 @@ export default {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
           item.childrenLastPage = data.childrenLastPage;
-          item.calcSurplus =
-            data.count - data.childrenNowPage * data.childrenPageSize;
+          item.calcSurplus = data.count - data.childrenNowPage * data.childrenPageSize;
           item.huifu.push(...data.rows);
         }
       });
@@ -246,7 +246,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 @media screen and (max-width: 720px) {

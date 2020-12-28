@@ -126,7 +126,10 @@ export default {
   },
   head() {
     return {
-      title: this.articleData.rows[0] && this.articleData.rows[0].title,
+      title:
+        this.articleData.rows[0] &&
+        this.articleData.rows[0].title + " - 自然博客",
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
   async asyncData({ $axios, params, store }) {

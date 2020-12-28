@@ -9,193 +9,197 @@
     <div v-if="list.length > 0">
       <div v-loading="listLoading" style="width: 100%">
         <div v-for="(item, index) in list" :key="index">
-          <div style="display: flex">
-            <div>
-              <el-avatar :size="40">
-                <img class="userlogo" v-lazy="item.from_user.avatar" />
-              </el-avatar>
-            </div>
-            <div style="flex-grow: 1; padding: 5px">
-              <div style="color: #0984e3">
-                <span v-if="item.from_user.id == 1" class="rank">博主</span>
-                <span>{{ item.from_user.username }}</span>
-              </div>
-              <div>{{ item.content }}</div>
+          <div v-if="item.to_user_id == -1">
+            <div style="display: flex">
               <div>
-                <span class="el-icon-date">{{ format(item.createdAt) }}</span>
-                <span style="float: right">
-                  <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span style="cursor: pointer" @click="showinput(item.id)">
-                    回复 </span
-                  >|
-                  <span>
-                    <el-tooltip
-                      v-if="item.isStar == true"
-                      class="item"
-                      effect="dark"
-                      content="取消点赞"
-                      placement="top"
-                      @click.native="starForComment(0, item)"
-                    >
-                      <i class="el-icon-star-on star"></i>
-                    </el-tooltip>
-                    <el-tooltip
-                      v-else
-                      class="item"
-                      effect="dark"
-                      content="赞一个"
-                      placement="top"
-                      @click.native="starForComment(1, item)"
-                    >
-                      <i class="el-icon-star-off star"></i>
-                    </el-tooltip>
-                    {{ item.stars.length }}
-                  </span>
-                </span>
+                <el-avatar :size="40">
+                  <img class="userlogo" v-lazy="item.from_user.avatar" />
+                </el-avatar>
               </div>
-              <div
-                style="background: #fafbfc; padding: 10px"
-                v-show="item.id == isshow"
-              >
-                <div>
-                  <el-input
-                    ref="input1"
-                    type="textarea"
-                    v-model="message"
-                    placeholder="请输入内容..."
-                    maxlength="50"
-                    show-word-limit
-                    @blur="handleBlur"
-                  ></el-input>
+              <div style="flex-grow: 1; padding: 5px">
+                <div style="color: #0984e3">
+                  <span v-if="item.from_user.id == 1" class="rank">博主</span>
+                  <span>{{ item.from_user.username }}</span>
                 </div>
-                <div style="padding-top: 5px; display: flex">
-                  <div style="margin-left: auto">
-                    <el-button type="primary" size="small" @click="add(item)"
-                      >评论</el-button
-                    >
+                <div>{{ item.content }}</div>
+                <div>
+                  <span class="el-icon-date">{{ format(item.createdAt) }}</span>
+                  <span style="float: right">
+                    <i class="el-icon-chat-round" style="cursor: pointer"></i>
+                    <span style="cursor: pointer" @click="showinput(item.id)">
+                      回复 </span
+                    >|
+                    <span>
+                      <el-tooltip
+                        v-if="item.isStar == true"
+                        class="item"
+                        effect="dark"
+                        content="取消点赞"
+                        placement="top"
+                        @click.native="starForComment(0, item)"
+                      >
+                        <i class="el-icon-star-on star"></i>
+                      </el-tooltip>
+                      <el-tooltip
+                        v-else
+                        class="item"
+                        effect="dark"
+                        content="赞一个"
+                        placement="top"
+                        @click.native="starForComment(1, item)"
+                      >
+                        <i class="el-icon-star-off star"></i>
+                      </el-tooltip>
+                      {{ item.stars.length }}
+                    </span>
+                  </span>
+                </div>
+                <div
+                  style="background: #fafbfc; padding: 10px"
+                  v-show="item.id == isshow"
+                >
+                  <div>
+                    <el-input
+                      ref="input1"
+                      type="textarea"
+                      v-model="message"
+                      placeholder="请输入内容..."
+                      maxlength="50"
+                      show-word-limit
+                      @blur="handleBlur"
+                    ></el-input>
+                  </div>
+                  <div style="padding-top: 5px; display: flex">
+                    <div style="margin-left: auto">
+                      <el-button type="primary" size="small" @click="add(item)"
+                        >评论</el-button
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div
-            v-for="(item, index) in item.huifu"
-            :key="index"
-            :style="{
-              background: '#fbfbfb',
-              display: 'flex',
-              marginLeft: '40px',
-              padding: '10px 0',
-            }"
-          >
-            <div>
-              <el-avatar :size="40">
-                <img class="userlogo" v-lazy="item.from_user.avatar" />
-              </el-avatar>
-            </div>
             <div
+              v-for="(item, index) in item.huifu"
+              :key="index"
               :style="{
-                flexGrow: 1,
-                padding: '5px',
-                borderBottom: '1px solid #eee',
+                background: '#fbfbfb',
+                display: 'flex',
+                marginLeft: '40px',
+                padding: '10px 0',
               }"
             >
-              <div style="color: #0984e3">
-                <span v-if="item.from_user.id == 1" class="rank">博主</span>
-                <span>{{ item.from_user.username }}</span>
-              </div>
               <div>
-                回复
-                <span style="color: #48dbfb"
-                  >@{{ item.to_user.username }}:</span
-                >
-                {{ item.content }}
-              </div>
-              <div style>
-                <span class="el-icon-date">{{ format(item.createdAt) }}</span>
-                <span style="float: right">
-                  <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span style="cursor: pointer" @click="showinput(item.id)"
-                    >回复 |
-                    <!-- <span v-loading="loadingStar"> -->
-                    <el-tooltip
-                      v-if="item.isStar == true"
-                      class="item"
-                      effect="dark"
-                      content="取消点赞"
-                      placement="top"
-                      @click.native="starForComment(0, item)"
-                    >
-                      <i class="el-icon-star-on star"></i>
-                    </el-tooltip>
-                    <el-tooltip
-                      v-else
-                      class="item"
-                      effect="dark"
-                      content="赞一个"
-                      placement="top"
-                      @click.native="starForComment(1, item)"
-                    >
-                      <i class="el-icon-star-off star"></i>
-                    </el-tooltip>
-
-                    {{ item.stars.length }}
-                    <!-- </span> -->
-                  </span>
-                </span>
+                <el-avatar :size="40">
+                  <img class="userlogo" v-lazy="item.from_user.avatar" />
+                </el-avatar>
               </div>
               <div
-                style="background: #fafbfc; padding: 10px"
-                v-show="item.id == isshow"
+                :style="{
+                  flexGrow: 1,
+                  padding: '5px',
+                  borderBottom: '1px solid #eee',
+                }"
               >
-                <div>
-                  <el-input
-                    ref="input2"
-                    type="textarea"
-                    v-model="message"
-                    placeholder="请输入内容..."
-                    maxlength="50"
-                    show-word-limit
-                    @blur="handleBlur"
-                  ></el-input>
+                <div style="color: #0984e3">
+                  <span v-if="item.from_user.id == 1" class="rank">博主</span>
+                  <span>{{ item.from_user.username }}</span>
                 </div>
-                <div style="padding-top: 5px; display: flex">
-                  <div style="margin-left: auto">
-                    <el-button type="primary" size="small" @click="add(item)"
-                      >评论</el-button
-                    >
+                <div>
+                  回复
+                  <span style="color: #48dbfb"
+                    >@{{ item.to_user.username }}:</span
+                  >
+                  {{ item.content }}
+                </div>
+                <div style>
+                  <span class="el-icon-date">{{ format(item.createdAt) }}</span>
+                  <span style="float: right">
+                    <i class="el-icon-chat-round" style="cursor: pointer"></i>
+                    <span style="cursor: pointer" @click="showinput(item.id)"
+                      >回复 |
+                      <!-- <span v-loading="loadingStar"> -->
+                      <el-tooltip
+                        v-if="item.isStar == true"
+                        class="item"
+                        effect="dark"
+                        content="取消点赞"
+                        placement="top"
+                        @click.native="starForComment(0, item)"
+                      >
+                        <i class="el-icon-star-on star"></i>
+                      </el-tooltip>
+                      <el-tooltip
+                        v-else
+                        class="item"
+                        effect="dark"
+                        content="赞一个"
+                        placement="top"
+                        @click.native="starForComment(1, item)"
+                      >
+                        <i class="el-icon-star-off star"></i>
+                      </el-tooltip>
+
+                      {{ item.stars.length }}
+                      <!-- </span> -->
+                    </span>
+                  </span>
+                </div>
+                <div
+                  style="background: #fafbfc; padding: 10px"
+                  v-show="item.id == isshow"
+                >
+                  <div>
+                    <el-input
+                      ref="input2"
+                      type="textarea"
+                      v-model="message"
+                      placeholder="请输入内容..."
+                      maxlength="50"
+                      show-word-limit
+                      @blur="handleBlur"
+                    ></el-input>
+                  </div>
+                  <div style="padding-top: 5px; display: flex">
+                    <div style="margin-left: auto">
+                      <el-button type="primary" size="small" @click="add(item)"
+                        >评论</el-button
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            v-if="
-              item.huifu.length &&
-              item.huifu.length < pageParams.childrenPageSize
-            "
-            :style="{
-              background: '#fbfbfb',
-              display: 'flex',
-              marginLeft: '40px',
-            }"
-          ></div>
-
-          <div v-else-if="item.huifu.length != 0">
             <div
-              v-if="item.calcSurplus == undefined || item.calcSurplus > 0"
-              class="loadMore"
-              @click="handleChildrenPage(item)"
-              style="cursor: pointer"
-            >
-              查看更多热门回复{{
-                item.calcSurplus ? "(" + item.calcSurplus + ")" : ""
-              }}
-            </div>
-            <div v-else class="loadMore">
-              已加载全部热门回复!
-              <el-button @click="zhedie(item)" type="text">折叠评论</el-button>
+              v-if="
+                item.huifu.length &&
+                item.huifu.length < pageParams.childrenPageSize
+              "
+              :style="{
+                background: '#fbfbfb',
+                display: 'flex',
+                marginLeft: '40px',
+              }"
+            ></div>
+
+            <div v-else-if="item.huifu.length != 0">
+              <div
+                v-if="item.calcSurplus == undefined || item.calcSurplus > 0"
+                class="loadMore"
+                @click="handleChildrenPage(item)"
+                style="cursor: pointer"
+              >
+                查看更多热门回复{{
+                  item.calcSurplus ? "(" + item.calcSurplus + ")" : ""
+                }}
+              </div>
+              <div v-else class="loadMore">
+                已加载全部热门回复!
+                <el-button @click="zhedie(item)" type="text"
+                  >折叠评论</el-button
+                >
+              </div>
             </div>
           </div>
         </div>

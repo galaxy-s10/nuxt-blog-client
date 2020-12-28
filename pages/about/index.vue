@@ -114,7 +114,10 @@ export default {
   },
   head() {
     return {
-      title: "关于"
+      title: "关于 - 自然博客",
+      meta: [
+        { hid: 'home', name: 'description', content: '自然 - 个人博客' }
+      ]
     };
   }
 };

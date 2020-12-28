@@ -9,7 +9,14 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { name: 'description', content: "前端 | 大前端 | 开源 | 自然博客" },
+      { name: 'keywords', content: "自然博客" },
+      { property: 'og:type', content: "website" },
+      { property: 'og:title', content: "前端 | 大前端 | 开源 | 自然博客" },
+      { property: 'og:url', content: "https://www.zhengbeining.com" },
+      { property: 'og:site_name', content: "前端 | 大前端 | 开源 | 自然博客" },
+      { property: 'og:description', content: "前端 | 大前端 | 开源 | 自然博客" }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

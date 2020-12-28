@@ -61,7 +61,8 @@ export default {
   },
   head() {
     return {
-      title: "首页",
+      title: "首页 - 自然博客",
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
   methods: {

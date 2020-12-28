@@ -44,7 +44,10 @@ export default {
   },
   head() {
     return {
-      title: "归档",
+      title: "归档 - 自然博客",
+      meta: [
+        { hid: 'home', name: 'description', content: '自然 - 个人博客' }
+      ]
     };
   },
   methods: {

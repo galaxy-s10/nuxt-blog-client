@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "My amazing Nuxt.js project",
+  "description": "一个用nuxt和node开发的个人博客",
   "author": "galaxy-s10",
   "private": true,
   "scripts": {

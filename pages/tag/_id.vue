@@ -76,13 +76,14 @@ export default {
   },
   head() {
     var title;
-    this.tagList.forEach(item => {
+    this.tagList.forEach((item) => {
       if (item.id == this.tagindex) {
         title = item.name;
       }
     });
     return {
-      title: "标签 - " + title
+      title: "标签 - " + title + " - 自然博客",
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
   async asyncData({ $axios, params }) {

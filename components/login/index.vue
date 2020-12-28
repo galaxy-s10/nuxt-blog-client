@@ -108,7 +108,6 @@ export default {
             avatar: null,
             username: this.uname,
             password: this.upwd,
-            role: "user",
           })
           .then((res) => {
             this.$newmessage("注册成功，请登录~", "success");

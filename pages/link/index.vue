@@ -206,14 +206,22 @@ export default {
       }
     },
     // 获取子评论分页
-    async childrenPage(childrenCommentId) {
-      console.log({ ...this.query, childrenCommentId });
-      this.query = { ...this.query, childrenCommentId };
-      this.query.childrenNowPage += 1;
-      // query.childrenCommentId = childrenCommentId;
-      // console.log(this.query, v);
+    async childrenPage(childVal) {
+    // async childrenPage(childrenCommentId) {
+      console.log('{ ...childVal }');
+      console.log({ ...childVal });
+      let query = { ...childVal };
+      query.childrenNowPage += 1;
+      console.log(query)
+      // console.log({...this.pageParams,...query})
+      let temp = {
+        ...this.pageParams,
+        ...query,
+      };
+      console.log(temp)
+      this.pageParams = temp
       var data = await this.$axios.$get(`/api/comment/commentChildrenPage`, {
-        params: { ...this.query },
+        params: { ...this.pageParams },
       });
       console.log(data);
       this.commentList.forEach((item) => {

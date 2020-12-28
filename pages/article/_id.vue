@@ -4,11 +4,7 @@
       <!-- {{ userInfo }} -->
       <!-- ppp -->
       <!-- {{ isStar }} -->
-      <div
-        v-for="(item, index) in articleData.rows"
-        :key="index"
-        class="content"
-      >
+      <div v-for="(item, index) in articleData.rows" :key="index" class="content">
         <div style>
           <h1 style="margin: 20px 0 10px; text-align: center">
             {{ item.title }}
@@ -23,7 +19,7 @@
           </p>
           <img v-if="item.img != null" :src="item.img" class="img1" />
           <!-- <img  v-lazy="item.img" alt="item.img" width="100%" height="460" /> -->
-          <img v-else src="../../assets/imgs/nopic.png" alt />
+          <img v-else src="../../assets/imgs/nopic.png" class="img1" alt />
           <div>
             <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
             <markdown :md="item.content"></markdown>
@@ -126,9 +122,7 @@ export default {
   },
   head() {
     return {
-      title:
-        this.articleData.rows[0] &&
-        this.articleData.rows[0].title + " - 自然博客",
+      title: this.articleData.rows[0] && this.articleData.rows[0].title + " - 自然博客",
       meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
@@ -204,25 +198,36 @@ export default {
     },
 
     // 获取子评论分页
-    async childrenPage(childrenCommentId) {
-      console.log({ ...this.query, childrenCommentId });
-      this.query = { ...this.query, childrenCommentId };
-      this.query.childrenNowPage += 1;
+    async childrenPage(childVal) {
+      // async childrenPage(childrenCommentId) {
+      console.log("{ ...childVal }");
+      console.log({ ...childVal });
+      let query = { ...childVal };
+      console.log(this.query);
+      query.childrenNowPage += 1;
+      console.log(query)
+      // console.log({...this.pageParams,...query})
+      let temp = {
+        ...this.pageParams,
+        ...query,
+      };
+      console.log(temp)
+      this.pageParams = temp
       // query.childrenCommentId = childrenCommentId;
       // console.log(this.query, v);
       var data = await this.$axios.$get(`/api/comment/childrenPage`, {
-        params: { ...this.query },
+        params: { ...this.pageParams },
       });
       console.log(data);
       this.commentList.forEach((item) => {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
           item.childrenLastPage = data.childrenLastPage;
-          item.calcSurplus =
-            data.count - data.childrenNowPage * data.childrenPageSize;
+          item.calcSurplus = data.count - data.childrenNowPage * data.childrenPageSize;
           item.huifu.push(...data.rows);
         }
       });
+    
     },
 
     // 获取父评论分页
@@ -236,14 +241,14 @@ export default {
       });
       this.commentList.push(...data.rows);
       this.allCount = data.allCount;
-      (this.pageParams = {
+      this.pageParams = {
         ...this.query,
         count: data.count,
         nowPage: data.nowPage,
         lastPage: data.lastPage,
         pageSize: data.pageSize,
-      }),
-        console.log(this.commentList);
+      };
+      console.log(this.commentList);
     },
     // 格式化日期时间
     format(time) {

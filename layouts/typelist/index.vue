@@ -1,8 +1,10 @@
 <template>
-  <div :class="{header1:1,show:visible}">
+  <div :class="{ header1: 1, show: visible }">
     <ul class="list">
       <li @click="all()">全部</li>
-      <li v-for="(item,index) in typelist" :key="index" @click="type(item.type)">{{item.type}}</li>
+      <li v-for="(item, index) in articleTypeList" :key="index" @click="type(item.id)">
+        {{ item.name }}
+      </li>
     </ul>
   </div>
 </template>
@@ -11,41 +13,42 @@
 export default {
   data() {
     return {
-      visible: false
+      visible: false,
     };
   },
   methods: {
     headershow() {
       // 头部高度为70px
       const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       // console.log(offsetTop);
       this.visible = offsetTop > height;
     },
-    type(type) {
-      if (this.$store.state.article.nowtype != type) {
-        this.$store.commit("article/nowpage", 1);
-        this.$store.commit("article/nowtype", type);
+    async type(type_id) {
+      if (this.$route.path != "/") {
+        this.$router.push("/");
+      }
+      // if (this.$store.state.article.type_id != type_id) {
+      this.$store.commit("article/changeNowPage", 1);
+      this.$store.commit("article/changeType_id", type_id);
+      // await this.$store.dispatch("article/getArticleList", {
+      //   type_id: this.$store.state.article.type_id,
+      //   nowPage: 1,
+      //   pageSize: 5,
+      // });
+      // }
+    },
+    async all() {
+      if (this.$store.state.article.type_id) {
+        this.$store.commit("article/changeNowPage", 1);
+        this.$store.commit("article/changeType_id", "");
       }
       if (this.$route.path != "/") {
         this.$router.push("/");
       }
     },
-    all() {
-      if (this.$store.state.article.nowtype != null) {
-        this.$store.commit("article/nowpage", 1);
-        this.$store.commit("article/nowtype", null);
-        this.$store.dispatch("article/articlepage", { nowpage: 1 });
-      }
-      if (this.$route.path != "/") {
-        this.$router.push("/");
-      }
-    }
   },
-  created() {
-    // this.$store.dispatch("article/articletypelist");
-  },
+  created() {},
   mounted() {
     window.addEventListener("scroll", this.headershow);
   },
@@ -53,10 +56,10 @@ export default {
     window.removeEventListener("scroll", this.headershow);
   },
   computed: {
-    typelist() {
-      return this.$store.state.article.typelist;
-    }
-  }
+    articleTypeList() {
+      return this.$store.state.article.ArticleTypeList;
+    },
+  },
 };
 </script>
 

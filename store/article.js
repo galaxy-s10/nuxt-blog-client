@@ -1,28 +1,30 @@
 export const state = () => ({
+    // 排序字段
+    ordername: "createdAt",
+    // 排序方式
+    orderby: "desc",
     // 总页数
-    count: null,
+    count: 0,
     // 当前页数
-    nowpage: 1,
-    // 当前类型
-    nowtype: null,
-    // 历史文章列表
-    list: null,
-    // 文章列表
-    pagelist: null,
-    // 热门文章列表
-    hotlist: null,
-    // 文章数据
-    detail: null,
-    // 搜索数据
-    search: null,
+    nowPage: 1,
     // 分页大小
-    pagesize: 5,
+    pageSize: 5,
+    // 当前类型
+    type_id: "",
+    // 文章类型列表
+    ArticleTypeList: "",
+    // 默认文章列表
+    pageList: "",
+    // 热门文章列表
+    hotList: "",
+    // 历史文章列表
+    historyList: "",
     // 历史文章分页大小
-    historypagesize: 10,
-    // 文章类型
-    typelist: null,
-    history: null,
-    // Detail: null
+    historyPageSize: 10,
+    // 文章详情
+    detail: "",
+    // 搜索数据
+    search: "",
 })
 
 export const mutations = {
@@ -32,88 +34,81 @@ export const mutations = {
     page(state, res) {
         state.list = res
     },
-    nowpage(state, res) {
-        state.nowpage = res
+    changeNowPage(state, res) {
+        state.nowPage = res
     },
-    nowtype(state, res) {
-        state.nowtype = res
+    changeType_id(state, res) {
+        state.type_id = res
     },
-    typelist(state, res) {
-        state.typelist = res
+    changeArticleTypeList(state, res) {
+        state.ArticleTypeList = res
     },
+    changeHistoryList(state, res) {
+        state.historyList = res
+    },
+    changeCount(state, res) {
+        state.count = res
+    },
+    changePageList(state, res) {
+        state.pageList = res
+    },
+    // changeOrderName(state, res) {
+    //     state.ordername = res
+    // },
+    // changeOrderBy(state, res) {
+    //     state.orderby = res
+    // },
     setDetail(state, res) {
-        if (res != null) {
-            // window.document.title = res.list.rows[0].title + " | vueblog"
-            state.detail = res.list
-        } else {
-            state.detail = res
-        }
+        state.detail = res
     },
     search(state, res) {
         state.search = res
     },
-    pagelist(state, res) {
-        state.pagelist = res
-    },
+
     hotlist(state, res) {
         // state.hotlist = res
         // slice截取指定元素
         // state.hotlist = res.slice(0, 3)
         state.hotlist = res
     },
-    history(state, res) {
-        // slice截取指定元素
-        state.history = res
-    },
-    count(state, res) {
-        state.count = res
-    }
+
 }
 
 export const actions = {
-    async articletypelist({ commit }) {
-        const res = await this.$axios.$get(`/api/article/typelist`)
-        commit('typelist', res.typelist)
+    async getArticleTypeList({ commit }) {
+        const res = await this.$axios.$get(`/api/type/pageList?pageSize=10&nowPage=1`)
+        commit('changeArticleTypeList', res.rows)
     },
-    async articlepage({ commit, state }, data) {
-        var { ordername, orderby, nowpage } = data
-        if (ordername != undefined && orderby != undefined) {
-            const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=${state.historypagesize}`)
-            commit('list', res.pagelist.rows)
-            commit('count', res.pagelist.count)
-        } else {
-            if (state.nowtype != null) {
-                var res = await this.$axios.$get(`/api/article/page?type=${state.nowtype}&nowPage=${nowpage}&pageSize=${state.pagesize}`)
-                commit('pagelist', res.pagelist.rows)
-                commit('count', res.pagelist.count)
-            } else {
-                try {
-                    var res = await this.$axios.$get(`/api/article/page?&nowPage=${nowpage}&pageSize=${state.pagesize}`)
-                    commit('pagelist', res.pagelist.rows)
-                    commit('count', res.pagelist.count)
-                } catch (err) {
-                    console.log(err)
-                }
-
-            }
-        }
-
+    async getArticleList({ commit }, params) {
+        const res = await this.$axios.$get(`/api/article/pageList`, { params })
+        commit('changePageList', res.rows)
+        commit('changeCount', res.count)
     },
-    async articlehotlist({ commit }, data) {
-        // console.log(data)
-        var { ordername, orderby, nowpage } = data
+    async getHistoryList({ commit, state }, payload) {
+        var res = await this.$axios.$get(`/api/article/pageList`, {
+            params: {
+                ordername: "createdAt",
+                orderby: "desc",
+                nowPage: payload.nowPage,
+                pageSize: state.historyPageSize,
+            },
+        });
+        commit("changeHistoryList", res.rows);
+        commit("changeCount", res.count);
+    },
+    async getArticleHotList({ commit }, params) {
+        var { ordername, orderby, nowpage } = params
         try {
-            const res = await this.$axios.$get(`/api/article/page?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=4`)
-            commit('hotlist', res.pagelist.rows)
+            const res = await this.$axios.$get(`api/article/pageList?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=5`)
+            commit('hotlist', res.rows)
         } catch (err) {
             console.log(err)
         }
 
     },
-    async findarticle({ commit }, data) {
-        var { id } = data
-        const res = await this.$axios.$get(`/api/article/find?id=${id}`)
-        console.log()
-        commit('setDetail', res)
+    async getArticleDetail({ commit }, params) {
+        var { id } = params
+        const res = await this.$axios.$get(`/api/article/findOne?id=${id}`)
+        commit('setDetail', res.detail)
     }
 }

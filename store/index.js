@@ -1,11 +1,11 @@
 const actions = {
     async nuxtServerInit({ dispatch }) {
-        await dispatch("article/articlehotlist", {
+        await dispatch("article/getArticleHotList", {
             ordername: "click",
             orderby: "desc",
             nowpage: 1
         });
-        await dispatch("article/articletypelist");
+        await dispatch("article/getArticleTypeList");
         await dispatch("tag/getTagList");
         // await dispatch("user/getUserInfo");
     },

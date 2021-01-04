@@ -1,5 +1,5 @@
 export const state = () => ({
-    tagList: null
+    tagList: ""
 })
 
 export const mutations = {
@@ -10,7 +10,13 @@ export const mutations = {
 
 export const actions = {
     async getTagList({ commit }) {
-        const res1 = await this.$axios.$get(`/api/tag/list?size=3`)
-        commit('setTagList', res1.rows)
+        let params = {
+            nowPage:1,
+            pageSize:6,
+        }
+        const res = await this.$axios.$get(`/api/tag/pageList`,{
+            params
+        })
+        commit('setTagList', res.rows)
     },
 }

@@ -2,20 +2,25 @@
   <div>
     <div
       class="tag"
-      style="overflow:hidden;background:white;box-shadow:0 0 5px rgba(0,0,0,.1);padding:30px"
+      style="
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+      "
     >
       <div
         class="newtag"
         v-for="item in tagList"
         :key="item.id"
-        :class="{currenttag:tagindex==item.id}"
+        :class="{ currenttag: tagindex == item.id }"
         @click="getTagArticle(item.id)"
       >
-        <span>{{item.name}}</span>
-        <span style="margin-left:10px">{{item.articles.length}}</span>
+        <span>{{ item.name }}</span>
+        <span style="margin-left: 10px">{{ item.articles.length }}</span>
       </div>
       <div>
-        <article v-for="(item,index) in articleList" :key="index" class="article-con">
+        <article v-for="(item, index) in articleList" :key="index" class="article-con">
           <div class="article-l">
             <nuxt-link
               :to="`/article/${item.article.id}`"
@@ -25,44 +30,60 @@
             />
           </div>
           <div class="article-r">
-            <nuxt-link
-              :to="'/article/'+item.article.id"
-              tag="h2"
-              class="overtext"
-            >{{item.article.title}}</nuxt-link>
+            <nuxt-link :to="'/article/' + item.article.id" tag="h2" class="overtext">{{
+              item.article.title
+            }}</nuxt-link>
             <el-divider></el-divider>
             <div>
               <el-tag
-                v-for="(item,index) in item.article.tags"
+                v-for="(item, index) in item.article.tags"
                 :key="index"
                 class="tag-margin"
                 size="mini"
                 :disable-transitions="false"
                 :color="item.color"
-              >{{item.name}}</el-tag>
+                >{{ item.name }}</el-tag
+              >
             </div>
-            <p style="font-size:12px">
-              <!-- <span class="jgh">{{format1(item.article.date)}}</span> -->
-              <span class="jgh">{{item.article.click}}次浏览</span>
+            <div
+              style="font-size: 12px; display: flex; align-items: center; margin: 10px 0"
+            >
+              <img
+                style="width: 20px; height: 20px; border-radius: 50%"
+                :src="item.article.users[0] && item.article.users[0].avatar"
+                alt=""
+              />
+              <div class="jgh"></div>
+              <div class="jgh">{{ format1(item.article.createdAt) }}</div>
+              <div class="jgh">{{ item.article.click }}次浏览</div>
+              <div class="jgh">{{ item.article.comments.length }}条评论</div>
+              <div>{{ item.article.stars.length }}个star</div>
+            </div>
+            <!-- <p style="font-size:12px">
+              <span class>{{item.article.click}}次浏览</span>
+              <span class="jgh"></span>
+              
               <span>{{item.article.comments.length}}条评论</span>
-            </p>
+            </p> -->
           </div>
         </article>
         <div class="page-btn" v-if="count != 0">
           <div>
-            <el-button v-show="nowpage !=1" @click="prePage">上一页</el-button>
+            <el-button v-show="nowPage != 1" @click="prePage">上一页</el-button>
           </div>
           <div>
-            <el-button v-show="maxsize != nowpage" @click="nextPage">下一页</el-button>
+            <el-button v-show="maxSize != nowPage" @click="nextPage">下一页</el-button>
           </div>
         </div>
-        <div v-else style="text-align:center;padding:40px 0">该标签下暂无文章~</div>
+        <div v-else style="text-align: center; padding: 40px 0">该标签下暂无文章~</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { format, format1 } from "@/utils/format.js";
+
 export default {
   layout: "blog",
   components: {},
@@ -70,8 +91,8 @@ export default {
     return {
       tagList: null,
       tagindex: 1,
-      nowpage: 1,
-      maxsize: null
+      nowPage: 1,
+      maxSize: null,
     };
   },
   head() {
@@ -87,15 +108,16 @@ export default {
     };
   },
   async asyncData({ $axios, params }) {
-    const { rows } = await $axios.$get("/api/tag/list");
+    const { rows } = await $axios.$get("/api/tag/pageList?nowPage=1&pageSize=100");
+    // 分页大小
+    const pageSize = 3;
     const rows1 = await $axios.$get(
-      `/api/tag/page?id=${params.id}&page=1&size=3`
+      `/api/tag/page?id=${params.id}&nowPage=1&pageSize=${pageSize}`
     );
-    // 页数
-    const size = 5;
+
     return {
       // 页数
-      size,
+      pageSize,
       // 所有标签
       tagList: rows,
       // 标签下的文章
@@ -103,7 +125,7 @@ export default {
       // 标签下的文章总条数
       count: rows1.count,
       // 最大页码
-      maxsize: Math.ceil(rows1.count / size)
+      maxSize: Math.ceil(rows1.count / pageSize),
     };
   },
   created() {},
@@ -111,25 +133,29 @@ export default {
     this.tagindex = this.$route.params.id;
   },
   methods: {
+    // 格式化时间
+    format1(time) {
+      return format1(time);
+    },
     prePage() {
-      this.nowpage--;
+      this.nowPage--;
       this.$axios
         .$get("/api/tag/page", {
-          params: { id: this.tagindex, page: this.nowpage, size: this.size }
+          params: { id: this.tagindex, nowPage: this.nowPage, pageSize: this.pageSize },
         })
-        .then(res => {
+        .then((res) => {
           this.articleList = res.rows;
           this.count = res.count;
           scrollTo({ top: 0 });
         });
     },
     nextPage() {
-      this.nowpage++;
+      this.nowPage++;
       this.$axios
         .$get("/api/tag/page", {
-          params: { id: this.tagindex, page: this.nowpage, size: this.size }
+          params: { id: this.tagindex, nowPage: this.nowPage, pageSize: this.pageSize },
         })
-        .then(res => {
+        .then((res) => {
           this.articleList = res.rows;
           this.count = res.count;
           scrollTo({ top: 0 });
@@ -137,10 +163,10 @@ export default {
     },
     getTagArticle(id) {
       this.tagindex = id;
-      this.nowpage = 1;
+      this.nowPage = 1;
       this.$router.push({ path: `/tag/${id}` });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -172,6 +198,7 @@ export default {
 .article-l {
   flex: 0 0 40%;
   margin: 20px;
+  overflow: hidden;
 }
 .article-r {
   box-sizing: border-box;
@@ -183,7 +210,10 @@ export default {
   background-size: cover;
   height: 100%;
   width: 100%;
-  transition: all 0.3s;
+  transition: all 0.3s ease 0s;
+}
+.img:hover {
+  transform: scale(1.1);
 }
 .currenttag {
   border: 1px solid #005cc5 !important;
@@ -214,6 +244,17 @@ export default {
   border-style: solid;
   background-color: inherit;
   transform: translateX(-50%) translateY(-50%) rotate(45deg);
+}
+.jgh::after {
+  content: "·";
+  font-weight: 600;
+  padding: 0 5px;
+}
+.tag {
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }
 .tag /deep/ .el-tag {
   color: white;

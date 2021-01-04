@@ -3,47 +3,61 @@
   <aside class="navb">
     <div class="user">
       <div class="bgc"></div>
-      <div style="position: relative;">
+      <div style="position: relative">
         <img :src="avatar" class="img" alt />
-        <span class="username">{{name}}</span>
-        <p class="usertitle">{{title}}</p>
+        <span class="username">{{ name }}</span>
+        <p class="usertitle">{{ title }}</p>
       </div>
     </div>
     <div class="hotart">
-      <div style="padding:10px 0 10px 10px;">
-        <span class="el-icon-trophy" style="font-size:18px;font-weight:blod;margin-right:4px"></span>
-        <h1 style="display:inline-block;font-size:18px;margin:5px 0">热门文章</h1>
+      <div style="padding: 10px 0 10px 10px">
+        <span
+          class="el-icon-trophy"
+          style="font-size: 18px; font-weight: blod; margin-right: 4px"
+        ></span>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">热门文章</h1>
       </div>
-      <div style="padding-left:10px;overflow:hidden">
+      <div style="padding-left: 10px; overflow: hidden">
         <div
-          v-for="(item,index) in hotlist"
+          v-for="(item, index) in hotlist"
           :key="index"
-          style="margin-bottom:10px;max-height:60px;display:flex"
+          style="margin-bottom: 10px; max-height: 60px; display: flex"
         >
           <div class="aside-l">
-            <nuxt-link :to="'/article/'+item.id" tag="img" v-lazy="item.img" class="img1" />
+            <nuxt-link
+              :to="'/article/' + item.id"
+              tag="img"
+              v-lazy="item.img"
+              class="img1"
+            />
           </div>
 
           <div class="aside-r">
-            <nuxt-link :to="'/article/'+item.id" tag="h4" class="tcss">#{{item.title}}</nuxt-link>
+            <nuxt-link :to="'/article/' + item.id" tag="h4" class="tcss"
+              >#{{ item.title }}</nuxt-link
+            >
             <div style="margin: 2px 0">
-              <span class="el-icon-date tcss1" style="padding:0 2px;">{{format1(item.date)}}</span>
-              <span class="el-icon-view tcss1" style="padding:0 2px;">{{item.click}}</span>
+              <span class="el-icon-date tcss1" style="padding: 0 2px">{{
+                format1(item.date)
+              }}</span>
+              <span class="el-icon-view tcss1" style="padding: 0 2px">{{
+                item.click
+              }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="hotart tag">
-      <div style="padding:10px 0 10px 10px;">
+      <div style="padding: 10px 0 10px 10px">
         <!-- <span class="el-icon-trophy" style="font-size:18px;font-weight:blod;margin-right:4px"></span> -->
-        <h1 style="display:inline-block;font-size:18px;margin:5px 0">标签云</h1>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">标签云</h1>
       </div>
       <el-tooltip
         v-for="item in tagList"
         :key="item.id"
         effect="dark"
-        :content="'该标签下有'+item.articles.length+'篇文章'"
+        :content="'该标签下有' + item.articles.length + '篇文章'"
         placement="top"
       >
         <el-tag
@@ -51,7 +65,8 @@
           :disable-transitions="false"
           :color="item.color"
           @click="tagClick(item.id)"
-        >{{item.name}}</el-tag>
+          >{{ item.name }}</el-tag
+        >
       </el-tooltip>
     </div>
   </aside>
@@ -72,7 +87,7 @@ export default {
     },
     tagClick(id) {
       this.$router.push({ path: `/tag/${id}` });
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -86,19 +101,16 @@ export default {
           : state.user.avatar;
       },
       title(state) {
-        return state.user.title == null
-          ? "A Single Page App"
-          : state.user.title;
-      }
+        return state.user.title == null ? "A Single Page App" : state.user.title;
+      },
     }),
     tagList() {
       return this.$store.state.tag.tagList;
     },
-
     hotlist() {
       return this.$store.state.article.hotlist;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -141,6 +153,12 @@ export default {
   cursor: pointer;
   /* background-size: cover; */
 }
+.img1 {
+  transition: all 0.3s ease 0s;
+}
+.img1:hover {
+  transform: scale(1.1);
+}
 .username {
   margin: 0;
   padding: 0;
@@ -156,13 +174,11 @@ export default {
 .aside-l {
   /* width: 40%; */
   flex: 0 0 30%;
+  overflow: hidden;
 }
 .aside-r {
   box-sizing: border-box;
-  /* width: 60%; */
   overflow: hidden;
-  /* height: 100px; */
-  /* padding: 2px; */
   margin-left: 10px;
   font-size: 14px;
 }

@@ -1,15 +1,15 @@
 <template>
   <div>
     <!-- 分页 -->
-    <div style="text-align:center">
+    <div style="text-align: center">
       <el-pagination
         background
         layout="prev, pager, next"
-        :total="total"
-        :page-size="pagesize"
-        :current-page="nowpage"
+        :total="count"
+        :page-size="pageSize"
+        :current-page="nowPage"
         :pager-count="5"
-        @current-change="currentchange"
+        @current-change="currentChange"
       ></el-pagination>
     </div>
   </div>
@@ -17,26 +17,25 @@
 
 <script>
 export default {
-  props: ["total", "pagesize"],
+  props: {
+    count: "",
+    nowPage: "",
+    pageSize: "",
+  },
   data() {
-    return {
-      // total: 0,
-      // pagesize: 3
-    };
+    return {};
   },
   methods: {
-    currentchange(nowpage) {
-      this.$emit("currentchange", nowpage);
-      // this.articlepage(this.pagesize, nowpage);
-    }
+    currentChange(nowPage) {
+      this.$emit("currentChange", nowPage);
+    },
   },
   computed: {
-    nowpage() {
-      return this.$store.state.article.nowpage;
-    }
-  }
+    // nowPage() {
+    //   return this.$store.state.article.nowPage;
+    // },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

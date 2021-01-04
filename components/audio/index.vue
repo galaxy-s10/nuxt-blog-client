@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed" :class="{ hiddenMusic: hiddenMusic }">
+  <div class="fixedd" :class="{ hiddenMusic: hiddenMusic }">
     <div class="songWrapper">
       <div class="songText">
         <div class="textItem">{{ songList[currentIndex].name }}</div>
@@ -12,9 +12,7 @@
             class="currentTime"
           ></div>
         </div>
-        <div class="text">
-          {{ duration2(nowTime) }}/{{ duration2(duration) }}
-        </div>
+        <div class="text">{{ duration2(nowTime) }}/{{ duration2(duration) }}</div>
       </div>
       <div class="songImg1" :class="{ disk_play: start }">
         <div class="songImg2">
@@ -54,50 +52,51 @@ export default {
       duration1: 0,
       nowTime: 0,
       currentIndex: 0,
-      songList: [
-        {
-          name: "花 が とぶ 飛ぶ",
-          author: "邱有句 / 李德奎",
-          img: "https://img.cdn.zhengbeining.com/song7.jpg",
-          url: "https://img.cdn.zhengbeining.com/song7.mp3",
-        },
-        {
-          name: "云村的告别",
-          author: "邱有句",
-          img: "https://img.cdn.zhengbeining.com/song6.jpg",
-          url: "https://img.cdn.zhengbeining.com/song6.mp3",
-        },
-        {
-          name: "Cubi - BingBian病变钢琴版",
-          author: "Kirito潇轩; 文武贝",
-          img: "https://img.cdn.zhengbeining.com/song2.jpg",
-          url: "https://img.cdn.zhengbeining.com/song2.mp3",
-        },
-        {
-          name: "僕らの手には何もないけど、",
-          author: "RAM WIRE",
-          img: "https://img.cdn.zhengbeining.com/song1.jpg",
-          url: "https://img.cdn.zhengbeining.com/song1.mp3",
-        },
-        {
-          name: "山海皆可平",
-          author: "CMJ",
-          img: "https://img.cdn.zhengbeining.com/song3.jpg",
-          url: "https://img.cdn.zhengbeining.com/song3.mp3",
-        },
-        {
-          name: "所念皆星河",
-          author: "CMJ",
-          img: "https://img.cdn.zhengbeining.com/song4.jpg",
-          url: "https://img.cdn.zhengbeining.com/song4.mp3",
-        },
-        {
-          name: "蜗居背景音乐",
-          author: "群星",
-          img: "https://img.cdn.zhengbeining.com/song5.jpg",
-          url: "https://img.cdn.zhengbeining.com/song5.mp3",
-        },
-      ],
+      songList: [],
+      // songList: [
+      //   {
+      //     name: "花 が とぶ 飛ぶ",
+      //     author: "邱有句 / 李德奎",
+      //     img: "https://img.cdn.zhengbeining.com/song7.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/1609599956810song2.mp3",
+      //   },
+      //   {
+      //     name: "云村的告别",
+      //     author: "邱有句",
+      //     img: "https://img.cdn.zhengbeining.com/song6.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song6.mp3",
+      //   },
+      //   {
+      //     name: "Cubi - BingBian病变钢琴版",
+      //     author: "Kirito潇轩; 文武贝",
+      //     img: "https://img.cdn.zhengbeining.com/song2.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song2.mp3",
+      //   },
+      //   {
+      //     name: "僕らの手には何もないけど、",
+      //     author: "RAM WIRE",
+      //     img: "https://img.cdn.zhengbeining.com/song1.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song1.mp3",
+      //   },
+      //   {
+      //     name: "山海皆可平",
+      //     author: "CMJ",
+      //     img: "https://img.cdn.zhengbeining.com/song3.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song3.mp3",
+      //   },
+      //   {
+      //     name: "所念皆星河",
+      //     author: "CMJ",
+      //     img: "https://img.cdn.zhengbeining.com/song4.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song4.mp3",
+      //   },
+      //   {
+      //     name: "蜗居背景音乐",
+      //     author: "群星",
+      //     img: "https://img.cdn.zhengbeining.com/song5.jpg",
+      //     url: "https://img.cdn.zhengbeining.com/song5.mp3",
+      //   },
+      // ],
     };
   },
   computed: {
@@ -105,16 +104,19 @@ export default {
       return (x) => this.formatTime(x);
     },
   },
-
+  async fetch() {
+    let res = await this.$axios.$get(`/api/music/pageList`, {
+      params: { nowPage: 1, pageSize: 10 },
+    });
+    this.songList = res.rows;
+  },
   mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth;
-    console.log(d);
     if (d <= 375) {
       this.hiddenMusic = true;
     }
     window.addEventListener("resize", () => {
-      const offsetWidth =
-        window.pageXOffset || document.documentElement.offsetWidth;
+      const offsetWidth = window.pageXOffset || document.documentElement.offsetWidth;
       if (offsetWidth <= 375) {
         if (this.hiddenMusic != true) {
           this.hiddenMusic = true;
@@ -125,6 +127,7 @@ export default {
         }
       }
     });
+
     this.audio = new Audio();
     this.audio.src = this.songList[0].url;
     let timer = setInterval(() => {
@@ -266,11 +269,12 @@ export default {
           }
         });
       });
+    
+    
     },
   },
 };
 </script>
-
 
 <style>
 @keyframes rotate1 {
@@ -334,7 +338,7 @@ export default {
 .disk_play .songImg {
   animation: rotate1 6s infinite linear;
 }
-.fixed {
+.fixedd {
   position: fixed;
   bottom: 90px;
   right: 10px;
@@ -343,8 +347,7 @@ export default {
   position: relative;
   width: 250px;
   height: 80px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12),
-    0 30px 20px rgba(95, 23, 100, 0.2);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), 0 30px 20px rgba(95, 23, 100, 0.2);
   background-color: white;
   border-radius: 10px;
 }

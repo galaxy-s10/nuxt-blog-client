@@ -1,98 +1,116 @@
 <template>
   <div>
-    <div v-if="articleData">
-      <!-- {{ userInfo }} -->
-      <!-- ppp -->
-      <!-- {{ isStar }} -->
-      <div v-for="(item, index) in articleData.rows" :key="index" class="content">
-        <div style>
-          <h1 style="margin: 20px 0 10px; text-align: center">
-            {{ item.title }}
-          </h1>
-          <p style="text-align: center; font-size: 12px">
-            <span class="el-icon-date" style="margin-right: 4px"></span>
-            {{ format(item.createdAt) }}
-          </p>
-          <p style="font-size: 12px; text-align: center; margin-bottom: 20px">
-            <span class="el-icon-view"></span>
-            {{ item.click }}浏览
-          </p>
-          <img v-if="item.img != null" :src="item.img" class="img1" />
-          <!-- <img  v-lazy="item.img" alt="item.img" width="100%" height="460" /> -->
-          <img v-else src="../../assets/imgs/nopic.png" class="img1" alt />
-          <div>
-            <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
-            <markdown :md="item.content"></markdown>
+    <div v-if="detail">
+      <div class="content">
+        <h1 style="margin: 20px 0 10px; text-align: center">
+          {{ detail.title }}
+        </h1>
+        <div class="desc-warp">
+          <div class="desc-warp1">
+            <span>
+              <i class="el-icon-folder-opened"></i>
+              {{ detail.types[0].name }}
+            </span>
+            <span><i class="el-icon-chat-dot-round"></i>{{ allCount }}</span>
+            <span>
+              <span class="el-icon-view"></span>
+              {{ detail.click }}浏览
+            </span>
           </div>
-          <div v-loading="loadingStar">
-            <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
-            <div style="text-align: left; font-size: 14px" v-if="item.isStar">
-              你已经赞过这篇文章了哦~
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="取消点赞"
-                placement="top"
-                @click.native="starForArticle(0, item.id)"
-              >
-                <i class="el-icon-star-on star"></i>
-              </el-tooltip>
-              {{ item.stars.length }}
+          <div class="desc-warp2">
+            <div style="display: flex; align-items: center">
+              <div style="display: flex; align-items: center">
+                <img
+                  :src="detail.users[0].avatar"
+                  alt=""
+                  style="width: 20px; height: 20px; border-radius: 50%;margin-right:5px"
+                />
+                <span>{{ detail.users[0].username }}</span>
+              </div>
             </div>
-            <div style="text-align: left; font-size: 14px" v-else>
-              如果本文章对你有所帮助，欢迎点个赞!
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="赞一个"
-                placement="top"
-                @click.native="starForArticle(1, item.id)"
-              >
-                <i class="el-icon-star-off star"></i>
-              </el-tooltip>
-              {{ item.stars.length }}
+            <div>
+              <i class="el-icon-date" style="margin-right: 4px"></i>
+              {{ format(detail.createdAt) }}
             </div>
           </div>
+        </div>
 
-          <div style="text-align: right; font-size: 14px">
-            最后更新于：{{ format(item.updatedAt) }}
+        <img v-if="detail.img != null" :src="detail.img" class="img1" />
+        <!-- <img  v-lazy="item.img" alt="item.img" width="100%" height="460" /> -->
+        <img v-else src="../../assets/imgs/nopic.png" class="img1" alt />
+        <div>
+          <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
+          <markdown :md="detail.content"></markdown>
+        </div>
+        <div v-loading="loadingStar">
+          <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
+          <div style="text-align: left; font-size: 14px" v-if="detail.isStar">
+            你已经赞过这篇文章了哦~
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="取消点赞"
+              placement="top"
+              @click.native="starForArticle(0, detail.id)"
+            >
+              <i class="el-icon-star-on star"></i>
+            </el-tooltip>
+            {{ detail.stars.length }}
+          </div>
+          <div style="text-align: left; font-size: 14px" v-else>
+            如果本文章对你有所帮助，欢迎点个赞!
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="赞一个"
+              placement="top"
+              @click.native="starForArticle(1, detail.id)"
+            >
+              <i class="el-icon-star-off star"></i>
+            </el-tooltip>
+            {{ detail.stars.length }}
           </div>
         </div>
-        <div v-if="item.tags.length != 0">
-          <span class="el-icon-collection-tag"></span>
-          <div class="little-tag" v-for="item in item.tags" :key="item.id">
-            {{ item.name }}
-          </div>
-        </div>
-        <div v-if="item.is_comment">
-          <el-divider>评论一下吧!</el-divider>
-          <div>
-            <el-input
-              type="textarea"
-              resize="none"
-              :rows="5"
-              show-word-limit
-              maxlength="200"
-              v-model="content"
-            ></el-input>
-            <p style="text-align: right">
-              <el-button type="primary" @click="addcomment()">提交</el-button>
-            </p>
-            <comment
-              :list="commentList"
-              :allCount="allCount"
-              :pageParams="pageParams"
-              @reshow="getComment"
-              @handleParentPage="parentPage"
-              @handleChildrenPage="childrenPage"
-              v-loading="isLoading"
-            />
-          </div>
-        </div>
-        <div v-else>
-          <el-divider>该文章暂未开启评论~~~</el-divider>
+
+        <div style="text-align: right; font-size: 14px">
+          最后更新于：{{ format(detail.updatedAt) }}
         </div>
       </div>
+      <div v-if="detail.tags.length != 0">
+        <span class="el-icon-collection-tag"></span>
+        <div class="little-tag" v-for="item in detail.tags" :key="item.id">
+          {{ item.name }}
+        </div>
+      </div>
+      <div v-if="detail.is_comment">
+        <el-divider>评论一下吧!</el-divider>
+        <div>
+          <el-input
+            type="textarea"
+            resize="none"
+            :rows="5"
+            show-word-limit
+            maxlength="200"
+            v-model="content"
+          ></el-input>
+          <p style="text-align: right">
+            <el-button type="primary" @click="addcomment()">提交</el-button>
+          </p>
+          <comment
+            :list="commentList"
+            :allCount="allCount"
+            :pageParams="pageParams"
+            @reshow="getComment"
+            @handleParentPage="parentPage"
+            @handleChildrenPage="childrenPage"
+            v-loading="isLoading"
+          />
+        </div>
+      </div>
+      <div v-else>
+        <el-divider>该文章暂未开启评论~~~</el-divider>
+      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -122,7 +140,7 @@ export default {
   },
   head() {
     return {
-      title: this.articleData.rows[0] && this.articleData.rows[0].title + " - 自然博客",
+      title: this.detail && this.detail.title + " - 自然博客",
       meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
@@ -138,7 +156,7 @@ export default {
     // this.query = query;
     try {
       var data = await $axios.$get(`/api/comment`, { params: { ...query } });
-      await store.dispatch("article/findarticle", { id });
+      await store.dispatch("article/getArticleDetail", { id });
       return {
         query,
         commentList: data.rows,
@@ -172,7 +190,6 @@ export default {
             article_id,
             from_user_id: this.$store.state.user.id,
           });
-          console.log(res);
           this.$message.success({
             message: res.message,
           });
@@ -200,25 +217,16 @@ export default {
     // 获取子评论分页
     async childrenPage(childVal) {
       // async childrenPage(childrenCommentId) {
-      console.log("{ ...childVal }");
-      console.log({ ...childVal });
-      let query = { ...childVal };
-      console.log(this.query);
       query.childrenNowPage += 1;
-      console.log(query)
-      // console.log({...this.pageParams,...query})
       let temp = {
         ...this.pageParams,
         ...query,
       };
-      console.log(temp)
-      this.pageParams = temp
+      this.pageParams = temp;
       // query.childrenCommentId = childrenCommentId;
-      // console.log(this.query, v);
       var data = await this.$axios.$get(`/api/comment/childrenPage`, {
         params: { ...this.pageParams },
       });
-      console.log(data);
       this.commentList.forEach((item) => {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
@@ -227,15 +235,12 @@ export default {
           item.huifu.push(...data.rows);
         }
       });
-    
     },
 
     // 获取父评论分页
     async parentPage(v) {
-      console.log({ ...this.query, ...v });
       let query = { ...this.query, ...v };
       query.nowPage += 1;
-      // console.log(this.query, v);
       var data = await this.$axios.$get(`/api/comment`, {
         params: { ...query },
       });
@@ -248,7 +253,6 @@ export default {
         lastPage: data.lastPage,
         pageSize: data.pageSize,
       };
-      console.log(this.commentList);
     },
     // 格式化日期时间
     format(time) {
@@ -322,8 +326,6 @@ export default {
       let res = await this.$axios.$get(
         `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
       );
-      console.log("赞赞赞赞赞赞赞赞赞");
-      console.log(res);
       if (res.result) {
         this.isStar = true;
       } else {
@@ -340,7 +342,7 @@ export default {
     scrollTo({ top: 0 });
   },
   computed: {
-    articleData() {
+    detail() {
       return this.$store.state.article.detail;
     },
     // 如果直接使用userInfo(){}这种方式设置计算属性，get和set都会触发！
@@ -366,6 +368,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.desc-warp {
+  padding-bottom: 10px;
+}
+.desc-warp1 {
+  width: 180px;
+  margin: 0 auto;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+.desc-warp2 {
+  width: 220px;
+  margin: 0 auto;
+  height: 30px;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+</style>
 
 <style>
 .star {

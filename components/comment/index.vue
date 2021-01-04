@@ -218,7 +218,6 @@ export default {
   methods: {
     // 给评论点赞/取消点赞
     async starForComment(type, item) {
-      console.log(type, item);
       // let from_user_id = this.id;
       // let { article_id, id, from_user_id } = item;
       // async starForComment(type, article_id, comment_id, to_user_id) {
@@ -231,8 +230,6 @@ export default {
             from_user_id: this.$store.state.user.id,
             to_user_id: item.from_user_id,
           });
-          console.log(res);
-
           setTimeout(() => {
             this.loadingStar = false;
             this.$message.success({
@@ -271,7 +268,6 @@ export default {
       });
     },
     handleChildrenPage(v) {
-      console.log(v);
       // this.$emit("handleChildrenPage", v.id);
       this.$emit("handleChildrenPage", { ...this.pageParams, childrenCommentId: v.id });
     },

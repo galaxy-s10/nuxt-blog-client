@@ -35,8 +35,8 @@
         width="30%"
       >
         账号：
-        <el-input placeholder="请输入账号" v-model="uname"></el-input>密码：
-        <el-input placeholder="请输入密码" v-model="upwd" show-password></el-input>
+        <el-input placeholder="请输入账号" v-model="username"></el-input>密码：
+        <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
           <el-button type="success" @click="login">确定</el-button>
@@ -51,8 +51,8 @@
         width="30%"
       >
         账号：
-        <el-input placeholder="请输入账号" v-model="uname"></el-input>密码：
-        <el-input placeholder="请输入密码" v-model="upwd" show-password></el-input>
+        <el-input placeholder="请输入账号" v-model="username"></el-input>密码：
+        <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogtwo = false">取消</el-button>
           <el-button type="success" @click="register()">确定</el-button>
@@ -67,8 +67,8 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      uname: "",
-      upwd: "",
+      username: "",
+      password: "",
       state: "",
       visible: true,
       title: "首页",
@@ -86,16 +86,16 @@ export default {
       userLogout: "user/logout",
     }),
     async register() {
-      if (this.uname == "" || this.upwd == "") {
+      if (this.username == "" || this.password == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
         try {
-          if (!(this.uname.length >= 3 && this.uname.length < 10)) {
+          if (!(this.username.length >= 3 && this.username.length < 10)) {
             throw "用户名错误：用户名要求3-10个字符";
           }
           // 正则匹配密码，6-12位，大小写字母和数字和下划线
           let reg = /^\w{6,12}$/g;
-          if (!reg.test(this.upwd)) {
+          if (!reg.test(this.password)) {
             throw "密码错误：密码要求6-12位，大小写字母以及数字和下划线！";
           }
         } catch (err) {
@@ -106,8 +106,8 @@ export default {
           .$post("/api/user/add", {
             id: null,
             avatar: null,
-            username: this.uname,
-            password: this.upwd,
+            username: this.username,
+            password: this.password,
           })
           .then((res) => {
             this.$newmessage("注册成功，请登录~", "success");
@@ -121,10 +121,10 @@ export default {
       }
     },
      login() {
-      if (this.uname == "" || this.upwd == "") {
+      if (this.username == "" || this.password == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-         this.userLogin({ username: this.uname, password: this.upwd })
+         this.userLogin({ username: this.username, password: this.password })
           .then((res) => {
             this.$newmessage(res.message, "success");
             this.dialogVisible = false;

@@ -11,5 +11,6 @@ export default function ({ $axios, store }) {
     })
     $axios.onError(error => {
         return Promise.reject(error.response.data)
+        // return Promise.reject(error.response.data)
     })
 }

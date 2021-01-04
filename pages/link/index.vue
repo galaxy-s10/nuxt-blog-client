@@ -93,9 +93,7 @@ export default {
   head() {
     return {
       title: "友链 - 自然博客",
-      meta: [
-        { hid: 'home', name: 'description', content: '自然 - 个人博客' }
-      ]
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
   async asyncData({ $axios, params, store }) {
@@ -108,12 +106,13 @@ export default {
       childrenPageSize: 2, //当前子评论分页大小
     };
     // this.query = query;
-    const { rows } = await $axios.$get("/api/link/list");
+    const { rows } = await $axios.$get("/api/link/pageList", {
+      params: { nowPage: 1, pageSize: 10 },
+    });
     try {
       var data = await $axios.$get(`/api/comment/comment`, {
         params: { ...query },
       });
-      await store.dispatch("article/findarticle", { id });
       return {
         query,
         linkList: rows,
@@ -207,23 +206,16 @@ export default {
     },
     // 获取子评论分页
     async childrenPage(childVal) {
-    // async childrenPage(childrenCommentId) {
-      console.log('{ ...childVal }');
-      console.log({ ...childVal });
-      let query = { ...childVal };
+      // async childrenPage(childrenCommentId) {
       query.childrenNowPage += 1;
-      console.log(query)
-      // console.log({...this.pageParams,...query})
       let temp = {
         ...this.pageParams,
         ...query,
       };
-      console.log(temp)
-      this.pageParams = temp
+      this.pageParams = temp;
       var data = await this.$axios.$get(`/api/comment/commentChildrenPage`, {
         params: { ...this.pageParams },
       });
-      console.log(data);
       this.commentList.forEach((item) => {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
@@ -236,23 +228,19 @@ export default {
 
     // 获取父评论分页
     async parentPage(v) {
-      console.log({ ...this.query, ...v });
-      let query = { ...this.query, ...v };
       query.nowPage += 1;
-      // console.log(this.query, v);
       var data = await this.$axios.$get(`/api/comment/comment`, {
         params: { ...query },
       });
       this.commentList.push(...data.rows);
       this.allCount = data.allCount;
-      (this.pageParams = {
+      this.pageParams = {
         ...this.query,
         count: data.count,
         nowPage: data.nowPage,
         lastPage: data.lastPage,
         pageSize: data.pageSize,
-      }),
-        console.log(this.commentList);
+      };
     },
   },
 };

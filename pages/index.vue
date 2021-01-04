@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article v-for="(item, index) in pagelist" :key="index" class="article-con">
+    <article v-for="(item, index) in pageList" :key="index" class="article-con">
       <div class="article-l">
         <nuxt-link
           :to="`/article/${item.id}`"
@@ -27,10 +27,13 @@
             >{{ item.name }}</el-tag
           >
         </div>
-        <div style="font-size: 12px;display:flex;align-items:center;margin:10px 0">
-            <img style="width:20px;height:20px;border-radius:50%" :src="item.users[0] && item.users[0].avatar" alt="" />
-          <div class="jgh">
-          </div>
+        <div style="font-size: 12px; display: flex; align-items: center; margin: 10px 0">
+          <img
+            style="width: 20px; height: 20px; border-radius: 50%"
+            :src="item.users[0] && item.users[0].avatar"
+            alt=""
+          />
+          <div class="jgh"></div>
           <div class="jgh">{{ format1(item.createdAt) }}</div>
           <div class="jgh">{{ item.click }}次浏览</div>
           <div class="jgh">{{ item.comments.length }}条评论</div>
@@ -39,7 +42,12 @@
       </div>
     </article>
     <div style="text-align: center; padding: 30px 0">
-      <page :total="total" :pagesize="pagesize" @currentchange="currentchange" />
+      <page
+        :count="count"
+        :nowPage="nowPage"
+        :pageSize="pageSize"
+        @currentChange="currentChange"
+      />
     </div>
   </div>
 </template>
@@ -79,11 +87,12 @@ export default {
       return format1(time);
     },
     // currentPage 改变时会触发
-    currentchange(nowpage) {
-      this.$store.commit("article/nowpage", nowpage);
-      this.$store.dispatch("article/articlepage", {
-        nowpage,
-        type: this.$store.state.article.type,
+    async currentChange(nowPage) {
+      this.$store.commit("article/changeNowPage", nowPage);
+      await this.$store.dispatch("article/getArticleList", {
+        type_id: this.$store.state.article.type_id,
+        nowPage,
+        pageSize: 5,
       });
     },
     headershow() {
@@ -92,13 +101,18 @@ export default {
       const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop > height;
     },
-    hello(x) {
-      this.$store.dispatch("article/articlelist", { type: x });
-    },
+    // hello(x) {
+    //   this.$store.dispatch("article/articlelist", { type: x });
+    // },
   },
   async fetch({ store, params }) {
-    await store.commit("article/nowpage", 1);
-    await store.dispatch("article/articlepage", { nowpage: 1 });
+    await store.dispatch("article/getArticleList", {
+      ordername: "createdAt",
+      orderby: "desc",
+      type_id: store.state.article.type_id,
+      nowPage: 1,
+      pageSize: 5,
+    });
   },
   created() {},
   mounted() {
@@ -109,25 +123,31 @@ export default {
     window.removeEventListener("scroll", this.headershow);
   },
   computed: {
-    pagelist() {
-      return this.$store.state.article.pagelist;
+    pageList() {
+      return this.$store.state.article.pageList;
     },
-    total() {
+    count() {
       return this.$store.state.article.count;
     },
-    pagesize() {
-      return this.$store.state.article.pagesize;
+    pageSize() {
+      return this.$store.state.article.pageSize;
     },
-    nowpage() {
-      return this.$store.state.article.nowpage;
+    nowPage() {
+      return this.$store.state.article.nowPage;
     },
-    nowtype() {
-      return this.$store.state.article.nowtype;
+    type_id() {
+      return this.$store.state.article.type_id;
     },
   },
   watch: {
-    nowtype(newval, oldval) {
-      this.$store.dispatch("article/articlepage", { nowpage: 1 });
+    type_id(newval, oldval) {
+      this.$store.dispatch("article/getArticleList", {
+        ordername:this.$store.state.article.ordername,
+        orderby:this.$store.state.article.orderby,
+        type_id: this.$store.state.article.type_id,
+        nowPage: 1,
+        pageSize: 5,
+      });
     },
   },
 };
@@ -160,7 +180,10 @@ export default {
   background-size: cover;
   height: 100%;
   width: 100%;
-  transition: all 0.3s;
+  transition: all 0.5s ease 0s;
+}
+.img:hover {
+  transform: scale(1.1);
 }
 .article-con {
   display: flex;
@@ -173,6 +196,7 @@ export default {
 .article-l {
   flex: 0 0 40%;
   margin: 20px;
+  overflow: hidden;
 }
 .article-r {
   box-sizing: border-box;

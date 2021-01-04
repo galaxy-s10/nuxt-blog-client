@@ -1,7 +1,7 @@
 <template>
   <transition>
     <div v-show="visible" class="header-wrapper">
-      <div class="header" style="position:relative">
+      <div class="header" style="position: relative">
         <div class="logo">
           <nuxt-link tag="h2" to="/">
             Vue
@@ -10,26 +10,26 @@
         </div>
         <div class="nav">
           <ul class="navmenu">
-            <li v-for="(item,index) in navlist" :key="index" class="tcss">
+            <li v-for="(item, index) in navlist" :key="index" class="tcss">
               <nuxt-link :to="item.path" tag="span">
                 <span :class="item.icon"></span>
-                <span style="font-size:18px">{{item.title}}</span>
+                <span style="font-size: 18px">{{ item.title }}</span>
               </nuxt-link>
             </li>
           </ul>
           <div class="navmenu1">
             <el-dropdown trigger="click" @command="handleCommand">
-              <div class="el-dropdown-link" style="color:#53a8ff">
-                {{title}}
+              <div class="el-dropdown-link" style="color: #53a8ff">
+                {{ title }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
-                  v-for="(item,index) in navlist"
+                  v-for="(item, index) in navlist"
                   :key="index"
                   :command="item.title"
                 >
-                  <nuxt-link tag="span" :to="item.path">{{item.title}}</nuxt-link>
+                  <nuxt-link tag="span" :to="item.path">{{ item.title }}</nuxt-link>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -58,7 +58,7 @@
 import login from "../../components/login";
 export default {
   components: {
-    login
+    login,
   },
   data() {
     return {
@@ -73,22 +73,22 @@ export default {
         {
           title: "首页",
           icon: "el-icon-s-home",
-          path: "/"
+          path: "/",
         },
         {
           title: "归档",
           icon: "el-icon-s-data",
-          path: "/history"
+          path: "/history",
         },
         {
           title: "标签",
           icon: "el-icon-s-flag",
-          path: "/tag/1"
+          path: "/tag/1",
         },
         {
           title: "友链",
           icon: "el-icon-s-promotion",
-          path: "/link"
+          path: "/link",
         },
         // {
         //   title: "留言板",
@@ -98,9 +98,9 @@ export default {
         {
           title: "关于",
           icon: "el-icon-share",
-          path: "/about"
-        }
-      ]
+          path: "/about",
+        },
+      ],
     };
   },
   methods: {
@@ -109,23 +109,23 @@ export default {
         this.$newmessage("请输入完整！", "error");
       } else {
         findone(this.uname)
-          .then(res => {
+          .then((res) => {
             if (res.data.length == 1) {
               this.$newmessage("该用户名已经被注册了哦~", "warning");
             } else {
               add({ username: this.uname, pwd: this.upwd })
-                .then(res => {
+                .then((res) => {
                   this.$newmessage(this.uname + "注册成功，请登录~", "success");
                   setTimeout(() => {
                     this.dialogtwo = false;
                   }, 500);
                 })
-                .catch(err => {
+                .catch((err) => {
                   console.log(err);
                 });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       }
@@ -136,7 +136,7 @@ export default {
       } else {
         await this.$store.dispatch("login", {
           username: this.uname,
-          pwd: this.upwd
+          pwd: this.upwd,
         });
         await this.$store.dispatch("getInfo");
       }
@@ -160,11 +160,14 @@ export default {
     },
     async querySearchAsync(keyword, cb) {
       if (keyword) {
-        const res = await this.$axios.$get(
-          `/api/article/find?title=${keyword}`
-        );
+        let params = {
+          nowPage: 1,
+          pageSize: 20,
+          keyword,
+        };
+        const res = await this.$axios.$get(`/api/article/pageList`, { params });
         setTimeout(() => {
-          cb(res.list.rows);
+          cb(res.rows);
         }, 300);
       } else {
         setTimeout(() => {
@@ -175,10 +178,9 @@ export default {
     headershow() {
       // 头部高度为70px
       const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop < height;
-    }
+    },
   },
   computed: {
     inout() {
@@ -187,14 +189,14 @@ export default {
       } else {
         return false;
       }
-    }
+    },
   },
   mounted() {
     window.addEventListener("scroll", this.headershow);
   },
   destroyed() {
     window.removeEventListener("scroll", this.headershow);
-  }
+  },
 };
 </script>
 

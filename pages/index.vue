@@ -90,6 +90,8 @@ export default {
     async currentChange(nowPage) {
       this.$store.commit("article/changeNowPage", nowPage);
       await this.$store.dispatch("article/getArticleList", {
+        ordername: this.$store.state.article.ordername,
+        orderby: this.$store.state.article.orderby,
         type_id: this.$store.state.article.type_id,
         nowPage,
         pageSize: 5,
@@ -142,8 +144,8 @@ export default {
   watch: {
     type_id(newval, oldval) {
       this.$store.dispatch("article/getArticleList", {
-        ordername:this.$store.state.article.ordername,
-        orderby:this.$store.state.article.orderby,
+        ordername: this.$store.state.article.ordername,
+        orderby: this.$store.state.article.orderby,
         type_id: this.$store.state.article.type_id,
         nowPage: 1,
         pageSize: 5,

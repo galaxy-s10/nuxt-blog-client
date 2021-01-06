@@ -103,14 +103,12 @@ export default {
           return;
         }
         await this.$axios
-          .$post("/api/user/add", {
-            id: null,
-            avatar: null,
+          .$post("/api/user/register", {
             username: this.username,
             password: this.password,
           })
           .then((res) => {
-            this.$newmessage("注册成功，请登录~", "success");
+            this.$newmessage("注册成功!", "success");
             setTimeout(() => {
               this.dialogtwo = false;
             }, 500);
@@ -120,18 +118,18 @@ export default {
           });
       }
     },
-     login() {
+    login() {
       if (this.username == "" || this.password == "") {
         this.$newmessage("请输入完整！", "error");
       } else {
-         this.userLogin({ username: this.username, password: this.password })
+        this.userLogin({ username: this.username, password: this.password })
           .then((res) => {
             this.$newmessage(res.message, "success");
             this.dialogVisible = false;
             this.getUserInfo();
           })
           .catch((err) => {
-            console.log(err)
+            console.log(err);
             this.$newmessage(err.message, "error");
           });
       }

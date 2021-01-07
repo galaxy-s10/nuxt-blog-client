@@ -25,7 +25,7 @@
                 <span class="el-icon-date">{{ format(item.createdAt) }}</span>
                 <span style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span style="cursor: pointer" @click="showinput(item.id)"> 回复 </span>|
+                  <span style="cursor: pointer" @click="showinput(item.id)"> 回复</span>|
                   <span>
                     <el-tooltip
                       v-if="item.isStar == true"
@@ -107,7 +107,7 @@
               </div>
               <div>
                 <span class="el-icon-date">{{ format(itemm.createdAt) }}</span>
-                
+
                 <div style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
                   <span style="cursor: pointer" @click="showinput(itemm.id)">
@@ -134,10 +134,7 @@
                     </el-tooltip>
                     {{ itemm.stars.length }}
                   </span>
-                
                 </div>
-
-
               </div>
               <div style="background: #fafbfc; padding: 10px" v-show="itemm.id == isshow">
                 <div>
@@ -222,10 +219,11 @@ export default {
       // let { article_id, id, from_user_id } = item;
       // async starForComment(type, article_id, comment_id, to_user_id) {
       if (this.$store.state.user.token) {
-        this.loadingStar = true;
+        // this.loadingStar = true;
+        console.log(item);
         if (type == 1) {
           let res = await this.$axios.post(`/api/star/starForComment`, {
-            article_id: item.id,
+            article_id: item.article_id,
             comment_id: item.id,
             from_user_id: this.$store.state.user.id,
             to_user_id: item.from_user_id,
@@ -240,7 +238,7 @@ export default {
         } else {
           let res = await this.$axios.delete(`/api/star/delStarForComment`, {
             data: {
-              article_id: item.id,
+              article_id: item.article_id,
               comment_id: item.id,
               from_user_id: this.$store.state.user.id,
               to_user_id: item.from_user_id,

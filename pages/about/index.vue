@@ -146,11 +146,11 @@ export default {
   async fetch({ $axios, store, params }) {
   },
   async asyncData({ $axios, store }) {
-    let res = await $axios.$get("/api/front/detail");
+    let res = await $axios.$get("/api/frontend/detail");
     return {
-      detail: res.detail.front_about,
+      detail: res.detail.frontend_about,
     };
-    // this.detail = res.detail.front_about;
+    // this.detail = res.detail.frontend_about;
   },
 };
 </script>

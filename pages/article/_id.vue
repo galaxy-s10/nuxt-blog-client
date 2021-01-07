@@ -23,7 +23,7 @@
                 <img
                   :src="detail.users[0].avatar"
                   alt=""
-                  style="width: 20px; height: 20px; border-radius: 50%;margin-right:5px"
+                  style="width: 20px; height: 20px; border-radius: 50%; margin-right: 5px"
                 />
                 <span>{{ detail.users[0].username }}</span>
               </div>
@@ -176,7 +176,7 @@ export default {
   methods: {
     // 文章详情
     async getArticleDetail() {
-      await this.$store.dispatch("article/findarticle", {
+      await this.$store.dispatch("article/getArticleDetail", {
         id: this.$route.params.id,
       });
     },

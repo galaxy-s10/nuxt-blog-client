@@ -74,14 +74,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions({
-      userLogin: "user/login",
-      getUserInfo: "user/getUserInfo",
-    }),
-    ...mapMutations({
-      setToken: "user/setToken",
-      logout: "user/logout",
-    }),
+    // ...mapActions({
+    //   userLogin: "user/login",
+    //   getUserInfo: "user/getUserInfo",
+    // }),
+    // ...mapMutations({
+    //   setToken: "user/setToken",
+    //   logout: "user/logout",
+    // }),
     // 格式化时间
     format1(time) {
       return format1(time);

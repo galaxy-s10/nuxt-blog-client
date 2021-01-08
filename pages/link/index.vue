@@ -89,6 +89,14 @@ export default {
         return format(time);
       };
     },
+    userInfo() {
+      return this.$store.state.user.id;
+    },
+  },
+  watch: {
+    userInfo(val) {
+      this.getComment();
+    },
   },
   head() {
     return {

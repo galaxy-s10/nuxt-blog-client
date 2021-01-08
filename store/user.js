@@ -1,5 +1,3 @@
-import { MessageBox, Message } from 'element-ui'
-import Cookies from 'js-cookie'
 export const state = () => ({
     id: null,
     name: null,

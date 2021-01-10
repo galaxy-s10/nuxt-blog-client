@@ -41,7 +41,7 @@ export const mutations = {
 export const actions = {
     async login({ commit }, data) {
         try {
-            const res = await this.$axios.$post('/api/user/login', data)
+            const res = await this.$axios.$post('/api/user/login', { ...data, exp: 1 })
             commit('setToken', res.token)
             return Promise.resolve(res)
         } catch (err) {

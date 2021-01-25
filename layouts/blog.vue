@@ -12,9 +12,8 @@
   </div>
 </template>
 
-
 <script>
-import vaudio from '@/components/audio'
+import vaudio from "@/components/audio";
 import Cookies from "js-cookie";
 import vheader from "./header";
 import typelist from "./typelist";
@@ -32,28 +31,32 @@ export default {
     vaside,
     vmain,
     vaudio,
-    vfooter
+    vfooter,
   },
   methods: {
     ...mapActions({
-      getUserInfo: "user/getUserInfo"
+      getUserInfo: "user/getUserInfo",
     }),
     ...mapMutations({
       setToken: "user/setToken",
-      logout: "user/logout"
-    })
+      logout: "user/logout",
+    }),
   },
   mounted() {
+    // setTimeout(() => {
+    //   console.log(window.document.offsetHeight);
+    // console.log(document.documentElement.clientHeight );
+    // }, 1000);
+    
     if (localStorage.token) {
       this.setToken(localStorage.token);
       this.getUserInfo()
-        .then(() => {
-        })
+        .then(() => {})
         .catch(() => {
           this.logout();
         });
     }
-  }
+  },
 };
 </script>
 

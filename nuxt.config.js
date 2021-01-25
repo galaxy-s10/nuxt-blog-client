@@ -62,8 +62,8 @@ export default {
   },
   proxy: {
     '/api': {
-      // target: 'http://www.zhengbeining.com:3003',
-      target: 'http://localhost:3003',
+      target: 'http://www.zhengbeining.com:3003',
+      // target: 'http://localhost:3003',
       pathRewrite: {
         '^/api': ''
       }

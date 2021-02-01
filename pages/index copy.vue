@@ -1,9 +1,9 @@
 <template>
   <div class="masonry">
-    <div v-if="isFirst">
-      <!-- <div> -->
+    <!-- <div v-if="isFirst"> -->
+    <div>
       <!-- 骨架屏的样式 loading -->
-      <div class="masonry-wrap" ref="masonry-wrap" style="height: 1800px">
+      <div class="masonry-wrap" ref="masonry-wrap">
         <div class="masonry-item" ref="masonry-item">
           <div
             class="loading-block"
@@ -18,12 +18,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -47,12 +47,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -76,12 +76,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -105,12 +105,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -134,12 +134,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -163,12 +163,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -192,12 +192,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -221,12 +221,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -250,12 +250,12 @@
               >
                 <div
                   class="loading-block"
-                  :style="{
-                    'background-color': '#ededed',
-                    width: '20px',
-                    height: '20px',
-                    'border-radius': '50%',
-                  }"
+                  style="
+                    background-color: #ededed;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                  "
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -267,7 +267,7 @@
         </div>
       </div>
     </div>
-    <div class="masonry-wrap" ref="masonry-wrap1">
+    <div class="masonry-wrap" ref="masonry-wrap">
       <article
         v-for="(item, index) in list"
         :key="index"
@@ -282,7 +282,6 @@
               :src="item.img ? item.img : require('../assets/imgs/nopic.png')"
               alt=""
               @load="imgLoad"
-              @error="imgLoadError"
             />
           </nuxt-link>
           <div class="detail">
@@ -414,7 +413,6 @@ export default {
         gap: 20,
       },
       imgLoadNum: 0,
-      imgLoadErrorNum: 0,
       isLoad: false,
       showMasonry: false,
       end: false,
@@ -482,75 +480,8 @@ export default {
       const gap = this.masonryParams.gap;
       // const wrap = document.getElementsByClassName("masonry-wrap")
       // const item = wrap[0].getElementsByClassName("masonry-item")
-      const wrap = this.$refs["masonry-wrap1"];
-      const item = this.$refs["masonry-item"];
-      console.log(wrap);
-      console.log(item[0]);
-      const width1 = window.getComputedStyle(wrap, null)["width"];
-      const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap;
-      // 计算减去间隙后，每个item的平均宽度
-      const width = width2 / column;
-      // 保存当前列的offsetHeight的高度
-      const offsetList = [];
-      wrap.style.position = "relative";
-      for (let i = 0; i < item.length; i++) {
-        // wrapHeight += item[i].offsetHeight + gap;
-        // console.log(wrapHeight);
-        item[i].style.width = "100%";
-        item[i].style.display = "block";
-        item[i].style.position = "absolute";
-        item[i].style.width = width + "px";
-        item[i].style.opacity = 0;
-
-        if (i < column) {
-          // 将第一行的offsetHeight都保存在数组里
-          // offsetList.push(i == 0 ? item[i].offsetHeight + gap : item[i].offsetHeight);
-          offsetList.push(item[i].offsetHeight);
-          item[i].style.top = "0";
-          if ((i + 1) % column == 1) {
-            item[i].style.left = 0;
-            item[i].style.opacity = 1;
-          } else {
-            let w = i * width;
-            let g = i * gap;
-            item[i].style.left = `calc(${w}px + ${g}px)`;
-            item[i].style.opacity = 1;
-          }
-        } else {
-          const minIndex = getMinIndex(offsetList);
-          let w = minIndex * width;
-          let g = minIndex * gap;
-          // let g = gap;
-          item[i].style.top = offsetList[minIndex] + gap + "px";
-          item[i].style.left = w + g + "px";
-          item[i].style.opacity = 1;
-          offsetList[minIndex] += item[i].offsetHeight + gap;
-        }
-      }
-      function format(v) {
-        return v.slice(0, v.length - 2);
-      }
-      let wrapHeight =
-        parseInt(format(item[item.length - 1].style.top)) +
-        parseInt(item[item.length - 1].offsetHeight);
-      wrap.style.height = wrapHeight + "px";
-      this.isLoad = false;
-    },
-    masonry1() {
-      // 获取数组最小值的下标
-      function getMinIndex(arr) {
-        return [].indexOf.call(arr, Math.min.apply(null, arr));
-      }
-      // 列数
-      const column = this.masonryParams.column;
-      // 间隙
-      const gap = this.masonryParams.gap;
-      // const wrap = document.getElementsByClassName("masonry-wrap")
-      // const item = wrap[0].getElementsByClassName("masonry-item")
       const wrap = this.$refs["masonry-wrap"];
-      const item = wrap.getElementsByClassName("masonry-item");
-      console.log(wrap);
-      console.log(item[0]);
+      const item = this.$refs["masonry-item"];
       const width1 = window.getComputedStyle(wrap, null)["width"];
       const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap;
       // 计算减去间隙后，每个item的平均宽度
@@ -604,15 +535,6 @@ export default {
     imgLoad() {
       this.imgLoadNum++;
     },
-    imgLoadError(e) {
-      console.log("imgLoadError");
-      console.log(e.target);
-      console.log(e.target.src);
-      e.target.src = require("../assets/imgs/errorpic.png");
-      // e.target.style.height = "200px";
-      // this.imgLoadNum++;
-      this.imgLoadErrorNum++;
-    },
     // hello(x) {
     //   this.$store.dispatch("article/articlelist", { type: x });
     // },
@@ -629,23 +551,11 @@ export default {
   },
   created() {},
   mounted() {
-    // setTimeout(() => {
-    //   const item = this.$refs["masonry-item"];
-    //   console.log("item");
-    //   console.log(item);
-    // }, 1000);
     // this.masonry();
-    // setTimeout(() => {
-    console.log("000000");
-    this.$axios.$get("/api/log/getPosition").then((res) => {
-      console.log("resresresres");
-      console.log(res);
-    }).catch(err=>{
-      console.log('111');
-      console.log(err);
-    })
-    this.masonry1();
-    // }, 1000);
+    setTimeout(() => {
+      console.log('000000');
+      this.masonry();
+    }, 1000);
     this.list = this.$store.state.article.pageList;
     // console.log(this.list)
     // console.log(this.$store.state.article.pageList)
@@ -727,32 +637,15 @@ export default {
 
 .masonry-wrap {
   box-sizing: border-box;
-  /* background-color: #fff; */
+  background-color: #fff;
   border-radius: 0.3rem;
 }
 
-/* .masonry-item {
-  box-sizing: border-box;
-  background-color: #fff;
-  box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.12);
-  border-radius: 0.3rem;
-} */
 .masonry-item {
   box-sizing: border-box;
   background-color: #fff;
   box-shadow: 0px 4px 6px rgb(0, 0, 0, 0.12);
   border-radius: 0.3rem;
-  transition: all 0.5s ease;
-}
-
-.masonry-item:nth-child(2n) {
-  top: 100%;
-  left: 100%;
-}
-
-.masonry-item:nth-child(2n-1) {
-  top: 100%;
-  left: 0%;
 }
 
 .loading-block {
@@ -782,7 +675,6 @@ export default {
 }
 .wrap .head-img {
   width: 100%;
-  /* min-height: 200px; */
 }
 .wrap .detail {
   padding: 5px 10px;

@@ -10,7 +10,10 @@ export default function ({ $axios, store }) {
         }
     })
     $axios.onError(error => {
-        return Promise.reject(error.response.data)
+        console.log(error);
+        console.log(error.response);
         // return Promise.reject(error.response.data)
+        // return Promise.reject(error.response)
+        return Promise.reject(error.response.data)
     })
 }

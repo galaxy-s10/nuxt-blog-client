@@ -636,14 +636,6 @@ export default {
     // }, 1000);
     // this.masonry();
     // setTimeout(() => {
-    console.log("000000");
-    this.$axios.$get("/api/log/getPosition").then((res) => {
-      console.log("resresresres");
-      console.log(res);
-    }).catch(err=>{
-      console.log('111');
-      console.log(err);
-    })
     this.masonry1();
     // }, 1000);
     this.list = this.$store.state.article.pageList;

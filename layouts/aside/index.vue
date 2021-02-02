@@ -9,6 +9,50 @@
         <p class="usertitle">{{ title }}</p>
       </div>
     </div>
+    <div class="ip-info">
+      <div style="padding: 10px 0 10px 10px">
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+          <span
+            class="el-icon-location-outline"
+            style="font-size: 18px; font-weight: blod; margin-right: 4px"
+          ></span>
+          访客信息
+        </h1>
+        <div v-loading="!ipInfo">
+          <div style="padding: 10px 0">IP：{{ ipInfo.ip }}</div>
+          <div>
+            位置：{{ ipInfo.country + " - " + ipInfo.region + " - " + ipInfo.city }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ip-info" style="font-size: 14px; font-weight: bold; padding-right: 10px">
+      <div style="padding: 10px 0 10px 10px">
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+          <span
+            class="el-icon-s-data"
+            style="font-size: 18px; font-weight: blod; margin-right: 4px"
+          ></span>
+          流量信息
+        </h1>
+        <div v-loading="!visitorData">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <div style="padding: 10px 0">
+              历史总访问量：{{ visitorData.allVisitorNumber }}
+            </div>
+            <div style="padding: 10px 0">
+              历史总访客量：{{ visitorData.allVisitorPeople }}
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <div style="padding: 10px 0">
+              今天总访问数：{{ visitorData.nowDayallVisitorNumber }}
+            </div>
+            <div>今天总访客数：{{ visitorData.nowDayAllVisitorPeople }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="hotart">
       <div style="padding: 10px 0 10px 10px">
         <span
@@ -74,14 +118,16 @@
 
 <script>
 import { format1 } from "@/utils/format.js";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
       // tagList: null
+      // isLoading:false,
     };
   },
   methods: {
+    ...mapActions("app", ["getIpInfo", "getVisitorData"]),
     format1(time) {
       return format1(time);
     },
@@ -91,6 +137,12 @@ export default {
   },
   computed: {
     ...mapState({
+      ipInfo(state) {
+        return state.app.ipInfo;
+      },
+      visitorData(state) {
+        return state.app.visitorData;
+      },
       name(state) {
         return state.user.name == null ? "VueBlog" : state.user.name;
       },
@@ -110,6 +162,10 @@ export default {
     hotlist() {
       return this.$store.state.article.hotlist;
     },
+  },
+  mounted() {
+    this.getIpInfo();
+    this.getVisitorData();
   },
 };
 </script>

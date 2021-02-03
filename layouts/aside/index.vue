@@ -163,9 +163,9 @@ export default {
       return this.$store.state.article.hotlist;
     },
   },
-  mounted() {
-    this.getIpInfo();
-    this.getVisitorData();
+  async mounted() {
+    await this.getIpInfo();
+    await this.getVisitorData();
   },
 };
 </script>

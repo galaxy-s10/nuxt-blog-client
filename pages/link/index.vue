@@ -213,7 +213,7 @@ export default {
       }
     },
     // 获取子评论分页
-    async childrenPage(childVal) {
+    async childrenPage(query) {
       // async childrenPage(childrenCommentId) {
       query.childrenNowPage += 1;
       let temp = {
@@ -235,7 +235,7 @@ export default {
     },
 
     // 获取父评论分页
-    async parentPage(v) {
+    async parentPage(query) {
       query.nowPage += 1;
       var data = await this.$axios.$get(`/api/comment/comment`, {
         params: { ...query },
@@ -243,7 +243,7 @@ export default {
       this.commentList.push(...data.rows);
       this.allCount = data.allCount;
       this.pageParams = {
-        ...this.query,
+        ...query,
         count: data.count,
         nowPage: data.nowPage,
         lastPage: data.lastPage,

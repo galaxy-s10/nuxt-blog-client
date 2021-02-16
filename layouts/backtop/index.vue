@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div v-show="toggle" :class="{show:1,backtop:visible}" @click="handleTo"></div>
-    <div v-if="!toggle" :class="{minback:1,showminback:visible}" @click="handleTo">
+    <div
+      v-show="toggle"
+      :class="{ show: 1, backtop: visible }"
+      @click="handleTo"
+    ></div>
+    <div
+      v-if="!toggle"
+      :class="{ minback: 1, showminback: visible }"
+      @click="handleTo"
+    >
       <span class="triangle" />
     </div>
   </div>
@@ -12,7 +20,7 @@ export default {
   data() {
     return {
       visible: false,
-      toggle: false
+      toggle: false,
     };
   },
   methods: {
@@ -29,7 +37,7 @@ export default {
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop > height;
-    }
+    },
   },
   created() {},
   mounted() {
@@ -41,7 +49,7 @@ export default {
     window.removeEventListener("scroll", this.headershow);
     window.addEventListener("resize", this.handleResize);
   },
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -76,7 +84,7 @@ export default {
   height: 40px;
   border-radius: 50%;
   right: 30px;
-  bottom: 40px;
+  bottom: 20px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: all 1s;
@@ -84,6 +92,7 @@ export default {
   visibility: hidden;
 }
 .showminback {
+  z-index: 999;
   opacity: 1;
   visibility: visible;
 }

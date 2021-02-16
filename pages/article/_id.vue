@@ -20,11 +20,7 @@
           <div class="desc-warp2">
             <div style="display: flex; align-items: center">
               <div style="display: flex; align-items: center">
-                <img
-                  :src="detail.users[0].avatar"
-                  alt=""
-                  style="width: 20px; height: 20px; border-radius: 50%; margin-right: 5px"
-                />
+                <img :src="detail.users[0].avatar" alt="" class="avatar" />
                 <span>{{ detail.users[0].username }}</span>
               </div>
             </div>
@@ -40,7 +36,7 @@
         <img v-else src="../../assets/imgs/nopic.png" class="img1" alt />
         <div>
           <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
-          <markdown :md="detail.content"></markdown>
+          <markdown :md="detail.content" ref="hss-md"></markdown>
         </div>
         <div v-loading="loadingStar">
           <!-- <div style="text-align: left; font-size: 14px" v-if="isStar"> -->
@@ -57,7 +53,10 @@
             </el-tooltip>
             {{ detail.stars.length }}
           </div>
-          <div style="text-align: left; font-size: 14px" v-else>
+          <div
+            style="text-align: left; font-size: 14px; padding-top: 10px"
+            v-else
+          >
             如果本文章对你有所帮助，欢迎点个赞!
             <el-tooltip
               class="item"
@@ -76,7 +75,10 @@
           最后更新于：{{ format(detail.updatedAt) }}
         </div>
       </div>
-      <div v-if="detail.tags.length != 0">
+      <div
+        v-if="detail.tags.length != 0"
+        style="padding: 8px 0; text-align: right"
+      >
         <span class="el-icon-collection-tag"></span>
         <div class="little-tag" v-for="item in detail.tags" :key="item.id">
           {{ item.name }}
@@ -231,7 +233,8 @@ export default {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
           item.childrenLastPage = data.childrenLastPage;
-          item.calcSurplus = data.count - data.childrenNowPage * data.childrenPageSize;
+          item.calcSurplus =
+            data.count - data.childrenNowPage * data.childrenPageSize;
           item.huifu.push(...data.rows);
         }
       });
@@ -332,6 +335,34 @@ export default {
         this.isStar = false;
       }
     },
+    renderTree() {
+      const list = ["H1", "H2", "H3", "H4", "H5", "H6"];
+      const md = this.$refs["hss-md"].$el.childNodes[0].childNodes;
+      console.log(md);
+      let arr = [];
+      md.forEach((item) => {
+        // console.log(item.nodeType);
+        if (item.nodeType == 1 && list.indexOf(item.nodeName) != -1) {
+          console.log(item);
+          console.log(list.indexOf(item.nodeName));
+          let obj = {};
+          obj.id =
+            item.innerText.slice(0, 10) +
+            "_" +
+            Math.floor(Math.random() * 100 + 1);
+          obj.type = item.nodeName;
+          obj.text = item.innerText;
+          // 创建一个a元素
+          var ele1 = document.createElement("a");
+          ele1.setAttribute("id", obj.id);
+          item.appendChild(ele1);
+          arr.push(obj);
+        }
+      });
+      console.log(arr);
+      this.$store.commit("article/changeShowCatalog", true);
+      this.$store.commit("article/changeCatalogList", arr);
+    },
   },
   created() {},
   mounted() {
@@ -340,6 +371,17 @@ export default {
     // );
     // this.isStar = isStar;
     scrollTo({ top: 0 });
+    // console.log(this.$refs["hss-md"].$el);
+    this.renderTree();
+    console.log("mounted");
+  },
+  destroyed() {
+    console.log("destroyed");
+    this.$store.commit("article/changeShowCatalog", false);
+    this.$store.commit("article/changeCatalogList", []);
+  },
+  updated() {
+    console.log("updated");
   },
   computed: {
     detail() {
@@ -370,6 +412,12 @@ export default {
 </script>
 
 <style scoped>
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
 .desc-warp {
   padding-bottom: 10px;
 }

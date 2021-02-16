@@ -8,13 +8,13 @@ export const state = () => ({
     // 当前页数
     nowPage: 1,
     // 分页大小
-    pageSize: 5,
+    pageSize: 10,
     // 当前类型
     type_id: "",
     // 文章类型列表
     ArticleTypeList: "",
     // 默认文章列表
-    pageList: "",
+    pageList: [],
     // 热门文章列表
     hotList: "",
     // 历史文章列表
@@ -25,6 +25,10 @@ export const state = () => ({
     detail: "",
     // 搜索数据
     search: "",
+    // 文章目录
+    catalogList: [],
+    // 是否显示文章目录
+    showCatalog: false
 })
 
 export const mutations = {
@@ -51,6 +55,12 @@ export const mutations = {
     },
     changePageList(state, res) {
         state.pageList = res
+    },
+    changeCatalogList(state, res) {
+        state.catalogList = res
+    },
+    changeShowCatalog(state, res) {
+        state.showCatalog = res
     },
     // changeOrderName(state, res) {
     //     state.ordername = res
@@ -85,16 +95,21 @@ export const actions = {
         commit('changeCount', res.count)
     },
     async getHistoryList({ commit, state }, payload) {
-        var res = await this.$axios.$get(`/api/article/pageList`, {
-            params: {
-                ordername: "createdAt",
-                orderby: "desc",
-                nowPage: payload.nowPage,
-                pageSize: state.historyPageSize,
-            },
-        });
-        commit("changeHistoryList", res.rows);
-        commit("changeCount", res.count);
+        try {
+            var res = await this.$axios.$get(`/api/article/pageList`, {
+                params: {
+                    ordername: "createdAt",
+                    orderby: "desc",
+                    nowPage: payload.nowPage,
+                    pageSize: state.historyPageSize,
+                },
+            });
+            commit("changeHistoryList", res.rows);
+            commit("changeCount", res.count);
+        } catch (err) {
+            console.log(err)
+        }
+
     },
     async getArticleHotList({ commit }, params) {
         var { ordername, orderby, nowpage } = params

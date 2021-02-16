@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="markdown-body" v-html="content"></div>
+    <div class="markdown-body" v-html="content"></div>
   </div>
 </template>
 
@@ -13,15 +13,15 @@ export default {
   props: ["md"],
   data() {
     return {
-        content:'',
-        xxx:''
+      content: "",
+      xxx: "",
     };
   },
-  created () {
+  created() {
     marked.setOptions({
       renderer: new marked.Renderer(),
-      highlight (code) {
-        return hljs.highlightAuto(code).value
+      highlight(code) {
+        return hljs.highlightAuto(code).value;
       },
       pedantic: false,
       gfm: true,
@@ -30,34 +30,15 @@ export default {
       sanitize: false,
       smartLists: true,
       smartypants: false,
-      xhtml: false
-    })
-    this.initMarked()
+      xhtml: false,
+    });
+    this.initMarked();
   },
   methods: {
-      initMarked () {
+    initMarked() {
       marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight (code) {
-          return hljs.highlightAuto(code).value
-        },
-        pedantic: false,
-        gfm: true,
-        tables: true,
-        breaks: false,
-        sanitize: false,
-        smartLists: true,
-        smartypants: false,
-        xhtml: false
-      })
-      this.content = marked(this.md)
-      this.xxx = this.md
-    },
-    // 格式化内容
-    newcontent(x) {
-      marked.setOptions({
-        renderer: new marked.Renderer(),
-        highlight: function(code) {
+        highlight(code) {
           return hljs.highlightAuto(code).value;
         },
         pedantic: false,
@@ -67,20 +48,34 @@ export default {
         sanitize: false,
         smartLists: true,
         smartypants: false,
-        xhtml: false
+        xhtml: false,
+      });
+      this.content = marked(this.md);
+      this.xxx = this.md;
+    },
+    // 格式化内容
+    newcontent(x) {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        highlight: function (code) {
+          return hljs.highlightAuto(code).value;
+        },
+        pedantic: false,
+        gfm: true,
+        tables: true,
+        breaks: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        xhtml: false,
       });
       return marked(x);
-    }
+    },
   },
-    watch: {
-
-  },
-  computed: {
-
-  }
+  watch: {},
+  computed: {},
 };
 </script>
 
 <style scoped>
-
 </style>

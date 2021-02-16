@@ -12,7 +12,9 @@
             class="currentTime"
           ></div>
         </div>
-        <div class="text">{{ duration2(nowTime) }}/{{ duration2(duration) }}</div>
+        <div class="text">
+          {{ duration2(nowTime) }}/{{ duration2(duration) }}
+        </div>
       </div>
       <div class="songImg1" :class="{ disk_play: start }">
         <div class="songImg2">
@@ -112,12 +114,13 @@ export default {
   },
   mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth;
-    if (d <= 375) {
+    if (d <= 414) {
       this.hiddenMusic = true;
     }
     window.addEventListener("resize", () => {
-      const offsetWidth = window.pageXOffset || document.documentElement.offsetWidth;
-      if (offsetWidth <= 375) {
+      const offsetWidth =
+        window.pageXOffset || document.documentElement.offsetWidth;
+      if (offsetWidth <= 414) {
         if (this.hiddenMusic != true) {
           this.hiddenMusic = true;
         }
@@ -146,7 +149,7 @@ export default {
     });
     this.$refs.bar.addEventListener("click", (e) => {
       setTimeout(() => {
-        this.nowTime = (e.offsetX / 180) * this.duration1;
+        this.nowTime = (e.offsetX / 170) * this.duration1;
         this.audio.currentTime = this.nowTime;
       }, 100);
     });
@@ -269,8 +272,6 @@ export default {
           }
         });
       });
-    
-    
     },
   },
 };
@@ -288,6 +289,9 @@ export default {
 </style>
 
 <style scoped>
+.fixedd.hiddenMusic {
+  right: -140px;
+}
 .hiddenMusic .songWrapper {
   background-color: transparent !important;
   box-shadow: none !important;
@@ -299,13 +303,13 @@ export default {
   background-color: transparent !important;
   box-shadow: none !important;
 }
-.hiddenMusic .songImg1 {
+/* .hiddenMusic .songImg1 {
   position: absolute;
   left: 165px;
-}
+} */
 .currentTime {
   height: 10px;
-  background-color: #53a8ffc4;
+  background-color: rgba(205, 225, 247, 1);
   border-radius: 10px;
   transition: all 0.2s linear;
 }
@@ -315,59 +319,62 @@ export default {
   position: absolute;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   bottom: 0;
   border-radius: 10px;
+  font-size: 12px;
 }
 .songBarItem {
-  display: inline-block;
-  width: 180px;
+  display: block;
+  width: 170px;
+  /* margin: 0 10px 0 5px; */
   height: 10px;
-  background-color: #f6eaf3;
-  margin-top: 1px;
+  background-color: rgba(236, 245, 255, 1);
   border-radius: 10px;
 }
 .songBarItem:hover {
   cursor: pointer;
 }
 .text {
-  display: inline-block;
-  width: 22%;
-  height: 10px;
-  font-size: 10px;
+  /* display: block; */
+  /* width: 22%; */
+  /* flex: 1; */
+  /* height: 10px; */
+  /* font-size: 10px; */
 }
 .disk_play .songImg {
   animation: rotate1 6s infinite linear;
 }
 .fixedd {
   position: fixed;
-  bottom: 90px;
+  bottom: 50px;
   right: 10px;
+  transition: all 0.2s linear;
 }
 .songWrapper {
   position: relative;
   width: 250px;
   height: 80px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), 0 30px 20px rgba(95, 23, 100, 0.2);
+  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
   background-color: white;
   border-radius: 10px;
 }
 .songText {
+  font-size: 12px;
   position: absolute;
   width: 230px;
   height: 50px;
   border-radius: 5px;
   padding-top: 4px;
-  top: -40%;
+  top: -42%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgb(255, 255, 255, 0.6);
 }
 .textItem {
   padding-left: 45%;
-  font-size: 9px;
 }
 .textItem:nth-child(1) {
-  font-size: 9px;
   font-weight: 700;
 }
 .songImg2 {
@@ -387,7 +394,7 @@ export default {
 .songImg {
   position: relative;
   background-color: black;
-  box-shadow: 0px 10px 10px -4px rgba(122, 103, 103, 0.8);
+  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
   /* box-shadow: 0px 25px 10px -4px rgba(122, 103, 103, 0.8); */
   width: 90px;
   height: 90px;

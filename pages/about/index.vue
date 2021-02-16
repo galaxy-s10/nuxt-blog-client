@@ -8,79 +8,38 @@
       padding: 30px;
     "
   >
-    <h1 style="text-align: center; padding: 10px">About</h1>
+    <h1 style="text-align: center; padding: 10px">关于</h1>
     <hr class="hrclass" />
+    <!-- 数据统计 -->
+    <div class="summary">
+      <div class="tongji">数据统计</div>
+      <div class="list">
+        <div class="item">
+          <div class="num">{{ filterNum(summary.articleCount) }}</div>
+          <div class="type">文章</div>
+        </div>
+        <div class="item">
+          <div class="num">{{ filterNum(summary.commentCount) }}</div>
+          <div class="type">评论</div>
+        </div>
+        <div class="item">
+          <div class="num">{{ filterNum(summary.readCount) }}</div>
+          <div class="type">阅读</div>
+        </div>
+        <div class="item">
+          <div class="num">{{ filterNum(summary.userCount) }}</div>
+          <div class="type">用户</div>
+        </div>
+        <div class="item">
+          <div class="num">{{ filterNum(summary.visitorLogCount) }}</div>
+          <div class="type">访问量</div>
+        </div>
+      </div>
+    </div>
     <div>
       <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
       <markdown :md="detail"></markdown>
     </div>
-    <!-- <div>
-      <h2>关于我</h2>
-      <p style="text-indent: 2em">
-        喜欢计算机有关的新事物，即使自己是个菜鸡，也有一个远大的目标：将来成为可以独当一面的程序猿。虽然暂时遥不可及，
-        但相信不久的将来会实现滴，目前主力web方向，正努力扩展知识面，争取早日达成目标~
-      </p>
-      <h2>关于本站</h2>
-      <p style="text-indent: 2em">
-        写了本站经历了两个月多，过程收获满满，再此之前也曾用过typecho、wordpress等出色的博客开源系统，
-        但作为前端开发人员，总得觉得自己能够写一个出来，因此，这个博客就诞生了！
-      </p>
-      <h2>技术栈</h2>
-      <ul>
-        <li>
-          <b class="font">Client:</b>
-          <span>
-            <s>Vue +</s>
-            <s>Vue-Router +</s>
-            Vuex + ElementUI + Nuxtjs
-          </span>
-        </li>
-        <li>
-          <b class="font">Admin:</b>
-          Vue-element-template
-        </li>
-        <li>
-          <b class="font">Serve:</b>
-          Node + Express + Sequelize + Mysql
-        </li>
-      </ul>
-      <div>
-        Ps：后台地址：
-        <a href="https://admin.zhengbeining.com" target="_blank" class="alink"
-          >https://admin.zhengbeining.com</a
-        >
-      </div>
-      <h2>联系方式</h2>
-      <ul>
-        <li>
-          <b class="font">QQ:</b>
-          2274751790
-        </li>
-        <li>
-          <b class="font">邮箱:</b>
-          2274751790@qq.com
-        </li>
-        <li>
-          <b class="font">Github:</b>
-          <a href="https://github.com/galaxy-s10" target="_blank" class="alink"
-            >https://github.com/galaxy-s10</a
-          >
-        </li>
-      </ul>
-      <h2>本站发展历史</h2>
-      <el-timeline>
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index"
-          :icon="activity.icon"
-          :type="activity.type"
-          :color="activity.color"
-          :size="activity.size"
-          :timestamp="activity.timestamp"
-          >{{ activity.content }}</el-timeline-item
-        >
-      </el-timeline>
-    </div> -->
     <h1>本站发展历史</h1>
     <el-timeline>
       <el-timeline-item
@@ -107,7 +66,8 @@ export default {
   },
   data() {
     return {
-      detail: "",
+      detail: {},
+      summary: {}, //数据统计
       activities: [
         {
           content: "第一次尝试写博客并上线",
@@ -143,19 +103,70 @@ export default {
       meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
   },
-  async fetch({ $axios, store, params }) {
-  },
+  async fetch({ $axios, store, params }) {},
   async asyncData({ $axios, store }) {
     let res = await $axios.$get("/api/frontend/detail");
     return {
       detail: res.detail.frontend_about,
+      summary: res.summary,
     };
     // this.detail = res.detail.frontend_about;
+  },
+  methods: {
+    filterNum(v) {
+      let res = v;
+      if (v < 1000) {
+        res = v;
+      } else if (v >= 1000 && v < 10000) {
+        res = (v / 1000).toFixed(1) + "k+";
+      } else {
+        res = (v / 10000).toFixed(2) + "w+";
+      }
+      return res;
+    },
   },
 };
 </script>
 
 <style scoped>
+.summary {
+  position: relative;
+  border: 1px dashed #e0e0e0;
+  padding: 20px 50px;
+  margin: 32px 0 24px;
+  border-radius: 6px;
+}
+.summary .tongji {
+  color: #fff;
+  padding: 4.5px;
+  position: absolute;
+  top: -15px;
+  left: 56px;
+  background: #fff;
+  background: #eb5055;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.summary .list {
+  display: flex;
+}
+.summary .list .item {
+  flex: 1;
+  /* font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif; */
+  text-align: center;
+  color: #666;
+}
+.summary .list .num {
+  font-size: 2rem;
+  color: #adabab;
+}
+.summary .list .type {
+  font-size: 0.9rem;
+}
+
 .font {
   display: inline-block;
   margin-right: 15px;

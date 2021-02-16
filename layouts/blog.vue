@@ -43,11 +43,6 @@ export default {
     }),
   },
   mounted() {
-    // setTimeout(() => {
-    //   console.log(window.document.offsetHeight);
-    // console.log(document.documentElement.clientHeight );
-    // }, 1000);
-    
     if (localStorage.token) {
       this.setToken(localStorage.token);
       this.getUserInfo()

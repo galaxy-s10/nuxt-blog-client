@@ -14,6 +14,7 @@ export default function ({ $axios, store }) {
         console.log(error.response);
         // return Promise.reject(error.response.data)
         // return Promise.reject(error.response)
+        store.commit('user/logout')
         return Promise.reject(error.response.data)
     })
 }

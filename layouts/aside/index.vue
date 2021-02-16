@@ -21,12 +21,17 @@
         <div v-loading="!ipInfo">
           <div style="padding: 10px 0">IP：{{ ipInfo.ip }}</div>
           <div>
-            位置：{{ ipInfo.country + " - " + ipInfo.region + " - " + ipInfo.city }}
+            位置：{{
+              ipInfo.country + " - " + ipInfo.region + " - " + ipInfo.city
+            }}
           </div>
         </div>
       </div>
     </div>
-    <div class="ip-info" style="font-size: 14px; font-weight: bold; padding-right: 10px">
+    <div
+      class="ip-info"
+      style="font-size: 14px; font-weight: bold; padding-right: 10px"
+    >
       <div style="padding: 10px 0 10px 10px">
         <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
           <span
@@ -36,7 +41,7 @@
           流量信息
         </h1>
         <div v-loading="!visitorData">
-          <div style="display: flex; justify-content: space-between; align-items: center">
+          <div class="flex-center">
             <div style="padding: 10px 0">
               历史总访问量：{{ visitorData.allVisitorNumber }}
             </div>
@@ -44,7 +49,7 @@
               历史总访客量：{{ visitorData.allVisitorPeople }}
             </div>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center">
+          <div class="flex-center">
             <div style="padding: 10px 0">
               今天总访问数：{{ visitorData.nowDayallVisitorNumber }}
             </div>
@@ -59,7 +64,9 @@
           class="el-icon-trophy"
           style="font-size: 18px; font-weight: blod; margin-right: 4px"
         ></span>
-        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">热门文章</h1>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+          热门文章
+        </h1>
       </div>
       <div style="padding-left: 10px; overflow: hidden">
         <div
@@ -95,7 +102,9 @@
     <div class="hotart tag">
       <div style="padding: 10px 0 10px 10px">
         <!-- <span class="el-icon-trophy" style="font-size:18px;font-weight:blod;margin-right:4px"></span> -->
-        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">标签云</h1>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+          标签云
+        </h1>
       </div>
       <el-tooltip
         v-for="item in tagList"
@@ -113,13 +122,25 @@
         >
       </el-tooltip>
     </div>
+    <div class="hotart tag" v-if="showCatalog">
+      <div style="padding: 10px 0 10px 10px">
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+          文章目录
+        </h1>
+      </div>
+      <div style="padding-left: 10px; overflow: hidden">
+        <catalog :list="catalogList"></catalog>
+      </div>
+    </div>
   </aside>
 </template>
 
 <script>
 import { format1 } from "@/utils/format.js";
 import { mapState, mapActions } from "vuex";
+import catalog from "@/components/catalog";
 export default {
+  components: { catalog },
   data() {
     return {
       // tagList: null
@@ -153,7 +174,9 @@ export default {
           : state.user.avatar;
       },
       title(state) {
-        return state.user.title == null ? "A Single Page App" : state.user.title;
+        return state.user.title == null
+          ? "A Single Page App"
+          : state.user.title;
       },
     }),
     tagList() {
@@ -161,6 +184,12 @@ export default {
     },
     hotlist() {
       return this.$store.state.article.hotlist;
+    },
+    catalogList() {
+      return this.$store.state.article.catalogList;
+    },
+    showCatalog() {
+      return this.$store.state.article.showCatalog;
     },
   },
   async mounted() {
@@ -171,6 +200,11 @@ export default {
 </script>
 
 <style scoped>
+.flex-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .tcss {
   cursor: pointer;
   padding: 0;

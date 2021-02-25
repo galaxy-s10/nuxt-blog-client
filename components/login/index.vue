@@ -36,10 +36,17 @@
       >
         账号：
         <el-input placeholder="请输入账号" v-model="username"></el-input>密码：
-        <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+        <el-input
+          placeholder="请输入密码"
+          v-model="password"
+          show-password
+        ></el-input>
+        <div class="qq-login">
+          <img style="cursor:pointer" @click="qqLogin" src="../../assets/imgs/Connect_logo_4.png" alt="" />
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="success" @click="login">确定</el-button>
+          <el-button type="primary" @click="login">确定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -52,10 +59,17 @@
       >
         账号：
         <el-input placeholder="请输入账号" v-model="username"></el-input>密码：
-        <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+        <el-input
+          placeholder="请输入密码"
+          v-model="password"
+          show-password
+        ></el-input>
+        <div class="qq-login">
+          <img style="cursor:pointer" @click="qqLogin" src="../../assets/imgs/Connect_logo_4.png" alt="" />
+        </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogtwo = false">取消</el-button>
-          <el-button type="success" @click="register()">确定</el-button>
+          <el-button type="primary" @click="register()">确定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -85,6 +99,9 @@ export default {
     ...mapMutations({
       userLogout: "user/logout",
     }),
+    qqLogin(){
+      this.$newmessage("审核通过将点击跳转qq授权登录", "success");
+    },
     async register() {
       if (this.username == "" || this.password == "") {
         this.$newmessage("请输入完整！", "error");
@@ -162,7 +179,8 @@ export default {
     headershow() {
       // 头部高度为70px
       const height = 70;
-      const offsetTop = window.pageYOffset || document.documentElement.scrollTop;
+      const offsetTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop < height;
     },
   },
@@ -202,5 +220,13 @@ export default {
 <style scoped>
 .dialog {
   line-height: 30px;
+}
+.dialog /deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+.qq-login {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 </style>

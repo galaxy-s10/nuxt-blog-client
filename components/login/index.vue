@@ -42,7 +42,12 @@
           show-password
         ></el-input>
         <div class="qq-login">
-          <img style="cursor:pointer" @click="qqLogin" src="../../assets/imgs/Connect_logo_4.png" alt="" />
+          <img
+            style="cursor: pointer"
+            @click="qqLogin"
+            src="../../assets/imgs/Connect_logo_4.png"
+            alt=""
+          />
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -65,7 +70,12 @@
           show-password
         ></el-input>
         <div class="qq-login">
-          <img style="cursor:pointer" @click="qqLogin" src="../../assets/imgs/Connect_logo_4.png" alt="" />
+          <img
+            style="cursor: pointer"
+            @click="qqLogin"
+            src="../../assets/imgs/Connect_logo_4.png"
+            alt=""
+          />
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogtwo = false">取消</el-button>
@@ -99,8 +109,12 @@ export default {
     ...mapMutations({
       userLogout: "user/logout",
     }),
-    qqLogin(){
-      this.$newmessage("审核通过将点击跳转qq授权登录", "success");
+    qqLogin() {
+      window.location.href =
+        // "https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101934585&redirect_uri=https://www.zhengbeining.com/link";
+        "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101934585&redirect_uri=https://www.zhengbeining.com/link&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info";
+        // "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101934585&redirect_uri=http://localhost:3000/link&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info";
+      // this.$newmessage("审核通过将点击跳转qq授权登录", "success");
     },
     async register() {
       if (this.username == "" || this.password == "") {

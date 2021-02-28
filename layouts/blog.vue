@@ -8,6 +8,7 @@
       <vaside />
     </div>
     <vaudio></vaudio>
+    <feature-tip></feature-tip>
     <vfooter />
   </div>
 </template>
@@ -21,6 +22,7 @@ import backtop from "./backtop";
 import vaside from "./aside";
 import vmain from "./main";
 import vfooter from "./footer";
+import featureTip from "../components/featureTip";
 import { mapActions, mapMutations } from "vuex";
 export default {
   // name: "",
@@ -32,6 +34,7 @@ export default {
     vmain,
     vaudio,
     vfooter,
+    featureTip,
   },
   methods: {
     ...mapActions({
@@ -43,8 +46,10 @@ export default {
     }),
   },
   mounted() {
-    if (localStorage.token) {
-      this.setToken(localStorage.token);
+    const token = localStorage.token;
+    // console.log(getCookie("testName"));
+    if (token) {
+      this.setToken(token);
       this.getUserInfo()
         .then(() => {})
         .catch(() => {

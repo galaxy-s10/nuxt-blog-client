@@ -26,7 +26,11 @@
               <div class="ellipsis">{{ item.description }}</div>
             </div>
             <div>
-              <img :src="item.avatar" class="img" style="border: 2px solid #eee" />
+              <img
+                :src="item.avatar"
+                class="img"
+                style="border: 2px solid #eee"
+              />
             </div>
           </div>
         </a>
@@ -34,6 +38,48 @@
     </ul>
     <div style="text-align: center; margin: 30px 0">
       <h2>欢迎大家交换友链~</h2>
+    </div>
+    <div style="" v-if="false">
+      <el-form
+        ref="linkForm"
+        :model="linkForm"
+        :rules="linkRules"
+        label-width="100px"
+      >
+        <el-form-item label="网站名称" prop="name">
+          <el-input
+            v-model="linkForm.name"
+            placeholder="输入您网站的名称"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="网站地址" prop="url">
+          <el-input
+            v-model="linkForm.url"
+            placeholder="输入您网站的链接"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="网站介绍" prop="description">
+          <el-input
+            v-model="linkForm.description"
+            placeholder="简单介绍一下您的网站"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="网站Logo" prop="avatar">
+          <el-input
+            v-model="linkForm.avatar"
+            placeholder="输入您网站显示的logo"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="您的邮箱" prop="email">
+          <el-input
+            v-model="linkForm.email"
+            placeholder="审核结果会通过邮件通知您"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="">
+          <el-button type="primary" @click="addLink()">提交申请</el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
     <el-input
@@ -45,7 +91,7 @@
       v-model="content"
     ></el-input>
     <p style="text-align: right">
-      <el-button type="primary" @click="addcomment()">提交</el-button>
+      <el-button type="primary" @click="addcomment()">发表评论</el-button>
     </p>
     <comment
       :list="commentList"
@@ -68,6 +114,17 @@
 <script>
 import { format } from "@/utils/format.js";
 import comment from "../../components/comment";
+import { mapActions, mapMutations } from "vuex";
+var validateEmail = (rule, value, callback) => {
+  console.log(rule, value, callback);
+  let reg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
+  if (value) {
+    if (!reg.test(value)) {
+      callback(new Error("请输入正确的邮箱！"));
+    }
+    return reg.test(value);
+  }
+};
 export default {
   layout: "blog",
   components: {
@@ -75,6 +132,54 @@ export default {
   },
   data() {
     return {
+      linkForm: {
+        name: "",
+        url: "",
+        description: "",
+        avatar: "",
+      },
+      linkRules: {
+        name: [
+          { required: true, message: "网站名称不能为空", trigger: "blur" },
+          {
+            min: 2,
+            max: 50,
+            message: "网站名称要求2-50个字符",
+            trigger: "blur",
+          },
+        ],
+        url: [
+          { required: true, message: "网站地址不能为空", trigger: "blur" },
+          {
+            max: 100,
+            message: "网站地址不能超过100个字符",
+            trigger: "blur",
+          },
+        ],
+        description: [
+          { required: true, message: "网站介绍不能为空", trigger: "blur" },
+          {
+            min: 2,
+            max: 50,
+            message: "网站介绍要求2-50个字符",
+            trigger: "blur",
+          },
+        ],
+        avatar: [
+          { required: true, message: "网站Logo不能为空", trigger: "blur" },
+          {
+            max: 100,
+            message: "网站Logo不能超过100个字符",
+            trigger: "blur",
+          },
+        ],
+        email: [
+          {
+            validator: validateEmail,
+            trigger: "change",
+          },
+        ],
+      },
       linkList: null,
       article_id: -1,
       messagecontent: "",
@@ -103,6 +208,38 @@ export default {
       title: "友链 - 自然博客",
       meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
     };
+  },
+  async mounted() {
+    console.log("xxxx");
+    console.log(this.$route);
+    const { code, state } = this.$route.query;
+    console.log(code, state);
+    if (state == 99 && code) {
+      try {
+        let res = await this.$axios.$get(
+          `/api/link/qqlogin?code=${code}&state=${state}`
+        );
+        console.log(res);
+        function getCookie(name) {
+          var arr,
+            reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+          if ((arr = document.cookie.match(reg))) return unescape(arr[2]);
+          else return null;
+        }
+        const token = getCookie("token");
+        console.log(token)
+        if (token) {
+          this.setToken(token);
+          this.getUserInfo()
+            .then(() => {})
+            .catch(() => {
+              this.logout();
+            });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   },
   async asyncData({ $axios, params, store }) {
     var id = -1;
@@ -139,6 +276,24 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getUserInfo: "user/getUserInfo",
+    }),
+    ...mapMutations({
+      setToken: "user/setToken",
+      logout: "user/logout",
+    }),
+    // 申请友链
+    addLink() {
+      this.$refs.linkForm.validate((valid) => {
+        if (valid) {
+          console.log("ok");
+        } else {
+          console.log("error submit!!");
+          this.$newmessage("请按要求输入正确！", "error");
+        }
+      });
+    },
     // 留言列表
     async getComment() {
       var id = -1;
@@ -228,7 +383,8 @@ export default {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
           item.childrenLastPage = data.childrenLastPage;
-          item.calcSurplus = data.count - data.childrenNowPage * data.childrenPageSize;
+          item.calcSurplus =
+            data.count - data.childrenNowPage * data.childrenPageSize;
           item.huifu.push(...data.rows);
         }
       });

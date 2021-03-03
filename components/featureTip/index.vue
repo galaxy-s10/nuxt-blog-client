@@ -4,7 +4,7 @@
       title="最近更新"
       :visible="dialogVisible"
       :before-close="handleClose"
-      width="50%"
+      :width="dialogWidth"
     >
       <el-timeline>
         <el-timeline-item
@@ -31,8 +31,13 @@ export default {
   props: {},
   data() {
     return {
+      dialogWidth: "50%",
       dialogVisible: true,
       activities: [
+        {
+          content: "新增申请友链功能",
+          timestamp: "2021-03-03",
+        },
         {
           content: "新增qq登录功能",
           timestamp: "2021-02-18",
@@ -41,19 +46,24 @@ export default {
           content: "新增文章目录功能",
           timestamp: "2021-02-10",
         },
-        {
-          content: "新增访客模块",
-          timestamp: "2021-02-02",
-        },
+        // {
+        //   content: "新增访客模块",
+        //   timestamp: "2021-02-02",
+        // },
       ],
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    const d = window.pageXOffset || document.documentElement.offsetWidth;
+    if (d <= 414) {
+      this.dialogWidth = "80%";
+    }
+  },
   computed: {},
   methods: {
     handleClose() {
-      this.dialogVisible = false
+      this.dialogVisible = false;
     },
   },
 };

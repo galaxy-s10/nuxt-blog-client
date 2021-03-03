@@ -10,9 +10,7 @@
   >
     <h1 style="text-align: center; padding: 10px">友链</h1>
     <hr class="hrclass" />
-    <ul
-      style="padding:0;margin:0;overflow:hidden;margin:40px 0;display:flex:justity-content:spance-between;flex-wrap:wrap"
-    >
+    <ul class="linkWrap">
       <li
         class="liitem"
         v-if="item.status"
@@ -39,7 +37,7 @@
     <div style="text-align: center; margin: 30px 0">
       <h2>欢迎大家交换友链~</h2>
     </div>
-    <div style="" v-if="false">
+    <div style="" v-if="true">
       <el-form
         ref="linkForm"
         :model="linkForm"
@@ -116,13 +114,14 @@ import { format } from "@/utils/format.js";
 import comment from "../../components/comment";
 import { mapActions, mapMutations } from "vuex";
 var validateEmail = (rule, value, callback) => {
-  console.log(rule, value, callback);
   let reg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
   if (value) {
     if (!reg.test(value)) {
       callback(new Error("请输入正确的邮箱！"));
     }
-    return reg.test(value);
+    return callback();
+  } else {
+    callback();
   }
 };
 export default {
@@ -137,6 +136,7 @@ export default {
         url: "",
         description: "",
         avatar: "",
+        email: "",
       },
       linkRules: {
         name: [
@@ -210,16 +210,12 @@ export default {
     };
   },
   async mounted() {
-    console.log("xxxx");
-    console.log(this.$route);
     const { code, state } = this.$route.query;
-    console.log(code, state);
     if (state == 99 && code) {
       try {
         let res = await this.$axios.$get(
           `/api/link/qqlogin?code=${code}&state=${state}`
         );
-        console.log(res);
         function getCookie(name) {
           var arr,
             reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -227,7 +223,6 @@ export default {
           else return null;
         }
         const token = getCookie("token");
-        console.log(token)
         if (token) {
           this.setToken(token);
           this.getUserInfo()
@@ -285,11 +280,21 @@ export default {
     }),
     // 申请友链
     addLink() {
-      this.$refs.linkForm.validate((valid) => {
+      this.$refs.linkForm.validate(async (valid) => {
         if (valid) {
-          console.log("ok");
+          try {
+            let addLinkRes = await this.$axios.$post(
+              "/api/link/add",
+              this.linkForm
+            );
+            this.$newmessage(addLinkRes.message, "success");
+            for (let i in this.linkForm) {
+              this.linkForm[i] = "";
+            }
+          } catch (err) {
+            this.$newmessage(err.message, "error");
+          }
         } else {
-          console.log("error submit!!");
           this.$newmessage("请按要求输入正确！", "error");
         }
       });
@@ -422,6 +427,12 @@ export default {
     margin: 15px auto !important;
     float: none !important;
   }
+}
+.linkWrap {
+  max-height: 300px;
+  overflow-y: scroll;
+  padding: 0;
+  margin: 40px 0;
 }
 .liitem::before {
   content: "";

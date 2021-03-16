@@ -1,7 +1,7 @@
 const actions = {
     async nuxtServerInit({ dispatch }) {
-        await dispatch("article/getArticleHotList", {
-            ordername: "click",
+        await dispatch("article/getArticleLastUpdateList", {
+            ordername: "updatedAt",
             orderby: "desc",
             nowpage: 1
         });

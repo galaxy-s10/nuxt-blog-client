@@ -22,16 +22,13 @@
           <div style="padding: 10px 0">IP：{{ ipInfo.ip }}</div>
           <div>
             位置：{{
-              ipInfo.country + " - " + ipInfo.region + " - " + ipInfo.city
+            ipInfo.country + " - " + ipInfo.region + " - " + ipInfo.city
             }}
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="ip-info"
-      style="font-size: 14px; font-weight: bold; padding-right: 10px"
-    >
+    <div class="ip-info" style="font-size: 14px; font-weight: bold; padding-right: 10px">
       <div style="padding: 10px 0 10px 10px">
         <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
           <span
@@ -42,58 +39,48 @@
         </h1>
         <div v-loading="!visitorData">
           <div class="flex-center">
-            <div style="padding: 10px 0">
-              历史总访问量：{{ visitorData.allVisitorNumber }}
-            </div>
-            <div style="padding: 10px 0">
-              历史总访客量：{{ visitorData.allVisitorPeople }}
-            </div>
+            <div style="padding: 10px 0">历史总访问量：{{ visitorData.allVisitorNumber }}</div>
+            <div style="padding: 10px 0">历史总访客量：{{ visitorData.allVisitorPeople }}</div>
           </div>
           <div class="flex-center">
-            <div style="padding: 10px 0">
-              今天总访问数：{{ visitorData.nowDayallVisitorNumber }}
-            </div>
+            <div style="padding: 10px 0">今天总访问数：{{ visitorData.nowDayallVisitorNumber }}</div>
             <div>今天总访客数：{{ visitorData.nowDayAllVisitorPeople }}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="hotart">
-      <div style="padding: 10px 0 10px 10px">
-        <span
-          class="el-icon-trophy"
-          style="font-size: 18px; font-weight: blod; margin-right: 4px"
-        ></span>
-        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
-          热门文章
-        </h1>
+      <div style="padding: 10px 0 10px 10px;display: flex;align-items: center;">
+        <span class="el-icon-trophy" style="font-size: 18px; font-weight: blod; margin-right: 4px"></span>
+        <div
+          style="width:100%;display: flex; font-size: 18px;align-items: center;justify-content: space-between;padding-right:10px"
+        >
+          <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
+            <span>{{hotOrLastUpdate=='hot'?'热门文章':'最近更新'}}</span>
+          </h1>
+          <span style="font-size:12px;cursor:pointer" @click="switchType">切换</span>
+        </div>
       </div>
-      <div style="padding-left: 10px; overflow: hidden">
+      <div style="padding-left: 10px; overflow: hidden" v-loading="switchTypeLoading">
         <div
           v-for="(item, index) in hotlist"
           :key="index"
           style="margin-bottom: 10px; max-height: 60px; display: flex"
         >
           <div class="aside-l">
-            <nuxt-link
-              :to="'/article/' + item.id"
-              tag="img"
-              v-lazy="item.img"
-              class="img1"
-            />
+            <nuxt-link :to="'/article/' + item.id" tag="img" v-lazy="item.img" class="img1" />
           </div>
 
           <div class="aside-r">
-            <nuxt-link :to="'/article/' + item.id" tag="h4" class="tcss"
-              >#{{ item.title }}</nuxt-link
-            >
+            <nuxt-link :to="'/article/' + item.id" tag="h4" class="tcss">#{{ item.title }}</nuxt-link>
             <div style="margin: 2px 0">
-              <span class="el-icon-date tcss1" style="padding: 0 2px">{{
-                format1(item.date)
-              }}</span>
-              <span class="el-icon-view tcss1" style="padding: 0 2px">{{
-                item.click
-              }}</span>
+              <span class="el-icon-view tcss1" style="padding: 0 2px">{{item.click}}</span>
+              <span
+                v-if="hotOrLastUpdate=='hot'"
+                class="el-icon-star-off tcss1"
+                style="padding: 0 2px"
+              >{{item.stars.length}}</span>
+              <span v-else class="el-icon-date tcss1" style="padding: 0 2px">{{format1(item.updatedAt)}}更新</span>
             </div>
           </div>
         </div>
@@ -102,9 +89,7 @@
     <div class="hotart tag">
       <div style="padding: 10px 0 10px 10px">
         <!-- <span class="el-icon-trophy" style="font-size:18px;font-weight:blod;margin-right:4px"></span> -->
-        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
-          标签云
-        </h1>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">标签云</h1>
       </div>
       <el-tooltip
         v-for="item in tagList"
@@ -118,15 +103,12 @@
           :disable-transitions="false"
           :color="item.color"
           @click="tagClick(item.id)"
-          >{{ item.name }}</el-tag
-        >
+        >{{ item.name }}</el-tag>
       </el-tooltip>
     </div>
     <div class="hotart tag" v-if="showCatalog">
       <div style="padding: 10px 0 10px 10px">
-        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">
-          文章目录
-        </h1>
+        <h1 style="display: inline-block; font-size: 18px; margin: 5px 0">文章目录</h1>
       </div>
       <div style="padding-left: 10px; overflow: hidden">
         <catalog :list="catalogList"></catalog>
@@ -145,19 +127,43 @@ export default {
     return {
       // tagList: null
       // isLoading:false,
+      switchTypeLoading: false
     };
   },
   methods: {
     ...mapActions("app", ["getIpInfo", "getVisitorData"]),
+    ...mapActions("article", ["getArticleHotList", "getArticleLastUpdateList"]),
     format1(time) {
       return format1(time);
     },
     tagClick(id) {
       this.$router.push({ path: `/tag/${id}` });
     },
+    async switchType() {
+      console.log("switchType");
+      console.log(this.hotOrLastUpdate);
+      this.switchTypeLoading = true;
+      if (this.hotOrLastUpdate == "hot") {
+        await this.getArticleLastUpdateList({
+          ordername: "updatedAt",
+          orderby: "desc",
+          nowpage: 1
+        });
+      } else {
+        await this.getArticleHotList({
+          ordername: "click",
+          orderby: "desc",
+          nowpage: 1
+        });
+      }
+      this.switchTypeLoading = false;
+    }
   },
   computed: {
     ...mapState({
+      hotOrLastUpdate(state) {
+        return state.article.hotOrLastUpdate;
+      },
       ipInfo(state) {
         return state.app.ipInfo;
       },
@@ -177,7 +183,7 @@ export default {
         return state.user.title == null
           ? "A Single Page App"
           : state.user.title;
-      },
+      }
     }),
     tagList() {
       return this.$store.state.tag.tagList;
@@ -190,12 +196,12 @@ export default {
     },
     showCatalog() {
       return this.$store.state.article.showCatalog;
-    },
+    }
   },
   async mounted() {
     await this.getIpInfo();
     await this.getVisitorData();
-  },
+  }
 };
 </script>
 

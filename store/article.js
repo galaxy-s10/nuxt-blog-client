@@ -17,6 +17,8 @@ export const state = () => ({
     pageList: [],
     // 热门文章列表
     hotList: "",
+    // 热门文章/最近更新
+    hotOrLastUpdate: 'lastUpdate',
     // 历史文章列表
     historyList: "",
     // 历史文章分页大小
@@ -74,11 +76,12 @@ export const mutations = {
     search(state, res) {
         state.search = res
     },
-
     hotlist(state, res) {
-        // state.hotlist = res
-        // slice截取指定元素
-        // state.hotlist = res.slice(0, 3)
+        state.hotOrLastUpdate = 'hot'
+        state.hotlist = res
+    },
+    lastUpdateList(state, res) {
+        state.hotOrLastUpdate = 'lastUpdate'
         state.hotlist = res
     },
 
@@ -116,6 +119,16 @@ export const actions = {
         try {
             const res = await this.$axios.$get(`api/article/pageList?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=5`)
             commit('hotlist', res.rows)
+        } catch (err) {
+            console.log(err)
+        }
+
+    },
+    async getArticleLastUpdateList({ commit }, params) {
+        var { ordername, orderby, nowpage } = params
+        try {
+            const res = await this.$axios.$get(`api/article/pageList?ordername=${ordername}&orderby=${orderby}&nowPage=${nowpage}&pageSize=5`)
+            commit('lastUpdateList', res.rows)
         } catch (err) {
             console.log(err)
         }

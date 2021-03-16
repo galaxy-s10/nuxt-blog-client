@@ -35,6 +35,10 @@ export default {
       dialogVisible: true,
       activities: [
         {
+          content: "热门文章/最近更新切换",
+          timestamp: "2021-03-16",
+        },
+        {
           content: "新增申请友链功能",
           timestamp: "2021-03-03",
         },
@@ -42,10 +46,10 @@ export default {
           content: "新增qq登录功能",
           timestamp: "2021-02-18",
         },
-        {
-          content: "新增文章目录功能",
-          timestamp: "2021-02-10",
-        },
+        // {
+        //   content: "新增文章目录功能",
+        //   timestamp: "2021-02-10",
+        // },
         // {
         //   content: "新增访客模块",
         //   timestamp: "2021-02-02",

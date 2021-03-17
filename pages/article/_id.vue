@@ -217,7 +217,7 @@ export default {
     },
 
     // 获取子评论分页
-    async childrenPage(childVal) {
+    async childrenPage(query) {
       // async childrenPage(childrenCommentId) {
       query.childrenNowPage += 1;
       let temp = {

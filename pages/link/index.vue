@@ -11,12 +11,7 @@
     <h1 style="text-align: center; padding: 10px">友链</h1>
     <hr class="hrclass" />
     <ul class="linkWrap">
-      <li
-        class="liitem"
-        v-if="item.status"
-        v-for="(item, index) in linkList"
-        :key="index"
-      >
+      <li class="liitem" v-for="(item, index) in linkList" :key="index">
         <a :href="item.url" class="alink" target="_bank">
           <div class="linkborder">
             <div style="flex: 1">
@@ -24,11 +19,7 @@
               <div class="ellipsis">{{ item.description }}</div>
             </div>
             <div>
-              <img
-                :src="item.avatar"
-                class="img"
-                style="border: 2px solid #eee"
-              />
+              <img :src="item.avatar" class="img" style="border: 2px solid #eee" />
             </div>
           </div>
         </a>
@@ -37,44 +28,24 @@
     <div style="text-align: center; margin: 30px 0">
       <h2>欢迎大家交换友链~</h2>
     </div>
-    <div style="" v-if="true">
-      <el-form
-        ref="linkForm"
-        :model="linkForm"
-        :rules="linkRules"
-        label-width="100px"
-      >
+    <div style v-if="true">
+      <el-form ref="linkForm" :model="linkForm" :rules="linkRules" label-width="100px">
         <el-form-item label="网站名称" prop="name">
-          <el-input
-            v-model="linkForm.name"
-            placeholder="输入您网站的名称"
-          ></el-input>
+          <el-input v-model="linkForm.name" placeholder="输入您网站的名称"></el-input>
         </el-form-item>
         <el-form-item label="网站地址" prop="url">
-          <el-input
-            v-model="linkForm.url"
-            placeholder="输入您网站的链接"
-          ></el-input>
+          <el-input v-model="linkForm.url" placeholder="输入您网站的链接"></el-input>
         </el-form-item>
         <el-form-item label="网站介绍" prop="description">
-          <el-input
-            v-model="linkForm.description"
-            placeholder="简单介绍一下您的网站"
-          ></el-input>
+          <el-input v-model="linkForm.description" placeholder="简单介绍一下您的网站"></el-input>
         </el-form-item>
         <el-form-item label="网站Logo" prop="avatar">
-          <el-input
-            v-model="linkForm.avatar"
-            placeholder="输入您网站显示的logo"
-          ></el-input>
+          <el-input v-model="linkForm.avatar" placeholder="输入您网站显示的logo"></el-input>
         </el-form-item>
         <el-form-item label="您的邮箱" prop="email">
-          <el-input
-            v-model="linkForm.email"
-            placeholder="审核结果会通过邮件通知您"
-          ></el-input>
+          <el-input v-model="linkForm.email" placeholder="审核结果会通过邮件通知您"></el-input>
         </el-form-item>
-        <el-form-item label="">
+        <el-form-item label>
           <el-button type="primary" @click="addLink()">提交申请</el-button>
         </el-form-item>
       </el-form>
@@ -105,7 +76,7 @@
       :count="count"
       @reshow="commentlist"
       v-loading="isLoading"
-    /> -->
+    />-->
   </div>
 </template>
 
@@ -127,7 +98,7 @@ var validateEmail = (rule, value, callback) => {
 export default {
   layout: "blog",
   components: {
-    comment,
+    comment
   },
   data() {
     return {
@@ -136,7 +107,7 @@ export default {
         url: "",
         description: "",
         avatar: "",
-        email: "",
+        email: ""
       },
       linkRules: {
         name: [
@@ -145,16 +116,16 @@ export default {
             min: 2,
             max: 50,
             message: "网站名称要求2-50个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         url: [
           { required: true, message: "网站地址不能为空", trigger: "blur" },
           {
             max: 100,
             message: "网站地址不能超过100个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         description: [
           { required: true, message: "网站介绍不能为空", trigger: "blur" },
@@ -162,51 +133,51 @@ export default {
             min: 2,
             max: 50,
             message: "网站介绍要求2-50个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         avatar: [
           { required: true, message: "网站Logo不能为空", trigger: "blur" },
           {
             max: 100,
             message: "网站Logo不能超过100个字符",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
         ],
         email: [
           {
             validator: validateEmail,
-            trigger: "change",
-          },
-        ],
+            trigger: "change"
+          }
+        ]
       },
       linkList: null,
       article_id: -1,
       messagecontent: "",
       isshow: "",
       isLoading: false,
-      content: "",
+      content: ""
     };
   },
   computed: {
     formatDate(time) {
-      return (time) => {
+      return time => {
         return format(time);
       };
     },
     userInfo() {
       return this.$store.state.user.id;
-    },
+    }
   },
   watch: {
     userInfo(val) {
       this.getComment();
-    },
+    }
   },
   head() {
     return {
       title: "友链 - 自然博客",
-      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }]
     };
   },
   async mounted() {
@@ -243,15 +214,15 @@ export default {
       nowPage: 1, //当前父评论页数
       pageSize: 3, //当前父评论分页大小
       childrenNowPage: 1, //当前子评论页数
-      childrenPageSize: 2, //当前子评论分页大小
+      childrenPageSize: 2 //当前子评论分页大小
     };
     // this.query = query;
     const { rows } = await $axios.$get("/api/link/pageList", {
-      params: { nowPage: 1, pageSize: 10 },
+      params: { nowPage: 1, pageSize: 100, status: 1}
     });
     try {
       var data = await $axios.$get(`/api/comment/comment`, {
-        params: { ...query },
+        params: { ...query }
       });
       return {
         query,
@@ -263,8 +234,8 @@ export default {
           count: data.count, //父评论层数
           nowPage: data.nowPage,
           lastPage: data.lastPage,
-          pageSize: data.pageSize,
-        },
+          pageSize: data.pageSize
+        }
       };
     } catch (err) {
       console.log(err);
@@ -272,15 +243,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUserInfo: "user/getUserInfo",
+      getUserInfo: "user/getUserInfo"
     }),
     ...mapMutations({
       setToken: "user/setToken",
-      logout: "user/logout",
+      logout: "user/logout"
     }),
     // 申请友链
     addLink() {
-      this.$refs.linkForm.validate(async (valid) => {
+      this.$refs.linkForm.validate(async valid => {
         if (valid) {
           try {
             let addLinkRes = await this.$axios.$post(
@@ -307,13 +278,13 @@ export default {
         nowPage: 1,
         pageSize: 3,
         childrenNowPage: 1,
-        childrenPageSize: 2,
+        childrenPageSize: 2
       };
 
       try {
         this.isLoading = true;
         var data = await this.$axios.$get(`/api/comment/comment`, {
-          params: { ...query },
+          params: { ...query }
         });
         setTimeout(() => {
           this.isLoading = false;
@@ -322,7 +293,7 @@ export default {
             count: data.count, //父评论层数
             nowPage: data.nowPage,
             lastPage: data.lastPage,
-            pageSize: data.pageSize,
+            pageSize: data.pageSize
           };
           this.commentList = data.rows;
           this.allCount = data.allCount;
@@ -357,7 +328,7 @@ export default {
             from_user_id,
             content,
             to_comment_id,
-            to_user_id,
+            to_user_id
           });
           if (res) {
             this.getComment();
@@ -378,13 +349,13 @@ export default {
       query.childrenNowPage += 1;
       let temp = {
         ...this.pageParams,
-        ...query,
+        ...query
       };
       this.pageParams = temp;
       var data = await this.$axios.$get(`/api/comment/commentChildrenPage`, {
-        params: { ...this.pageParams },
+        params: { ...this.pageParams }
       });
-      this.commentList.forEach((item) => {
+      this.commentList.forEach(item => {
         if (item.id == data.to_comment_id) {
           item.childrenNowPage = data.childrenNowPage;
           item.childrenLastPage = data.childrenLastPage;
@@ -399,7 +370,7 @@ export default {
     async parentPage(query) {
       query.nowPage += 1;
       var data = await this.$axios.$get(`/api/comment/comment`, {
-        params: { ...query },
+        params: { ...query }
       });
       this.commentList.push(...data.rows);
       this.allCount = data.allCount;
@@ -408,10 +379,10 @@ export default {
         count: data.count,
         nowPage: data.nowPage,
         lastPage: data.lastPage,
-        pageSize: data.pageSize,
+        pageSize: data.pageSize
       };
-    },
-  },
+    }
+  }
 };
 </script>
 

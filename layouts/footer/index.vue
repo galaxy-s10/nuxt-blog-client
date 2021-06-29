@@ -5,7 +5,7 @@
       <span class="ani">(='◡'=)☆</span>
     </p>
     <p>托管于阿里云(学生机) | 使用七牛云对象存储</p>
-    <a href="http://www.beian.miit.gov.cn" target="__blank" class="bah">粤ICP备19114467号</a>
+    <a href="http://beian.miit.gov.cn" target="__blank" class="bah">粤ICP备19114467号</a>
   </div>
 </template>
 

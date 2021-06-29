@@ -199,8 +199,8 @@ export default {
     }
   },
   async mounted() {
-    // await this.getIpInfo();
-    // await this.getVisitorData();
+    await this.getIpInfo();
+    await this.getVisitorData();
   }
 };
 </script>

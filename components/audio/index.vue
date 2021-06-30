@@ -19,7 +19,7 @@
       <div class="songImg1" :class="{ disk_play: start }">
         <div class="songImg2">
           <img
-            :src="songList[currentIndex].img"
+            :src="imgCdnUrl+songList[currentIndex].img"
             alt
             width="90"
             height="90"
@@ -40,10 +40,13 @@
 </template>
 
 <script>
+import { imgCdnUrl } from "@/utils/global.js";
+
 export default {
   components: {},
   data() {
     return {
+      imgCdnUrl,
       hiddenMusic: false,
       matrix: "",
       nowDeg: 0,
@@ -132,7 +135,7 @@ export default {
     });
 
     this.audio = new Audio();
-    this.audio.src = this.songList[0].url;
+    this.audio.src = this.imgCdnUrl+this.songList[0].url;
     let timer = setInterval(() => {
       if (!isNaN(this.audio.duration)) {
         this.duration = this.audio.duration;
@@ -205,7 +208,7 @@ export default {
             }
           });
         });
-        this.audio.src = this.songList[index].url;
+        this.audio.src = this.imgCdnUrl+this.songList[index].url;
         let timer = setInterval(() => {
           if (!isNaN(this.audio.duration)) {
             this.duration = this.audio.duration;

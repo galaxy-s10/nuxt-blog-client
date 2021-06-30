@@ -68,7 +68,7 @@
           style="margin-bottom: 10px; max-height: 60px; display: flex"
         >
           <div class="aside-l">
-            <nuxt-link :to="'/article/' + item.id" tag="img" v-lazy="item.img" class="img1" />
+            <nuxt-link :to="'/article/' + item.id" tag="img" v-lazy="imgCdnUrl+item.img" class="img1" />
           </div>
 
           <div class="aside-r">
@@ -119,12 +119,14 @@
 
 <script>
 import { format1 } from "@/utils/format.js";
+import { imgCdnUrl } from "@/utils/global.js";
 import { mapState, mapActions } from "vuex";
 import catalog from "@/components/catalog";
 export default {
   components: { catalog },
   data() {
     return {
+      imgCdnUrl,
       // tagList: null
       // isLoading:false,
       switchTypeLoading: false

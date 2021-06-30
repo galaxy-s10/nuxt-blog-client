@@ -25,7 +25,7 @@
             <nuxt-link
               :to="`/article/${item.article.id}`"
               tag="div"
-              v-lazy:background-image="item.article.img"
+              v-lazy:background-image="imgCdnUrl+item.article.img"
               class="img"
             />
           </div>
@@ -83,12 +83,14 @@
 
 <script>
 import { format, format1 } from "@/utils/format.js";
+import { imgCdnUrl } from "@/utils/global.js";
 
 export default {
   layout: "blog",
   components: {},
   data() {
     return {
+      imgCdnUrl,
       tagList: null,
       tagindex: 1,
       nowPage: 1,

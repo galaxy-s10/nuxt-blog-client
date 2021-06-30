@@ -21,7 +21,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -48,7 +48,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -75,7 +75,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -102,7 +102,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -129,7 +129,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -156,7 +156,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -183,7 +183,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -210,7 +210,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -237,7 +237,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%',
+                    'border-radius': '50%'
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -263,7 +263,11 @@
           <nuxt-link :to="`/article/${item.id}`">
             <img
               class="head-img"
-              :src="item.img ? item.img : require('../assets/imgs/nopic.png')"
+              :src="
+                item.img
+                  ? imgCdnUrl+ item.img
+                  : require('../assets/imgs/nopic.png')
+              "
               alt=""
               @load="imgLoad"
               @error="imgLoadError"
@@ -381,35 +385,37 @@
 <script>
 import page from "../components/page";
 import { format, format1 } from "@/utils/format.js";
+import { imgCdnUrl } from "@/utils/global.js";
 import Cookies from "js-cookie";
 import { mapActions, mapMutations } from "vuex";
 export default {
   layout: "blog",
   components: {
-    page,
+    page
   },
   data() {
     return {
+      imgCdnUrl,
       isFirst: true,
       list: [],
       offsetList: [],
       visible: false,
       masonryParams: {
         column: 3,
-        gap: 20,
+        gap: 20
       },
       imgLoadNum: 0,
       imgLoadErrorNum: 0,
       isLoad: false,
       showMasonry: false,
       end: false,
-      ajaxGetNum: 10, //记录本次加载了多少条数据
+      ajaxGetNum: 10 //记录本次加载了多少条数据
     };
   },
   head() {
     return {
       title: "首页 - 自然博客",
-      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
+      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }]
     };
   },
   methods: {
@@ -434,7 +440,7 @@ export default {
         orderby: this.$store.state.article.orderby,
         type_id: this.$store.state.article.type_id,
         nowPage,
-        pageSize: 10,
+        pageSize: 10
       });
     },
     headershow() {
@@ -597,7 +603,7 @@ export default {
       // e.target.style.height = "200px";
       // this.imgLoadNum++;
       this.imgLoadErrorNum++;
-    },
+    }
     // hello(x) {
     //   this.$store.dispatch("article/articlelist", { type: x });
     // },
@@ -608,11 +614,13 @@ export default {
       orderby: "desc",
       type_id: store.state.article.type_id,
       nowPage: 1,
-      pageSize: 10,
+      pageSize: 10
     });
     // this.list = this.pageList;
   },
-  created() {},
+  created() {
+    // console.log(this.imgCdnUrl);
+  },
   mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth;
     if (d <= 414) {
@@ -637,13 +645,13 @@ export default {
     },
     type_id() {
       return this.$store.state.article.type_id;
-    },
+    }
   },
   watch: {
     "$store.state.article.pageList": {
       immediate: true,
       deep: true,
-      handler: function (newValue, oldValue) {
+      handler: function(newValue, oldValue) {
         this.ajaxGetNum = newValue.length;
         if (!newValue.length) {
           this.isLoad = false;
@@ -673,7 +681,7 @@ export default {
             this.list = newValue;
           });
         }
-      },
+      }
     },
     imgLoadNum(newVal) {
       if (this.imgLoadNum == this.list.length) {
@@ -698,10 +706,10 @@ export default {
         orderby: this.$store.state.article.orderby,
         type_id: this.$store.state.article.type_id,
         nowPage: 1,
-        pageSize: 10,
+        pageSize: 10
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <img v-if="detail.img != null" :src="detail.img" class="img1" />
+        <img v-if="detail.img != null" :src="imgCdnUrl+detail.img" class="img1" />
         <!-- <img  v-lazy="item.img" alt="item.img" width="100%" height="460" /> -->
         <img v-else src="../../assets/imgs/nopic.png" class="img1" alt />
         <div>
@@ -121,6 +121,8 @@
 import comment from "../../components/comment";
 import markdown from "../../components/markdown";
 import { format, format1 } from "@/utils/format.js";
+import { imgCdnUrl } from "@/utils/global.js";
+
 export default {
   layout: "blog",
   components: {
@@ -129,6 +131,7 @@ export default {
   },
   data() {
     return {
+      imgCdnUrl,
       loadingStar: false,
       isLoading: false,
       isStar: false,
@@ -338,13 +341,13 @@ export default {
     renderTree() {
       const list = ["H1", "H2", "H3", "H4", "H5", "H6"];
       const md = this.$refs["hss-md"].$el.childNodes[0].childNodes;
-      console.log(md);
+      // console.log(md);
       let arr = [];
       md.forEach((item) => {
         // console.log(item.nodeType);
         if (item.nodeType == 1 && list.indexOf(item.nodeName) != -1) {
-          console.log(item);
-          console.log(list.indexOf(item.nodeName));
+          // console.log(item);
+          // console.log(list.indexOf(item.nodeName));
           let obj = {};
           obj.id =
             item.innerText.slice(0, 10) +
@@ -359,7 +362,7 @@ export default {
           arr.push(obj);
         }
       });
-      console.log(arr);
+      // console.log(arr);
       this.$store.commit("article/changeShowCatalog", true);
       this.$store.commit("article/changeCatalogList", arr);
     },
@@ -373,15 +376,15 @@ export default {
     scrollTo({ top: 0 });
     // console.log(this.$refs["hss-md"].$el);
     this.renderTree();
-    console.log("mounted");
+    // console.log("mounted");
   },
   destroyed() {
-    console.log("destroyed");
+    // console.log("destroyed");
     this.$store.commit("article/changeShowCatalog", false);
     this.$store.commit("article/changeCatalogList", []);
   },
   updated() {
-    console.log("updated");
+    // console.log("updated");
   },
   computed: {
     detail() {

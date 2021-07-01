@@ -112,7 +112,7 @@ export default {
     qqLogin() {
       window.location.href =
         // "https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=101934585&redirect_uri=https://www.zhengbeining.com/link";
-        "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101934585&redirect_uri=https://www.zhengbeining.com/link&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info";
+        "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101958191&redirect_uri=https://www.hsslive.cn/link&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info";
         // "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101934585&redirect_uri=http://localhost:3000/link&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info";
       // this.$newmessage("审核通过将点击跳转qq授权登录", "success");
     },

@@ -5,23 +5,24 @@
 </template>
 
 <script>
-import marked from "marked";
-import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
-import "../../assets/css/github-markdown.min.css"
+import { marked } from 'marked'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
+import '~/assets/css/github-markdown.min.css'
 export default {
-  props: ["md"],
+  props: ['md'],
   data() {
     return {
-      content: "",
-      xxx: "",
-    };
+      content: '',
+    }
   },
+  computed: {},
+  watch: {},
   created() {
     marked.setOptions({
       renderer: new marked.Renderer(),
       highlight(code) {
-        return hljs.highlightAuto(code).value;
+        return hljs.highlightAuto(code).value
       },
       pedantic: false,
       gfm: true,
@@ -31,15 +32,15 @@ export default {
       smartLists: true,
       smartypants: false,
       xhtml: false,
-    });
-    this.initMarked();
+    })
+    this.initMarked()
   },
   methods: {
     initMarked() {
       marked.setOptions({
         renderer: new marked.Renderer(),
         highlight(code) {
-          return hljs.highlightAuto(code).value;
+          return hljs.highlightAuto(code).value
         },
         pedantic: false,
         gfm: true,
@@ -49,16 +50,15 @@ export default {
         smartLists: true,
         smartypants: false,
         xhtml: false,
-      });
-      this.content = marked(this.md);
-      this.xxx = this.md;
+      })
+      this.content = marked(this.md)
     },
     // 格式化内容
     newcontent(x) {
       marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight: function (code) {
-          return hljs.highlightAuto(code).value;
+        highlight(code) {
+          return hljs.highlightAuto(code).value
         },
         pedantic: false,
         gfm: true,
@@ -68,14 +68,11 @@ export default {
         smartLists: true,
         smartypants: false,
         xhtml: false,
-      });
-      return marked(x);
+      })
+      return marked(x)
     },
   },
-  watch: {},
-  computed: {},
-};
+}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

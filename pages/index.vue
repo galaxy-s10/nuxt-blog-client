@@ -1,10 +1,8 @@
 <template>
   <div class="waterfall-masonry">
     <div v-if="isFirst">
-      <!-- <div> -->
-      <!-- <div> -->
       <!-- 骨架屏的样式 loading -->
-      <div class="masonry-wrap" ref="masonry-wrap" style="height: 1800px">
+      <div ref="masonry-wrap" class="masonry-wrap" style="height: 1800px">
         <div class="masonry-item">
           <div
             class="loading-block"
@@ -21,7 +19,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -48,7 +46,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -75,7 +73,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -102,7 +100,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -129,7 +127,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -156,7 +154,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -183,7 +181,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -210,7 +208,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -237,7 +235,7 @@
                     'background-color': '#ededed',
                     width: '20px',
                     height: '20px',
-                    'border-radius': '50%'
+                    'border-radius': '50%',
                   }"
                 ></div>
                 <span class="loading-block" style="width: 20%"> </span>
@@ -251,7 +249,7 @@
       </div>
     </div>
     <!-- 瀑布流布局 -->
-    <div class="waterfall-wrap" ref="waterfall-wrap">
+    <div ref="waterfall-wrap" class="waterfall-wrap">
       <article
         v-for="(item, index) in list"
         :key="index"
@@ -264,31 +262,31 @@
             <img
               class="head-img"
               :src="
-                item.img
-                  ? imgCdnUrl+ item.img
-                  : require('../assets/imgs/nopic.png')
+                item['head_img']
+                  ? imgCdnUrl + item['head_img']
+                  : require('~/assets/img/nopic.png')
               "
-              alt=""
               @load="imgLoad"
               @error="imgLoadError"
             />
           </nuxt-link>
           <div class="detail">
             <h3 class="title">{{ item.title }}</h3>
+            <p class="desc">{{ item.desc }}</p>
             <div class="tag">
-              <span v-if="item.tags.length == 0">该文章下暂无标签</span>
-              <div v-else class="tag">
+              <div v-if="item.tags.length">
                 <el-tag
-                  v-for="item in item.tags"
-                  :key="item.id"
+                  v-for="tagItem in item.tags"
+                  :key="tagItem.id"
                   class="tag-margin"
                   size="mini"
                   :disable-transitions="false"
-                  :color="item.color"
-                  @close="closeTag(item.id)"
-                  >{{ item.name }}</el-tag
+                  :color="tagItem.color"
+                  @close="closeTag(tagItem.id)"
+                  >{{ tagItem.name }}</el-tag
                 >
               </div>
+              <span v-else>该文章暂无标签~</span>
             </div>
             <div class="info">
               <img
@@ -298,14 +296,14 @@
               />
               <div>
                 <i class="el-icon-date"></i>
-                {{ format1(item.createdAt) }}
+                {{ format1(item.created_at) }}
               </div>
               <div>
                 <i class="el-icon-view"></i>
                 {{ item.click }}
               </div>
               <div>
-                <i class="el-icon-chat-round"></i>
+                <i class="el-icon-chat-line-round"></i>
                 {{ item.comments.length }}
               </div>
               <div>
@@ -315,84 +313,21 @@
             </div>
           </div>
         </div>
-        <!-- <article v-for="(item, index) in pageList" :key="index" class="article-con"> -->
-        <!-- <img
-          :src="item.img ? item.img : require('../assets/imgs/nopic.png')"
-          style="max-width: 100%"
-          alt=""
-        /> -->
-        <!-- <nuxt-link
-          :to="`/article/${item.id}`"
-          tag="div"
-          v-lazy:background-image="item.img"
-          class="img"
-        /> -->
-        <!-- <div class="article-l">
-        <nuxt-link
-          :to="`/article/${item.id}`"
-          tag="div"
-          v-lazy:background-image="item.img"
-          class="img"
-        />
-      </div>
-      <div class="article-r">
-        <nuxt-link :to="'/article/' + item.id" tag="h2" class="overtext">{{
-          item.title
-        }}</nuxt-link>
-        <el-divider></el-divider>
-        <p v-if="item.tags.length == 0">该文章下暂无标签</p>
-        <div v-else class="tag">
-          <el-tag
-            v-for="item in item.tags"
-            :key="item.id"
-            class="tag-margin"
-            size="mini"
-            :disable-transitions="false"
-            :color="item.color"
-            @close="closeTag(item.id)"
-            >{{ item.name }}</el-tag
-          >
-        </div>
-        <div style="font-size: 12px; display: flex; align-items: center; margin: 10px 0">
-          <img
-            style="width: 20px; height: 20px; border-radius: 50%"
-            :src="item.users[0] && item.users[0].avatar"
-            alt=""
-          />
-          <div class="jgh"></div>
-          <div class="jgh">{{ format1(item.createdAt) }}</div>
-          <div class="jgh">{{ item.click }}次浏览</div>
-          <div class="jgh">{{ item.comments.length }}条评论</div>
-          <div>{{ item.stars.length }}个star</div>
-        </div>
-      </div> -->
       </article>
     </div>
 
     <div v-if="isLoad" v-loading="true" style="height: 50px"></div>
-    <div v-if="end" style="text-align: center">到底了！</div>
-    <!-- <div style="text-align: center; padding: 30px 0">
-      <page
-        :count="count"
-        :nowPage="nowPage"
-        :pageSize="pageSize"
-        @currentChange="currentChange"
-      />
-    </div> -->
+    <div v-if="end" style="text-align: center">没有更多数据了~</div>
   </div>
 </template>
 
 <script>
-import page from "../components/page";
-import { format, format1 } from "@/utils/format.js";
-import { imgCdnUrl } from "@/utils/global.js";
-import Cookies from "js-cookie";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations } from 'vuex'
+import Cookies from 'js-cookie'
+import { format1 } from '@/utils/format.js'
+import { imgCdnUrl } from '@/constant'
 export default {
-  layout: "blog",
-  components: {
-    page
-  },
+  layout: 'blog',
   data() {
     return {
       imgCdnUrl,
@@ -402,315 +337,347 @@ export default {
       visible: false,
       masonryParams: {
         column: 3,
-        gap: 20
+        gap: 20,
       },
       imgLoadNum: 0,
       imgLoadErrorNum: 0,
       isLoad: false,
       showMasonry: false,
       end: false,
-      ajaxGetNum: 10 //记录本次加载了多少条数据
-    };
+      ajaxGetNum: 10, // 记录本次加载了多少条数据
+    }
+  },
+  async fetch({ store, params }) {
+    await store.dispatch('article/getArticleList', {
+      orderName: 'created_at',
+      orderBy: 'desc',
+      type_id: store.state.article.type_id,
+      nowPage: 1,
+      pageSize: 10,
+    })
+    this.list = this.pageList
   },
   head() {
     return {
-      title: "首页 - 自然博客",
-      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }]
-    };
+      title: '首页 - 自然博客',
+      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+    }
+  },
+  computed: {
+    count() {
+      return this.$store.state.article.count
+    },
+    pageSize() {
+      return this.$store.state.article.pageSize
+    },
+    nowPage() {
+      return this.$store.state.article.nowPage
+    },
+    type_id() {
+      return this.$store.state.article.type_id
+    },
+  },
+  watch: {
+    '$store.state.article.pageList': {
+      immediate: true,
+      deep: true,
+      handler(newValue, oldValue) {
+        this.ajaxGetNum = newValue.length
+        if (!newValue.length) {
+          this.isFirst = false
+          this.isLoad = false
+          this.end = true
+          return
+        }
+        // if (newValue.length) {
+        //   this.isLoad = false;
+        //   this.end = true;
+        //   if (this.nowPage === 1) {
+        //     this.isFirst = false;
+        //     this.list = [];
+        //     // this.$refs["waterfall-wrap"].style.height = "0px";
+        //   }
+        //   return;
+        // }
+        if (this.nowPage !== 1) {
+          // if(newValue.length<this.pageSize){
+          //   this.end = true
+          // }
+          this.list = this.list.concat(newValue)
+        } else {
+          this.list = []
+          this.$nextTick(() => {
+            this.offsetList = []
+            this.imgLoadNum = 0
+            if (newValue.length < this.pageSize) {
+              this.end = true
+            } else {
+              this.end = false
+            }
+            this.list = newValue
+          })
+        }
+      },
+    },
+    imgLoadNum(newVal) {
+      if (this.imgLoadNum === this.list.length) {
+        this.isFirst = false
+        this.showMasonry = true
+        this.isLoad = false
+        this.waterfall()
+      }
+    },
+    type_id(newval, oldval) {
+      scrollTo({ top: 0 })
+      this.end = false
+      this.isFirst = true
+      this.isLoad = true
+      this.list = []
+      this.$nextTick(() => {
+        this.$refs['waterfall-wrap'].style.height = '0px'
+        this.$refs['masonry-wrap'] && this.masonry()
+      })
+      this.$store.dispatch('article/getArticleList', {
+        orderName: this.$store.state.article.orderName,
+        orderBy: this.$store.state.article.orderBy,
+        type_ids: this.$store.state.article.type_id,
+        nowPage: 1,
+        pageSize: 10,
+      })
+    },
+  },
+  created() {},
+  mounted() {
+    const d = window.pageXOffset || document.documentElement.offsetWidth
+    if (d <= 414) {
+      this.masonryParams.column = 2
+    }
+    scrollTo({ top: 0 })
+    window.addEventListener('scroll', this.headershow)
+    window.addEventListener('message', async (e) => {
+      const { type, data: code } = e.data
+      if (type === 'qq_login') {
+        if (code) {
+          try {
+            await this.$axios1.get(`/api/qq_user/login?code=${code}`)
+            const token = Cookies.get('token')
+            if (token) {
+              this.setToken(token)
+              this.getUserInfo()
+                .then((res) => {})
+                .catch((err) => {
+                  this.$newmessage(err, 'success')
+                })
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      }
+      if (type === 'github_login') {
+        if (code) {
+          try {
+            await this.$axios1.get(`/api/github_user/login?code=${code}`)
+            const token = Cookies.get('token')
+            if (token) {
+              this.setToken(token)
+              this.getUserInfo()
+                .then((res) => {})
+                .catch((err) => {
+                  this.$newmessage(err, 'success')
+                })
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      }
+    })
+  },
+  destroyed() {
+    this.$store.commit('article/changeNowPage', 1)
+    window.removeEventListener('scroll', this.headershow)
   },
   methods: {
-    // ...mapActions({
-    //   userLogin: "user/login",
-    //   getUserInfo: "user/getUserInfo",
-    // }),
-    // ...mapMutations({
-    //   setToken: "user/setToken",
-    //   logout: "user/logout",
-    // }),
+    ...mapActions({
+      userLogin: 'user/login',
+      getUserInfo: 'user/getUserInfo',
+    }),
+    ...mapMutations({
+      setToken: 'user/setToken',
+      logout: 'user/logout',
+    }),
     // 格式化时间
     format1(time) {
-      return format1(time);
+      return format1(time)
     },
     // currentPage 改变时会触发
     async currentChange(nowPage) {
-      this.$store.commit("article/changeNowPage", nowPage);
-      this.isLoad = true;
-      await this.$store.dispatch("article/getArticleList", {
-        ordername: this.$store.state.article.ordername,
-        orderby: this.$store.state.article.orderby,
+      this.$store.commit('article/changeNowPage', nowPage)
+      this.isLoad = true
+      await this.$store.dispatch('article/getArticleList', {
+        orderName: this.$store.state.article.orderName,
+        orderBy: this.$store.state.article.orderBy,
         type_id: this.$store.state.article.type_id,
         nowPage,
-        pageSize: 10
-      });
+        pageSize: 10,
+      })
     },
     headershow() {
       // 头部高度为70px
-      const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      this.visible = offsetTop > height;
+      const height = 70
+      const offsetTop = window.pageYOffset || document.documentElement.scrollTop
+      this.visible = offsetTop > height
       if (
         document.documentElement.offsetHeight -
           (window.innerHeight + offsetTop) <
         300
       ) {
-        // console.log("距离底部小于300px");
-        if (this.isLoad || this.end) return;
-        this.currentChange(this.nowPage + 1);
+        if (this.isLoad || this.end) return
+        this.currentChange(this.nowPage + 1)
       }
     },
     waterfall() {
       // 获取数组最小值的下标
       function getMinIndex(arr) {
-        return [].indexOf.call(arr, Math.min.apply(null, arr));
+        return [].indexOf.call(arr, Math.min.apply(null, arr))
       }
       // 获取数组最大值的下标
       function getMaxIndex(arr) {
-        return [].indexOf.call(arr, Math.max.apply(null, arr));
+        return [].indexOf.call(arr, Math.max.apply(null, arr))
       }
       // 列数
-      const column = this.masonryParams.column;
+      const column = this.masonryParams.column
       // 间隙
-      const gap = this.masonryParams.gap;
-      const wrap = this.$refs["waterfall-wrap"];
-      const item = this.$refs["waterfall-item"];
-      const width1 = window.getComputedStyle(wrap, null)["width"];
-      const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap;
+      const gap = this.masonryParams.gap
+      const wrap = this.$refs['waterfall-wrap']
+      const item = this.$refs['waterfall-item']
+      const width1 = window.getComputedStyle(wrap, null).width
+      const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap
       // 计算减去间隙后，每个item的平均宽度
-      const width = width2 / column;
+      const width = width2 / column
       // 保存当前列的offsetHeight的高度
       // const offsetList = [];
-      wrap.style.position = "relative";
+      wrap.style.position = 'relative'
       // let startPosition = this.ajaxGetNum;
       for (let i = this.list.length - this.ajaxGetNum; i < item.length; i++) {
         // wrapHeight += item[i].offsetHeight + gap;
-        item[i].style.width = "100%";
-        item[i].style.display = "block";
-        item[i].style.position = "absolute";
-        item[i].style.width = width + "px";
-        item[i].style.opacity = 1;
+        item[i].style.width = '100%'
+        item[i].style.display = 'block'
+        item[i].style.position = 'absolute'
+        item[i].style.width = width + 'px'
+        item[i].style.opacity = 1
 
         if (i < column) {
           // 将第一行的offsetHeight都保存在数组里
-          // offsetList.push(i == 0 ? item[i].offsetHeight + gap : item[i].offsetHeight);
-          this.offsetList.push(item[i].offsetHeight);
-          item[i].style.top = "0";
-          if ((i + 1) % column == 1) {
-            item[i].style.left = 0;
-            item[i].style.opacity = 1;
+          // offsetList.push(i === 0 ? item[i].offsetHeight + gap : item[i].offsetHeight);
+          this.offsetList.push(item[i].offsetHeight)
+          item[i].style.top = '0'
+          if ((i + 1) % column === 1) {
+            item[i].style.left = 0
+            item[i].style.opacity = 1
           } else {
-            let w = i * width;
-            let g = i * gap;
-            item[i].style.left = `calc(${w}px + ${g}px)`;
-            item[i].style.opacity = 1;
+            const w = i * width
+            const g = i * gap
+            item[i].style.left = `calc(${w}px + ${g}px)`
+            item[i].style.opacity = 1
           }
         } else {
-          const minIndex = getMinIndex(this.offsetList);
-          let w = minIndex * width;
-          let g = minIndex * gap;
+          const minIndex = getMinIndex(this.offsetList)
+          const w = minIndex * width
+          const g = minIndex * gap
           // let g = gap;
-          item[i].style.top = this.offsetList[minIndex] + gap + "px";
-          item[i].style.left = w + g + "px";
-          item[i].style.opacity = 1;
-          this.offsetList[minIndex] += item[i].offsetHeight + gap;
+          item[i].style.top = this.offsetList[minIndex] + gap + 'px'
+          item[i].style.left = w + g + 'px'
+          item[i].style.opacity = 1
+          this.offsetList[minIndex] += item[i].offsetHeight + gap
         }
       }
       function format(v) {
-        return v.slice(0, v.length - 2);
+        return v.slice(0, v.length - 2)
       }
-      const maxIndex = getMaxIndex(this.offsetList);
-      let max = this.offsetList[maxIndex];
-      let wrapHeight = parseInt(this.offsetList[maxIndex]);
+      const maxIndex = getMaxIndex(this.offsetList)
+      const max = this.offsetList[maxIndex]
+      const wrapHeight = parseInt(this.offsetList[maxIndex])
       // bug:取最后一个元素距离顶部的高度+它本身的高度，但是最后一个元素不一定是最大的
       // let wrapHeight =
       // parseInt(format(item[item.length - 1].style.top)) +
       // parseInt(item[item.length - 1].offsetHeight);
-      wrap.style.height = wrapHeight + "px";
-      this.isLoad = false;
+      wrap.style.height = wrapHeight + 'px'
+      this.isLoad = false
       if (this.ajaxGetNum < this.pageSize) {
-        this.end = true;
+        this.end = true
       }
     },
     // 骨架屏
     masonry() {
       // 获取数组最小值的下标
       function getMinIndex(arr) {
-        return [].indexOf.call(arr, Math.min.apply(null, arr));
+        return [].indexOf.call(arr, Math.min.apply(null, arr))
       }
       // 列数
-      const column = this.masonryParams.column;
+      const column = this.masonryParams.column
       // 间隙
-      const gap = this.masonryParams.gap;
-      const wrap = this.$refs["masonry-wrap"];
-      const item = wrap.getElementsByClassName("masonry-item");
-      const width1 = window.getComputedStyle(wrap, null)["width"];
-      const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap;
+      const gap = this.masonryParams.gap
+      const wrap = this.$refs['masonry-wrap']
+      const item = wrap.getElementsByClassName('masonry-item')
+      const width1 = window.getComputedStyle(wrap, null).width
+      const width2 = width1.slice(0, width1.length - 2) - (column - 1) * gap
       // 计算减去间隙后，每个item的平均宽度
-      const width = width2 / column;
+      const width = width2 / column
       // 保存当前列的offsetHeight的高度
-      const offsetList = [];
-      wrap.style.position = "relative";
+      const offsetList = []
+      wrap.style.position = 'relative'
       for (let i = 0; i < item.length; i++) {
-        // console.log("瀑布流定位");
-        // wrapHeight += item[i].offsetHeight + gap;
-        // console.log(wrapHeight);
-        item[i].style.width = "100%";
-        item[i].style.display = "block";
-        item[i].style.position = "absolute";
-        item[i].style.width = width + "px";
-        item[i].style.opacity = 1;
+        item[i].style.width = '100%'
+        item[i].style.display = 'block'
+        item[i].style.position = 'absolute'
+        item[i].style.width = width + 'px'
+        item[i].style.opacity = 1
 
         if (i < column) {
           // 将第一行的offsetHeight都保存在数组里
-          // offsetList.push(i == 0 ? item[i].offsetHeight + gap : item[i].offsetHeight);
-          offsetList.push(item[i].offsetHeight);
-          item[i].style.top = "0";
-          if ((i + 1) % column == 1) {
-            item[i].style.left = 0;
-            item[i].style.opacity = 1;
+          // offsetList.push(i === 0 ? item[i].offsetHeight + gap : item[i].offsetHeight);
+          offsetList.push(item[i].offsetHeight)
+          item[i].style.top = '0'
+          if ((i + 1) % column === 1) {
+            item[i].style.left = 0
+            item[i].style.opacity = 1
           } else {
-            let w = i * width;
-            let g = i * gap;
-            item[i].style.left = `calc(${w}px + ${g}px)`;
-            item[i].style.opacity = 1;
+            const w = i * width
+            const g = i * gap
+            item[i].style.left = `calc(${w}px + ${g}px)`
+            item[i].style.opacity = 1
           }
         } else {
-          const minIndex = getMinIndex(offsetList);
-          let w = minIndex * width;
-          let g = minIndex * gap;
+          const minIndex = getMinIndex(offsetList)
+          const w = minIndex * width
+          const g = minIndex * gap
           // let g = gap;
-          item[i].style.top = offsetList[minIndex] + gap + "px";
-          item[i].style.left = w + g + "px";
-          item[i].style.opacity = 1;
-          offsetList[minIndex] += item[i].offsetHeight + gap;
+          item[i].style.top = offsetList[minIndex] + gap + 'px'
+          item[i].style.left = w + g + 'px'
+          item[i].style.opacity = 1
+          offsetList[minIndex] += item[i].offsetHeight + gap
         }
       }
       function format(v) {
-        return v.slice(0, v.length - 2);
+        return v.slice(0, v.length - 2)
       }
-      let wrapHeight =
+      const wrapHeight =
         parseInt(format(item[item.length - 1].style.top)) +
-        parseInt(item[item.length - 1].offsetHeight);
-      wrap.style.height = wrapHeight + "px";
-      this.isLoad = false;
+        parseInt(item[item.length - 1].offsetHeight)
+      wrap.style.height = wrapHeight + 'px'
+      this.isLoad = false
     },
     imgLoad() {
-      this.imgLoadNum++;
+      this.imgLoadNum++
     },
     imgLoadError(e) {
-      console.log("imgLoadError");
-      e.target.src = require("../assets/imgs/errorpic.png");
-      // e.target.style.height = "200px";
-      // this.imgLoadNum++;
-      this.imgLoadErrorNum++;
-    }
-    // hello(x) {
-    //   this.$store.dispatch("article/articlelist", { type: x });
-    // },
-  },
-  async fetch({ store, params }) {
-    await store.dispatch("article/getArticleList", {
-      ordername: "createdAt",
-      orderby: "desc",
-      type_id: store.state.article.type_id,
-      nowPage: 1,
-      pageSize: 10
-    });
-    // this.list = this.pageList;
-  },
-  created() {
-    // console.log(this.imgCdnUrl);
-  },
-  mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth;
-    if (d <= 414) {
-      this.masonryParams.column = 2;
-    }
-    scrollTo({ top: 0 });
-    window.addEventListener("scroll", this.headershow);
-  },
-  destroyed() {
-    this.$store.commit("article/changeNowPage", 1);
-    window.removeEventListener("scroll", this.headershow);
-  },
-  computed: {
-    count() {
-      return this.$store.state.article.count;
+      e.target.src = require('~/assets/img/errorpic.png')
+      this.imgLoadErrorNum++
     },
-    pageSize() {
-      return this.$store.state.article.pageSize;
-    },
-    nowPage() {
-      return this.$store.state.article.nowPage;
-    },
-    type_id() {
-      return this.$store.state.article.type_id;
-    }
   },
-  watch: {
-    "$store.state.article.pageList": {
-      immediate: true,
-      deep: true,
-      handler: function(newValue, oldValue) {
-        this.ajaxGetNum = newValue.length;
-        if (!newValue.length) {
-          this.isLoad = false;
-          this.end = true;
-          if (this.nowPage == 1) {
-            this.isFirst = false;
-            this.list = [];
-            this.$refs["waterfall-wrap"].style.height = "0px";
-          }
-          return;
-        }
-        if (this.nowPage != 1) {
-          // if(newValue.length<this.pageSize){
-          //   this.end = true
-          // }
-          this.list = this.list.concat(newValue);
-        } else {
-          this.list = [];
-          this.$nextTick(() => {
-            this.offsetList = [];
-            this.imgLoadNum = 0;
-            if (newValue.length < this.pageSize) {
-              this.end = true;
-            } else {
-              this.end = false;
-            }
-            this.list = newValue;
-          });
-        }
-      }
-    },
-    imgLoadNum(newVal) {
-      if (this.imgLoadNum == this.list.length) {
-        this.isFirst = false;
-        this.showMasonry = true;
-        this.isLoad = false;
-        this.waterfall();
-      }
-    },
-    type_id(newval, oldval) {
-      scrollTo({ top: 0 });
-      this.end = false;
-      this.isFirst = true;
-      this.isLoad = true;
-      this.list = [];
-      this.$nextTick(() => {
-        this.$refs["waterfall-wrap"].style.height = "0px";
-        this.$refs["masonry-wrap"] && this.masonry();
-      });
-      this.$store.dispatch("article/getArticleList", {
-        ordername: this.$store.state.article.ordername,
-        orderby: this.$store.state.article.orderby,
-        type_id: this.$store.state.article.type_id,
-        nowPage: 1,
-        pageSize: 10
-      });
-    }
-  }
-};
+}
 </script>
 
 <style scoped>
@@ -842,7 +809,7 @@ export default {
   transition: all 0.5s ease;
 }
 .jgh::after {
-  content: "·";
+  content: '·';
   font-weight: 600;
   padding: 0 5px;
 }

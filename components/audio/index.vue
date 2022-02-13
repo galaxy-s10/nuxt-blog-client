@@ -1,12 +1,20 @@
 <template>
-  <div class="fixedd" :class="{ hiddenMusic: hiddenMusic }">
+  <div
+    v-if="songList.length"
+    class="fixedd"
+    :class="{ hiddenMusic: hiddenMusic }"
+  >
     <div class="songWrapper">
       <div class="songText">
-        <div class="textItem">{{ songList[currentIndex].name }}</div>
-        <div class="textItem">{{ songList[currentIndex].author }}</div>
+        <div class="textItem">
+          {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
+        </div>
+        <div class="textItem">
+          {{ songList[currentIndex] ? songList[currentIndex].author : '-' }}
+        </div>
       </div>
       <div class="songBar">
-        <div class="songBarItem" ref="bar">
+        <div ref="bar" class="songBarItem">
           <div
             :style="{ width: nowTime * (100 / duration1) + '%' }"
             class="currentTime"
@@ -19,12 +27,16 @@
       <div class="songImg1" :class="{ disk_play: start }">
         <div class="songImg2">
           <img
-            :src="imgCdnUrl+songList[currentIndex].img"
+            ref="disk"
+            :src="
+              imgCdnUrl + songList[currentIndex]
+                ? imgCdnUrl + songList[currentIndex]['cover_pic']
+                : '-'
+            "
             alt
             width="90"
             height="90"
             class="songImg"
-            ref="disk"
             :style="{ transform: matrix }"
             @click="showMusic"
           />
@@ -37,247 +49,204 @@
       </div>
     </div>
   </div>
+  <div v-else>暂无音乐~</div>
 </template>
 
 <script>
-import { imgCdnUrl } from "@/utils/global.js";
+import { imgCdnUrl } from '@/constant'
 
 export default {
-  components: {},
   data() {
     return {
       imgCdnUrl,
       hiddenMusic: false,
-      matrix: "",
+      matrix: '',
       nowDeg: 0,
       audio: null,
-      songLink: null,
       start: false,
       duration: 0,
       duration1: 0,
       nowTime: 0,
       currentIndex: 0,
       songList: [],
-      // songList: [
-      //   {
-      //     name: "花 が とぶ 飛ぶ",
-      //     author: "邱有句 / 李德奎",
-      //     img: "https://img.cdn.zhengbeining.com/song7.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/1609599956810song2.mp3",
-      //   },
-      //   {
-      //     name: "云村的告别",
-      //     author: "邱有句",
-      //     img: "https://img.cdn.zhengbeining.com/song6.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song6.mp3",
-      //   },
-      //   {
-      //     name: "Cubi - BingBian病变钢琴版",
-      //     author: "Kirito潇轩; 文武贝",
-      //     img: "https://img.cdn.zhengbeining.com/song2.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song2.mp3",
-      //   },
-      //   {
-      //     name: "僕らの手には何もないけど、",
-      //     author: "RAM WIRE",
-      //     img: "https://img.cdn.zhengbeining.com/song1.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song1.mp3",
-      //   },
-      //   {
-      //     name: "山海皆可平",
-      //     author: "CMJ",
-      //     img: "https://img.cdn.zhengbeining.com/song3.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song3.mp3",
-      //   },
-      //   {
-      //     name: "所念皆星河",
-      //     author: "CMJ",
-      //     img: "https://img.cdn.zhengbeining.com/song4.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song4.mp3",
-      //   },
-      //   {
-      //     name: "蜗居背景音乐",
-      //     author: "群星",
-      //     img: "https://img.cdn.zhengbeining.com/song5.jpg",
-      //     url: "https://img.cdn.zhengbeining.com/song5.mp3",
-      //   },
-      // ],
-    };
+    }
+  },
+  async fetch() {
+    const res = await this.$axios1.get(`/api/music/list`, {
+      params: { nowPage: 1, pageSize: 10 },
+    })
+    this.songList = res.rows
   },
   computed: {
     duration2(x) {
-      return (x) => this.formatTime(x);
+      return (x) => this.formatTime(x)
     },
   },
-  async fetch() {
-    let res = await this.$axios.$get(`/api/music/pageList`, {
-      params: { nowPage: 1, pageSize: 10 },
-    });
-    this.songList = res.rows;
-  },
   mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth;
+    const d = window.pageXOffset || document.documentElement.offsetWidth
     if (d <= 414) {
-      this.hiddenMusic = true;
+      this.hiddenMusic = true
     }
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       const offsetWidth =
-        window.pageXOffset || document.documentElement.offsetWidth;
+        window.pageXOffset || document.documentElement.offsetWidth
       if (offsetWidth <= 414) {
-        if (this.hiddenMusic != true) {
-          this.hiddenMusic = true;
+        if (this.hiddenMusic !== true) {
+          this.hiddenMusic = true
         }
-      } else {
-        if (this.hiddenMusic != false) {
-          this.hiddenMusic = false;
-        }
+      } else if (this.hiddenMusic !== false) {
+        this.hiddenMusic = false
       }
-    });
-
-    this.audio = new Audio();
-    this.audio.src = this.imgCdnUrl+this.songList[0].url;
-    let timer = setInterval(() => {
+    })
+    if (!this.songList.length) return
+    this.audio = new Audio()
+    this.audio.src = imgCdnUrl + this.songList[0].audio_url
+    const timer = setInterval(() => {
       if (!isNaN(this.audio.duration)) {
-        this.duration = this.audio.duration;
-        this.duration1 = this.audio.duration;
-        clearInterval(timer);
+        this.duration = this.audio.duration
+        this.duration1 = this.audio.duration
+        clearInterval(timer)
       }
-    }, 100);
+    }, 100)
 
-    this.audio.addEventListener("timeupdate", () => {
-      this.nowTime = this.audio.currentTime;
-      if (this.nowTime == this.duration1) {
-        this.nextSong();
+    this.audio.addEventListener('timeupdate', () => {
+      this.nowTime = this.audio.currentTime
+      if (this.nowTime === this.duration1) {
+        this.nextSong()
       }
-    });
-    this.$refs.bar.addEventListener("click", (e) => {
+    })
+    this.$refs.bar.addEventListener('click', (e) => {
       setTimeout(() => {
-        this.nowTime = (e.offsetX / 170) * this.duration1;
-        this.audio.currentTime = this.nowTime;
-      }, 100);
-    });
+        this.nowTime = (e.offsetX / 170) * this.duration1
+        this.audio.currentTime = this.nowTime
+      }, 100)
+    })
   },
   methods: {
     showMusic() {
-      this.hiddenMusic = !this.hiddenMusic;
+      this.hiddenMusic = !this.hiddenMusic
     },
     formatTime(t) {
-      var h = parseInt(t / 3600);
-      h = h < 10 ? "0" + h : h;
-      var m = parseInt((t % 3600) / 60);
-      m = m < 10 ? "0" + m : m;
-      var s = parseInt(t % 60);
-      s = s < 10 ? "0" + s : s;
-      // return h + ":" + m + ":" + s;
-      return m + ":" + s;
+      let m = parseInt((t % 3600) / 60)
+      m = m < 10 ? '0' + m : m
+      let s = parseInt(t % 60)
+      s = s < 10 ? '0' + s : s
+      return m + ':' + s
     },
     switchBtn() {
-      this.start = !this.start;
-      if (this.start == true) {
-        this.duration = this.audio.duration;
-        this.duration1 = this.audio.duration;
-        if (this.nowTime != 0) {
-          this.audio.currentTime = this.nowTime;
+      this.start = !this.start
+      if (this.start === true) {
+        this.duration = this.audio.duration
+        this.duration1 = this.audio.duration
+        if (this.nowTime !== 0) {
+          this.audio.currentTime = this.nowTime
         }
         this.audio
           .play()
           .then((res) => {})
-          .catch((err) => {});
+          .catch((err) => {})
       } else {
-        this.stopRotate();
-        this.audio.pause();
-        this.audio.currentTime = this.nowTime;
+        this.stopRotate()
+        this.audio.pause()
+        this.audio.currentTime = this.nowTime
       }
     },
     // 切歌
     changeSong(index) {
-      this.matrix = "";
-      this.start = false;
+      this.matrix = ''
+      this.start = false
       setTimeout(() => {
-        this.start = true;
-        const styles = [...document.styleSheets];
+        this.start = true
+        const styles = [...document.styleSheets]
         styles.forEach((style) => {
-          const rules = [...style.cssRules];
+          const rules = [...style.cssRules]
           rules.forEach((rule) => {
-            if (rule.type === rule.KEYFRAMES_RULE && rule.name === "rotate1") {
-              rule.cssRules[0].style.transform = `rotate(0deg)`;
-              rule.cssRules[1].style.transform = `rotate(360deg)`;
+            if (rule.type === rule.KEYFRAMES_RULE && rule.name === 'rotate1') {
+              rule.cssRules[0].style.transform = `rotate(0deg)`
+              rule.cssRules[1].style.transform = `rotate(360deg)`
               // rule.cssRules[0].style.transform = `rotate(${-this.nowDeg}deg)`;
               // rule.cssRules[1].style.transform = `rotate(${360 -
               //   this.nowDeg}deg)`;
             }
-          });
-        });
-        this.audio.src = this.imgCdnUrl+this.songList[index].url;
-        let timer = setInterval(() => {
+          })
+        })
+        this.audio.src = imgCdnUrl + this.songList[index].audio_url
+        const timer = setInterval(() => {
           if (!isNaN(this.audio.duration)) {
-            this.duration = this.audio.duration;
-            this.duration1 = this.audio.duration;
-            clearInterval(timer);
+            this.duration = this.audio.duration
+            this.duration1 = this.audio.duration
+            clearInterval(timer)
           }
-        }, 100);
+        }, 100)
         this.audio
           .play()
           .then((res) => {})
-          .catch((err) => {});
-      }, 500);
+          .catch((err) => {})
+      }, 500)
     },
     preSong() {
-      if (this.currentIndex == 0) {
-        this.currentIndex = this.songList.length - 1;
+      if (this.currentIndex === 0) {
+        this.currentIndex = this.songList.length - 1
       } else {
-        this.currentIndex--;
+        this.currentIndex--
       }
-      this.audio.pause();
-      if (this.start == false) {
-        this.start = !this.start;
+      this.audio.pause()
+      if (this.start === false) {
+        this.start = !this.start
       }
-      this.changeSong(this.currentIndex);
+      this.changeSong(this.currentIndex)
     },
     nextSong() {
       if (this.currentIndex < this.songList.length - 1) {
-        this.currentIndex++;
+        this.currentIndex++
       } else {
-        this.currentIndex = 0;
+        this.currentIndex = 0
       }
-      this.changeSong(this.currentIndex);
+      this.changeSong(this.currentIndex)
     },
     // 停止转盘转动
     stopRotate() {
-      var currentMatrix = window.getComputedStyle(this.$refs.disk).transform;
+      const currentMatrix = window.getComputedStyle(this.$refs.disk).transform
       function getmatrix(a, b, c, d, e, f) {
-        var aa = Math.round((180 * Math.asin(a)) / Math.PI);
-        var bb = Math.round((180 * Math.acos(b)) / Math.PI);
-        var cc = Math.round((180 * Math.asin(c)) / Math.PI);
-        var dd = Math.round((180 * Math.acos(d)) / Math.PI);
-        var deg = 0;
-        if (aa == bb || -aa == bb) {
-          deg = dd;
-        } else if (-aa + bb == 180) {
-          deg = 180 + cc;
-        } else if (aa + bb == 180) {
-          deg = 360 - cc || 360 - dd;
+        const aa = Math.round((180 * Math.asin(a)) / Math.PI)
+        const bb = Math.round((180 * Math.acos(b)) / Math.PI)
+        const cc = Math.round((180 * Math.asin(c)) / Math.PI)
+        const dd = Math.round((180 * Math.acos(d)) / Math.PI)
+        let deg = 0
+        if (aa === bb || -aa === bb) {
+          deg = dd
+        } else if (-aa + bb === 180) {
+          deg = 180 + cc
+        } else if (aa + bb === 180) {
+          deg = 360 - cc || 360 - dd
         }
-        return deg >= 360 ? 0 : deg;
-        //return (aa+','+bb+','+cc+','+dd);
+        return deg >= 360 ? 0 : deg
+        // return (aa+','+bb+','+cc+','+dd);
       }
-      this.matrix = currentMatrix;
-      var res = currentMatrix.split("(")[1].split(")")[0].split(",");
-      var rotateDeg = getmatrix(res[0], res[1], res[2], res[3], res[4], res[5]);
-      this.nowDeg = rotateDeg;
-      const styles = [...document.styleSheets];
+      this.matrix = currentMatrix
+      const res = currentMatrix.split('(')[1].split(')')[0].split(',')
+      const rotateDeg = getmatrix(
+        res[0],
+        res[1],
+        res[2],
+        res[3],
+        res[4],
+        res[5]
+      )
+      this.nowDeg = rotateDeg
+      const styles = [...document.styleSheets]
       styles.forEach((style) => {
-        const rules = [...style.cssRules];
+        const rules = [...style.cssRules]
         rules.forEach((rule) => {
-          if (rule.type === rule.KEYFRAMES_RULE && rule.name === "rotate1") {
-            rule.cssRules[0].style.transform = `rotate(${rotateDeg}deg)`;
-            rule.cssRules[1].style.transform = `rotate(${rotateDeg + 360}deg)`;
+          if (rule.type === rule.KEYFRAMES_RULE && rule.name === 'rotate1') {
+            rule.cssRules[0].style.transform = `rotate(${rotateDeg}deg)`
+            rule.cssRules[1].style.transform = `rotate(${rotateDeg + 360}deg)`
           }
-        });
-      });
+        })
+      })
     },
   },
-};
+}
 </script>
 
 <style>
@@ -291,7 +260,7 @@ export default {
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
 .fixedd.hiddenMusic {
   right: -140px;
 }
@@ -306,10 +275,6 @@ export default {
   background-color: transparent !important;
   box-shadow: none !important;
 }
-/* .hiddenMusic .songImg1 {
-  position: absolute;
-  left: 165px;
-} */
 .currentTime {
   height: 10px;
   background-color: rgba(205, 225, 247, 1);
@@ -330,20 +295,12 @@ export default {
 .songBarItem {
   display: block;
   width: 170px;
-  /* margin: 0 10px 0 5px; */
   height: 10px;
   background-color: rgba(236, 245, 255, 1);
   border-radius: 10px;
 }
 .songBarItem:hover {
   cursor: pointer;
-}
-.text {
-  /* display: block; */
-  /* width: 22%; */
-  /* flex: 1; */
-  /* height: 10px; */
-  /* font-size: 10px; */
 }
 .disk_play .songImg {
   animation: rotate1 6s infinite linear;
@@ -404,7 +361,7 @@ export default {
   border-radius: 50%;
 }
 .songImg1::after {
-  content: "";
+  content: '';
   width: 10px;
   height: 10px;
   position: absolute;
@@ -466,7 +423,7 @@ export default {
 }
 
 .pre::before {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   position: absolute;
@@ -478,7 +435,7 @@ export default {
   border-color: transparent #d9d9d9 transparent transparent;
 }
 .pre::after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   position: absolute;
@@ -490,7 +447,7 @@ export default {
   border-color: transparent #d9d9d9 transparent transparent;
 }
 .next::before {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   position: absolute;
@@ -502,7 +459,7 @@ export default {
   border-color: transparent transparent transparent #d9d9d9;
 }
 .next::after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   position: absolute;
@@ -515,7 +472,7 @@ export default {
 }
 
 .stop::before {
-  content: "";
+  content: '';
   width: 4px;
   height: 18px;
   left: 10px;
@@ -524,7 +481,7 @@ export default {
   position: absolute;
 }
 .stop::after {
-  content: "";
+  content: '';
   width: 4px;
   height: 18px;
   left: 17px;
@@ -533,7 +490,7 @@ export default {
   position: absolute;
 }
 .start::after {
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   left: 10px;

@@ -1,20 +1,50 @@
-import { MessageBox, Message } from 'element-ui'
-// import Cookies from 'js-cookie';
+export default function ({ $axios, store }, inject) {
+  const axios = $axios
+  const service = axios.create({
+    // baseURL: 'http://localhost:3100',
+    timeout: 5000,
+  })
 
-export default function ({ $axios, store }) {
-    $axios.defaults.timeout = 2000
-    $axios.onRequest(config => {
-        var token = store.state.user.token
-        if (store.state.user.token) {
-            config.headers.Authorization = `Bearer ${token}`
+  // 请求拦截
+  service.interceptors.request.use(
+    (config) => {
+      const token = store.state.user.token
+      if (store.state.user.token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+      return config
+    },
+    (error) => {
+      console.log(error)
+      return Promise.reject(error)
+    }
+  )
+
+  // 响应拦截
+  service.interceptors.response.use(
+    (response) => {
+      return response.data.data
+    },
+    (error) => {
+      const whiteList = ['400', '401', '403', '404']
+      if (!whiteList.includes(`${error.response.status}`)) {
+        return Promise.reject(error)
+      }
+      if (error.response) {
+        if (error.response.status === 400) {
+          return Promise.reject(error.response.data.data)
         }
-    })
-    $axios.onError(error => {
-        console.log(error);
-        console.log(error.response);
-        // return Promise.reject(error.response.data)
-        // return Promise.reject(error.response)
-        store.commit('user/logout')
-        return Promise.reject(error.response.data)
-    })
+        if (error.response.status === 401) {
+          store.commit('user/logout')
+          return Promise.reject(error.response.data.data)
+        }
+        if (error.response.status === 403) {
+          return Promise.reject(error.response.data.data)
+        }
+      } else {
+        return Promise.reject(error.response)
+      }
+    }
+  )
+  inject('axios1', service)
 }

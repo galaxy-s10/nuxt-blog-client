@@ -9,113 +9,107 @@
         padding: 30px;
       "
     >
-      <div
-        class="newtag"
-        v-for="item in tagList"
-        :key="item.id"
-        :class="{ currenttag: tagindex == item.id }"
-        @click="getTagArticle(item.id)"
-      >
-        <span>{{ item.name }}</span>
-        <span style="margin-left: 10px">{{ item.articles.length }}</span>
-      </div>
-      <div>
-        <article v-for="(item, index) in articleList" :key="index" class="article-con">
-          <div class="article-l">
-            <nuxt-link
-              :to="`/article/${item.article.id}`"
-              tag="div"
-              v-lazy:background-image="imgCdnUrl+item.article.img"
-              class="img"
-            />
-          </div>
-          <div class="article-r">
-            <nuxt-link :to="'/article/' + item.article.id" tag="h2" class="overtext">{{
-              item.article.title
-            }}</nuxt-link>
-            <el-divider></el-divider>
+      <div v-if="tagList.length">
+        <div
+          v-for="item in tagList"
+          :key="item.id"
+          class="newtag"
+          :class="{ currenttag: currentTagId === item.id }"
+          @click="getTagArticle(item.id)"
+        >
+          <span>{{ item.name }}</span>
+          <span style="margin-left: 10px">{{ item && item.length }}</span>
+        </div>
+        <div>
+          <article
+            v-for="(item, index) in articleList"
+            :key="index"
+            class="article-con"
+          >
+            <div class="article-l">
+              <nuxt-link
+                v-if="item['head_img']"
+                v-lazy="imgCdnUrl + item['head_img']"
+                :to="`/article/${item.id}`"
+                tag="img"
+                class="img"
+              />
+              <nuxt-link
+                v-else
+                :to="`/article/${item.id}`"
+                tag="div"
+                class="no-img"
+              />
+            </div>
+            <div class="article-r">
+              <nuxt-link
+                :to="'/article/' + item.id"
+                tag="h2"
+                class="overtext"
+                >{{ item.title }}</nuxt-link
+              >
+              <el-divider></el-divider>
+              <div>
+                <el-tag
+                  v-for="(tagItem, tagIndex) in item.tags"
+                  :key="tagIndex"
+                  class="tag-margin"
+                  size="mini"
+                  :disable-transitions="false"
+                  :color="tagItem.color"
+                  >{{ tagItem.name }}</el-tag
+                >
+              </div>
+              <div class="xxxx">
+                <img
+                  style="width: 20px; height: 20px; border-radius: 50%"
+                  :src="item.users[0] && item.users[0].avatar"
+                  alt=""
+                />
+                <div class="jgh"></div>
+                <div class="jgh">{{ format1(item.created_at) }}</div>
+                <div class="jgh">{{ item.click }}次浏览</div>
+                <div class="jgh">{{ item.comments.length }}条评论</div>
+                <div>{{ item.stars.length }}个star</div>
+              </div>
+            </div>
+          </article>
+          <div v-if="count != 0" class="page-btn">
             <div>
-              <el-tag
-                v-for="(item, index) in item.article.tags"
-                :key="index"
-                class="tag-margin"
-                size="mini"
-                :disable-transitions="false"
-                :color="item.color"
-                >{{ item.name }}</el-tag
+              <el-button v-show="nowPage != 1" @click="prePage"
+                >上一页</el-button
               >
             </div>
-            <div
-              style="font-size: 12px; display: flex; align-items: center; margin: 10px 0"
-            >
-              <img
-                style="width: 20px; height: 20px; border-radius: 50%"
-                :src="item.article.users[0] && item.article.users[0].avatar"
-                alt=""
-              />
-              <div class="jgh"></div>
-              <div class="jgh">{{ format1(item.article.createdAt) }}</div>
-              <div class="jgh">{{ item.article.click }}次浏览</div>
-              <div class="jgh">{{ item.article.comments.length }}条评论</div>
-              <div>{{ item.article.stars.length }}个star</div>
+            <div>
+              <el-button v-show="maxSize != nowPage" @click="nextPage"
+                >下一页</el-button
+              >
             </div>
-            <!-- <p style="font-size:12px">
-              <span class>{{item.article.click}}次浏览</span>
-              <span class="jgh"></span>
-              
-              <span>{{item.article.comments.length}}条评论</span>
-            </p> -->
           </div>
-        </article>
-        <div class="page-btn" v-if="count != 0">
-          <div>
-            <el-button v-show="nowPage != 1" @click="prePage">上一页</el-button>
-          </div>
-          <div>
-            <el-button v-show="maxSize != nowPage" @click="nextPage">下一页</el-button>
+          <div v-else style="text-align: center; padding: 40px 0">
+            {{ currentTagName }}标签下暂无文章~
           </div>
         </div>
-        <div v-else style="text-align: center; padding: 40px 0">该标签下暂无文章~</div>
       </div>
+      <div v-else>暂无标签~</div>
     </div>
   </div>
 </template>
 
 <script>
-import { format, format1 } from "@/utils/format.js";
-import { imgCdnUrl } from "@/utils/global.js";
+import { format1 } from '@/utils/format.js'
+import { imgCdnUrl } from '@/constant'
 
 export default {
-  layout: "blog",
   components: {},
-  data() {
-    return {
-      imgCdnUrl,
-      tagList: null,
-      tagindex: 1,
-      nowPage: 1,
-      maxSize: null,
-    };
-  },
-  head() {
-    var title;
-    this.tagList.forEach((item) => {
-      if (item.id == this.tagindex) {
-        title = item.name;
-      }
-    });
-    return {
-      title: "标签 - " + title + " - 自然博客",
-      meta: [{ hid: "home", name: "description", content: "自然 - 个人博客" }],
-    };
-  },
-  async asyncData({ $axios, params }) {
-    const { rows } = await $axios.$get("/api/tag/pageList?nowPage=1&pageSize=100");
+  layout: 'blog',
+  async asyncData({ $axios1, params }) {
+    const { rows } = await $axios1.get('/api/tag/list?nowPage=1&pageSize=100')
     // 分页大小
-    const pageSize = 3;
-    const rows1 = await $axios.$get(
-      `/api/tag/page?id=${params.id}&nowPage=1&pageSize=${pageSize}`
-    );
+    const pageSize = 3
+    const rows1 = await $axios1.get(
+      `/api/tag/article_list/${params.id}?nowPage=1&pageSize=${pageSize}`
+    )
 
     return {
       // 页数
@@ -128,55 +122,93 @@ export default {
       count: rows1.count,
       // 最大页码
       maxSize: Math.ceil(rows1.count / pageSize),
-    };
+    }
+  },
+  data() {
+    return {
+      imgCdnUrl,
+      tagList: null,
+      currentTagId: 1,
+      currentTagName: '',
+      nowPage: 1,
+      maxSize: null,
+    }
+  },
+  head() {
+    let title
+    this.tagList.forEach((item) => {
+      if (item.id === this.currentTagId) {
+        title = item.name
+      }
+    })
+    return {
+      title: '标签 - ' + title + ' - 自然博客',
+      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+    }
   },
   created() {},
   mounted() {
-    this.tagindex = this.$route.params.id;
+    this.currentTagId = +this.$route.params.id
+    this.tagList.forEach((item) => {
+      if (item.id === this.currentTagId) {
+        this.currentTagName = item.name
+      }
+    })
   },
   methods: {
     // 格式化时间
     format1(time) {
-      return format1(time);
+      return format1(time)
     },
     prePage() {
-      this.nowPage--;
-      this.$axios
-        .$get("/api/tag/page", {
-          params: { id: this.tagindex, nowPage: this.nowPage, pageSize: this.pageSize },
+      this.nowPage--
+      this.$axios1
+        .get(`/api/tag/article_list/${this.currentTagId}`, {
+          params: {
+            nowPage: this.nowPage,
+            pageSize: this.pageSize,
+          },
         })
         .then((res) => {
-          this.articleList = res.rows;
-          this.count = res.count;
-          scrollTo({ top: 0 });
-        });
+          this.articleList = res.rows
+          this.count = res.count
+          scrollTo({ top: 0 })
+        })
     },
     nextPage() {
-      this.nowPage++;
-      this.$axios
-        .$get("/api/tag/page", {
-          params: { id: this.tagindex, nowPage: this.nowPage, pageSize: this.pageSize },
+      this.nowPage++
+      this.$axios1
+        .get(`/api/tag/article_list/${this.currentTagId}`, {
+          params: {
+            nowPage: this.nowPage,
+            pageSize: this.pageSize,
+          },
         })
         .then((res) => {
-          this.articleList = res.rows;
-          this.count = res.count;
-          scrollTo({ top: 0 });
-        });
+          this.articleList = res.rows
+          this.count = res.count
+          scrollTo({ top: 0 })
+        })
     },
     getTagArticle(id) {
-      this.tagindex = id;
-      this.nowPage = 1;
-      this.$router.push({ path: `/tag/${id}` });
+      this.currentTagId = id
+      this.tagList.forEach((item) => {
+        if (item.id === this.currentTagId) {
+          this.currentTagName = item.name
+        }
+      })
+      this.nowPage = 1
+      this.$router.push({ path: `/tag/${id}` })
     },
   },
-};
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @media screen and (max-width: 540px) {
   .main {
     padding: 0;
-    margin: 120px auto 0;
+    margin: 135px auto 0;
   }
   .content {
     padding: 0 10px;
@@ -201,11 +233,26 @@ export default {
   flex: 0 0 40%;
   margin: 20px;
   overflow: hidden;
+  .no-img {
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s ease 0s;
+    background-image: url('@/assets/img/nopic.png');
+    background-repeat: no-repeat;
+  }
 }
 .article-r {
   box-sizing: border-box;
   padding: 30px;
   overflow: hidden;
+}
+.xxxx {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
 }
 .img {
   background-position: 50% 50%;
@@ -235,7 +282,7 @@ export default {
   cursor: pointer;
 }
 .newtag::after {
-  content: "";
+  content: '';
   position: absolute;
   left: -1px;
   top: 50%;
@@ -248,7 +295,7 @@ export default {
   transform: translateX(-50%) translateY(-50%) rotate(45deg);
 }
 .jgh::after {
-  content: "·";
+  content: '·';
   font-weight: 600;
   padding: 0 5px;
 }
@@ -258,20 +305,22 @@ export default {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   padding: 30px;
 }
+
+.tag-margin {
+  display: inline-block;
+  margin: 5px 10px;
+}
+</style>
+
+<style scoped>
 .tag /deep/ .el-tag {
   color: white;
-}
-.tag /deep/ .el-tag:hover {
-  cursor: pointer;
+  border: none;
 }
 .tag /deep/ .el-tag .el-icon-close {
   color: white;
 }
 .tag /deep/ .el-tag .el-icon-close:hover {
   background-color: transparent;
-}
-.tag-margin {
-  display: inline-block;
-  margin: 5px 10px;
 }
 </style>

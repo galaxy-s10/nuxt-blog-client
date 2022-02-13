@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="format-ul" v-if="list.length">
+    <ul v-if="list.length" class="format-ul">
       <li
         v-for="(item, index) in list"
         :key="index"
@@ -27,7 +27,7 @@
         </a>
       </li>
     </ul>
-    <div v-else>暂无目录</div>
+    <div v-else>暂无目录~</div>
   </div>
 </template>
 
@@ -37,51 +37,49 @@ export default {
   props: {
     list: {
       type: Array,
-      default: function () {
-        return [];
+      default() {
+        return []
       },
     },
   },
   data() {
     return {
       list1: [
-        { id: "重写call_95", type: "H1", text: "重写call" },
-        { id: "原生call_61", type: "H2", text: "原生call" },
-        { id: "aaa_86", type: "H3", text: "aaa" },
-        { id: "重写call_50", type: "H2", text: "重写call" },
-        { id: "重写apply_81", type: "H1", text: "重写apply" },
-        { id: "重写bind_88", type: "H1", text: "重写bind" },
-        { id: "重写foreach_79", type: "H1", text: "重写foreach" },
-        { id: "重写map_34", type: "H1", text: "重写map" },
-        { id: "重写filter_49", type: "H1", text: "重写filter" },
-        { id: "重写reduce_87", type: "H1", text: "重写reduce" },
-        { id: "重写some_39", type: "H1", text: "重写some" },
-        { id: "重写every_78", type: "H1", text: "重写every" },
+        { id: '重写call_95', type: 'H1', text: '重写call' },
+        { id: '原生call_61', type: 'H2', text: '原生call' },
+        { id: 'aaa_86', type: 'H3', text: 'aaa' },
+        { id: '重写call_50', type: 'H2', text: '重写call' },
+        { id: '重写apply_81', type: 'H1', text: '重写apply' },
+        { id: '重写bind_88', type: 'H1', text: '重写bind' },
+        { id: '重写foreach_79', type: 'H1', text: '重写foreach' },
+        { id: '重写map_34', type: 'H1', text: '重写map' },
+        { id: '重写filter_49', type: 'H1', text: '重写filter' },
+        { id: '重写reduce_87', type: 'H1', text: '重写reduce' },
+        { id: '重写some_39', type: 'H1', text: '重写some' },
+        { id: '重写every_78', type: 'H1', text: '重写every' },
       ],
-    };
+    }
   },
+  computed: {},
   created() {},
   mounted() {},
-  computed: {},
   methods: {
     formatLeft(v, num) {
-      return v.type.slice(1) == num;
+      return v.type.slice(1) === num
     },
   },
-};
+}
 </script>
 
-<style scoped>
+<style scoped>
 .format-ul {
   position: relative;
   margin: 0;
   padding: 0;
-  /* padding-left: 20px; */
   font-size: 16px;
 }
 .format-li {
   position: relative;
-  /* margin-bottom: 10px; */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -90,15 +88,8 @@ export default {
   color: #007fff;
   background: rgba(236, 245, 255, 0.6);
 }
-/* .format-a.left1 {
-  width: 4px;
-  height: 4px;
-  font-weight: 600;
-  left: 20px;
-  margin-top: -2px;
-} */
 .format-a::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 5px;
@@ -107,8 +98,6 @@ export default {
   height: 6px;
   background-color: currentColor;
   border-radius: 50%;
-}
-.format-a.left1::before {
 }
 .format-a.left2::before {
   width: 4px;
@@ -141,7 +130,7 @@ export default {
   margin-top: -2px;
 }
 .format-ul::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 7px;

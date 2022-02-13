@@ -1,0 +1,93 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  color: #666;
+  background: #f5f8f9;
+}
+.hrclass {
+  height: 4px;
+  border: 0;
+  background-color: #ddd;
+  margin: 20px 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #fff,
+    #fff 4px,
+    transparent 0,
+    transparent 8px
+  );
+}
+
+/* 解决el-dialog的抖动问题 */
+.el-popup-parent--hidden {
+  padding-right: 0 !important;
+  overflow: auto !important;
+}
+
+/* 超出文本显示省略号 */
+.overtext {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 响应式布局 - 小于 992px */
+@media screen and (max-width: 992px) {
+  .nav-menu {
+    display: none !important;
+  }
+  .nav-menu-mini {
+    display: block !important;
+  }
+}
+
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .fix-header-wrapper,
+  .fix-type-wrapper,
+  .main-wrapper {
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+  .main-wrapper {
+    .left {
+      width: 100% !important;
+    }
+    .right {
+      display: none !important;
+    }
+  }
+  .article-con {
+    display: block !important;
+  }
+  .article-l {
+    margin: 0 !important;
+  }
+}
+
+/* 响应式布局 - 大于540px */
+@media screen and (min-width: 540px) {
+  .header-wrapper,
+  .main-wrapper,
+  .type-wrapper {
+    width: 100%;
+  }
+}
+
+/* 响应式布局 - 大于 992px */
+@media screen and (min-width: 992px) {
+  .header-wrapper,
+  .main-wrapper,
+  .type-wrapper {
+    width: 960px;
+  }
+}
+
+/* 响应式布局 - 大于 1200px */
+@media screen and (min-width: 1200px) {
+  .header-wrapper,
+  .main-wrapper,
+  .type-wrapper {
+    width: 1140px;
+  }
+}

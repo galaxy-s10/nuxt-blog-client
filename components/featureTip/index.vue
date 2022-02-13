@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="最近更新"
+      title="最近更新2"
       :visible="dialogVisible"
       :before-close="handleClose"
       :width="dialogWidth"
@@ -31,20 +31,20 @@ export default {
   props: {},
   data() {
     return {
-      dialogWidth: "50%",
+      dialogWidth: '50%',
       dialogVisible: true,
       activities: [
         {
-          content: "热门文章/最近更新切换",
-          timestamp: "2021-03-16",
+          content: '热门文章/最近更新切换',
+          timestamp: '2021-03-16',
         },
         {
-          content: "新增申请友链功能",
-          timestamp: "2021-03-03",
+          content: '新增申请友链功能',
+          timestamp: '2021-03-03',
         },
         {
-          content: "新增qq登录功能",
-          timestamp: "2021-02-18",
+          content: '新增qq登录功能',
+          timestamp: '2021-02-18',
         },
         // {
         //   content: "新增文章目录功能",
@@ -55,23 +55,22 @@ export default {
         //   timestamp: "2021-02-02",
         // },
       ],
-    };
-  },
-  created() {},
-  mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth;
-    if (d <= 414) {
-      this.dialogWidth = "80%";
     }
   },
   computed: {},
+  created() {},
+  mounted() {
+    const d = window.pageXOffset || document.documentElement.offsetWidth
+    if (d <= 414) {
+      this.dialogWidth = '80%'
+    }
+  },
   methods: {
     handleClose() {
-      this.dialogVisible = false;
+      this.dialogVisible = false
     },
   },
-};
+}
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

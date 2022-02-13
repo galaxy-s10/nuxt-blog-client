@@ -1,79 +1,94 @@
 <template>
   <div>
-    <vheader />
-    <typelist />
-    <backtop />
-    <div class="main">
-      <vmain />
-      <vaside />
+    <HeaderCpt />
+    <TypeListCpt />
+    <BacktopCpt />
+    <div class="main-wrapper">
+      <div class="left">
+        <MainCpt />
+      </div>
+      <div class="right"><AsideCpt /></div>
     </div>
-    <vaudio></vaudio>
-    <feature-tip></feature-tip>
-    <vfooter />
+    <AudioCpt></AudioCpt>
+    <!-- <feature-tip></feature-tip> -->
+    <FooterCpt />
   </div>
 </template>
-
 <script>
-import vaudio from "@/components/audio";
-import Cookies from "js-cookie";
-import vheader from "./header";
-import typelist from "./typelist";
-import backtop from "./backtop";
-import vaside from "./aside";
-import vmain from "./main";
-import vfooter from "./footer";
-import featureTip from "../components/featureTip";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations } from 'vuex'
+import HeaderCpt from '@/layouts/header'
+import TypeListCpt from '@/layouts/typelist'
+import BacktopCpt from '@/layouts/backtop'
+import AsideCpt from '@/layouts/aside'
+import MainCpt from '@/layouts/main'
+import FooterCpt from '@/layouts/footer'
+import AudioCpt from '@/components/audio'
+// import featureTip from "../components/featureTip";
 export default {
-  // name: "",
   components: {
-    vheader,
-    typelist,
-    backtop,
-    vaside,
-    vmain,
-    vaudio,
-    vfooter,
-    featureTip,
+    HeaderCpt,
+    TypeListCpt,
+    BacktopCpt,
+    AsideCpt,
+    MainCpt,
+    AudioCpt,
+    FooterCpt,
+    // featureTip,
+  },
+  mounted() {
+    this.init()
+    this.getFrontendDetail()
+    this.$axios1.post('/api/visitor_log/create')
   },
   methods: {
     ...mapActions({
-      getUserInfo: "user/getUserInfo",
+      getUserInfo: 'user/getUserInfo',
     }),
     ...mapMutations({
-      setToken: "user/setToken",
-      logout: "user/logout",
+      setToken: 'user/setToken',
+      logout: 'user/logout',
+      setFrontendData: 'app/setFrontendData',
     }),
+
+    init() {
+      const token = localStorage.token
+      if (token) {
+        this.setToken(token)
+        this.getUserInfo()
+          .then(() => {})
+          .catch(() => {
+            this.logout()
+          })
+      }
+    },
+
+    async getFrontendDetail() {
+      const res = await this.$axios1.get('/api/frontend/detail')
+      this.setFrontendData(res)
+    },
   },
-  mounted() {
-    const token = localStorage.token;
-    // console.log(getCookie("testName"));
-    if (token) {
-      this.setToken(token);
-      this.getUserInfo()
-        .then(() => {})
-        .catch(() => {
-          this.logout();
-        });
-    }
-  },
-};
+}
 </script>
 
-<style scoped>
-.main {
-  box-sizing: border-box;
-  margin: 140px auto 0;
+<style lang="scss" scoped>
+.main-wrapper {
+  margin: 0 auto;
+  margin-top: 140px;
+  padding-bottom: 50px;
   overflow: hidden;
-  min-height: calc(100vh - 120px);
-  padding-bottom: 100px;
+  .left {
+    float: left;
+    width: 70%;
+  }
+  .right {
+    float: right;
+    width: 27%;
+  }
 }
 @media screen and (max-width: 540px) {
-  .main {
-    box-sizing: border-box;
+  .main-wrapper {
     width: 100%;
-    margin: 120px auto 0 !important;
-    /* padding: 0 10px; */
+    margin-top: 135px !important;
   }
 }
 </style>

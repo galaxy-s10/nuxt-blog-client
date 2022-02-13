@@ -1,34 +1,56 @@
 <template>
   <div>
     <div style="padding: 20px 0; position: relative">
-      <span>Comments | {{ allCount }} 条留言</span>
+      <span>Comments | {{ total || 0 }} 条留言</span>
       <div style="position: absolute; right: 0; top: 20px">
-        <login />
+        <LoginCpt />
       </div>
     </div>
     <div v-if="list.length > 0">
       <div v-loading="listLoading" style="width: 100%">
-        <div v-for="(item, index) in list" :key="index">
+        <div v-for="(item, index) in list" :key="index" class="parent-comment">
           <div style="display: flex">
             <div>
               <el-avatar :size="40">
-                <img class="userlogo" v-lazy="item.from_user.avatar" />
+                <img v-lazy="item.from_user.avatar" class="user-avatar" />
               </el-avatar>
             </div>
             <div style="flex-grow: 1; padding: 5px">
-              <div style="color: #0984e3">
-                <span v-if="item.from_user.id == 1" class="rank">博主</span>
-                <span>{{ item.from_user.username }}</span>
+              <div class="top">
+                <span style="color: #0984e3">{{
+                  item.from_user.username
+                }}</span>
+                <span class="rank">{{
+                  item.from_user.roles &&
+                  item.from_user.roles[0].role_description
+                }}</span>
+                <span class="ua">{{ parseUa(item.ua || '') }}</span>
               </div>
-              <div>{{ item.content }}</div>
-              <div>
-                <span class="el-icon-date">{{ format(item.createdAt) }}</span>
-                <span style="float: right">
-                  <i class="el-icon-chat-round" style="cursor: pointer"></i>
-                  <span style="cursor: pointer" @click="showinput(item.id)"> 回复</span>|
+              <div class="content">{{ item.content }}</div>
+              <div class="bottom">
+                <div class="el-icon-date">
+                  {{ format(item.created_at) }}
+                  <span class="ip-data">
+                    {{
+                      JSON.parse(item.ip_data).province +
+                      '/' +
+                      JSON.parse(item.ip_data).city +
+                      '/' +
+                      JSON.parse(item.ip_data).district
+                    }}</span
+                  >
+                </div>
+                <div style="float: right">
+                  <span
+                    class="el-icon-chat-round"
+                    style="cursor: pointer"
+                  ></span>
+                  <span style="cursor: pointer" @click="showinput(item.id)">
+                    回复{{ ` | ` }}
+                  </span>
                   <span>
                     <el-tooltip
-                      v-if="item.isStar == true"
+                      v-if="item.isStar === true"
                       class="item"
                       effect="dark"
                       content="取消点赞"
@@ -49,14 +71,17 @@
                     </el-tooltip>
                     {{ item.stars.length }}
                   </span>
-                </span>
+                </div>
               </div>
-              <div style="background: #fafbfc; padding: 10px" v-show="item.id == isshow">
+              <div
+                v-show="item.id === isshow"
+                style="background: #fafbfc; padding: 10px"
+              >
                 <div>
                   <el-input
                     ref="input1"
-                    type="textarea"
                     v-model="message"
+                    type="textarea"
                     placeholder="请输入内容..."
                     maxlength="50"
                     show-word-limit
@@ -75,8 +100,9 @@
           </div>
 
           <div
-            v-for="(itemm, index) in item.huifu"
-            :key="index"
+            v-for="(itemm, indexx) in item.children_comment"
+            :key="indexx"
+            class="children-comment"
             :style="{
               position: 'relative',
               background: '#fbfbfb',
@@ -87,7 +113,7 @@
           >
             <div>
               <el-avatar :size="40">
-                <img class="userlogo" v-lazy="itemm.from_user.avatar" />
+                <img v-lazy="itemm.from_user.avatar" class="user-avatar" />
               </el-avatar>
             </div>
             <div
@@ -97,23 +123,29 @@
               }"
             >
               <div style="color: #0984e3">
-                <span v-if="itemm.from_user.id == 1" class="rank">博主</span>
-                <span>{{ itemm.from_user.username }}</span>
+                <div>
+                  <span class="rank">{{
+                    item.from_user.roles &&
+                    item.from_user.roles[0].role_description
+                  }}</span
+                  >{{ itemm.from_user.username }}
+                </div>
               </div>
               <div>
                 回复
-                <span style="color: #48dbfb">@{{ itemm.to_user.username }}:</span>
-                {{ itemm.content }}
+                <span style="color: #48dbfb"
+                  >@{{ itemm.to_user.username }}:</span
+                >
+                <div class="content">{{ itemm.content }}</div>
               </div>
               <div>
-                <span class="el-icon-date">{{ format(itemm.createdAt) }}</span>
-
+                <span class="el-icon-date">{{ format(itemm.created_at) }}</span>
                 <div style="float: right">
                   <i class="el-icon-chat-round" style="cursor: pointer"></i>
                   <span style="cursor: pointer" @click="showinput(itemm.id)">
-                    回复 |
+                    回复{{ ` | ` }}
                     <el-tooltip
-                      v-if="itemm.isStar == true"
+                      v-if="itemm.isStar === true"
                       class="item"
                       effect="dark"
                       content="取消点赞"
@@ -136,12 +168,15 @@
                   </span>
                 </div>
               </div>
-              <div style="background: #fafbfc; padding: 10px" v-show="itemm.id == isshow">
+              <div
+                v-show="itemm.id === isshow"
+                style="background: #fafbfc; padding: 10px"
+              >
                 <div>
                   <el-input
                     ref="input2"
-                    type="textarea"
                     v-model="message"
+                    type="textarea"
                     placeholder="请输入内容..."
                     maxlength="50"
                     show-word-limit
@@ -159,131 +194,147 @@
             </div>
           </div>
 
-          <div style="margin-left: 40px" v-if="item.huifu.length != 0">
+          <div
+            v-if="item.children_comment.length != 0"
+            style="margin-left: 40px"
+          >
             <div
-              v-if="item.huifucount.length > item.huifu.length"
-              @click="handleChildrenPage(item)"
+              v-if="item.children_comment.length < item.children_comment_total"
               style="color: rgb(9, 132, 227); background: #fbfbfb"
+              @click="handleChildrenPage(item)"
             >
-              <span style="cursor: pointer"
-                >查看更多回复{{
-                  item.huifucount.length > item.huifu.length
-                    ? `(${item.huifucount.length - item.huifu.length})`
-                    : ""
-                }}
+              <span :style="{ cursor: 'pointer' }"
+                >查看更多回复({{ item.children_comment_total }})
               </span>
             </div>
-            <div
-              v-else-if="item.huifu.length > pageParams.childrenPageSize"
-              class="loadMore"
-            >
-              没有更多了
-              <el-button @click="zhedie(item)" type="text">折叠评论</el-button>
+            <div v-else class="loadMore">
+              没有更多了~
+              <el-button type="text" @click="zhedie(item)">折叠评论</el-button>
             </div>
           </div>
-          <!-- </div> -->
         </div>
 
-        <div v-if="pageParams.nowPage < pageParams.lastPage" class="loadMore">
-          <el-button type="text" @click="handleParentPage">加载更多留言...</el-button>
+        <div v-if="hasMore" class="loadMore">
+          <el-button type="text" @click="handleParentPage"
+            >加载更多留言...</el-button
+          >
         </div>
 
-        <div class="loadMore" style="margin: 10px 0" v-else>已加载所有留言！</div>
+        <div v-else class="loadMore" style="margin: 10px 0">
+          已加载所有留言！
+        </div>
       </div>
     </div>
-    <div v-else style="text-align: center; padding: 40px 0">目前还没有人留言~</div>
+    <div v-else style="text-align: center; padding: 40px 0">
+      目前还没有人留言~
+    </div>
   </div>
 </template>
 
 <script>
-import { format } from "@/utils/format.js";
-import login from "../login";
+import ua from 'ua-device'
+import LoginCpt from '@/components/login'
+import { format } from '@/utils/format.js'
 export default {
   components: {
-    login,
+    LoginCpt,
   },
-  props: ["list", "allCount", "pageParams"],
+  props: [
+    'list',
+    'pageSize',
+    'nowPage',
+    'childrenPageSize',
+    'hasMore',
+    'total',
+  ],
   data() {
     return {
       loadingStar: false,
       listLoading: false,
       message: null,
-      isshow: "",
-      autofocus: "",
-    };
+      isshow: '',
+      autofocus: '',
+    }
   },
   methods: {
+    parseUa(v) {
+      const osName = ua(v).os.name
+      const osVersion = ua(v).os.version ? ua(v).os.version.original : ''
+      return osName + ' ' + osVersion
+    },
     // 给评论点赞/取消点赞
     async starForComment(type, item) {
-      // let from_user_id = this.id;
-      // let { article_id, id, from_user_id } = item;
-      // async starForComment(type, article_id, comment_id, to_user_id) {
       if (this.$store.state.user.token) {
-        // this.loadingStar = true;
-        console.log(item);
-        if (type == 1) {
-          let res = await this.$axios.post(`/api/star/starForComment`, {
+        if (type === 1) {
+          const res = await this.$axios1.post(`/api/star/starForComment`, {
             article_id: item.article_id,
             comment_id: item.id,
             from_user_id: this.$store.state.user.id,
             to_user_id: item.from_user_id,
-          });
+          })
           setTimeout(() => {
-            this.loadingStar = false;
+            this.loadingStar = false
             this.$message.success({
               message: res.data.message,
-            });
-            this.$emit("reshow");
-          }, 300);
+            })
+            this.$emit('refresh')
+          }, 300)
         } else {
-          let res = await this.$axios.delete(`/api/star/delStarForComment`, {
+          const res = await this.$axios1.delete(`/api/star/delStarForComment`, {
             data: {
               article_id: item.article_id,
               comment_id: item.id,
               from_user_id: this.$store.state.user.id,
               to_user_id: item.from_user_id,
             },
-          });
+          })
 
           setTimeout(() => {
-            this.loadingStar = false;
+            this.loadingStar = false
             this.$message.success({
               message: res.data.message,
-            });
-            this.$emit("reshow");
-          }, 300);
+            })
+            this.$emit('refresh')
+          }, 300)
         }
       } else {
-        this.$newmessage("暂未登录，请登录！", "warning");
+        this.$newmessage('暂未登录，请登录！', 'warning')
       }
     },
     handleBlur() {
-      this.isshow = "";
+      this.isshow = ''
     },
     zhedie() {
       this.$message.success({
-        message: "敬请期待！",
-      });
+        message: '敬请期待！',
+      })
     },
     handleChildrenPage(v) {
-      // this.$emit("handleChildrenPage", v.id);
-      this.$emit("handleChildrenPage", { ...this.pageParams, childrenCommentId: v.id });
+      v.nowPage = v.nowPage ? v.nowPage + 1 : 1
+      this.$emit('handleChildrenPage', {
+        article_id: v.article_id,
+        to_comment_id: v.id,
+        childrenNowPage: v.nowPage,
+        childrenPageSize: this.childrenPageSize,
+      })
     },
     handleParentPage() {
-      this.$emit("handleParentPage", this.pageParams);
+      this.$emit('handleParentPage', {
+        nowPage: this.nowPage,
+        pageSize: this.pageSize,
+        hasMore: this.hasMore,
+      })
     },
     // 显示留言输入框
     showinput(id) {
-      this.isshow = id;
+      this.isshow = id
 
       setTimeout(() => {
-        //   this.$refs.input1.focus()
-        // this.$refs.input2.focus()
-        this.autofocus = true;
-      }, 500);
+        this.autofocus = true
+      }, 500)
     },
     format(time) {
-      return format(time);
+      return format(time)
     },
     // 回复留言
     async add(item) {
@@ -296,62 +347,87 @@ export default {
           content,
           to_comment_id,
           to_user_id,
-        } = item;
+        } = item
         if (this.$store.state.user.token) {
-          var article_id = parseInt(article_id);
-          var from_user_id = parseInt(this.$store.state.user.id);
-          var content = this.message;
-          if (to_comment_id == -1) {
-            var to_comment_id = id;
+          var article_id = parseInt(article_id)
+          var from_user_id = parseInt(this.$store.state.user.id)
+          var content = this.message
+          if (to_comment_id === -1) {
+            var to_comment_id = id
           } else {
-            var to_comment_id = to_comment_id;
+            var to_comment_id = to_comment_id
           }
-          var to_user_id = item.from_user_id;
+          var to_user_id = item.from_user_id
           try {
-            await this.$store.dispatch("comment/addComment", {
+            await this.$store.dispatch('comment/addComment', {
               id: null,
               article_id,
               from_user_id,
               content,
               to_comment_id,
               to_user_id,
-            });
-            id = this.$route.params.id ? this.$route.params.id : -1;
-            this.$newmessage("回复成功！", "success");
-            this.$emit("reshow", id);
-            this.showinput(null);
-            this.message = "";
+            })
+            id = this.$route.params.id ? this.$route.params.id : -1
+            this.$newmessage('回复成功！', 'success')
+            this.$emit('refresh', id)
+            this.showinput(null)
+            this.message = ''
           } catch (err) {
-            console.log(err);
-            this.message = "";
-            return;
+            console.log(err)
+            this.message = ''
           }
         } else {
-          this.$newmessage("暂未登录，请登录！", "warning");
+          this.$newmessage('暂未登录，请登录！', 'warning')
         }
       } else {
-        this.$newmessage("请输入三个字以上留言内容~", "warning");
+        this.$newmessage('请输入三个字以上留言内容~', 'warning')
       }
     },
   },
-  computed: {},
-  mounted() {},
-  watch: {},
-};
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.children-comment,
+.parent-comment {
+  .content {
+    padding: 10px 0;
+    font-size: 16px;
+  }
+  .el-icon-date {
+    font-size: 14px;
+  }
+}
+.parent-comment {
+  .top {
+    display: flex;
+    align-items: center;
+    .ua {
+      font-size: 12px;
+    }
+  }
+  .bottom {
+    .ip-data {
+      font-size: 12px;
+    }
+  }
+}
+.user-avatar {
+  border-radius: 50%;
+  transition: all 0.5s;
+  &:hover {
+    transform: rotate(1turn);
+  }
+}
 .star {
   cursor: pointer;
 }
 .loadMore {
   width: 100%;
   text-align: center;
-  /* margin: 10px 0; */
 }
 .rank {
   position: relative;
-  top: -2px;
   display: inline-block;
   border: 1px solid #fd79a8;
   color: #fd79a8;

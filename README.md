@@ -1,4 +1,4 @@
-# nuxtblog
+# new-blog-client
 
 ## Build Setup
 

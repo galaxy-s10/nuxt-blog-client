@@ -133,7 +133,7 @@ export default {
     async typeId() {
       this.offsetList = []
       this.articleList = []
-      this.articleParams.type_id = this.typeId
+      this.articleParams.type_ids = this.typeId
       await this.ajaxArticleList(this.articleParams)
       this.handleWaterfall()
     },
@@ -282,6 +282,8 @@ export default {
       const waterfallItemWidth =
         (waterfallWrapWidth.replace('px', '') - (column - 1) * gap) / column
       waterfallWrap.style.position = 'relative'
+      waterfallWrap.style.height = '0px'
+
       for (
         let i = (this.articleParams.nowPage - 1) * this.articleParams.pageSize;
         i < waterfallItem.length;

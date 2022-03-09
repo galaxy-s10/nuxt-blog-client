@@ -1,19 +1,11 @@
 <template>
-  <div>
-    <transition>
-      <nuxt />
-    </transition>
-  </div>
+  <transition>
+    <nuxt />
+  </transition>
 </template>
 
 <script>
-export default {
-  computed: {
-    key() {
-      return this.$route.path
-    },
-  },
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>

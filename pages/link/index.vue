@@ -1,42 +1,27 @@
 <template>
-  <div
-    class="content"
-    style="
-      overflow: hidden;
-      background: white;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-    "
-  >
-    <h1 style="text-align: center; padding: 10px">友链</h1>
-    <hr class="hrclass" />
-    <ul class="linkWrap">
-      <div v-if="linkList.length">
-        <li v-for="(item, index) in linkList" :key="index" class="liitem">
-          <a :href="item.url" class="alink" target="_bank">
-            <div class="linkborder">
-              <div style="flex: 1">
-                <div style="color: #ffa7a6">{{ item.name }}</div>
-                <div class="ellipsis" :title="item.desc">{{ item.desc }}</div>
-              </div>
-              <div>
-                <img
-                  v-lazy="item['avatar']"
-                  class="img"
-                  style="border: 2px solid #eee"
-                />
-              </div>
+  <div class="link-wrap">
+    <h1 class="title">友链</h1>
+    <hr class="hr-class" />
+
+    <ul class="link-list-wrap">
+      <template v-if="linkList.length">
+        <li v-for="(item, index) in linkList" :key="index" class="li-item-wrap">
+          <a :href="item.url" class="li-item-link" target="_bank">
+            <img v-lazy="item.avatar" class="user-avatar" />
+            <div class="desc">
+              <span>{{ item.name }}</span>
+              <span class="txt" :title="item.desc">
+                {{ item.desc }}
+              </span>
             </div>
           </a>
         </li>
-      </div>
+      </template>
       <span v-else>暂无友链~</span>
     </ul>
 
-    <div style="text-align: center; margin: 30px 0">
-      <h2>欢迎大家交换友链~</h2>
-    </div>
-    <div v-if="true" style>
+    <h2 class="happy-title">欢迎大家交换友链~</h2>
+    <div>
       <el-form
         ref="linkForm"
         :model="linkForm"
@@ -76,40 +61,42 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.frontend_link === -1"
+            :disabled="frontendData.frontend.frontend_link === -1"
             @click="addLink()"
-            >提交申请</el-button
           >
+            提交申请
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <el-input
-      v-model="content"
-      type="textarea"
-      resize="none"
-      :rows="5"
-      show-word-limit
-      maxlength="200"
-    ></el-input>
-    <p style="text-align: right">
-      <el-button
-        v-if="frontendData"
-        type="primary"
-        :disabled="frontendData.frontend_comment === -1"
-        @click="addcomment()"
-        >发表评论</el-button
-      >
-    </p>
-    <comment
+    <!-- 发表评论 -->
+    <div class="comment-wrap">
+      <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
+      <div class="btn">
+        <el-button
+          type="primary"
+          :loading="submitCommentLoading"
+          @click="addComment"
+        >
+          发表评论
+        </el-button>
+      </div>
+    </div>
+
+    <!-- 评论组件 -->
+    <CommentCpt
       v-loading="isLoading"
       :list="commentList"
       :total="total"
+      :sort="sort"
       :has-more="hasMore"
       :now-page="nowPage"
       :page-size="pageSize"
       :children-page-size="childrenPageSize"
-      @refresh="getComment"
+      @refresh="refreshCommentList"
+      @deleteReply="deleteReply"
+      @sortChange="sortChange"
       @handleParentPage="handleParentPage"
       @handleChildrenPage="handleChildrenPage"
     />
@@ -118,8 +105,9 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import comment from '@/components/comment'
-import { format } from '@/utils/format.js'
+import CommentCpt from '@/components/Comment'
+import TextareaInputCpt from '@/components/TextareaInput'
+
 const validateEmail = (rule, value, callback) => {
   const reg =
     /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/
@@ -132,34 +120,44 @@ const validateEmail = (rule, value, callback) => {
     callback()
   }
 }
+
 export default {
   components: {
-    comment,
+    CommentCpt,
+    TextareaInputCpt,
   },
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     // 获取友链数据
-    const { rows } = await $axios1.get('/api/link/list', {
-      params: { nowPage: 1, pageSize: 100, status: 1 },
+    const { data: linkData } = await $axios1.get('/api/link/list', {
+      params: { nowPage: 1, pageSize: 100 },
     })
-    const searchQuery = {
+    const orderName = 'created_at'
+    const commentParams = {
       article_id: -1,
-      nowPage: store.state.comment.nowPage, // 当前父评论页数
-      pageSize: store.state.comment.pageSize, // 当前父评论分页大小
-      childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
+      nowPage: 1,
+      pageSize: 3,
+      childrenPageSize: store.state.comment.childrenPageSize, // 子评论分页大小
+      orderName,
+      orderBy: 'desc',
     }
-    const data = await $axios1.get(`/api/comment/comment`, {
-      params: searchQuery,
+    const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
+      params: commentParams,
     })
     return {
-      linkList: rows,
-      commentList: data.rows,
-      total: data.total,
-      hasMore: data.hasMore,
+      sort: orderName === 'created_at' ? 'date' : 'hot',
+      linkList: linkData.rows,
+      commentList: commentData.rows,
+      total: commentData.total,
+      hasMore: commentData.hasMore,
+      nowPage: commentParams.nowPage,
+      pageSize: commentParams.pageSize,
     }
   },
   data() {
     return {
+      submitCommentLoading: false,
+      currentComponent: '',
       linkForm: {
         name: '',
         url: '',
@@ -211,7 +209,7 @@ export default {
       },
       linkList: null,
       article_id: -1,
-      messagecontent: '',
+      commentContent: '',
       isshow: '',
       isLoading: false,
       content: '',
@@ -220,17 +218,18 @@ export default {
   head() {
     return {
       title: '友链 - 自然博客',
-      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Natural Blog - Link',
+        },
+      ],
     }
   },
   computed: {
-    formatDate(time) {
-      return (time) => {
-        return format(time)
-      }
-    },
     frontendData() {
-      return this.$store.state.app.frontendData.frontend
+      return this.$store.state.app.frontendData
     },
     userInfo() {
       return this.$store.state.user.id
@@ -238,133 +237,151 @@ export default {
     childrenPageSize() {
       return this.$store.state.comment.childrenPageSize
     },
-    pageSize() {
-      return this.$store.state.comment.pageSize
-    },
-    nowPage() {
-      return this.$store.state.comment.nowPage
-    },
   },
   watch: {
-    userInfo(val) {
-      this.getComment()
+    userInfo() {
+      this.refreshCommentList()
     },
   },
-  mounted() {},
+  mounted() {
+    this.getFrontendData()
+  },
   methods: {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
+      getFrontendData: 'app/getFrontendData',
     }),
     ...mapMutations({
       setToken: 'user/setToken',
       logout: 'user/logout',
     }),
+    contentChange(newVal, oldVal) {
+      this.commentContent = newVal
+    },
+
+    // 新增回复
+    async addComment() {
+      if (!this.$store.state.user.userInfo) {
+        this.$newmessage('暂未登录，请登录！', 'warning')
+        return
+      }
+      if (this.commentContent.length < 5) {
+        this.$newmessage('评论内容至少5个字符~', 'warning')
+        return
+      }
+      try {
+        this.submitCommentLoading = true
+        await this.$axios1.post('/api/comment/create', {
+          article_id: -1,
+          content: this.commentContent,
+          parent_comment_id: -1,
+          reply_comment_id: -1,
+          to_user_id: -1,
+        })
+        this.submitCommentLoading = false
+        this.$newmessage('评论成功~', 'success')
+        this.refreshCommentList()
+      } catch (error) {
+        console.log(error)
+        this.submitCommentLoading = false
+      }
+    },
     // 申请友链
     addLink() {
       this.$refs.linkForm.validate(async (valid) => {
         if (valid) {
           try {
-            const addLinkRes = await this.$axios1.post(
+            const { data } = await this.$axios1.post(
               '/api/link/add',
               this.linkForm
             )
-            this.$newmessage(addLinkRes.message, 'success')
+            this.$newmessage(data.message, 'success')
             for (const i in this.linkForm) {
               this.linkForm[i] = ''
             }
-          } catch (err) {
-            this.$newmessage(err.message, 'error')
+          } catch (error) {
+            this.$newmessage(error.message, 'error')
           }
         } else {
           this.$newmessage('请按要求输入正确！', 'error')
         }
       })
     },
+    sortChange(sort) {
+      this.sort = sort
+      this.refreshCommentList()
+    },
+    deleteReply(item) {
+      if (item.parent_comment_id !== -1) {
+        for (let index = 0; index < this.commentList.length; index++) {
+          const element = this.commentList[index]
+          if (element.id === item.parent_comment_id) {
+            for (
+              let index = 0;
+              index < element.children_comment.length;
+              index++
+            ) {
+              const child = element.children_comment[index]
+              if (child.id === item.id) {
+                element.children_comment.splice(index, 1)
+                break
+              }
+            }
+          }
+        }
+      }
+    },
     // 留言列表
-    async getComment() {
-      const id = -1
+    async refreshCommentList() {
       const query = {
-        article_id: id,
+        article_id: -1,
         nowPage: 1,
         pageSize: 3,
-        childrenNowPage: 1,
-        childrenPageSize: 2,
+        childrenPageSize: this.childrenPageSize,
+        orderName: this.sort === 'date' ? 'created_at' : 'star_total',
+        orderBy: 'desc',
       }
-
       try {
         this.isLoading = true
-        const data = await this.$axios1.get(`/api/comment/comment`, {
+        const { data } = await this.$axios1.get(`/api/comment/comment`, {
           params: { ...query },
         })
-        setTimeout(() => {
-          this.isLoading = false
-          this.pageParams = {
-            ...query,
-            nowPage: data.nowPage,
-            pageSize: data.pageSize,
-          }
-          this.commentList = data.rows
-          this.total = data.total
-        }, 300)
-      } catch (err) {
-        console.log(err)
+        this.isLoading = false
+        this.commentList = data.rows
+        this.total = data.total
+        this.hasMore = data.hasMore
+      } catch (error) {
+        console.log(error)
         this.isLoading = false
       }
     },
-    // 提交留言
-    async addcomment() {
-      if (this.$store.state.user.token) {
-        const article_id = parseInt(this.article_id)
-        const from_user_id = parseInt(this.$store.state.user.id)
-        const content = this.content
-        const to_comment_id = -1
-        const to_user_id = -1
-        if (content.length >= 3) {
-          const res = await this.$axios1.post('/api/comment/create', {
-            article_id,
-            from_user_id,
-            content,
-            to_comment_id,
-            to_user_id,
-          })
-          if (res) {
-            this.getComment()
-            this.$newmessage('发表成功！', 'success')
-          } else {
-            this.$newmessage(res.data, 'success')
-          }
-        } else {
-          this.$newmessage('请输入三个及以上内容~~~', 'warning')
-        }
-      } else {
-        this.$newmessage('暂未登录，请登录！', 'warning')
-      }
-    },
+
     // 获取子评论分页
     async handleChildrenPage(query) {
-      const data = await this.$axios1.get(`/api/comment/comment_children`, {
+      const { data } = await this.$axios1.get(`/api/comment/comment_children`, {
         params: {
-          to_comment_id: query.to_comment_id,
+          parent_comment_id: query.parent_comment_id,
           article_id: query.article_id,
-          nowPage: query.childrenNowPage + 1,
           pageSize: query.childrenPageSize,
           childrenPageSize: this.childrenPageSize,
         },
       })
       this.commentList.forEach((item) => {
-        if (item.id === query.to_comment_id) {
+        if (item.id === query.parent_comment_id) {
           item.children_comment.push(...data.rows)
         }
       })
     },
     // 获取父评论分页
     async handleParentPage(query) {
-      const data = await this.$axios1.get(`/api/comment/comment`, {
+      const { data } = await this.$axios1.get(`/api/comment/comment`, {
         params: {
           article_id: -1,
           nowPage: query.nowPage + 1,
           pageSize: this.pageSize,
           childrenPageSize: this.childrenPageSize,
+          orderName: query.orderName,
+          orderBy: query.orderBy,
         },
       })
       this.commentList.push(...data.rows)
@@ -374,84 +391,106 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+@import '@/assets/css/mixin.scss';
+
 @media screen and (max-width: 720px) {
-  .liitem {
-    width: 45% !important;
+  .li-item-wrap {
+    flex-basis: 50% !important;
   }
 }
 @media screen and (max-width: 540px) {
-  .liitem {
-    width: 90% !important;
-    margin: 15px auto !important;
-    float: none !important;
+  .li-item-wrap {
+    flex-basis: 100% !important;
   }
 }
-.linkWrap {
-  max-height: 300px;
-  overflow-y: scroll;
-  padding: 0;
-  margin: 40px 0;
-}
-.liitem::before {
-  content: '';
-  background-color: rgba(255, 174, 173, 0.3);
-  height: 100%;
-  width: 0;
-  left: -60px;
-  position: absolute;
-  transform: skewX(45deg);
-  transition: all 0.5s;
-  z-index: -1;
-}
-.liitem:hover {
-  z-index: 2;
-}
-.liitem:hover:before {
-  width: 160%;
-}
-.liitem:hover .linkborder {
-  border-color: #ffaead;
-}
-.liitem:hover .img {
-  transform: rotate(360deg);
-  transition: all 0.5s;
-}
-.alink {
-  color: #666;
-  text-decoration: none;
-}
-.ellipsis {
-  font-size: 13px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+.link-wrap {
   overflow: hidden;
-  border-top: 2px dashed #eee;
-  padding-top: 10px;
-  margin-top: 10px;
-}
-.liitem {
-  width: 31.33%;
-  box-sizing: border-box;
-  margin: 1%;
-  display: inline-block;
-  position: relative;
-  list-style: none;
-  overflow: hidden;
-}
-.linkborder {
-  padding: 10px 18px;
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #eee;
+  padding: 30px;
+  border: 1px solid $theme-color4;
   border-radius: 5px;
+  background: $theme-color6;
+
+  .title {
+    display: block;
+    text-align: center;
+  }
+  .link-list-wrap {
+    display: flex;
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 40px 0;
+    padding: 0;
+    max-height: 300px;
+
+    @extend .hideScrollbar;
+    .li-item-wrap {
+      position: relative;
+      overflow: hidden;
+      flex-basis: 30%;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      list-style: none;
+      .li-item-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border: 1px solid $theme-color4;
+        color: $theme-color5;
+        text-decoration: none;
+        .user-avatar {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          transition: all 0.5s;
+        }
+        .desc {
+          flex: 1;
+          margin-left: 8px;
+          font-size: 14px;
+          .txt {
+            @include multiEllipsis(2);
+          }
+        }
+      }
+      &::before {
+        position: absolute;
+        left: -60px;
+        z-index: -1;
+        width: 0;
+        height: 100%;
+        background-color: rgba(255, 174, 173, 0.5);
+        content: '';
+        transition: all 0.5s;
+        transform: skewX(45deg);
+      }
+      &:hover {
+        z-index: 2;
+        .li-item-link {
+          border-color: rgba(255, 174, 173, 1);
+        }
+        .user-avatar {
+          transition: all 0.5s;
+          transform: rotate(360deg);
+        }
+        &:before {
+          width: 160%;
+        }
+      }
+    }
+  }
+  .happy-title {
+    display: block;
+    text-align: center;
+  }
 }
-.img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  left: 25px;
-  transition: all 0.5s;
+.comment-wrap {
+  .btn {
+    margin-top: 20px;
+    text-align: right;
+  }
 }
 </style>

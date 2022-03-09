@@ -1,28 +1,31 @@
 export const state = () => ({
-  ipInfo: {},
-  visitorData: {},
-  frontendData: {},
+  // id信息
+  ipInfo: null,
+  // 前端数据
+  frontendData: null,
+  // 是否显示文章目录
+  showCatalog: false,
 })
 
 export const mutations = {
   setIpInfo(state, res) {
     state.ipInfo = res
   },
-  setVisitorData(state, res) {
-    state.visitorData = res
-  },
   setFrontendData(state, res) {
     state.frontendData = res
+  },
+  setShowCatalog(state, res) {
+    state.showCatalog = res
   },
 }
 
 export const actions = {
   async getIpInfo({ commit }) {
-    const res = await this.$axios1.get('/api/position/get')
-    commit('setIpInfo', res)
+    const { data } = await this.$axios1.get('/api/position/get')
+    commit('setIpInfo', data)
   },
-  async getVisitorData({ commit }) {
-    const res = await this.$axios1.get('/api/log/detail')
-    commit('setVisitorData', res.data)
+  async getFrontendData({ commit }) {
+    const { data } = await this.$axios1.get('/api/frontend/detail')
+    commit('setFrontendData', data)
   },
 }

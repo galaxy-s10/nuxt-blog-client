@@ -1,0 +1,231 @@
+/* scss的mixin都不会单独输出 */
+
+// 设置背景
+@mixin setBackground(
+  $url,
+  $x: center,
+  $y: center,
+  $repeat: no-repeat,
+  $size: contain
+) {
+  background-image: #{url($url)};
+  background-position: $x $y;
+  background-size: $size;
+  background-repeat: $repeat;
+}
+
+// 设置绝对定位位置
+@mixin setPosition(
+  $top: initial,
+  $right: initial,
+  $bottom: initial,
+  $left: initial
+) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// 充满屏幕
+@mixin fullBox($position: absolute) {
+  position: $position;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// 这个就没必要用mixin了，直接写一个普通的类然后继承就好了。
+@mixin logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+// 多行省略号
+@mixin multiEllipsis($row) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  word-break: break-all;
+
+  -webkit-line-clamp: ($row);
+  line-clamp: ($row);
+}
+
+// 箭头
+@mixin arrow($position) {
+  position: relative;
+  display: inline-block;
+  &::after {
+    // & .arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+    border-color: inherit;
+    background-color: inherit;
+    content: '';
+    transition: all 0.3s ease;
+    @if $position == 'left' {
+      transform: rotate(45deg);
+    }
+    @if $position == 'right' {
+      transform: rotate(-135deg);
+    }
+    @if $position == 'top' {
+      transform: rotate(135deg);
+    }
+    @if $position == 'bottom' {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+// 颜色文字
+@mixin colorText($color: '#8a2387, #e94057, #f27121', $position: 'to left') {
+  position: relative;
+  // display: inline-block;
+  overflow: hidden;
+  background: -webkit-linear-gradient(
+    #{$position},
+    #{$color}
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    #{$position},
+    #{$color}
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+// 阴影
+@mixin shadow($color) {
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1), 0 10px 10px #{$color};
+  // position: relative;
+  // &::after {
+  //   position: absolute;
+  //   top: 10%;
+  //   left: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   // border-radius: 100%;
+  //   background-color: #{$color};
+  //   content: '';
+  //   filter: blur(10px) brightness(80%) opacity(0.8);
+  //   transform: scale(0.95);
+  // }
+}
+
+@mixin blur($px) {
+  filter: blur($px);
+}
+
+// 加载中，旋转
+@mixin loading-rotate($px: 30px, $color: gray) {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  width: $px;
+  height: $px;
+  border-radius: 50%;
+  background-color: rgba($color, 0.5);
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  &::before {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    z-index: 1;
+    width: $px + 10px;
+    height: $px + 10px;
+    background-color: $color;
+    content: '';
+    transform-origin: left bottom;
+    animation: rotate 1.5s infinite linear;
+  }
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    margin: auto;
+    width: $px - 10px;
+    height: $px - 10px;
+    border-radius: 50%;
+    background-color: white;
+    content: '';
+  }
+}
+
+// 加载中，大小变化
+@mixin loading-size($px: 30px, $color: gray) {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  width: $px;
+  height: $px;
+  border-radius: 50%;
+  opacity: 0.6;
+  @keyframes big {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0);
+    }
+  }
+  @keyframes small {
+    0%,
+    100% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1);
+    }
+  }
+  &::before {
+    position: absolute;
+    z-index: 1;
+    width: $px;
+    height: $px;
+    border-radius: 50%;
+    background-color: rgba($color, 0.5);
+    content: '';
+    animation: small 2s infinite ease;
+  }
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: $px;
+    height: $px;
+    border-radius: 50%;
+    background-color: $color;
+    content: '';
+    animation: big 2s infinite ease;
+  }
+}

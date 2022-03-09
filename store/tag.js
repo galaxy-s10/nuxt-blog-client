@@ -1,26 +1,26 @@
 export const state = () => ({
-  tagList: [],
+  sideBarTagList: null,
 })
 
 export const mutations = {
-  setTagList(state, res) {
-    state.tagList = res
+  setSideBarTagList(state, res) {
+    state.sideBarTagList = res
   },
 }
 
 export const actions = {
-  async getTagList({ commit }) {
+  async getSideBarTagList({ commit }, payload) {
     const params = {
-      nowPage: 1,
-      pageSize: 6,
+      nowPage: payload.nowPage,
+      pageSize: payload.pageSize,
     }
     try {
-      const res = await this.$axios1.get(`/api/tag/list`, {
+      const { data } = await this.$axios1.get(`/api/tag/list`, {
         params,
       })
-      commit('setTagList', res.rows)
-    } catch (err) {
-      console.log(err)
+      commit('setSideBarTagList', data.rows)
+    } catch (error) {
+      console.log(error)
     }
   },
 }

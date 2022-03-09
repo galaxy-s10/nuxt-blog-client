@@ -1,203 +1,203 @@
 <template>
-  <div>
-    <div
-      class="tag"
-      style="
-        overflow: hidden;
-        background: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-      "
-    >
-      <div v-if="tagList.length">
-        <div
-          v-for="item in tagList"
-          :key="item.id"
-          class="newtag"
-          :class="{ currenttag: currentTagId === item.id }"
-          @click="getTagArticle(item.id)"
-        >
-          <span>{{ item.name }}</span>
-          <span style="margin-left: 10px">{{ item && item.length }}</span>
+  <div class="tag-wrap">
+    <div v-if="tagList">
+      <div
+        v-for="item in tagList"
+        :key="'tag-key-' + item.id"
+        class="tag-item"
+        :class="{ 'active-tag': currentTagId === item.id }"
+        @click="getTagArticle(item.id)"
+      >
+        <span>{{ item.name }}</span>
+        <span class="article-total">({{ item.article_total }})</span>
+      </div>
+      <article
+        v-for="item in articleList"
+        :key="'article-key-' + item.id"
+        class="article-item"
+      >
+        <div class="article-l">
+          <nuxt-link
+            v-if="item['head_img']"
+            v-lazy="imgCdnUrl + item['head_img']"
+            :to="`/article/${item.id}`"
+            tag="img"
+            class="head_img"
+          />
+          <nuxt-link
+            v-else
+            :to="`/article/${item.id}`"
+            tag="div"
+            class="head_img"
+          />
+        </div>
+        <div class="article-r">
+          <nuxt-link
+            :to="'/article/' + item.id"
+            tag="h2"
+            class="singleEllipsis"
+          >
+            {{ item.title }}
+          </nuxt-link>
+          <el-divider></el-divider>
+          <el-tag
+            v-for="tagItem in item.tags"
+            :key="'article-tag-key-' + tagItem.id"
+            class="overwrite-el-tag"
+            size="mini"
+            :disable-transitions="false"
+            :color="tagItem.color"
+            >{{ tagItem.name }}</el-tag
+          >
+          <div class="summary">
+            <img
+              class="user-avatar"
+              :src="item.users[0] && item.users[0].avatar"
+              alt=""
+            />
+            <span class="jgh"></span>
+            <span>{{ item.created_at | convertDate }}</span>
+            <span class="jgh"></span>
+            <span>{{ item.click }}次浏览</span>
+            <span class="jgh"></span>
+            <span>{{ item.comment_total }}条评论</span>
+            <span class="jgh"></span>
+            <div>{{ item.star_total }}个star</div>
+          </div>
+        </div>
+      </article>
+      <div v-if="total" class="page-btn">
+        <div>
+          <el-button
+            v-show="articleListParams && articleListParams.nowPage !== 1"
+            @click="prePage"
+          >
+            上一页
+          </el-button>
         </div>
         <div>
-          <article
-            v-for="(item, index) in articleList"
-            :key="index"
-            class="article-con"
-          >
-            <div class="article-l">
-              <nuxt-link
-                v-if="item['head_img']"
-                v-lazy="imgCdnUrl + item['head_img']"
-                :to="`/article/${item.id}`"
-                tag="img"
-                class="img"
-              />
-              <nuxt-link
-                v-else
-                :to="`/article/${item.id}`"
-                tag="div"
-                class="no-img"
-              />
-            </div>
-            <div class="article-r">
-              <nuxt-link
-                :to="'/article/' + item.id"
-                tag="h2"
-                class="overtext"
-                >{{ item.title }}</nuxt-link
-              >
-              <el-divider></el-divider>
-              <div>
-                <el-tag
-                  v-for="(tagItem, tagIndex) in item.tags"
-                  :key="tagIndex"
-                  class="tag-margin"
-                  size="mini"
-                  :disable-transitions="false"
-                  :color="tagItem.color"
-                  >{{ tagItem.name }}</el-tag
-                >
-              </div>
-              <div class="xxxx">
-                <img
-                  style="width: 20px; height: 20px; border-radius: 50%"
-                  :src="item.users[0] && item.users[0].avatar"
-                  alt=""
-                />
-                <div class="jgh"></div>
-                <div class="jgh">{{ format1(item.created_at) }}</div>
-                <div class="jgh">{{ item.click }}次浏览</div>
-                <div class="jgh">{{ item.comments.length }}条评论</div>
-                <div>{{ item.stars.length }}个star</div>
-              </div>
-            </div>
-          </article>
-          <div v-if="count != 0" class="page-btn">
-            <div>
-              <el-button v-show="nowPage != 1" @click="prePage"
-                >上一页</el-button
-              >
-            </div>
-            <div>
-              <el-button v-show="maxSize != nowPage" @click="nextPage"
-                >下一页</el-button
-              >
-            </div>
-          </div>
-          <div v-else style="text-align: center; padding: 40px 0">
-            {{ currentTagName }}标签下暂无文章~
-          </div>
+          <el-button v-show="hasMore" @click="nextPage">下一页</el-button>
         </div>
       </div>
-      <div v-else>暂无标签~</div>
+      <div v-else class="no-data">{{ currentTagName }}标签下暂无文章~</div>
     </div>
+    <div v-else class="no-data">暂无标签~</div>
   </div>
 </template>
 
 <script>
-import { format1 } from '@/utils/format.js'
 import { imgCdnUrl } from '@/constant'
 
 export default {
   components: {},
   layout: 'blog',
-  async asyncData({ $axios1, params }) {
-    const { rows } = await $axios1.get('/api/tag/list?nowPage=1&pageSize=100')
-    // 分页大小
-    const pageSize = 3
-    const rows1 = await $axios1.get(
-      `/api/tag/article_list/${params.id}?nowPage=1&pageSize=${pageSize}`
-    )
-
-    return {
-      // 页数
-      pageSize,
-      // 所有标签
-      tagList: rows,
-      // 标签下的文章
-      articleList: rows1.rows,
-      // 标签下的文章总条数
-      count: rows1.count,
-      // 最大页码
-      maxSize: Math.ceil(rows1.count / pageSize),
+  async asyncData({ $axios1, store, params }) {
+    const articleListParams = {
+      nowPage: 1,
+      pageSize: 3,
+    }
+    const tagListParams = {
+      nowPage: 1,
+      pageSize: 100,
+    }
+    const tagId = params.id
+    try {
+      const { data: tagData } = await $axios1.get(`/api/tag/list`, {
+        params: tagListParams,
+      })
+      const { data: articleData } = await $axios1.get(
+        `/api/tag/article_list/${tagId}`,
+        {
+          params: articleListParams,
+        }
+      )
+      return {
+        articleListParams,
+        currentTagId: +tagId,
+        articleList: articleData.rows,
+        hasMore: articleData.hasMore,
+        total: articleData.count,
+        tagList: tagData.rows,
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
   data() {
     return {
       imgCdnUrl,
-      tagList: null,
       currentTagId: 1,
       currentTagName: '',
-      nowPage: 1,
-      maxSize: null,
     }
   },
   head() {
-    let title
-    this.tagList.forEach((item) => {
+    let title = ''
+    this.tagList?.forEach((item) => {
       if (item.id === this.currentTagId) {
         title = item.name
       }
     })
     return {
       title: '标签 - ' + title + ' - 自然博客',
-      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Natural Blog - Tag',
+        },
+      ],
     }
   },
+  computed: {},
+  watch: {},
   created() {},
-  mounted() {
-    this.currentTagId = +this.$route.params.id
-    this.tagList.forEach((item) => {
-      if (item.id === this.currentTagId) {
-        this.currentTagName = item.name
-      }
-    })
-  },
+  mounted() {},
   methods: {
-    // 格式化时间
-    format1(time) {
-      return format1(time)
+    // 获取当前标签下的文章
+    async getArticleList() {
+      const tagId = this.$route.params.id
+      this.currentTagId = +tagId
+      try {
+        const { data } = await this.$axios1.get(
+          `/api/tag/article_list/${tagId}`,
+          { params: this.articleListParams }
+        )
+        this.articleList = data.rows
+        this.hasMore = data.hasMore
+        this.total = data.count
+      } catch (error) {
+        console.log(error)
+      }
     },
     prePage() {
-      this.nowPage--
+      this.articleListParams.nowPage--
       this.$axios1
         .get(`/api/tag/article_list/${this.currentTagId}`, {
-          params: {
-            nowPage: this.nowPage,
-            pageSize: this.pageSize,
-          },
+          params: this.articleListParams,
         })
-        .then((res) => {
-          this.articleList = res.rows
-          this.count = res.count
+        .then(({ data }) => {
+          this.articleList = data.rows
+          this.total = data.count
           scrollTo({ top: 0 })
         })
     },
-    nextPage() {
-      this.nowPage++
-      this.$axios1
-        .get(`/api/tag/article_list/${this.currentTagId}`, {
-          params: {
-            nowPage: this.nowPage,
-            pageSize: this.pageSize,
-          },
-        })
-        .then((res) => {
-          this.articleList = res.rows
-          this.count = res.count
-          scrollTo({ top: 0 })
-        })
+    async nextPage() {
+      this.articleListParams.nowPage++
+      try {
+        const { data } = await this.$axios1.get(
+          `/api/tag/article_list/${this.currentTagId}`,
+          {
+            params: this.articleListParams,
+          }
+        )
+        this.articleList = data.rows
+        this.total = data.count
+        scrollTo({ top: 0 })
+      } catch (error) {
+        console.log(error)
+      }
     },
     getTagArticle(id) {
-      this.currentTagId = id
-      this.tagList.forEach((item) => {
-        if (item.id === this.currentTagId) {
-          this.currentTagName = item.name
-        }
-      })
-      this.nowPage = 1
       this.$router.push({ path: `/tag/${id}` })
     },
   },
@@ -205,10 +205,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+
 @media screen and (max-width: 540px) {
   .main {
-    padding: 0;
     margin: 135px auto 0;
+    padding: 0;
   }
   .content {
     padding: 0 10px;
@@ -217,105 +219,129 @@ export default {
     height: 200px !important;
   }
 }
+.tag-wrap {
+  overflow: hidden;
+  padding: 30px;
+  border: 1px solid $theme-color4;
+  border-radius: 5px;
+  background: $theme-color6;
+  .no-data {
+    padding: 40px 0;
+    text-align: center;
+  }
+}
 .page-btn {
   display: flex;
   justify-content: space-between;
 }
-.article-con {
+
+.article-item {
   display: flex;
-  width: 100%;
-  background: white;
   margin-bottom: 15px;
+  width: 100%;
   border-radius: 5px;
+  background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 .article-l {
+  overflow: hidden;
   flex: 0 0 40%;
   margin: 20px;
-  overflow: hidden;
-  .no-img {
+  .head_img {
+    width: 100%;
+    height: 100%;
+    background-image: url('@/assets/img/nopic.png');
     background-position: 50% 50%;
     background-size: cover;
-    height: 100%;
-    width: 100%;
-    transition: all 0.3s ease 0s;
-    background-image: url('@/assets/img/nopic.png');
     background-repeat: no-repeat;
+    transition: all 0.3s ease 0s;
   }
 }
 .article-r {
+  overflow: hidden;
   box-sizing: border-box;
   padding: 30px;
-  overflow: hidden;
 }
-.xxxx {
-  font-size: 12px;
+.summary {
   display: flex;
   align-items: center;
   margin: 10px 0;
+  font-size: 12px;
+  .user-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
 }
-.img {
+.head_img {
+  width: 100%;
+  height: 100%;
   background-position: 50% 50%;
   background-size: cover;
-  height: 100%;
-  width: 100%;
   transition: all 0.3s ease 0s;
 }
-.img:hover {
+.head_img:hover {
   transform: scale(1.1);
 }
-.currenttag {
-  border: 1px solid #005cc5 !important;
-}
-.newtag {
-  display: inline-block;
-  background-color: white;
+
+.tag-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 0 10px;
+  height: 30px;
   border: 1px solid rgba(93, 121, 148, 0.15);
   border-radius: 3px;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 10px;
-  margin: 10px;
-  position: relative;
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: -1px;
+    width: 8px;
+    height: 8px;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+    border-color: inherit;
+    background-color: inherit;
+    content: '';
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  }
+  .article-total {
+    margin-left: 6px;
+  }
+  &.active-tag {
+    border: 1px solid #005cc5 !important;
+  }
 }
-.newtag:hover {
-  cursor: pointer;
-}
-.newtag::after {
-  content: '';
-  position: absolute;
-  left: -1px;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  border-width: 0 0 1px 1px;
-  border-color: inherit;
-  border-style: solid;
-  background-color: inherit;
-  transform: translateX(-50%) translateY(-50%) rotate(45deg);
-}
+
 .jgh::after {
+  padding: 0 5px;
   content: '·';
   font-weight: 600;
-  padding: 0 5px;
 }
 .tag {
   overflow: hidden;
+  padding: 30px;
   background: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  padding: 30px;
 }
 
-.tag-margin {
-  display: inline-block;
-  margin: 5px 10px;
+.overwrite-el-tag {
+  /* margin: 5px 10px; */
+  color: white;
 }
 </style>
 
 <style scoped>
 .tag /deep/ .el-tag {
-  color: white;
   border: none;
+  color: white;
 }
 .tag /deep/ .el-tag .el-icon-close {
   color: white;

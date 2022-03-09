@@ -1,18 +1,12 @@
 <template>
-  <div
-    class="content"
-    style="
-      overflow: hidden;
-      background: white;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-    "
-  >
-    <h1 style="text-align: center; padding: 10px">关于</h1>
-    <hr class="hrclass" />
+  <div class="about-wrap">
+    <h1 class="title">关于</h1>
+
+    <hr class="hr-class" />
+
     <!-- 数据统计 -->
     <div class="summary">
-      <div class="tongji">数据统计</div>
+      <div class="badge">数据统计</div>
       <div class="list">
         <div class="item">
           <div class="num">{{ filterNum(summary.article.total) }}</div>
@@ -31,16 +25,22 @@
           <div class="type">用户</div>
         </div>
         <div class="item">
-          <div class="num">{{ filterNum(summary.visitor_log.total) }}</div>
+          <div class="num">
+            {{
+              visitorHistoryData && filterNum(visitorHistoryData.visit_total)
+            }}
+          </div>
           <div class="type">访问量</div>
         </div>
       </div>
     </div>
-    <div>
-      <!-- <div class="hljs" v-html="newcontent(item.content)"></div> -->
-      <markdown :md="detail"></markdown>
-    </div>
+
+    <!-- about富文本 -->
+    <RenderMarkdownCpt :md="detail"></RenderMarkdownCpt>
+
     <h1>本站发展历史</h1>
+
+    <!-- 时间线 -->
     <el-timeline :reverse="'reverse'">
       <el-timeline-item
         v-for="(activity, index) in activities"
@@ -57,24 +57,22 @@
 </template>
 
 <script>
-import markdown from '@/components/markdown'
+import RenderMarkdownCpt from '@/components/RenderMarkdown'
 
 export default {
   components: {
-    markdown,
+    RenderMarkdownCpt,
   },
   layout: 'blog',
   async asyncData({ $axios1 }) {
-    const res = await $axios1.get('/api/frontend/detail')
+    const { data } = await $axios1.get('/api/frontend/detail')
     return {
-      detail: res.frontend.frontend_about,
-      summary: res,
+      detail: data.frontend.frontend_about,
+      summary: data,
     }
   },
   data() {
     return {
-      detail: {},
-      summary: {}, // 数据统计
       activities: [
         {
           content: '第一次尝试写博客并上线',
@@ -112,8 +110,19 @@ export default {
   head() {
     return {
       title: '关于 - 自然博客',
-      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Natural Blog - About',
+        },
+      ],
     }
+  },
+  computed: {
+    visitorHistoryData() {
+      return this.$store.state.log.historyData
+    },
   },
   methods: {
     filterNum(v) {
@@ -132,54 +141,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.summary {
-  position: relative;
-  border: 1px dashed #e0e0e0;
-  padding: 20px 50px;
-  margin: 32px 0 24px;
-  border-radius: 6px;
-}
-.summary .tongji {
-  color: #fff;
-  padding: 4.5px;
-  position: absolute;
-  top: -15px;
-  left: 56px;
-  background: #fff;
-  background: #eb5055;
-  padding: 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-}
-.summary .list {
-  display: flex;
-}
-.summary .list .item {
-  flex: 1;
-  /* font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif; */
-  text-align: center;
-  color: #666;
-}
-.summary .list .num {
-  height: 45px;
-  font-size: 2rem;
-  color: #adabab;
-}
-.summary .list .type {
-  font-size: 0.9rem;
-}
+@import '@/assets/css/constant.scss';
+.about-wrap {
+  overflow: hidden;
+  padding: 30px;
+  border: 1px solid $theme-color4;
+  border-radius: 5px;
+  background: $theme-color6;
 
-.font {
-  display: inline-block;
-  margin-right: 15px;
-  font-size: 18px;
-  height: 40px;
-  line-height: 40px;
-}
-.alink {
-  color: #666;
-  text-decoration: none;
+  .title {
+    display: block;
+    text-align: center;
+  }
+  .summary {
+    position: relative;
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid $theme-color4;
+    border-radius: 6px;
+    .badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 4px;
+      border-radius: 4px;
+      background: $theme-color7;
+      color: $theme-color6;
+      font-size: 12px;
+      transform: translate(50%, -50%);
+    }
+    .list {
+      display: flex;
+      .item {
+        flex: 1;
+        text-align: center;
+      }
+      .num {
+        padding: 10px 0;
+        font-size: 24px;
+      }
+      .type {
+        font-size: 12px;
+      }
+    }
+  }
 }
 </style>

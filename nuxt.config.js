@@ -1,4 +1,8 @@
+import CompressionPlugin from 'compression-webpack-plugin'
+
 export default {
+  analyze: true,
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'new-blog-client',
@@ -30,8 +34,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    'element-ui/lib/theme-chalk/index.css',
-    '~/assets/css/main.scss',
+    // 'element-ui/lib/theme-chalk/index.css',
+    '@/assets/css/main.scss',
     'normalize.css/normalize.css',
   ],
 
@@ -40,10 +44,11 @@ export default {
     '@/plugins/axios',
     '@/plugins/element-ui',
     '@/plugins/vue-lazyload',
-    { src: '~/plugins/tip' },
+    '@/plugins/filters',
+    { src: '@/plugins/tip' },
   ],
 
-  loading: { color: '#53a8ff' },
+  loading: { color: '#0984e3' },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -82,6 +87,31 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/^element-ui/],
+    plugins: [
+      new CompressionPlugin({
+        test: /\.(js|css|html)$/,
+      }),
+    ],
+    babel: {
+      plugins: [
+        [
+          'component',
+          { libraryName: 'element-ui', styleLibraryName: 'theme-chalk' },
+        ],
+      ],
+    },
+    optimization: {
+      splitChunks: {
+        minSize: 20 * 1024, // 生成 chunk 的最小体积。默认：20000（19.5kb）
+        maxSize: 50 * 1024, // 不写maxSize默认就是0，这里手动设置0
+      },
+    },
+    // transpile: [/^element-ui/],
+    extend(config, { isClient }) {
+      // Extend only webpack config for client-bundle
+      // if (isClient) {
+      //   config.devtool = 'source-map'
+      // }
+    },
   },
 }

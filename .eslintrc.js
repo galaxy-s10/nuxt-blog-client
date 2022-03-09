@@ -14,5 +14,7 @@ module.exports = {
   ],
   plugins: [],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'no-console': 0, // 此规则不允许调用console对象的方法。
+  },
 }

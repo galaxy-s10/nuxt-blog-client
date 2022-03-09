@@ -51,6 +51,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+
 @keyframes move {
   0% {
     transform: translatey(0);
@@ -70,7 +72,7 @@ export default {
     z-index: 999;
     width: 100px;
     height: 85%;
-    background: url('~/assets/img/backTop.png') no-repeat bottom;
+    background: url('@/assets/img/back_top.png') no-repeat bottom;
     cursor: pointer;
     transition: all 0.5s;
     animation: move 3s infinite linear;
@@ -84,25 +86,23 @@ export default {
     position: fixed;
     right: 30px;
     bottom: 20px;
-    visibility: hidden;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: $theme-color6;
+    box-shadow: 0 0 5px $theme-color2;
     text-align: center;
     opacity: 0;
     cursor: pointer;
-    transition: all 1s;
+    transition: opacity 1s;
     .triangle {
       position: relative;
       top: -5px;
       border: 7px solid transparent;
-      border-bottom-color: #97dffd;
+      border-bottom-color: $theme-color1;
     }
     &.show-mini-back-top {
       z-index: 999;
-      visibility: visible;
       opacity: 1;
     }
   }

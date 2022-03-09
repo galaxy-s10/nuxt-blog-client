@@ -1,41 +1,22 @@
 export const state = () => ({
-  id: null,
-  name: null,
-  avatar: null,
-  title: null,
+  summary: null,
+  userInfo: null,
   token: null,
-  summary: {},
 })
 
 export const mutations = {
   logout(state) {
     localStorage.removeItem('token')
-    state.id = null
-    state.name = null
-    state.avatar = null
-    state.title = null
-    state.token = null
-    state.summary = {}
+    state.userInfo = null
   },
   setToken(state, res) {
     if (res === null) {
       localStorage.removeItem('token')
-    } else {
-      state.token = res
-      localStorage.token = res
     }
+    state.token = res
   },
-  setName(state, res) {
-    state.name = res
-  },
-  setId(state, res) {
-    state.id = res
-  },
-  setTitle(state, res) {
-    state.title = res
-  },
-  setAvatar(state, res) {
-    state.avatar = res
+  setUserInfo(state, res) {
+    state.userInfo = res
   },
   setSummary(state, res) {
     state.summary = res
@@ -43,39 +24,36 @@ export const mutations = {
 }
 
 export const actions = {
-  async login({ commit }, data) {
+  async login({ commit }, payload) {
     try {
-      const res = await this.$axios1.post('/api/user/login', {
-        ...data,
+      const { data } = await this.$axios1.post('/api/user/login', {
+        ...payload,
         exp: 24,
       })
-      commit('setToken', res)
-      return Promise.resolve(res)
-    } catch (err) {
-      return Promise.reject(err)
+      commit('setToken', data)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
     }
   },
   async getUserInfo({ commit }) {
     try {
-      const res = await this.$axios1.get('/api/user/get_user_info')
-      commit('setId', res.id)
-      commit('setName', res.username)
-      commit('setAvatar', res.avatar)
-      commit('setTitle', res.title)
+      const { data } = await this.$axios1.get('/api/user/get_user_info')
+      commit('setUserInfo', data)
       commit('setSummary', {
-        articleTotal: res.articles.length,
-        commentTotal: res.comments.length,
-        starTotal: res.stars.length,
-        qq_users: res.qq_users,
-        github_users: res.github_users,
-        roles: res.roles,
+        articlesTotal: data.articles_total,
+        receiveCommentsTotal: data.receive_comments_total,
+        sendCommentsTotal: data.send_comments_total,
+        receiveStarsTotal: data.receive_stars_total,
+        sendStarsTotal: data.send_stars_total,
+        qq_users: data.qq_users,
+        github_users: data.github_users,
+        roles: data.roles,
       })
       return Promise.resolve(true)
-    } catch (err) {
-      if (localStorage) {
-        localStorage.removeItem('token')
-      }
-      return Promise.reject()
+    } catch (error) {
+      console.log(error)
+      return Promise.reject(error)
     }
   },
 }

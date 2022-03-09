@@ -1,46 +1,38 @@
 <template>
   <div class="footer">
     <p>
-      博客已运行 {{ running ? running : '正在加载...' }}
+      博客已运行 {{ runningTime ? runningTime : '正在加载...' }}
       <span class="ani">(='◡'=)☆</span>
     </p>
-    <p>托管于腾讯云 | 使用七牛云对象存储</p>
-    <a href="http://beian.miit.gov.cn" target="__blank" class="beianhao"
-      >粤ICP备19114467号
+    <a href="http://beian.miit.gov.cn" target="__blank" class="beianhao">
+      粤ICP备19114467号
     </a>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+dayjs.extend(duration)
+
 export default {
   data() {
     return {
-      running: null,
+      runningTime: null,
     }
   },
   created() {
-    this.runtime()
+    this.init()
   },
   methods: {
-    runtime() {
+    init() {
       setInterval(() => {
-        // 格式化时分秒
-        function format(n) {
-          return n < 10 ? '0' + n : '' + n
-        }
-        const startday = new Date(2019, 8, 5, 11, 41, 3)
-        const today = new Date()
-        // 将返回的毫秒数转化为秒
-        const res = (today - startday) / 1000
-        const resDay = Math.floor(res / (24 * 60 * 60))
-        const resHour = format(Math.floor((res % (24 * 60 * 60)) / (60 * 60)))
-        const resMinute = format(
-          Math.floor(((res % (24 * 60 * 60)) % (60 * 60)) / 60)
-        )
-        const resSecond = format(Math.floor(res % 60))
-        const runtime =
-          resDay + '天' + resHour + '时' + resMinute + '分' + resSecond + '秒'
-        this.running = runtime
+        const startDate = dayjs('2019-09-01 00:00:00')
+        const nowDate = dayjs()
+        const res = dayjs
+          .duration(nowDate - startDate)
+          .format('Y年M个月D天H小时m分s秒')
+        this.runningTime = res
       }, 1000)
     },
   },
@@ -48,6 +40,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+
 @keyframes run {
   0% {
     transform: rotate(15deg);
@@ -66,13 +60,12 @@ export default {
   }
 }
 .footer {
-  padding: 20px 10px;
-  background: #232323;
+  padding: 20px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   .beianhao {
+    color: $theme-color5;
     text-decoration: none;
-    color: #666;
   }
   .ani {
     display: inline-block;

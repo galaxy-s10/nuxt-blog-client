@@ -10,7 +10,6 @@
       <div class="right"><AsideCpt /></div>
     </div>
     <AudioCpt></AudioCpt>
-    <!-- <feature-tip></feature-tip> -->
     <FooterCpt />
   </div>
 </template>
@@ -22,8 +21,8 @@ import BacktopCpt from '@/layouts/backtop'
 import AsideCpt from '@/layouts/aside'
 import MainCpt from '@/layouts/main'
 import FooterCpt from '@/layouts/footer'
-import AudioCpt from '@/components/audio'
-// import featureTip from "../components/featureTip";
+import AudioCpt from '@/components/Audio'
+// import featureTip from "../components/FeatureTip";
 export default {
   components: {
     HeaderCpt,
@@ -35,19 +34,20 @@ export default {
     FooterCpt,
     // featureTip,
   },
+
   mounted() {
     this.init()
-    this.getFrontendDetail()
-    this.$axios1.post('/api/visitor_log/create')
+    this.getFrontendData()
+    this.$axios1.post('/api/visitor_log/create') // 新增访客记录
   },
   methods: {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
+      getFrontendData: 'app/getFrontendData',
     }),
     ...mapMutations({
       setToken: 'user/setToken',
       logout: 'user/logout',
-      setFrontendData: 'app/setFrontendData',
     }),
 
     init() {
@@ -55,40 +55,34 @@ export default {
       if (token) {
         this.setToken(token)
         this.getUserInfo()
-          .then(() => {})
-          .catch(() => {
-            this.logout()
-          })
       }
-    },
-
-    async getFrontendDetail() {
-      const res = await this.$axios1.get('/api/frontend/detail')
-      this.setFrontendData(res)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+
 .main-wrapper {
-  margin: 0 auto;
-  margin-top: 140px;
-  padding-bottom: 50px;
+  display: flex;
   overflow: hidden;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 130px;
   .left {
-    float: left;
-    width: 70%;
+    flex: 1;
+    width: 65%;
   }
   .right {
-    float: right;
-    width: 27%;
+    margin-left: 20px;
+    width: 300px;
   }
 }
 @media screen and (max-width: 540px) {
   .main-wrapper {
+    margin-top: 120px !important;
     width: 100%;
-    margin-top: 135px !important;
   }
 }
 </style>

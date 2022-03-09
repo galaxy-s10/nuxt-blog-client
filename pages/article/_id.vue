@@ -1,177 +1,178 @@
 <template>
-  <div v-if="detail">
-    <div class="content">
-      <h1 style="text-align: center">
-        {{ detail.title }}
-      </h1>
-      <div class="desc-wrap">
-        <div class="summary">
-          <div v-if="detail.users[0]" class="user">
-            <img :src="detail.users[0].avatar" alt="" />
-          </div>
-          <div v-if="detail.types[0]" class="type">
-            <i class="el-icon-folder-opened"></i>
-            {{ detail.types[0].name }}
-          </div>
-          <div><i class="el-icon-chat-line-round"></i>{{ allCount || 0 }}</div>
-          <div>
-            <i class="el-icon-view"></i>
-            {{ detail.click }}
-          </div>
-        </div>
-        <div class="date">
-          <div>
-            <i class="el-icon-date" style="margin-right: 4px"></i>
-            {{ format(detail.created_at) }}
-          </div>
-        </div>
-      </div>
+  <div class="article-detail-wrap">
+    <h1 class="title">
+      {{ detail.title }}
+    </h1>
 
-      <img
-        v-if="detail.img != null"
-        :src="imgCdnUrl + detail.img"
-        class="img1"
-      />
-      <img v-else src="~/assets/img/nopic.png" class="img1" alt />
-      <div>
-        <markdown ref="hss-md" :md="detail.content"></markdown>
-      </div>
-      <div v-loading="loadingStar">
-        <div v-if="detail.isStar" style="text-align: left; font-size: 14px">
-          你已经赞过这篇文章了哦~
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="取消点赞"
-            placement="top"
-            @click.native="starForArticle(0, detail.id)"
-          >
-            <i class="el-icon-star-on star"></i>
-          </el-tooltip>
-          {{ detail.stars.length }}
-        </div>
-        <div
-          v-else
-          style="text-align: left; font-size: 14px; padding-top: 10px"
-        >
-          如果本文章对你有所帮助，欢迎点个赞~
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="赞一个"
-            placement="top"
-            @click.native="starForArticle(1, detail.id)"
-          >
-            <i class="el-icon-star-off star"></i>
-          </el-tooltip>
-          {{ detail.stars.length }}
-        </div>
-      </div>
-
-      <div style="text-align: right; font-size: 14px">
-        最后更新于：{{ format(detail.updated_at) }}
-      </div>
-    </div>
-    <div
-      v-if="detail.tags.length != 0"
-      style="padding: 8px 0; text-align: right"
-    >
-      <span class="el-icon-collection-tag"></span>
-      <div v-for="item in detail.tags" :key="item.id" class="little-tag">
-        {{ item.name }}
-      </div>
-    </div>
-    <div v-if="detail.is_comment">
-      <el-divider>评论一下吧~</el-divider>
-      <div>
-        <el-input
-          v-model="content"
-          type="textarea"
-          resize="none"
-          :rows="5"
-          show-word-limit
-          maxlength="200"
-        ></el-input>
-        <p style="text-align: right">
-          <el-button
-            v-if="frontendData"
-            type="primary"
-            :disabled="frontendData.frontend_comment === -1"
-            @click="addcomment()"
-            >提交</el-button
-          >
-        </p>
-        <comment
-          v-loading="isLoading"
-          :list="commentList"
-          :all-count="allCount"
-          :page-params="pageParams"
-          @reshow="getComment"
-          @handleParentPage="parentPage"
-          @handleChildrenPage="childrenPage"
+    <div class="summary-wrap">
+      <div class="summary">
+        <img
+          v-if="detail.users[0]"
+          class="user-avatar"
+          :src="detail.users[0].avatar"
+          alt=""
         />
+        <span v-if="detail.types[0]" class="type">
+          <i class="el-icon-folder-opened"></i>
+          {{ detail.types[0].name }}
+        </span>
+        <span>
+          <i class="el-icon-chat-line-round"></i>
+          {{ detail.comment_total || 0 }}
+        </span>
+        <span>
+          <i class="el-icon-view"></i>
+          {{ detail.click }}
+        </span>
+        <span>
+          <i class="el-icon-star-on"></i>
+          {{ detail.star_total }}
+        </span>
+      </div>
+      <div class="date">
+        <span>发表于: {{ detail.created_at | formatDate }}</span>
       </div>
     </div>
-    <div v-else>
-      <el-divider>该文章暂未开启评论~</el-divider>
+
+    <img
+      v-if="detail['head_img']"
+      v-lazy="imgCdnUrl + detail['head_img']"
+      class="head-img"
+    />
+    <img v-else src="@/assets/img/nopic.png" class="head-img" alt />
+
+    <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
+
+    <RenderMarkdownCpt ref="hss-md" :md="detail.content"></RenderMarkdownCpt>
+
+    <div class="tag-list">
+      <span class="el-icon-collection-tag"></span>
+      <div v-if="detail.tags.length">
+        <el-tag
+          v-for="item in detail.tags"
+          :key="item.id"
+          class="hss-el-tag"
+          :color="item.color"
+          size="mini"
+        >
+          {{ item.name }}
+        </el-tag>
+      </div>
+      <span v-else>该文章没有关联标签~</span>
+    </div>
+
+    <p class="star-wrap">
+      <span v-if="detail.is_star === 1">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="取消点赞"
+          placement="top"
+          @click.native="starForArticle(0, detail.id)"
+        >
+          <i class="el-icon-star-on"></i>
+        </el-tooltip>
+      </span>
+      <span v-else>
+        如果本文章对你有所帮助，欢迎点赞~
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="赞一个"
+          placement="top"
+          @click.native="starForArticle(1, detail.id)"
+        >
+          <i class="el-icon-star-off"></i>
+        </el-tooltip>
+      </span>
+      {{ detail.star_total }}
+    </p>
+
+    <p class="last-update">最后更新于：{{ detail.updated_at | formatDate }}</p>
+
+    <div class="comment-wrap">
+      <div v-if="detail.is_comment">
+        <el-divider>欢迎评论留言~</el-divider>
+        <div>
+          <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
+          <div class="btn">
+            <el-button
+              type="primary"
+              :loading="submitCommentLoading"
+              @click="addComment"
+            >
+              发表评论
+            </el-button>
+          </div>
+
+          <!-- 评论组件 -->
+          <CommentCpt
+            v-loading="isLoading"
+            :list="commentList"
+            :total="total"
+            :sort="sort"
+            :has-more="hasMore"
+            :now-page="nowPage"
+            :page-size="pageSize"
+            :children-page-size="childrenPageSize"
+            @refresh="refreshCommentList"
+            @deleteReply="deleteReply"
+            @sortChange="sortChange"
+            @handleParentPage="handleParentPage"
+            @handleChildrenPage="handleChildrenPage"
+          />
+        </div>
+      </div>
+      <el-divider v-else>该文章暂未开启评论~</el-divider>
     </div>
   </div>
 </template>
 
 <script>
-import comment from '@/components/comment'
-import markdown from '@/components/markdown'
-import { format } from '@/utils/format.js'
+import CommentCpt from '@/components/Comment'
+import RenderMarkdownCpt from '@/components/RenderMarkdown'
+import TextareaInputCpt from '@/components/TextareaInput'
 import { imgCdnUrl } from '@/constant'
 
 export default {
   components: {
-    comment,
-    markdown,
+    CommentCpt,
+    RenderMarkdownCpt,
+    TextareaInputCpt,
   },
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
-    const id = params.id
-    const query = {
-      article_id: params.id,
-      nowPage: 1, // 当前父评论页数
-      pageSize: 3, // 当前父评论分页大小
-      childrenNowPage: 1, // 当前子评论页数
-      childrenPageSize: 2, // 当前子评论分页大小
+    const articleId = params.id
+    const { data } = await $axios1.get(`/api/article/find/${articleId}`)
+    const orderName = 'created_at'
+    const commentParams = {
+      article_id: articleId,
+      nowPage: store.state.comment.nowPage, // 当前父评论页数
+      pageSize: store.state.comment.pageSize, // 当前父评论分页大小
+      childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
+      orderName,
+      orderBy: 'desc',
     }
-    try {
-      const data = await $axios1.get(`/api/comment/article/${id}`, {
-        params: { ...query },
-      })
-      await store.dispatch('article/getArticleDetail', { id })
-      return {
-        query,
-        commentList: data.rows,
-        allCount: data.allCount,
-        pageParams: {
-          ...query,
-          count: data.count, // 父评论层数
-          nowPage: data.nowPage,
-          lastPage: data.lastPage,
-          pageSize: data.pageSize,
-        },
-      }
-    } catch (err) {
-      console.log(err)
+    const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
+      params: commentParams,
+    })
+    store.commit('app/setShowCatalog', true)
+    return {
+      sort: orderName === 'created_at' ? 'date' : 'hot',
+      commentList: commentData.rows,
+      total: commentData.total,
+      hasMore: commentData.hasMore,
+      detail: data,
+      ...commentParams,
     }
   },
   data() {
     return {
+      submitCommentLoading: false,
       imgCdnUrl,
       loadingStar: false,
       isLoading: false,
-      isStar: false,
-      // comment: "",
-      content: null,
-      articledata: null,
-      commentList: [],
-      count: '',
-      query: {},
+      commentContent: '',
     }
   },
   head() {
@@ -181,12 +182,6 @@ export default {
     }
   },
   computed: {
-    frontendData() {
-      return this.$store.state.app.frontendData.frontend
-    },
-    detail() {
-      return this.$store.state.article.detail
-    },
     // 如果直接使用userInfo(){}这种方式设置计算属性，get和set都会触发！
     // userInfo: {
     //   get() {
@@ -201,58 +196,156 @@ export default {
     },
   },
   watch: {
-    userInfo(val) {
-      this.getComment()
-      this.getArticleDetail()
+    userInfo() {
+      this.refreshCommentList()
     },
   },
   created() {},
   mounted() {
-    scrollTo({ top: 0 })
-    this.renderTree()
+    window.scrollTo({ top: 0 })
+    this.renderCatalog()
   },
   destroyed() {
-    this.$store.commit('article/changeShowCatalog', false)
+    this.$store.commit('app/setShowCatalog', false)
     this.$store.commit('article/changeCatalogList', [])
   },
   methods: {
-    // 文章详情
-    async getArticleDetail() {
-      await this.$store.dispatch('article/getArticleDetail', {
-        id: this.$route.params.id,
+    sortChange(sort) {
+      this.sort = sort
+      this.refreshCommentList()
+    },
+    deleteReply(item) {
+      if (item.parent_comment_id !== -1) {
+        for (let index = 0; index < this.commentList.length; index++) {
+          const element = this.commentList[index]
+          if (element.id === item.parent_comment_id) {
+            for (
+              let index = 0;
+              index < element.children_comment.length;
+              index++
+            ) {
+              const child = element.children_comment[index]
+              if (child.id === item.id) {
+                element.children_comment.splice(index, 1)
+                break
+              }
+            }
+          }
+        }
+      }
+    },
+    // 留言列表
+    async refreshCommentList() {
+      const query = {
+        article_id: this.detail.id,
+        nowPage: 1,
+        pageSize: 3,
+        childrenPageSize: this.childrenPageSize,
+        orderName: this.sort === 'date' ? 'created_at' : 'star_total',
+        orderBy: 'desc',
+      }
+      try {
+        this.isLoading = true
+        const { data } = await this.$axios1.get(`/api/comment/comment`, {
+          params: { ...query },
+        })
+        this.isLoading = false
+        this.commentList = data.rows
+        this.total = data.total
+        this.hasMore = data.hasMore
+      } catch (error) {
+        console.log(error)
+        this.isLoading = false
+      }
+    },
+
+    // 获取子评论分页
+    async handleChildrenPage(query) {
+      const { data } = await this.$axios1.get(`/api/comment/comment_children`, {
+        params: {
+          parent_comment_id: query.parent_comment_id,
+          article_id: query.article_id,
+          pageSize: query.childrenPageSize,
+          childrenPageSize: this.childrenPageSize,
+        },
       })
+      this.commentList.forEach((item) => {
+        if (item.id === query.parent_comment_id) {
+          item.children_comment.push(...data.rows)
+        }
+      })
+    },
+    // 获取父评论分页
+    async handleParentPage(query) {
+      const { data } = await this.$axios1.get(`/api/comment/comment`, {
+        params: {
+          article_id: -1,
+          nowPage: query.nowPage + 1,
+          pageSize: this.pageSize,
+          childrenPageSize: this.childrenPageSize,
+          orderName: query.orderName,
+          orderBy: query.orderBy,
+        },
+      })
+      this.commentList.push(...data.rows)
+      this.hasMore = data.hasMore
+    },
+
+    // 新增回复
+    async addComment() {
+      if (!this.$store.state.user.userInfo) {
+        this.$newmessage('暂未登录，请登录！', 'warning')
+        return
+      }
+      if (this.commentContent.length < 5) {
+        this.$newmessage('评论内容至少5个字符~', 'warning')
+        return
+      }
+      try {
+        this.submitCommentLoading = true
+        await this.$axios1.post('/api/comment/create', {
+          article_id: this.detail.id,
+          content: this.commentContent,
+          parent_comment_id: -1,
+          reply_comment_id: -1,
+          to_user_id: -1,
+        })
+        this.submitCommentLoading = false
+        this.$newmessage('评论成功~', 'success')
+        this.refreshCommentList()
+      } catch (error) {
+        console.log(error)
+        this.submitCommentLoading = false
+      }
+    },
+    contentChange(newVal, oldVal) {
+      this.commentContent = newVal
     },
 
     // 给文章点赞/取消点赞
-    async starForArticle(type, article_id) {
-      if (this.$store.state.user.token) {
+    async starForArticle(type, articleId) {
+      if (this.$store.state.user.userInfo) {
         this.loadingStar = true
         if (type === 1) {
-          const res = await this.$axios1.post(`/api/star/create`, {
-            article_id,
+          const { data } = await this.$axios1.post(`/api/star/create`, {
+            article_id: articleId,
             from_user_id: this.$store.state.user.id,
             comment_id: -1,
             to_user_id: -1,
           })
-          this.$message.success({
-            message: res.message,
-          })
+          this.$newmessage(data.message, 'success')
           setTimeout(() => {
             this.loadingStar = false
             this.getArticleDetail()
           }, 500)
         } else {
-          const res = await this.$axios1.$delete(`/api/star/delete`, {
-            data: {
-              article_id,
-              from_user_id: this.$store.state.user.id,
-              comment_id: -1,
-              to_user_id: -1,
-            },
+          const { data } = await this.$axios1.$delete(`/api/star/delete`, {
+            article_id: articleId,
+            from_user_id: this.$store.state.user.id,
+            comment_id: -1,
+            to_user_id: -1,
           })
-          this.$message.success({
-            message: res.message,
-          })
+          this.$newmessage(data.message, 'success')
           setTimeout(() => {
             this.loadingStar = false
             this.getArticleDetail()
@@ -263,126 +356,8 @@ export default {
       }
     },
 
-    // 获取子评论分页
-    async childrenPage(query) {
-      // async childrenPage(childrenCommentId) {
-      query.childrenNowPage += 1
-      const temp = {
-        ...this.pageParams,
-        ...query,
-      }
-      this.pageParams = temp
-      // query.childrenCommentId = childrenCommentId;
-      const data = await this.$axios1.get(`/api/comment/comment_children`, {
-        params: { ...this.pageParams },
-      })
-      this.commentList.forEach((item) => {
-        if (item.id === data.to_comment_id) {
-          item.childrenNowPage = data.childrenNowPage
-          item.childrenLastPage = data.childrenLastPage
-          item.calcSurplus =
-            data.count - data.childrenNowPage * data.childrenPageSize
-          item.p_comment.push(...data.rows)
-        }
-      })
-    },
-
-    // 获取父评论分页
-    async parentPage(v) {
-      const query = { ...this.query, ...v }
-      query.nowPage += 1
-      const data = await this.$axios1.get(`/api/comment/article`, {
-        params: { ...query },
-      })
-      this.commentList.push(...data.rows)
-      this.allCount = data.allCount
-      this.pageParams = {
-        ...this.query,
-        count: data.count,
-        nowPage: data.nowPage,
-        lastPage: data.lastPage,
-        pageSize: data.pageSize,
-      }
-    },
-    // 格式化日期时间
-    format(time) {
-      return format(time)
-    },
-    // 提交留言
-    async addcomment() {
-      if (this.content != null && this.content.length >= 3) {
-        if (this.$store.state.user.token) {
-          const article_id = parseInt(this.$route.params.id)
-          const from_user_id = parseInt(this.$store.state.user.id)
-          const content = this.content
-          const to_comment_id = -1
-          const to_user_id = -1
-          try {
-            await this.$store.dispatch('comment/addComment', {
-              id: null,
-              article_id,
-              from_user_id,
-              content,
-              to_comment_id,
-              to_user_id,
-            })
-          } catch (err) {
-            this.$newmessage('', 'error')
-            return
-          }
-          this.$newmessage('发表成功！', 'success')
-          this.getComment()
-        } else {
-          this.$newmessage('暂未登录，请登录！', 'warning')
-        }
-      } else {
-        this.$newmessage('请输入三个字以上留言内容~', 'warning')
-      }
-    },
-    // 留言列表
-    async getComment() {
-      const id = this.$route.params.id
-      const query = {
-        article_id: id,
-        nowPage: 1,
-        pageSize: 3,
-        childrenNowPage: 1,
-        childrenPageSize: 2,
-      }
-
-      try {
-        this.isLoading = true
-        const data = await this.$axios1.get(`/api/comment/article`, {
-          params: { ...query },
-        })
-        setTimeout(() => {
-          this.isLoading = false
-          this.pageParams = {
-            ...query,
-            count: data.count, // 父评论层数
-            nowPage: data.nowPage,
-            lastPage: data.lastPage,
-            pageSize: data.pageSize,
-          }
-          this.commentList = data.rows
-          this.allCount = data.allCount
-        }, 300)
-      } catch (err) {
-        console.log(err)
-        this.isLoading = false
-      }
-    },
-    async zan() {
-      const res = await this.$axios1.get(
-        `/api/star/articleStar?article_id=${this.$route.params.id}&from_user_id=${this.$store.state.user.id}`
-      )
-      if (res.result) {
-        this.isStar = true
-      } else {
-        this.isStar = false
-      }
-    },
-    renderTree() {
+    // 渲染文章目录
+    renderCatalog() {
       const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
       const md = this.$refs['hss-md']?.$el.childNodes[0].childNodes || []
       const arr = []
@@ -402,7 +377,6 @@ export default {
           arr.push(obj)
         }
       })
-      this.$store.commit('article/changeShowCatalog', true)
       this.$store.commit('article/changeCatalogList', arr)
     },
   },
@@ -410,36 +384,77 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.desc-wrap {
-  .summary {
-    .user {
-      img {
+@import '@/assets/css/constant.scss';
+
+.article-detail-wrap {
+  overflow: hidden;
+  padding: 10px 20px;
+  border: 1px solid $theme-color4;
+  border-radius: 5px;
+  background-color: $theme-color6;
+  .title {
+    text-align: center;
+  }
+  .summary-wrap {
+    .summary,
+    .date {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      width: 200px;
+      font-size: 12px;
+    }
+    .summary {
+      .user-avatar {
         width: 25px;
         height: 25px;
         border-radius: 50%;
       }
     }
   }
-}
-.content {
-  padding: 30px;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  .summary,
-  .date {
+
+  .tag-list {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    width: 200px;
-    font-size: 12px;
+    justify-content: flex-end;
+    margin: 10px 0;
+    .el-icon-collection-tag {
+      font-size: 18px;
+    }
+    .hss-el-tag {
+      margin: 4px;
+      border: none;
+      color: $theme-color6;
+    }
+  }
+  .last-update {
+    text-align: right;
+  }
+  .comment-wrap {
+    .btn {
+      margin-top: 20px;
+      text-align: right;
+    }
   }
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+@media screen and (max-width: 540px) {
+  .main {
+    margin: 135px auto 0;
+    padding: 0;
+  }
+  .content {
+    padding: 0 10px;
+  }
+  .head-img {
+    height: 200px;
+  }
+}
 .avatar {
   margin-right: 5px;
   width: 20px;
@@ -449,9 +464,6 @@ export default {
 .desc-wrap {
   padding-bottom: 10px;
 }
-</style>
-
-<style>
 .star {
   cursor: pointer;
 }
@@ -461,23 +473,11 @@ export default {
   padding: 0 5px;
   border-radius: 3px;
   background-color: #aaaaaa;
-  color: white;
+  color: $theme-color6;
   text-align: center;
 }
-.img1 {
+.head-img {
+  max-height: 500px;
   width: 100%;
-  height: 460px;
-}
-@media screen and (max-width: 540px) {
-  .main {
-    margin: 135px auto 0;
-    padding: 0;
-  }
-  .content {
-    padding: 0 10px;
-  }
-  .img1 {
-    height: 200px;
-  }
 }
 </style>

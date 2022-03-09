@@ -1,15 +1,25 @@
+import { dateStartAndEnd } from '@/utils/format'
+
 const actions = {
+  // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
   async nuxtServerInit({ dispatch }) {
     try {
-      await dispatch('article/getArticleLastUpdateList', {
-        orderName: 'updated_at',
-        orderBy: 'desc',
-        nowpage: 1,
-      })
-      await dispatch('article/getArticleTypeList')
-      await dispatch('tag/getTagList')
-    } catch (err) {
-      console.log(err)
+      await Promise.all([
+        dispatch('app/getIpInfo'),
+        dispatch('log/getVisitorDayData', dateStartAndEnd(new Date())),
+        dispatch('log/getVisitorHistoryData'),
+        dispatch('type/getTypeList'),
+        dispatch('tag/getSideBarTagList', { nowPage: 1, pageSize: 10 }),
+        dispatch('article/getSideBarArticleList', {
+          nowPage: 1,
+          pageSize: 5,
+          orderName: 'updated_at',
+          orderBy: 'desc',
+        }),
+        console.log('nuxtServerInit初始化完成'),
+      ])
+    } catch (error) {
+      console.log(error)
     }
   },
 }

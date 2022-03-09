@@ -1,20 +1,21 @@
 export const state = () => ({
-  childrenPageSize: 3,
-  nowPage: 1,
-  pageSize: 3,
+  childrenPageSize: 2,
 })
 
 export const mutations = {}
 
 export const actions = {
-  async addComment({}, data) {
+  async reply({ commit, state }, payload) {
     try {
-      await this.$axios1.post('/api/comment/add', {
-        ...data,
+      const { data } = await this.$axios1.post('/api/comment/create', {
+        article_id: payload.article_id,
+        content: payload.content,
+        parent_comment_id: payload.parent_comment_id,
+        to_user_id: payload.to_user_id,
       })
-      return Promise.resolve()
-    } catch (err) {
-      return Promise.reject(err)
+      return Promise.resolve(data)
+    } catch (error) {
+      return Promise.reject(error)
     }
   },
 }

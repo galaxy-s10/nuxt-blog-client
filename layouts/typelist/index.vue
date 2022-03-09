@@ -1,11 +1,11 @@
 <template>
-  <div :class="{ 'fix-type-wrapper': true, show: visible }">
+  <div class="fix-type-wrapper" :class="{ show: visible }">
     <ul class="type-wrapper">
       <li @click="all()">全部</li>
       <li
-        v-for="(item, index) in articleTypeList"
+        v-for="(item, index) in typeList"
         :key="index"
-        @click="type(item.id)"
+        @click="changeType(item.id)"
       >
         {{ item.name }}
       </li>
@@ -21,8 +21,8 @@ export default {
     }
   },
   computed: {
-    articleTypeList() {
-      return this.$store.state.article.ArticleTypeList
+    typeList() {
+      return this.$store.state.type.typeList
     },
   },
   mounted() {
@@ -38,20 +38,18 @@ export default {
       const offsetTop = window.pageYOffset || document.documentElement.scrollTop
       this.visible = offsetTop > height
     },
-    type(typeId) {
+    changeType(typeId) {
       if (this.$route.path !== '/') {
         this.$router.push('/')
       }
-      this.$store.commit('article/changeNowPage', 1)
-      this.$store.commit('article/changeTypeIds', typeId)
+      this.$store.commit('type/changeTypeId', typeId + '')
     },
     all() {
-      if (this.$store.state.article.type_id) {
-        this.$store.commit('article/changeNowPage', 1)
-        this.$store.commit('article/changeTypeIds', '')
-      }
       if (this.$route.path !== '/') {
         this.$router.push('/')
+      }
+      if (this.$store.state.type.typeId) {
+        this.$store.commit('type/changeTypeId', '')
       }
     },
   },
@@ -59,20 +57,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
+
+/* 响应式布局,大于540px */
+@media screen and (min-width: 540px) {
+  .show {
+    transform: translateY(-70px);
+  }
+}
+
 .fix-type-wrapper {
   position: fixed;
   top: 70px;
   left: 0;
   z-index: 99;
   width: 100%;
-  background-color: white;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid $theme-color4;
+  background-color: $theme-color6;
   .type-wrapper {
     margin: 0 auto;
     padding: 0;
-    height: 50px;
-    color: #53a8ff;
-    line-height: 50px;
+    height: 40px;
+    color: $theme-color1;
+    line-height: 40px;
     li {
       display: inline;
       margin-right: 8px;
@@ -83,12 +90,5 @@ export default {
 .show {
   transition: all 0.5s;
   transform: translateY(-70px);
-}
-
-/* 响应式布局,大于540px */
-@media screen and (min-width: 540px) {
-  .show {
-    transform: translateY(-70px);
-  }
 }
 </style>

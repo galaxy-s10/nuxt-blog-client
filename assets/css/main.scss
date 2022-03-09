@@ -1,34 +1,15 @@
+@import './constant.scss';
 body {
   margin: 0px;
   padding: 0px;
-  color: #666;
-  background: #f5f8f9;
-}
-.hrclass {
-  height: 4px;
-  border: 0;
-  background-color: #ddd;
-  margin: 20px 0;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    #fff,
-    #fff 4px,
-    transparent 0,
-    transparent 8px
-  );
+  background: $theme-color3;
+  color: $theme-color5;
 }
 
 /* 解决el-dialog的抖动问题 */
 .el-popup-parent--hidden {
-  padding-right: 0 !important;
   overflow: auto !important;
-}
-
-/* 超出文本显示省略号 */
-.overtext {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding-right: 0 !important;
 }
 
 /* 响应式布局 - 小于 992px */

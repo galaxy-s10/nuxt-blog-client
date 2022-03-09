@@ -16,6 +16,7 @@ import {
   FormItem,
   Autocomplete,
   Pagination,
+  Loading,
 } from 'element-ui'
 
 const components = [
@@ -44,20 +45,6 @@ const Element = {
 }
 
 Vue.use(Element)
-
-// Vue.use(Button)
-// Vue.use(Tooltip)
-// Vue.use(Dropdown)
-// Vue.use(DropdownItem)
-// Vue.use(DropdownMenu)
-// Vue.use(Input)
-// Vue.use(Tag)
-// Vue.use(Divider)
-// Vue.use(Timeline)
-// Vue.use(TimelineItem)
-// Vue.use(Form)
-// Vue.use(FormItem)
-// Vue.use(Autocomplete)
-// Vue.use(Pagination)
+Vue.use(Loading)
 
 // Vue.use(Element, { locale })

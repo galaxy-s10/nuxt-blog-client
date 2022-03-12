@@ -18,6 +18,7 @@
           @handleStar="handleStar"
           @closeModal="closeModal"
           @showReply="showReply"
+          @deleteReply="deleteReply"
         ></ItemCpt>
         <div v-if="hasMore" class="load-more" @click="handleParentPage">
           加载更多留言
@@ -41,6 +42,7 @@
             :item="currentComment"
             @handleStar="handleStar"
             @showReply="showReply"
+            @deleteReply="deleteReply"
           ></ItemCpt>
         </div>
 
@@ -58,8 +60,9 @@
               @handleStar="handleStar"
               @closeModal="closeModal"
               @showReply="showReply"
+              @deleteReply="deleteReply"
             ></ItemCpt>
-            <div ref="childListHasMoreRef" class="childListHasMoreRef"></div>
+            <div ref="childListHasMoreRef" class="has-more-observer"></div>
             <el-divider v-if="!childListHasMore">没有更多内容了</el-divider>
           </div>
         </div>
@@ -78,9 +81,10 @@
 </template>
 
 <script>
-import { deepCloneByJson } from '../../utils/index'
+import { MessageBox } from 'element-ui'
 import ItemCpt from './components/Item'
 import SortTabCpt from './components/SortTab'
+import { deepCloneByJson } from '@/utils/index'
 import LoginCpt from '@/components/Login'
 import ReplyCpt from '@/components/Reply'
 import ModalCpt from '@/components/Modal'
@@ -273,7 +277,7 @@ export default {
     },
     // 删除回复
     deleteReply(item) {
-      this.$confirm('确定删除回复么?', '提示', {
+      MessageBox.confirm('确定删除回复么?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -282,7 +286,7 @@ export default {
           try {
             await this.$axios1.delete(`/api/comment/delete/${item.id}`)
             this.$newmessage('删除成功~', 'success')
-            this.$emit('deleteReply', item)
+            this.refresh()
           } catch (error) {
             this.$newmessage(error, 'error')
           }
@@ -374,8 +378,13 @@ export default {
       margin-left: 30px;
       .child-list {
         overflow-y: scroll;
-        padding-right: 10px; //预留10像素给滚动条
         height: 250px;
+        @extend .hideScrollbar;
+
+        .has-more-observer {
+          width: 1px;
+          height: 1px;
+        }
       }
     }
   }

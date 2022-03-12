@@ -71,7 +71,6 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import Cookies from 'js-cookie'
 import { imgCdnUrl } from '@/constant'
 import { getRandomInt } from '@/utils/index'
 export default {
@@ -81,7 +80,7 @@ export default {
     const params = {
       orderName: 'created_at',
       orderBy: 'desc',
-      type_id: store.state.type.typeId,
+      type_ids: store.state.type.typeId,
       nowPage: 1,
       pageSize: 10,
     }
@@ -133,6 +132,10 @@ export default {
     async typeId() {
       this.offsetList = []
       this.articleList = []
+      this.articleParams.nowPage = 1
+      const waterfallWrap = this.$refs['waterfall-wrap']
+      waterfallWrap.style.height = '0px'
+
       this.articleParams.type_ids = this.typeId
       await this.ajaxArticleList(this.articleParams)
       this.handleWaterfall()
@@ -157,45 +160,6 @@ export default {
     this.isLoading = false
     this.touchBottom()
     // window.addEventListener('scroll', this.headershow)
-    window.addEventListener('message', async (e) => {
-      const { type, data: code } = e.data
-      if (type === 'qq_login') {
-        if (code) {
-          try {
-            await this.$axios1.get(`/api/qq_user/login?code=${code}`)
-            const token = Cookies.get('token')
-            if (token) {
-              this.setToken(token)
-              this.getUserInfo()
-                .then((res) => {})
-                .catch((error) => {
-                  this.$newmessage(error, 'success')
-                })
-            }
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }
-      if (type === 'github_login') {
-        if (code) {
-          try {
-            await this.$axios1.get(`/api/github_user/login?code=${code}`)
-            const token = Cookies.get('token')
-            if (token) {
-              this.setToken(token)
-              this.getUserInfo()
-                .then((res) => {})
-                .catch((error) => {
-                  this.$newmessage(error, 'success')
-                })
-            }
-          } catch (error) {
-            console.log(error)
-          }
-        }
-      }
-    })
   },
   destroyed() {
     window.removeEventListener('scroll', this.headershow)
@@ -282,7 +246,6 @@ export default {
       const waterfallItemWidth =
         (waterfallWrapWidth.replace('px', '') - (column - 1) * gap) / column
       waterfallWrap.style.position = 'relative'
-      waterfallWrap.style.height = '0px'
 
       for (
         let i = (this.articleParams.nowPage - 1) * this.articleParams.pageSize;

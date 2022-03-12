@@ -47,9 +47,10 @@ export default {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 4px 6px;
+    padding: 6px 8px;
     color: $theme-color1;
     font-size: 14px;
+    font-weight: bold;
   }
   .btn {
     margin-top: 20px;

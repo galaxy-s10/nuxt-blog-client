@@ -95,7 +95,6 @@
       :page-size="pageSize"
       :children-page-size="childrenPageSize"
       @refresh="refreshCommentList"
-      @deleteReply="deleteReply"
       @sortChange="sortChange"
       @handleParentPage="handleParentPage"
       @handleChildrenPage="handleChildrenPage"
@@ -232,7 +231,7 @@ export default {
       return this.$store.state.app.frontendData
     },
     userInfo() {
-      return this.$store.state.user.id
+      return this.$store.state.user.userInfo
     },
     childrenPageSize() {
       return this.$store.state.comment.childrenPageSize
@@ -261,7 +260,7 @@ export default {
 
     // 新增回复
     async addComment() {
-      if (!this.$store.state.user.userInfo) {
+      if (!this.userInfo) {
         this.$newmessage('暂未登录，请登录！', 'warning')
         return
       }
@@ -310,26 +309,6 @@ export default {
     sortChange(sort) {
       this.sort = sort
       this.refreshCommentList()
-    },
-    deleteReply(item) {
-      if (item.parent_comment_id !== -1) {
-        for (let index = 0; index < this.commentList.length; index++) {
-          const element = this.commentList[index]
-          if (element.id === item.parent_comment_id) {
-            for (
-              let index = 0;
-              index < element.children_comment.length;
-              index++
-            ) {
-              const child = element.children_comment[index]
-              if (child.id === item.id) {
-                element.children_comment.splice(index, 1)
-                break
-              }
-            }
-          }
-        }
-      }
     },
     // 留言列表
     async refreshCommentList() {

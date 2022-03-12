@@ -14,7 +14,6 @@ export default function ({ $axios, store }, inject) {
       if (store.state.user.token) {
         config.headers.Authorization = `Bearer ${token}`
       }
-      // config.headers['Cache-Control'] = 'no-cache'
       return config
     },
     (error) => {

@@ -5,7 +5,15 @@
       <div class="comment-main">
         <div class="user-box">
           <div>
-            <span class="username">{{ item.from_user.username }}</span>
+            <span class="username">
+              {{ item.from_user.username }}
+              <span v-if="item.from_user.roles" class="role">
+                {{
+                  item.from_user.roles &&
+                  item.from_user.roles[0].role_description
+                }}
+              </span>
+            </span>
             <span v-if="item.to_user" class="username">
               <span class="txt">回复</span>
               {{ item.to_user.username }}
@@ -38,7 +46,7 @@
               <span>回复</span>
             </div>
             <div
-              v-if="item.from_user_id === userId"
+              v-if="userInfo ? item.from_user_id === userInfo.id : false"
               class="delete"
               @click="deleteReply(item)"
             >
@@ -91,8 +99,8 @@ export default {
     }
   },
   computed: {
-    userId() {
-      return this.$store.state.user.id
+    userInfo() {
+      return this.$store.state.user.userInfo
     },
   },
   watch: {},
@@ -157,6 +165,17 @@ export default {
         justify-content: space-between;
         .username {
           color: $theme-color1;
+          .role {
+            display: inline-block;
+            margin-left: 4px;
+            padding: 2px;
+            border-radius: 3px;
+            background-color: #94c9ff;
+            background-image: linear-gradient(180deg, #94c9ff 0%, #59aeff 100%);
+            color: $theme-color6;
+            text-align: center;
+            font-size: 12px;
+          }
           .txt {
             color: $theme-color5;
           }

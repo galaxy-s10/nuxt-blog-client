@@ -192,7 +192,7 @@ export default {
     //   },
     // },
     userInfo() {
-      return this.$store.state.user.id
+      return this.$store.state.user.userInfo
     },
   },
   watch: {
@@ -324,12 +324,12 @@ export default {
 
     // 给文章点赞/取消点赞
     async starForArticle(type, articleId) {
-      if (this.$store.state.user.userInfo) {
+      if (this.userInfo) {
         this.loadingStar = true
         if (type === 1) {
           const { data } = await this.$axios1.post(`/api/star/create`, {
             article_id: articleId,
-            from_user_id: this.$store.state.user.id,
+            from_user_id: this.userInfo.id,
             comment_id: -1,
             to_user_id: -1,
           })
@@ -341,7 +341,7 @@ export default {
         } else {
           const { data } = await this.$axios1.$delete(`/api/star/delete`, {
             article_id: articleId,
-            from_user_id: this.$store.state.user.id,
+            from_user_id: this.userInfo.id,
             comment_id: -1,
             to_user_id: -1,
           })

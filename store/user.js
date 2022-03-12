@@ -12,6 +12,8 @@ export const mutations = {
   setToken(state, res) {
     if (res === null) {
       localStorage.removeItem('token')
+    } else {
+      localStorage.setItem('token', res)
     }
     state.token = res
   },

@@ -39,17 +39,17 @@ export default {
       this.visible = offsetTop > height
     },
     changeType(typeId) {
+      this.$store.commit('type/changeTypeId', typeId + '')
       if (this.$route.path !== '/') {
         this.$router.push('/')
       }
-      this.$store.commit('type/changeTypeId', typeId + '')
     },
     all() {
-      if (this.$route.path !== '/') {
-        this.$router.push('/')
-      }
       if (this.$store.state.type.typeId) {
         this.$store.commit('type/changeTypeId', '')
+      }
+      if (this.$route.path !== '/') {
+        this.$router.push('/')
       }
     },
   },

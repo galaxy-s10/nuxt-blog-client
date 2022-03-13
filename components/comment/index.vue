@@ -107,7 +107,7 @@ export default {
   ],
   data() {
     return {
-      currentComponent: '',
+      currentComponent: null,
       currentReplyComment: null,
       listLoading: false,
       modalSort: 'date',
@@ -137,7 +137,11 @@ export default {
     },
   },
   methods: {
-    refresh() {
+    async refresh() {
+      if (this.currentComment !== null) {
+        this.childListParams.nowPage = 1
+        await this.ajaxChildComment(this.childListParams)
+      }
       this.$emit('refresh')
     },
     closeModal() {
@@ -183,6 +187,7 @@ export default {
     async handleModal(v) {
       const item = deepCloneByJson(v)
       delete item.children_comment
+      console.log(item, v, 123)
       this.currentComment = item
       const params = {
         article_id: item.article_id,
@@ -248,11 +253,11 @@ export default {
       if (type) {
         await this.ajaxCreateStar(item)
         this.$newmessage('点赞ok~', 'success')
+        this.refresh()
       } else if (type === false) {
         await this.ajaxDeleteStar(item)
         this.$newmessage('取消点赞ok~', 'success')
       }
-      this.refresh()
     },
     // handleChildrenPage(v) {
     //   v.nowPage = v.nowPage ? v.nowPage + 1 : 1
@@ -298,7 +303,7 @@ export default {
     // 关闭回复框
     closeReply() {
       this.currentReplyComment = null
-      this.currentComponent = ''
+      this.currentComponent = null
     },
     // 新增回复
     async handleReply(content) {
@@ -314,26 +319,11 @@ export default {
           to_user_id: this.currentReplyComment.from_user_id,
         })
         this.$newmessage('回复成功~', 'success')
+        this.refresh()
         this.closeReply()
       } catch (error) {
         console.log(error)
       }
-    },
-
-    // 删除回复
-    async handleDeleteReply(content) {
-      await this.$axios1.post('/api/comment/create', {
-        article_id: this.currentReplyComment.article_id,
-        content,
-        parent_comment_id:
-          this.currentReplyComment.parent_comment_id === -1
-            ? this.currentReplyComment.id
-            : this.currentReplyComment.parent_comment_id,
-        reply_comment_id: this.currentReplyComment.id,
-        to_user_id: this.currentReplyComment.from_user_id,
-      })
-      this.$newmessage('删除回复成功~', 'success')
-      this.$emit('refresh')
     },
   },
 }

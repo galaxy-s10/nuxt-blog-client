@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       loading: false,
-      content: null,
+      content: '',
     }
   },
   computed: {},

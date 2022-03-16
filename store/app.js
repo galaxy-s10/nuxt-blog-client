@@ -5,11 +5,15 @@ export const state = () => ({
   frontendData: null,
   // 是否显示文章目录
   showCatalog: false,
+  CurrentNodeEnv: 'development',
 })
 
 export const mutations = {
   setIpInfo(state, res) {
     state.ipInfo = res
+  },
+  setCurrentNodeEnv(state, res) {
+    state.CurrentNodeEnv = res
   },
   setFrontendData(state, res) {
     state.frontendData = res

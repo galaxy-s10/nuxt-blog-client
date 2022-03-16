@@ -77,8 +77,16 @@ export default {
           path: '/tag/1',
         },
         {
+          title: '作品',
+          path: '/works',
+        },
+        {
           title: '友链',
           path: '/link',
+        },
+        {
+          title: '留言',
+          path: '/msg',
         },
         {
           title: '关于',
@@ -197,8 +205,7 @@ export default {
         margin: 0;
         padding: 0;
         .item {
-          margin: 0 30px;
-
+          margin: 0 25px;
           user-select: none;
         }
         .item:hover:before {

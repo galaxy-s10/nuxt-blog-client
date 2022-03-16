@@ -6,7 +6,7 @@
     <ul class="link-list-wrap">
       <template v-if="linkList.length">
         <li v-for="(item, index) in linkList" :key="index" class="li-item-wrap">
-          <a :href="item.url" class="li-item-link" target="_bank">
+          <a :href="item.url" class="li-item-link" target="_blank">
             <img v-lazy="item.avatar" class="user-avatar" />
             <div class="desc">
               <span>{{ item.name }}</span>
@@ -20,7 +20,8 @@
       <span v-else>暂无友链~</span>
     </ul>
 
-    <h2 class="happy-title">欢迎大家交换友链~</h2>
+    <h2 class="title-desc">欢迎大家交换友链~</h2>
+
     <div>
       <el-form
         ref="linkForm"
@@ -40,13 +41,13 @@
             placeholder="输入您网站的链接"
           ></el-input>
         </el-form-item>
-        <el-form-item label="网站介绍" prop="description">
+        <el-form-item label="网站介绍" prop="desc">
           <el-input
             v-model="linkForm.desc"
             placeholder="简单介绍一下您的网站"
           ></el-input>
         </el-form-item>
-        <el-form-item label="网站Logo" prop="avatar">
+        <el-form-item label="网站logo" prop="avatar">
           <el-input
             v-model="linkForm.avatar"
             placeholder="输入您网站显示的logo"
@@ -61,7 +62,7 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.frontend.frontend_link === -1"
+            :disabled="frontendData.frontend.frontend_link === 1"
             @click="addLink()"
           >
             提交申请
@@ -69,50 +70,17 @@
         </el-form-item>
       </el-form>
     </div>
-
-    <!-- 发表评论 -->
-    <div class="comment-wrap">
-      <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
-      <div class="btn">
-        <el-button
-          type="primary"
-          :loading="submitCommentLoading"
-          @click="addComment"
-        >
-          发表评论
-        </el-button>
-      </div>
-    </div>
-
-    <!-- 评论组件 -->
-    <CommentCpt
-      v-loading="isLoading"
-      :list="commentList"
-      :total="total"
-      :sort="sort"
-      :has-more="hasMore"
-      :now-page="nowPage"
-      :page-size="pageSize"
-      :children-page-size="childrenPageSize"
-      @refresh="refreshCommentList"
-      @sortChange="sortChange"
-      @handleParentPage="handleParentPage"
-      @handleChildrenPage="handleChildrenPage"
-    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import CommentCpt from '@/components/Comment'
-import TextareaInputCpt from '@/components/TextareaInput'
+import { mapActions } from 'vuex'
 
 const validateEmail = (rule, value, callback) => {
-  const reg =
-    /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/
+  const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
   if (value) {
     if (!reg.test(value)) {
-      callback(new Error('请输入正确的邮箱！'))
+      callback(new Error('请输入正确的邮箱!'))
     }
     return callback()
   } else {
@@ -121,46 +89,21 @@ const validateEmail = (rule, value, callback) => {
 }
 
 export default {
-  components: {
-    CommentCpt,
-    TextareaInputCpt,
-  },
+  components: {},
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     // 获取友链数据
     const { data: linkData } = await $axios1.get('/api/link/list', {
       params: { nowPage: 1, pageSize: 100 },
     })
-    const orderName = 'created_at'
-    const commentParams = {
-      article_id: -1,
-      nowPage: 1,
-      pageSize: 3,
-      childrenPageSize: store.state.comment.childrenPageSize, // 子评论分页大小
-      orderName,
-      orderBy: 'desc',
-    }
-    const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
-      params: commentParams,
-    })
-    return {
-      sort: orderName === 'created_at' ? 'date' : 'hot',
-      linkList: linkData.rows,
-      commentList: commentData.rows,
-      total: commentData.total,
-      hasMore: commentData.hasMore,
-      nowPage: commentParams.nowPage,
-      pageSize: commentParams.pageSize,
-    }
+    return { linkList: linkData.rows }
   },
   data() {
     return {
-      submitCommentLoading: false,
-      currentComponent: '',
       linkForm: {
         name: '',
         url: '',
-        description: '',
+        desc: '',
         avatar: '',
         email: '',
       },
@@ -168,34 +111,36 @@ export default {
         name: [
           { required: true, message: '网站名称不能为空', trigger: 'blur' },
           {
-            min: 2,
+            min: 3,
             max: 50,
-            message: '网站名称要求2-50个字符',
+            message: '网站名称要求3-50个字符',
             trigger: 'blur',
           },
         ],
         url: [
           { required: true, message: '网站地址不能为空', trigger: 'blur' },
           {
-            max: 100,
-            message: '网站地址不能超过100个字符',
+            min: 5,
+            max: 80,
+            message: '网站地址要求5-80个字符',
             trigger: 'blur',
           },
         ],
-        description: [
+        desc: [
           { required: true, message: '网站介绍不能为空', trigger: 'blur' },
           {
-            min: 2,
+            min: 3,
             max: 50,
-            message: '网站介绍要求2-50个字符',
+            message: '网站介绍要求3-50个字符',
             trigger: 'blur',
           },
         ],
         avatar: [
-          { required: true, message: '网站Logo不能为空', trigger: 'blur' },
+          { required: true, message: '网站logo不能为空', trigger: 'blur' },
           {
-            max: 100,
-            message: '网站Logo不能超过100个字符',
+            min: 5,
+            max: 80,
+            message: '网站logo要求5-80个字符',
             trigger: 'blur',
           },
         ],
@@ -206,12 +151,6 @@ export default {
           },
         ],
       },
-      linkList: null,
-      article_id: -1,
-      commentContent: '',
-      isshow: '',
-      isLoading: false,
-      content: '',
     }
   },
   head() {
@@ -230,141 +169,39 @@ export default {
     frontendData() {
       return this.$store.state.app.frontendData
     },
-    userInfo() {
-      return this.$store.state.user.userInfo
-    },
-    childrenPageSize() {
-      return this.$store.state.comment.childrenPageSize
-    },
   },
-  watch: {
-    userInfo() {
-      this.refreshCommentList()
-    },
-  },
+  watch: {},
   mounted() {
     this.getFrontendData()
   },
   methods: {
     ...mapActions({
-      getUserInfo: 'user/getUserInfo',
       getFrontendData: 'app/getFrontendData',
     }),
-    ...mapMutations({
-      setToken: 'user/setToken',
-      logout: 'user/logout',
-    }),
-    contentChange(newVal, oldVal) {
-      this.commentContent = newVal
-    },
 
-    // 新增回复
-    async addComment() {
-      if (!this.userInfo) {
-        this.$newmessage('暂未登录，请登录！', 'warning')
-        return
-      }
-      if (this.commentContent.length < 5) {
-        this.$newmessage('评论内容至少5个字符~', 'warning')
-        return
-      }
-      try {
-        this.submitCommentLoading = true
-        await this.$axios1.post('/api/comment/create', {
-          article_id: -1,
-          content: this.commentContent,
-          parent_comment_id: -1,
-          reply_comment_id: -1,
-          to_user_id: -1,
-        })
-        this.submitCommentLoading = false
-        this.$newmessage('评论成功~', 'success')
-        this.refreshCommentList()
-      } catch (error) {
-        console.log(error)
-        this.submitCommentLoading = false
-      }
-    },
     // 申请友链
     addLink() {
       this.$refs.linkForm.validate(async (valid) => {
+        console.log(valid, this.linkForm, 3333)
+        // return
         if (valid) {
           try {
-            const { data } = await this.$axios1.post(
-              '/api/link/add',
-              this.linkForm
-            )
-            this.$newmessage(data.message, 'success')
+            await this.$axios1.post('/api/link/create', {
+              ...this.linkForm,
+              email:
+                this.linkForm.email === '' ? undefined : this.linkForm.email,
+            })
+            this.$newmessage('已提交友链申请~', 'success')
             for (const i in this.linkForm) {
               this.linkForm[i] = ''
             }
           } catch (error) {
-            this.$newmessage(error.message, 'error')
+            console.log(error)
           }
         } else {
-          this.$newmessage('请按要求输入正确！', 'error')
+          this.$newmessage('请按要求输入正确!', 'error')
         }
       })
-    },
-    sortChange(sort) {
-      this.sort = sort
-      this.refreshCommentList()
-    },
-    // 留言列表
-    async refreshCommentList() {
-      const query = {
-        article_id: -1,
-        nowPage: 1,
-        pageSize: 3,
-        childrenPageSize: this.childrenPageSize,
-        orderName: this.sort === 'date' ? 'created_at' : 'star_total',
-        orderBy: 'desc',
-      }
-      try {
-        this.isLoading = true
-        const { data } = await this.$axios1.get(`/api/comment/comment`, {
-          params: { ...query },
-        })
-        this.isLoading = false
-        this.commentList = data.rows
-        this.total = data.total
-        this.hasMore = data.hasMore
-      } catch (error) {
-        console.log(error)
-        this.isLoading = false
-      }
-    },
-
-    // 获取子评论分页
-    async handleChildrenPage(query) {
-      const { data } = await this.$axios1.get(`/api/comment/comment_children`, {
-        params: {
-          parent_comment_id: query.parent_comment_id,
-          article_id: query.article_id,
-          pageSize: query.childrenPageSize,
-          childrenPageSize: this.childrenPageSize,
-        },
-      })
-      this.commentList.forEach((item) => {
-        if (item.id === query.parent_comment_id) {
-          item.children_comment.push(...data.rows)
-        }
-      })
-    },
-    // 获取父评论分页
-    async handleParentPage(query) {
-      const { data } = await this.$axios1.get(`/api/comment/comment`, {
-        params: {
-          article_id: -1,
-          nowPage: query.nowPage + 1,
-          pageSize: this.pageSize,
-          childrenPageSize: this.childrenPageSize,
-          orderName: query.orderName,
-          orderBy: query.orderBy,
-        },
-      })
-      this.commentList.push(...data.rows)
-      this.hasMore = data.hasMore
     },
   },
 }
@@ -405,10 +242,16 @@ export default {
     max-height: 300px;
 
     @extend .hideScrollbar;
+    &::after {
+      content: '';
+      width: 30%;
+      margin: 0 1%;
+    }
     .li-item-wrap {
       position: relative;
       overflow: hidden;
-      flex-basis: 30%;
+      width: 30%;
+      margin: 0 1%;
       margin-bottom: 10px;
       border-radius: 4px;
       list-style: none;
@@ -420,6 +263,7 @@ export default {
         border: 1px solid $theme-color4;
         color: $theme-color5;
         text-decoration: none;
+
         .user-avatar {
           width: 60px;
           height: 60px;
@@ -461,15 +305,9 @@ export default {
       }
     }
   }
-  .happy-title {
+  .title-desc {
     display: block;
     text-align: center;
-  }
-}
-.comment-wrap {
-  .btn {
-    margin-top: 20px;
-    text-align: right;
   }
 }
 </style>

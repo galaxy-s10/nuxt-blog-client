@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import pagingCpt from '@/components/Page'
+import pagingCpt from '@/components/Paging'
 export default {
   components: {
     pagingCpt,

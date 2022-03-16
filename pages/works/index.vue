@@ -4,7 +4,7 @@
     <hr class="hr-class" />
     <h2 class="title-desc">"Less is more"</h2>
     <div class="list-wrap">
-      <div v-for="item in worksList" :key="item" class="item-wrap">
+      <div v-for="item in worksList" :key="item.id" class="item-wrap">
         <div
           class="bg-url"
           :style="{ backgroundImage: `url(${item.bg_url})` }"

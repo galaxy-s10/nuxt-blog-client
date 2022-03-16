@@ -4,7 +4,7 @@ const actions = {
   // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
   async nuxtServerInit({ commit, dispatch }) {
     try {
-      commit('app/setNODE_ENV', process.env.NODE_ENV)
+      commit('app/setCurrentNodeEnv', process.env.NODE_ENV)
       await Promise.all([
         dispatch('app/getIpInfo'),
         dispatch('log/getVisitorDayData', dateStartAndEnd(new Date())),

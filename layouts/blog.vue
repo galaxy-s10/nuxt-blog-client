@@ -45,9 +45,9 @@ export default {
   mounted() {
     this.init()
     this.getFrontendData()
-    // if (this.CurrentNodeEnv !== 'development') {
-    this.$axios1.post('/api/visitor_log/create') // 新增访客记录
-    // }
+    if (this.CurrentNodeEnv !== 'development') {
+      this.$axios1.post('/api/visitor_log/create') // 新增访客记录
+    }
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data
       if (type === 'qq_login') {

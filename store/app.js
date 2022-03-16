@@ -5,6 +5,7 @@ export const state = () => ({
   frontendData: null,
   // 是否显示文章目录
   showCatalog: false,
+  // 当前node环境
   CurrentNodeEnv: 'development',
 })
 

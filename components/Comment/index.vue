@@ -187,7 +187,6 @@ export default {
     async handleModal(v) {
       const item = deepCloneByJson(v)
       delete item.children_comment
-      console.log(item, v, 123)
       this.currentComment = item
       const params = {
         article_id: item.article_id,

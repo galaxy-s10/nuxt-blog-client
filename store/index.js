@@ -19,7 +19,6 @@ const actions = {
         }),
       ])
       console.log('nuxtServerInit初始化完成')
-      console.log(process.env)
     } catch (error) {
       console.log(error)
     }

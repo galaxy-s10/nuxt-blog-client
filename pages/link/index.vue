@@ -182,8 +182,6 @@ export default {
     // 申请友链
     addLink() {
       this.$refs.linkForm.validate(async (valid) => {
-        console.log(valid, this.linkForm, 3333)
-        // return
         if (valid) {
           try {
             await this.$axios1.post('/api/link/create', {

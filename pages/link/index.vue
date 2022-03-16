@@ -62,7 +62,7 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.frontend.frontend_link === 1"
+            :disabled="frontendData.frontend.frontend_link === -1"
             @click="addLink()"
           >
             提交申请

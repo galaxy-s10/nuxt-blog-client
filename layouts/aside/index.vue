@@ -12,7 +12,7 @@
       />
       <div class="info">
         <div class="name">
-          <b>{{ userInfo ? userInfo.username : '未登录' }}</b>
+          {{ userInfo ? userInfo.username : '未登录' }}
         </div>
         <p class="title">{{ userInfo ? userInfo.title : 'hello world!' }}</p>
       </div>
@@ -306,7 +306,7 @@ export default {
     border-radius: 5px;
     background: $theme-color6;
     .bgc {
-      height: 90px;
+      height: 80px;
       background-image: -webkit-linear-gradient(
         43deg,
         #4158d0 0%,
@@ -347,9 +347,13 @@ export default {
     }
     .info {
       margin-top: -30px;
-      .name,
+      .name {
+        text-align: center;
+        font-weight: bold;
+      }
       .title {
         text-align: center;
+        margin: 4px;
       }
     }
   }

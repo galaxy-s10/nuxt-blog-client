@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
 import CommentCpt from '@/components/Comment'
 import TextareaInputCpt from '@/components/TextareaInput'
 
@@ -53,7 +52,7 @@ export default {
     const commentParams = {
       article_id: -1,
       nowPage: 1,
-      pageSize: 3,
+      pageSize: 10,
       childrenPageSize: store.state.comment.childrenPageSize, // 子评论分页大小
       orderName,
       orderBy: 'desc',
@@ -109,18 +108,8 @@ export default {
       this.refreshCommentList()
     },
   },
-  mounted() {
-    this.getFrontendData()
-  },
+  mounted() {},
   methods: {
-    ...mapActions({
-      getUserInfo: 'user/getUserInfo',
-      getFrontendData: 'app/getFrontendData',
-    }),
-    ...mapMutations({
-      setToken: 'user/setToken',
-      logout: 'user/logout',
-    }),
     contentChange(newVal, oldVal) {
       this.commentContent = newVal
     },
@@ -161,7 +150,7 @@ export default {
       const query = {
         article_id: -1,
         nowPage: 1,
-        pageSize: 3,
+        pageSize: 10,
         childrenPageSize: this.childrenPageSize,
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         orderBy: 'desc',

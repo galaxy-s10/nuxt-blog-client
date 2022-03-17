@@ -74,8 +74,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 const validateEmail = (rule, value, callback) => {
   const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
   if (value) {
@@ -171,14 +169,8 @@ export default {
     },
   },
   watch: {},
-  mounted() {
-    this.getFrontendData()
-  },
+  mounted() {},
   methods: {
-    ...mapActions({
-      getFrontendData: 'app/getFrontendData',
-    }),
-
     // 申请友链
     addLink() {
       this.$refs.linkForm.validate(async (valid) => {
@@ -237,7 +229,7 @@ export default {
     justify-content: space-between;
     margin: 40px 0;
     padding: 0;
-    max-height: 300px;
+    max-height: 400px;
 
     @extend .hideScrollbar;
     &::after {

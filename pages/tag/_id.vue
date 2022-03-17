@@ -22,13 +22,13 @@
             v-lazy="imgCdnUrl + item['head_img']"
             :to="`/article/${item.id}`"
             tag="img"
-            class="head_img"
+            class="head-img"
           />
           <nuxt-link
             v-else
             :to="`/article/${item.id}`"
             tag="div"
-            class="head_img"
+            class="head-img"
           />
         </div>
         <div class="article-r">
@@ -247,13 +247,14 @@ export default {
   overflow: hidden;
   flex: 0 0 40%;
   margin: 20px;
-  .head_img {
+  .head-img {
     width: 100%;
     height: 100%;
     background-image: url('@/assets/img/nopic.png');
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;
+    cursor: pointer;
     transition: all 0.3s ease 0s;
   }
 }

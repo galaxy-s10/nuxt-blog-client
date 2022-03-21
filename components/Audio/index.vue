@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       imgCdnUrl,
-      hiddenMusic: false,
+      hiddenMusic: true,
       matrix: '',
       nowDeg: 0,
       audio: null,
@@ -94,8 +94,6 @@ export default {
         if (this.hiddenMusic !== true) {
           this.hiddenMusic = true
         }
-      } else if (this.hiddenMusic !== false) {
-        this.hiddenMusic = false
       }
     })
     if (!this.songList.length) return

@@ -11,6 +11,7 @@
     </div>
     <AudioCpt></AudioCpt>
     <FooterCpt />
+    <PlumCpt></PlumCpt>
   </div>
 </template>
 <script>
@@ -23,6 +24,7 @@ import AsideCpt from '@/layouts/aside'
 import MainCpt from '@/layouts/main'
 import FooterCpt from '@/layouts/footer'
 import AudioCpt from '@/components/Audio'
+import PlumCpt from '@/components/Plum'
 
 // import featureTip from "../components/FeatureTip";
 export default {
@@ -34,6 +36,7 @@ export default {
     MainCpt,
     AudioCpt,
     FooterCpt,
+    PlumCpt,
     // featureTip,
   },
   computed: {

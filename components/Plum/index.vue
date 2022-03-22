@@ -9,7 +9,7 @@
 </template>
 
 <script>
-const branchLength = 7
+const branchLength = 6
 export default {
   components: {},
   props: [],
@@ -20,27 +20,39 @@ export default {
       height: 600,
       ctx: null,
       branchLength, // 左右分支长度
-      initLength: 7, // 最初的根分支长度
+      initLength: 5, // 最初的根分支长度
       branchRandom: 0.5, // 左右分支的概率范围，0-1，值越大每次产生分支的概率就越大
-      leftBranchLengthRandom: Math.random() * branchLength - branchLength / 4, // 左分支长度的随机值
-      rightBranchLengthRandom: Math.random() * branchLength - branchLength / 4, // 右分支长度的随机值
-      leftBranchAngleRandom: Math.random() * 0.3, // 左分支角度的随机值
-      rightBranchAngleRandom: Math.random() * 0.3, // 右分支角度的随机值
+      leftBranchRandomLength: branchLength * Math.random(), // 左分支长度的随机值
+      rightBranchRandomLength: branchLength * Math.random(), // 右分支长度的随机值
+      leftBranchAngleRandom: Math.random() / 12, // 左分支角度的随机值
+      rightBranchAngleRandom: Math.random() / 12, // 右分支角度的随机值
       queue: [],
       childQueue: [],
       framesCount: 0,
       initDepth: 4,
       r90: Math.PI / 2,
       r180: Math.PI,
-      strokeColor: '#e0e0e0',
+      // strokeColor: "#00000040",
+      strokeColor: 'pink',
+      // strokeColor: "#e0e0e0",
       fps: 4,
+      depth: 0,
+      stopped: false,
+      interval: 1000 / 40,
+      lastTime: 0,
     }
   },
   computed: {},
   watch: {
     switchValue(newVal) {
-      newVal && this.refresh()
+      if (newVal) {
+        this.refresh()
+      } else {
+        this.depth = 0
+        this.queue.splice(0)
+      }
     },
+    quequ(newVal) {},
   },
   created() {},
   mounted() {
@@ -52,121 +64,95 @@ export default {
     this.$refs.Plum.height = this.height
     const canvas = this.$refs.Plum
     this.ctx = canvas.getContext('2d')
-    // this.init({ x: 0, y: Math.random() * this.height });
-    // this.init({ x: this.width, y: Math.random() * this.height });
-    // this.init({ x: this.width / 2, y: this.height });
-    this.handleStart()
-    this.startFrame()
+    this.handleStep()
+    this.handleFrame()
+    setTimeout(() => {
+      this.queue.splice(0)
+    }, 5000)
   },
   methods: {
-    init(position, angle = -Math.PI / 2) {
-      this.step({
-        start: { x: position.x, y: position.y }, // 这个点扎在地上的根
-        length: this.initLength,
-        angle,
-      })
-    },
     refresh() {
       this.ctx.clearRect(0, 0, this.width, this.height)
-      this.queue = []
-      this.handleStart()
+      this.depth = 0
+      this.handleStep()
+      this.handleFrame()
     },
-    handleStart() {
-      this.childQueue = [
-        () => this.init({ x: Math.random() * this.width, y: 0 }, this.r90), // 上边
-        () =>
-          this.init(
-            { x: Math.random() * this.width, y: this.height },
-            -this.r90
-          ), // 下边
-        () => this.init({ x: 0, y: Math.random() * this.height }, 0), // 左边
-        () =>
-          this.init(
-            { x: this.width, y: Math.random() * this.height },
-            this.r180
-          ), // 右边
-      ]
-      if (window.innerWidth < 500) {
-        this.childQueue = this.childQueue.slice(0, 2)
-      }
-      this.childQueue.forEach((fn) => fn())
-    },
-    getEndPoin(start, length, angle) {
-      return {
-        x: start.x + length * Math.cos(angle),
-        y: start.y + length * Math.sin(angle),
-      }
-    },
-    /**
-     * start:{x:x值,y:y值}
-     * length:长度
-     * angle:角度
-     * 根据起点、长度、角度，计算出终点，
-     * 然后将起点(start)和终点(end)进行画线（连线）。
-     */
-    drawBranch({ start, length, angle }) {
-      const end = this.getEndPoin(start, length, angle)
-      this.drawLine(start, end)
-    },
-
-    step(startPoin, depth = 0) {
-      const end = this.getEndPoin(
-        startPoin.start,
-        startPoin.length,
-        startPoin.angle
+    handleStep() {
+      this.queue.push(
+        () => this.step(this.width - 100, this.height, -this.r90), // 下边的梅花
+        () => this.step(Math.random() * this.width, 0, this.r90), // 上边的梅花
+        () => this.step(0, Math.random() * this.height, 0), // 左边的梅花
+        () => this.step(this.width, Math.random() * this.height, -this.r180) // 右边的梅花
       )
+    },
+    getEndPoin(x, y, angle) {
+      const length = this.branchLength
+      const y1 = length * Math.sin(angle) // 对边
+      const x1 = length * Math.cos(angle) // 邻边
+      return {
+        x: x + x1,
+        y: y + y1,
+      }
+    },
+    drawBranch(startX, startY, end) {
+      this.drawLine({ x: startX, y: startY }, end)
+    },
 
-      if (
-        startPoin.start.x < -10 ||
-        startPoin.start.x > this.width + 10 ||
-        startPoin.start.y < -10 ||
-        startPoin.start.y > this.height + 10
-      ) {
+    step(x, y, angle) {
+      if (x < -10 || x > this.width + 10 || y < -10 || y > this.height + 10) {
         // 超出屏幕一定范围就return
         return
       }
-      this.drawBranch(startPoin)
-      if (depth < this.initDepth || Math.random() < this.branchRandom) {
-        const length = this.branchLength + this.leftBranchLengthRandom
-        const angle = startPoin.angle + this.leftBranchAngleRandom
-        this.queue.push(() =>
-          this.step(
-            {
-              start: end,
-              length,
-              angle,
-            },
-            depth + 1
-          )
-        )
+
+      const getEndPoin1 = (x, y, angle) => {
+        // const length = this.branchLength
+        const length = Math.random() * this.branchLength
+        // const length =
+        //   this.branchLength +
+        //   (Math.random() > 0.2 ? +Math.random() * 2 : -Math.random() * 2)
+        const x1 = length * Math.cos(angle) // 邻边
+        const y1 = length * Math.sin(angle) // 对边
+        return {
+          x: x + x1,
+          y: y + y1,
+        }
       }
-      if (depth < this.initDepth || Math.random() < this.branchRandom) {
-        const length = this.branchLength + this.rightBranchLengthRandom
-        const angle = startPoin.angle - this.rightBranchAngleRandom
-        this.queue.push(() =>
-          this.step(
-            {
-              start: end,
-              length,
-              angle,
-            },
-            depth + 1
-          )
-        )
+      const end = getEndPoin1(x, y, angle)
+      this.drawBranch(x, y, end)
+      const rad1 = angle + Math.random() * (this.r180 / 12)
+      const rad2 = angle - Math.random() * (this.r180 / 12)
+
+      if (this.depth <= this.initDepth || Math.random() > this.branchRandom) {
+        this.queue.push(() => this.step(end.x, end.y, rad1))
+      }
+      if (this.depth <= this.initDepth || Math.random() > this.branchRandom) {
+        this.queue.push(() => this.step(end.x, end.y, rad2))
       }
     },
     frame() {
+      this.stopped = false
+      if (performance.now() - this.lastTime < this.interval) {
+        return
+      }
       const tasks = [...this.queue]
-      this.queue.length = 0
-      tasks.forEach((fn) => fn())
+      this.queue.splice(0)
+      this.depth += 1
+
+      this.lastTime = performance.now()
+      if (!tasks.length) {
+        this.stopped = true
+        return
+      }
+      tasks.forEach((fn) => {
+        fn()
+      })
     },
-    startFrame() {
+    handleFrame() {
       requestAnimationFrame(() => {
-        this.framesCount += 1
-        if (this.framesCount % this.fps === 0) {
-          this.frame()
-        }
-        this.startFrame()
+        this.frame()
+        // this.handleFrame()
+        !this.queue.length && (this.stopped = true)
+        this.queue.length && this.handleFrame()
       })
     },
 
@@ -182,23 +168,22 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .plum-wrap {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 999;
   pointer-events: none;
-  .switch {
-    position: fixed;
-    top: 150px;
-    right: 10px;
-    pointer-events: auto;
-
-    .txt {
-      font-size: 12px;
-      font-weight: bold;
-    }
-  }
+}
+.switch {
+  position: fixed;
+  top: 150px;
+  right: 10px;
+  pointer-events: auto;
+}
+.txt {
+  font-size: 12px;
+  font-weight: bold;
 }
 </style>

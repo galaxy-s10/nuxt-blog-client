@@ -76,6 +76,9 @@ export default {
       this.depth = 0
       this.handleStep()
       this.handleFrame()
+      setTimeout(() => {
+        this.queue.splice(0)
+      }, 5000)
     },
     handleStep() {
       this.queue.push(

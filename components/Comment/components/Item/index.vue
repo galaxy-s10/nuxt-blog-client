@@ -55,11 +55,7 @@
           </div>
           <div class="right">
             <span>
-              {{
-                JSON.parse(item.ip_data).city +
-                '/' +
-                JSON.parse(item.ip_data).district
-              }}
+              {{ JSON.parse(item.ip_data) | parseIpInfo }}
             </span>
             <span class="ua">{{ (item.ua || '') | parseUa }}</span>
           </div>

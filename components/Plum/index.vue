@@ -20,26 +20,17 @@ export default {
       height: 600,
       ctx: null,
       branchLength, // 左右分支长度
-      initLength: 5, // 最初的根分支长度
       branchRandom: 0.5, // 左右分支的概率范围，0-1，值越大每次产生分支的概率就越大
-      leftBranchRandomLength: branchLength * Math.random(), // 左分支长度的随机值
-      rightBranchRandomLength: branchLength * Math.random(), // 右分支长度的随机值
-      leftBranchAngleRandom: Math.random() / 12, // 左分支角度的随机值
-      rightBranchAngleRandom: Math.random() / 12, // 右分支角度的随机值
       queue: [],
-      childQueue: [],
-      framesCount: 0,
       initDepth: 4,
       r90: Math.PI / 2,
       r180: Math.PI,
-      // strokeColor: "#00000040",
-      strokeColor: 'pink',
-      // strokeColor: "#e0e0e0",
-      fps: 4,
+      strokeColor: '#ffc0cb80',
       depth: 0,
       stopped: false,
       interval: 1000 / 40,
       lastTime: 0,
+      duration: 5000, // 特效持续时间
     }
   },
   computed: {},
@@ -52,7 +43,6 @@ export default {
         this.queue.splice(0)
       }
     },
-    quequ(newVal) {},
   },
   created() {},
   mounted() {
@@ -64,11 +54,12 @@ export default {
     this.$refs.Plum.height = this.height
     const canvas = this.$refs.Plum
     this.ctx = canvas.getContext('2d')
+
     this.handleStep()
     this.handleFrame()
     setTimeout(() => {
       this.queue.splice(0)
-    }, 5000)
+    }, this.duration)
   },
   methods: {
     refresh() {
@@ -78,15 +69,19 @@ export default {
       this.handleFrame()
       setTimeout(() => {
         this.queue.splice(0)
-      }, 5000)
+      }, this.duration)
     },
     handleStep() {
       this.queue.push(
-        () => this.step(this.width - 100, this.height, -this.r90), // 下边的梅花
+        () => this.step(Math.random() * this.width, this.height, -this.r90), // 下边的梅花
         () => this.step(Math.random() * this.width, 0, this.r90), // 上边的梅花
         () => this.step(0, Math.random() * this.height, 0), // 左边的梅花
         () => this.step(this.width, Math.random() * this.height, -this.r180) // 右边的梅花
       )
+      if (this.width < 500) {
+        this.duration = 4500
+        this.queue = this.queue.slice(0, 2)
+      }
     },
     getEndPoin(x, y, angle) {
       const length = this.branchLength
@@ -102,7 +97,7 @@ export default {
     },
 
     step(x, y, angle) {
-      if (x < -10 || x > this.width + 10 || y < -10 || y > this.height + 10) {
+      if (x < -50 || x > this.width + 50 || y < -50 || y > this.height + 50) {
         // 超出屏幕一定范围就return
         return
       }

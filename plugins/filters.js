@@ -32,6 +32,13 @@ const parseUa = (v) => {
   return osName + ' ' + osVersion
 }
 
+// 解析ipInfo
+const parseIpInfo = (ipInfo) => {
+  const str = ipInfo.province + ' - ' + ipInfo.city
+  return str
+}
+
 Vue.filter('parseUa', parseUa)
 Vue.filter('formatDate', formatDate)
 Vue.filter('convertDate', convertDate)
+Vue.filter('parseIpInfo', parseIpInfo)

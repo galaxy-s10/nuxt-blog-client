@@ -61,15 +61,7 @@
             <div class="item">ip: {{ ipInfo.ip }}</div>
             <div class="item">
               location:
-              {{
-                ipInfo.country +
-                ' - ' +
-                ipInfo.province +
-                ' - ' +
-                ipInfo.city +
-                ' - ' +
-                ipInfo.district
-              }}
+              {{ ipInfo | parseIpInfo }}
             </div>
           </template>
         </div>

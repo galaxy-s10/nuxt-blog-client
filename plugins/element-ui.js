@@ -18,6 +18,7 @@ import {
   Pagination,
   Loading,
   Switch,
+  Dialog,
 } from 'element-ui'
 
 const components = [
@@ -36,6 +37,7 @@ const components = [
   Autocomplete,
   Pagination,
   Switch,
+  Dialog,
 ]
 
 const Element = {

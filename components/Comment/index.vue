@@ -110,7 +110,7 @@ export default {
       currentComponent: null,
       currentReplyComment: null,
       listLoading: false,
-      modalSort: 'date',
+      modalSort: 'hot',
       currentComment: null,
       childListParams: {
         article_id: null,

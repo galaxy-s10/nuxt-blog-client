@@ -1,18 +1,18 @@
 <template>
   <div class="sort-wrap">
     <div
-      class="date"
-      :class="{ curr: sort === 'date' }"
-      @click="sortChange('date')"
-    >
-      按时间
-    </div>
-    <div
       class="hot"
       :class="{ curr: sort === 'hot' }"
       @click="sortChange('hot')"
     >
       按热度
+    </div>
+    <div
+      class="date"
+      :class="{ curr: sort === 'date' }"
+      @click="sortChange('date')"
+    >
+      按时间
     </div>
     <div class="hr"></div>
   </div>

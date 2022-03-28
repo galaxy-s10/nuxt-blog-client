@@ -1,12 +1,19 @@
 <template>
   <div>
     <el-dialog
-      title="最近更新"
+      title="近期"
       :visible="dialogVisible"
       :before-close="handleClose"
       :width="dialogWidth"
+      :top="dialogTop"
     >
-      <el-timeline>
+      最近都在对博客进行比较彻底的重构（前台、后台、后端），目的是把项目做到可读、可复用、可扩展、可维护，以及能有一定用户体验。
+      <br />
+      <br />
+      虽然整个过程前端涉及的东西不多（或者说无关紧要），涉及最多的其实是业务方面（后端方面），但是整个重构过程中的引发的思考是非常锻炼的，
+      期待重构后的结果~
+
+      <!-- <el-timeline>
         <el-timeline-item
           v-for="(activity, index) in activities"
           :key="index"
@@ -14,12 +21,12 @@
         >
           {{ activity.content }}
         </el-timeline-item>
-      </el-timeline>
+      </el-timeline> -->
       <span slot="footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">
+          确定
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -31,7 +38,8 @@ export default {
   props: {},
   data() {
     return {
-      dialogWidth: '50%',
+      dialogWidth: '500px',
+      dialogTop: '30%',
       dialogVisible: true,
       activities: [
         {
@@ -73,4 +81,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-dialog__wrapper {
+  overflow: hidden;
+}
+</style>

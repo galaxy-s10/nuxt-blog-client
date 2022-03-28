@@ -36,9 +36,8 @@
                 }"
               ></i>
               <span>
-                {{
-                  item.is_star === true ? '取消点赞' : item.star_total || '点赞'
-                }}
+                {{ item.star_total }}
+                {{ item.is_star === true ? '取消点赞' : '点赞' }}
               </span>
             </div>
             <div class="comment" @click="showReply(item)">
@@ -91,7 +90,7 @@ export default {
   data() {
     return {
       currentComment: null,
-      sort: 'date',
+      sort: 'hot',
     }
   },
   computed: {
@@ -171,6 +170,7 @@ export default {
             color: $theme-color6;
             text-align: center;
             font-size: 12px;
+            transform: translateY(-1px);
           }
           .txt {
             color: $theme-color5;

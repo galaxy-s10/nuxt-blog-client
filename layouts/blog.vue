@@ -12,6 +12,7 @@
     <AudioCpt></AudioCpt>
     <FooterCpt />
     <PlumCpt></PlumCpt>
+    <FeatureTip></FeatureTip>
   </div>
 </template>
 <script>
@@ -25,8 +26,7 @@ import MainCpt from '@/layouts/main'
 import FooterCpt from '@/layouts/footer'
 import AudioCpt from '@/components/Audio'
 import PlumCpt from '@/components/Plum'
-
-// import featureTip from "../components/FeatureTip";
+import FeatureTip from '@/components/FeatureTip'
 export default {
   components: {
     HeaderCpt,
@@ -37,7 +37,7 @@ export default {
     AudioCpt,
     FooterCpt,
     PlumCpt,
-    // featureTip,
+    FeatureTip,
   },
   computed: {
     CurrentNodeEnv() {
@@ -46,6 +46,7 @@ export default {
   },
 
   mounted() {
+    // window.document.documentElement.style.filter = 'grayscale(1)'
     this.init()
     this.getFrontendData()
     if (this.CurrentNodeEnv !== 'development') {

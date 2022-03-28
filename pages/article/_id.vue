@@ -142,28 +142,32 @@ export default {
   },
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
-    const articleId = params.id
-    const { data } = await $axios1.get(`/api/article/find/${articleId}`)
-    const orderName = 'created_at'
-    const commentParams = {
-      article_id: articleId,
-      nowPage: store.state.comment.nowPage, // 当前父评论页数
-      pageSize: store.state.comment.pageSize, // 当前父评论分页大小
-      childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
-      orderName,
-      orderBy: 'desc',
-    }
-    const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
-      params: commentParams,
-    })
-    store.commit('app/setShowCatalog', true)
-    return {
-      sort: orderName === 'created_at' ? 'date' : 'hot',
-      commentList: commentData.rows,
-      total: commentData.total,
-      hasMore: commentData.hasMore,
-      detail: data,
-      ...commentParams,
+    try {
+      const articleId = params.id
+      const { data } = await $axios1.get(`/api/article/find/${articleId}`)
+      const orderName = 'created_at'
+      const commentParams = {
+        article_id: articleId,
+        nowPage: store.state.comment.nowPage, // 当前父评论页数
+        pageSize: store.state.comment.pageSize, // 当前父评论分页大小
+        childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
+        orderName,
+        orderBy: 'desc',
+      }
+      const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
+        params: commentParams,
+      })
+      store.commit('app/setShowCatalog', true)
+      return {
+        sort: orderName === 'created_at' ? 'date' : 'hot',
+        commentList: commentData.rows,
+        total: commentData.total,
+        hasMore: commentData.hasMore,
+        detail: data,
+        ...commentParams,
+      }
+    } catch (error) {
+      console.log(error)
     }
   },
   data() {
@@ -261,34 +265,45 @@ export default {
 
     // 获取子评论分页
     async handleChildrenPage(query) {
-      const { data } = await this.$axios1.get(`/api/comment/comment_children`, {
-        params: {
-          parent_comment_id: query.parent_comment_id,
-          article_id: query.article_id,
-          pageSize: query.childrenPageSize,
-          childrenPageSize: this.childrenPageSize,
-        },
-      })
-      this.commentList.forEach((item) => {
-        if (item.id === query.parent_comment_id) {
-          item.children_comment.push(...data.rows)
-        }
-      })
+      try {
+        const { data } = await this.$axios1.get(
+          `/api/comment/comment_children`,
+          {
+            params: {
+              parent_comment_id: query.parent_comment_id,
+              article_id: query.article_id,
+              pageSize: query.childrenPageSize,
+              childrenPageSize: this.childrenPageSize,
+            },
+          }
+        )
+        this.commentList.forEach((item) => {
+          if (item.id === query.parent_comment_id) {
+            item.children_comment.push(...data.rows)
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     // 获取父评论分页
     async handleParentPage(query) {
-      const { data } = await this.$axios1.get(`/api/comment/comment`, {
-        params: {
-          article_id: -1,
-          nowPage: query.nowPage + 1,
-          pageSize: this.pageSize,
-          childrenPageSize: this.childrenPageSize,
-          orderName: query.orderName,
-          orderBy: query.orderBy,
-        },
-      })
-      this.commentList.push(...data.rows)
-      this.hasMore = data.hasMore
+      try {
+        const { data } = await this.$axios1.get(`/api/comment/comment`, {
+          params: {
+            article_id: -1,
+            nowPage: query.nowPage + 1,
+            pageSize: this.pageSize,
+            childrenPageSize: this.childrenPageSize,
+            orderName: query.orderName,
+            orderBy: query.orderBy,
+          },
+        })
+        this.commentList.push(...data.rows)
+        this.hasMore = data.hasMore
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     // 新增回复

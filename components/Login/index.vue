@@ -64,9 +64,9 @@ import { mapActions, mapMutations } from 'vuex'
 import {
   GITHUB_OAUTH_URL,
   QQ_OAUTH_URL,
-  WWW_REDIRECT_URI,
-  ADMIN_REDIRECT_URI,
-  qqClientId,
+  REDIRECT_URI,
+  REDIRECT_URI,
+  QQ_CLIENT_ID,
   GITHUB_CLIENT_ID,
 } from '@/constant'
 export default {
@@ -110,9 +110,9 @@ export default {
       const url =
         QQ_OAUTH_URL +
         'client_id=' +
-        qqClientId +
+        QQ_CLIENT_ID +
         '&redirect_uri=' +
-        WWW_REDIRECT_URI +
+        REDIRECT_URI +
         'qq_login' +
         '&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info'
       window.open(
@@ -127,7 +127,7 @@ export default {
         'client_id=' +
         GITHUB_CLIENT_ID +
         '&redirect_uri=' +
-        ADMIN_REDIRECT_URI +
+        REDIRECT_URI +
         'github_login' +
         '&scope=user'
       window.open(

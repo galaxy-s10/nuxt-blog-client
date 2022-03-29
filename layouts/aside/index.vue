@@ -110,7 +110,7 @@
               >
                 <div class="head-img">
                   <nuxt-link
-                    v-lazy="imgCdnUrl + item['head_img']"
+                    v-lazy="IMG_CDN_URL + item['head_img']"
                     :to="'/article/' + item.id"
                     tag="img"
                   />
@@ -171,7 +171,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { imgCdnUrl } from '@/constant'
+import { IMG_CDN_URL } from '@/constant'
 import CatalogCpt from '@/components/Catalog'
 export default {
   components: { CatalogCpt },
@@ -179,7 +179,7 @@ export default {
   asyncData({ $axios1, store }) {},
   data() {
     return {
-      imgCdnUrl,
+      IMG_CDN_URL,
       switchLoading: false,
       catalogFix: false,
     }

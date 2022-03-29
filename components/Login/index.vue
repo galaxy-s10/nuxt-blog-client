@@ -34,13 +34,14 @@
           </el-button>
         </el-dropdown-item>
         <el-dropdown-item>
-          <el-button
+          <el-button type="text" @click="githubLogin"> GitHub登录 </el-button>
+          <!-- <el-button
             type="text"
             :disabled="frontendData.frontend.frontend_github_login === -1"
             @click="githubLogin"
           >
             GitHub登录
-          </el-button>
+          </el-button> -->
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -61,11 +62,12 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import {
-  githubOauthUrl,
-  qqOauthUrl,
-  redirectUri,
+  GITHUB_OAUTH_URL,
+  QQ_OAUTH_URL,
+  WWW_REDIRECT_URI,
+  ADMIN_REDIRECT_URI,
   qqClientId,
-  githubClientId,
+  GITHUB_CLIENT_ID,
 } from '@/constant'
 export default {
   components: {},
@@ -106,11 +108,11 @@ export default {
     }),
     qqLogin() {
       const url =
-        qqOauthUrl +
+        QQ_OAUTH_URL +
         'client_id=' +
         qqClientId +
         '&redirect_uri=' +
-        redirectUri +
+        WWW_REDIRECT_URI +
         'qq_login' +
         '&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info'
       window.open(
@@ -121,11 +123,11 @@ export default {
     },
     githubLogin() {
       const url =
-        githubOauthUrl +
+        GITHUB_OAUTH_URL +
         'client_id=' +
-        githubClientId +
+        GITHUB_CLIENT_ID +
         '&redirect_uri=' +
-        redirectUri +
+        ADMIN_REDIRECT_URI +
         'github_login' +
         '&scope=user'
       window.open(

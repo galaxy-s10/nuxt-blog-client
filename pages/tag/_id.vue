@@ -19,7 +19,7 @@
         <div class="article-l">
           <nuxt-link
             v-if="item['head_img']"
-            v-lazy="imgCdnUrl + item['head_img']"
+            v-lazy="IMG_CDN_URL + item['head_img']"
             :to="`/article/${item.id}`"
             tag="img"
             class="head-img"
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { imgCdnUrl } from '@/constant'
+import { IMG_CDN_URL } from '@/constant'
 
 export default {
   components: {},
@@ -125,7 +125,7 @@ export default {
   },
   data() {
     return {
-      imgCdnUrl,
+      IMG_CDN_URL,
       currentTagId: 1,
       currentTagName: '',
     }

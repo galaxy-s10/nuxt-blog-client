@@ -36,7 +36,7 @@
 
     <img
       v-if="detail['head_img']"
-      v-lazy="imgCdnUrl + detail['head_img']"
+      v-lazy="IMG_CDN_URL + detail['head_img']"
       class="head-img"
     />
     <img v-else src="@/assets/img/nopic.png" class="head-img" alt />
@@ -132,7 +132,7 @@
 import CommentCpt from '@/components/Comment'
 import RenderMarkdownCpt from '@/components/RenderMarkdown'
 import TextareaInputCpt from '@/components/TextareaInput'
-import { imgCdnUrl } from '@/constant'
+import { IMG_CDN_URL } from '@/constant'
 
 export default {
   components: {
@@ -173,7 +173,7 @@ export default {
   data() {
     return {
       submitCommentLoading: false,
-      imgCdnUrl,
+      IMG_CDN_URL,
       loadingStar: false,
       isLoading: false,
       commentContent: '',

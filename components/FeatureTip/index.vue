@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       dialogWidth: '500px',
-      dialogTop: '30%',
+      dialogTop: '30vh',
       dialogVisible: true,
       activities: [
         {

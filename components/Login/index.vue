@@ -65,7 +65,6 @@ import {
   GITHUB_OAUTH_URL,
   QQ_OAUTH_URL,
   REDIRECT_URI,
-  REDIRECT_URI,
   QQ_CLIENT_ID,
   GITHUB_CLIENT_ID,
 } from '@/constant'

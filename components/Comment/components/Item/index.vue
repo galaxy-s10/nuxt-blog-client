@@ -1,6 +1,48 @@
 <template>
   <div class="item-wrap">
-    <img v-lazy="item.from_user.avatar" class="user-avatar" />
+    <div
+      class="avatar-wrap"
+      @mouseenter="loadingUserDetail(item.from_user)"
+      @mouseleave="currentUserDetail = null"
+    >
+      <div v-if="currentUserDetail" class="detail">
+        <div class="top">
+          <div class="avatar">
+            <img :src="currentUserDetail.avatar" alt="" />
+          </div>
+          <div class="name">
+            <div>
+              <b>{{ currentUserDetail.username }}</b>
+            </div>
+            <div class="desc">
+              {{ currentUserDetail && currentUserDetail.title }}
+            </div>
+          </div>
+        </div>
+        <div class="bottom">
+          <div>
+            github:
+            <a
+              v-if="currentUserDetail.github_users[0]"
+              :href="currentUserDetail.github_users[0].html_url"
+              target="__blank"
+            >
+              {{ currentUserDetail.github_users[0].html_url }}</a
+            >
+            <span v-else>未绑定</span>
+          </div>
+          <div>
+            email:
+            {{
+              currentUserDetail.email_users[0]
+                ? currentUserDetail.email_users[0].email
+                : '未绑定'
+            }}
+          </div>
+        </div>
+      </div>
+      <img v-lazy="item.from_user.avatar" class="user-avatar" />
+    </div>
     <div class="comment">
       <div class="comment-main">
         <div class="user-box">
@@ -34,7 +76,8 @@
                   'el-icon-star-on': item.is_star === true,
                   'el-icon-star-off': item.is_star === false,
                 }"
-              ></i>
+              >
+              </i>
               <span>
                 {{ item.star_total }}
                 {{ item.is_star === true ? '取消点赞' : '点赞' }}
@@ -91,6 +134,7 @@ export default {
     return {
       currentComment: null,
       sort: 'hot',
+      currentUserDetail: null,
     }
   },
   computed: {
@@ -102,6 +146,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    async loadingUserDetail(v) {
+      const { data } = await this.$axios1.get(`/api/user/find/${v.id}`, {})
+      this.currentUserDetail = data
+    },
     sortChange(val) {
       this.sort = val
     },
@@ -135,18 +183,50 @@ export default {
   position: relative;
   display: flex;
   margin: 10px 0;
+  .avatar-wrap {
+    position: relative;
+    .detail {
+      width: 200px;
+      padding: 10px;
+      position: absolute;
+      transform: translate(-10%, -100%);
+      background-color: #fff;
+      border: 1px solid #ebebeb;
+      z-index: 999;
+      .top {
+        display: flex;
+        align-content: space-around;
+        align-items: center;
+        .avatar {
+          margin-right: 6px;
+          img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+          }
+        }
+        .name {
+          .desc {
+            font-size: 14px;
+            color: #8a919f;
+          }
+        }
+      }
+    }
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: all 0.5s;
+      &:hover {
+        transform: rotate(1turn);
+      }
+    }
+  }
   &:not(:first-child) {
     margin-top: 20px;
   }
-  .user-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    transition: all 0.5s;
-    &:hover {
-      transform: rotate(1turn);
-    }
-  }
+
   .comment {
     flex: 1;
     .comment-main {

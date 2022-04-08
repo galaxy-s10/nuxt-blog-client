@@ -59,7 +59,7 @@
             placeholder="审核结果会通过邮件通知您"
           ></el-input>
         </el-form-item>
-        <el-form-item v-if="frontendData">
+        <el-form-item v-if="frontendData && frontendData.frontend">
           <el-button
             type="primary"
             :disabled="frontendData.frontend.frontend_link === -1"
@@ -91,7 +91,7 @@ export default {
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     // 获取友链数据
-    const { data: linkData } = await $axios1.get('/api/link/list', {
+    const { data: linkData } = await $axios1.get('/link/list', {
       params: { nowPage: 1, pageSize: 100 },
     })
     return { linkList: linkData.rows }
@@ -176,7 +176,7 @@ export default {
       this.$refs.linkForm.validate(async (valid) => {
         if (valid) {
           try {
-            await this.$axios1.post('/api/link/create', {
+            await this.$axios1.post('/link/create', {
               ...this.linkForm,
               email:
                 this.linkForm.email === '' ? undefined : this.linkForm.email,

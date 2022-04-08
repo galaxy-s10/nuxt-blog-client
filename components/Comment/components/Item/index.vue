@@ -1,47 +1,52 @@
 <template>
   <div class="item-wrap">
-    <div
-      class="avatar-wrap"
-      @mouseenter="loadingUserDetail(item.from_user)"
-      @mouseleave="currentUserDetail = null"
-    >
-      <div v-if="currentUserDetail" class="detail">
-        <div class="top">
-          <div class="avatar">
-            <img :src="currentUserDetail.avatar" alt="" />
+    <div class="avatar-wrap">
+      <div
+        @mouseenter="loadingUserDetail(item.from_user)"
+        @mouseleave="mouseleave()"
+      >
+        <div v-if="currentUserDetail" class="detail">
+          <div class="top">
+            <div class="avatar">
+              <img :src="currentUserDetail.avatar" alt="" />
+            </div>
+            <div class="name">
+              <div>
+                <b>{{ currentUserDetail.username }}</b>
+              </div>
+              <p
+                class="desc"
+                :title="currentUserDetail && currentUserDetail.title"
+              >
+                {{ currentUserDetail && currentUserDetail.title }}
+              </p>
+            </div>
           </div>
-          <div class="name">
+          <div class="bottom">
             <div>
-              <b>{{ currentUserDetail.username }}</b>
+              github:
+              <a
+                v-if="currentUserDetail.github_users[0]"
+                :href="currentUserDetail.github_users[0].html_url"
+                target="__blank"
+              >
+                {{ currentUserDetail.github_users[0].html_url }}</a
+              >
+              <span v-else>未绑定</span>
             </div>
-            <div class="desc">
-              {{ currentUserDetail && currentUserDetail.title }}
+            <div>
+              email:
+              {{
+                currentUserDetail.email_users[0]
+                  ? currentUserDetail.email_users[0].email
+                  : '未绑定'
+              }}
             </div>
           </div>
+          <div class="triangle"></div>
         </div>
-        <div class="bottom">
-          <div>
-            github:
-            <a
-              v-if="currentUserDetail.github_users[0]"
-              :href="currentUserDetail.github_users[0].html_url"
-              target="__blank"
-            >
-              {{ currentUserDetail.github_users[0].html_url }}</a
-            >
-            <span v-else>未绑定</span>
-          </div>
-          <div>
-            email:
-            {{
-              currentUserDetail.email_users[0]
-                ? currentUserDetail.email_users[0].email
-                : '未绑定'
-            }}
-          </div>
-        </div>
+        <img v-lazy="item.from_user.avatar" class="user-avatar" />
       </div>
-      <img v-lazy="item.from_user.avatar" class="user-avatar" />
     </div>
     <div class="comment">
       <div class="comment-main">
@@ -49,14 +54,23 @@
           <div>
             <span class="username">
               {{ item.from_user.username }}
-              <span v-if="item.from_user.roles" class="role">
-                {{
-                  item.from_user.roles &&
-                  item.from_user.roles[0].role_description
-                }}
-              </span>
+              <template v-if="item.from_user.roles">
+                <span
+                  v-for="role in item.from_user.roles"
+                  :key="role"
+                  class="role"
+                >
+                  {{ role.role_description }}
+                </span>
+              </template>
             </span>
-            <span v-if="item.to_user" class="username">
+            <span
+              v-if="
+                item.to_user_id !== -1 &&
+                item.parent_comment_id !== item.reply_comment_id
+              "
+              class="username"
+            >
               <span class="txt">回复</span>
               {{ item.to_user.username }}
             </span>
@@ -67,6 +81,20 @@
         </div>
         <div class="content">
           <RenderMarkdownCpt :md="item.content"></RenderMarkdownCpt>
+          <div
+            v-if="
+              item.reply_comment &&
+              item.parent_comment_id !== item.reply_comment_id
+            "
+            class="parent-content"
+          >
+            <div v-if="!item.reply_comment.deleted_at" class="padding">
+              <RenderMarkdownCpt
+                :md="item.reply_comment.content"
+              ></RenderMarkdownCpt>
+            </div>
+            <div v-else>该评论已被删除</div>
+          </div>
         </div>
         <div class="operation">
           <div class="left">
@@ -147,8 +175,13 @@ export default {
   mounted() {},
   methods: {
     async loadingUserDetail(v) {
-      const { data } = await this.$axios1.get(`/api/user/find/${v.id}`, {})
+      const { data } = await this.$axios1.get(`/user/find/${v.id}`, {})
       this.currentUserDetail = data
+    },
+    mouseleave() {
+      setTimeout(() => {
+        this.currentUserDetail = null
+      }, 300)
     },
     sortChange(val) {
       this.sort = val
@@ -186,31 +219,51 @@ export default {
   .avatar-wrap {
     position: relative;
     .detail {
-      width: 200px;
-      padding: 10px;
       position: absolute;
-      transform: translate(-10%, -100%);
-      background-color: #fff;
+      z-index: 100;
+      padding: 15px;
+      width: 200px;
       border: 1px solid #ebebeb;
-      z-index: 999;
+      border-radius: 2px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px 0 rgb(0 0 0 / 8%);
+      transform: translate(-10%, -100%);
       .top {
         display: flex;
         align-content: space-around;
         align-items: center;
         .avatar {
-          margin-right: 6px;
+          margin-right: 10px;
+
           img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            box-shadow: 0 2px 6px 0 rgb(0 0 0 / 15%);
           }
         }
         .name {
+          overflow: hidden;
+          flex-basis: 100%;
           .desc {
-            font-size: 14px;
+            width: 100%;
             color: #8a919f;
+            font-size: 14px;
+
+            @extend .singleEllipsis;
           }
         }
+      }
+      .triangle {
+        width: 10px;
+        height: 10px;
+        background-color: white;
+        position: absolute;
+        bottom: -6px;
+        left: 15%;
+        border-right: 1px solid #ebebeb;
+        border-bottom: 1px solid #ebebeb;
+        transform: rotate(45deg);
       }
     }
     .user-avatar {
@@ -218,6 +271,7 @@ export default {
       height: 30px;
       border-radius: 50%;
       transition: all 0.5s;
+      cursor: pointer;
       &:hover {
         transform: rotate(1turn);
       }
@@ -260,6 +314,24 @@ export default {
       .content {
         margin-top: 8px;
         font-size: 16px;
+        .parent-content {
+          display: flex;
+          background: #f2f3f5;
+          border: 1px solid #e4e6eb;
+          box-sizing: border-box;
+          border-radius: 4px;
+          padding: 0px 12px;
+          line-height: 36px;
+          font-size: 14px;
+          color: #8a919f;
+          margin-top: 8px;
+          .padding {
+            padding: 6px 0;
+          }
+          & ::v-deep .markdown-body {
+            color: #8a919f;
+          }
+        }
       }
       .operation {
         display: flex;

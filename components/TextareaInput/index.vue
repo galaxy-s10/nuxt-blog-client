@@ -1,5 +1,5 @@
 <template>
-  <div class="textarea-wrap">
+  <div class="textarea-cpt-wrap">
     <el-input
       v-model="content"
       type="textarea"
@@ -33,7 +33,7 @@ export default {
 
 <style>
 /* style在scoped环境下重写覆盖默认element样式不行，得去掉scoped */
-.textarea-wrap .el-textarea__inner {
+.textarea-cpt-wrap .el-textarea__inner {
   padding-bottom: 20px;
 }
 </style>
@@ -41,7 +41,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
-.textarea-wrap {
+.textarea-cpt-wrap {
   position: relative;
   .tip {
     position: absolute;

@@ -1,5 +1,5 @@
 <template>
-  <div class="plum-wrap">
+  <div class="plum-cpt-wrap">
     <canvas v-show="switchValue" ref="Plum" @click="refresh()" />
     <div class="switch">
       <span class="txt">梅花特效:</span>
@@ -167,11 +167,11 @@ export default {
 </script>
 
 <style scoped>
-.plum-wrap {
+.plum-cpt-wrap {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 101;
   pointer-events: none;
 }
 .switch {

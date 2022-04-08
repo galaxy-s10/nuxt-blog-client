@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <div class="mask-wrap" @click.self="closeModal($event)">
-      <div class="modal-wrap" :style="{ top: top }">
-        <div class="title-wrap">
-          <span class="title">{{ title }}</span>
-          <i
-            class="el-icon-close"
-            style="cursor: pointer"
-            @click="closeModal()"
-          ></i>
-        </div>
-        <div class="content">
-          <slot name="content"></slot>
-        </div>
-        <div class="footer">
-          <slot name="footer"></slot>
-        </div>
+  <div class="mask-cpt-wrap" @click.self="closeModal($event)">
+    <div class="modal-wrap" :style="{ top: top }">
+      <div class="title-wrap">
+        <span class="title">{{ title }}</span>
+        <i
+          class="el-icon-close"
+          style="cursor: pointer"
+          @click="closeModal()"
+        ></i>
+      </div>
+      <div class="content">
+        <slot name="content"></slot>
+      </div>
+      <div class="footer">
+        <slot name="footer"></slot>
       </div>
     </div>
   </div>
@@ -44,13 +42,13 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
-.mask-wrap {
+.mask-cpt-wrap {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 102;
   background-color: $theme-color8;
   .modal-wrap {
     position: absolute;

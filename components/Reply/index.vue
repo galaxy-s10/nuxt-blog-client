@@ -61,7 +61,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 100;
   background-color: $theme-color8;
   .reply-wrap {
     position: absolute;

@@ -26,11 +26,19 @@ export const mutations = {
 
 export const actions = {
   async getIpInfo({ commit }) {
-    const { data } = await this.$axios1.get('/api/position/get')
-    commit('setIpInfo', data)
+    try {
+      const { data } = await this.$axios1.get('/position/get')
+      commit('setIpInfo', data)
+    } catch (error) {
+      console.log(error)
+    }
   },
   async getFrontendData({ commit }) {
-    const { data } = await this.$axios1.get('/api/frontend/detail')
-    commit('setFrontendData', data)
+    try {
+      const { data } = await this.$axios1.get('/frontend/detail')
+      commit('setFrontendData', data)
+    } catch (error) {
+      console.log(error)
+    }
   },
 }

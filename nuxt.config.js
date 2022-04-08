@@ -75,12 +75,25 @@ export default {
 
   proxy: {
     '/api': {
-      // target: 'http://42.193.157.44/api',
-      // target: 'http://42.193.157.44:3003',
-      // target: 'http://42.193.157.44:3200',
-      target: 'http://localhost:3200',
+      target: 'http://localhost:3300',
       pathRewrite: {
         '^/api': '',
+      },
+    },
+    '/prodapi': {
+      target: 'http://42.193.157.44:3200',
+      secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+      changeOrigin: true,
+      pathRewrite: {
+        '^/prodapi': '', // 效果：/api/link/list ==> http://42.193.157.44:3200/link/list
+      },
+    },
+    '/betaapi': {
+      target: 'http://42.193.157.44:3300',
+      secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+      changeOrigin: true,
+      pathRewrite: {
+        '^/betaapi': '', // 效果：/api/link/list ==> http://42.193.157.44:3300/link/list
       },
     },
   },

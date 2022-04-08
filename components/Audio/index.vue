@@ -72,7 +72,7 @@ export default {
     }
   },
   async fetch() {
-    const { data } = await this.$axios1.get(`/api/music/list`, {
+    const { data } = await this.$axios1.get(`/music/list`, {
       params: { nowPage: 1, pageSize: 10 },
     })
     this.songList = data.rows

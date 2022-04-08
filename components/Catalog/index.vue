@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="list" class="catalog-wrap">
+  <ul v-if="list" class="catalog-cpt-wrap">
     <li
       v-for="(item, index) in list"
       :key="index"
@@ -57,7 +57,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
-.catalog-wrap {
+.catalog-cpt-wrap {
   position: relative;
   margin: 0;
   padding: 0;

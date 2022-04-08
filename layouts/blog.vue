@@ -50,14 +50,14 @@ export default {
     this.init()
     this.getFrontendData()
     if (this.CurrentNodeEnv !== 'development') {
-      this.$axios1.post('/api/visitor_log/create') // 新增访客记录
+      this.$axios1.post('visitor_log/create') // 新增访客记录
     }
     window.addEventListener('message', async (e) => {
       const { type, data: code } = e.data
       if (type === 'qq_login') {
         if (code) {
           try {
-            await this.$axios1.get(`/api/qq_user/login?code=${code}`)
+            await this.$axios1.post(`/qq_user/login`, { code })
             const token = Cookies.get('token')
             if (token) {
               this.setToken(token)
@@ -71,7 +71,7 @@ export default {
       if (type === 'github_login') {
         if (code) {
           try {
-            await this.$axios1.get(`/api/github_user/login?code=${code}`)
+            await this.$axios1.post(`/github_user/login`, { code })
             const token = Cookies.get('token')
             if (token) {
               this.setToken(token)

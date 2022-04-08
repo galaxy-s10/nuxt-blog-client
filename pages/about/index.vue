@@ -65,9 +65,9 @@ export default {
   },
   layout: 'blog',
   async asyncData({ $axios1 }) {
-    const { data } = await $axios1.get('/api/frontend/detail')
+    const { data } = await $axios1.get('/frontend/detail')
     return {
-      detail: data.frontend.frontend_about,
+      detail: data.frontend ? data.frontend.frontend_about : '暂无介绍~',
       summary: data,
     }
   },

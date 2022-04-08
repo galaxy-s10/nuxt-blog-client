@@ -85,7 +85,7 @@ export default {
       pageSize: 10,
     }
     try {
-      const { data } = await $axios1.get(`/api/article/list`, { params })
+      const { data } = await $axios1.get(`/article/list`, { params })
       data.rows.forEach((v) => {
         const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50)
         v.mockImgHeight = mockImgHeight
@@ -99,6 +99,9 @@ export default {
   },
   data() {
     return {
+      articleList: [],
+      hasMore: false,
+      articleParams: {},
       IMG_CDN_URL,
       offsetList: [],
       visible: false,
@@ -178,7 +181,7 @@ export default {
     async ajaxArticleList(params) {
       try {
         this.isLoading = true
-        const { data } = await this.$axios1.get(`/api/article/list`, { params })
+        const { data } = await this.$axios1.get(`/article/list`, { params })
         data.rows.forEach((v) => {
           const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50)
           v.mockImgHeight = mockImgHeight
@@ -246,6 +249,8 @@ export default {
       const waterfallItemWidth =
         (waterfallWrapWidth.replace('px', '') - (column - 1) * gap) / column
       waterfallWrap.style.position = 'relative'
+
+      if (!waterfallItem) return
 
       for (
         let i = (this.articleParams.nowPage - 1) * this.articleParams.pageSize;

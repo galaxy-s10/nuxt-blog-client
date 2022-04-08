@@ -110,7 +110,7 @@ export default {
       currentComponent: null,
       currentReplyComment: null,
       listLoading: false,
-      modalSort: 'hot',
+      modalSort: 'date',
       currentComment: null,
       childListParams: {
         article_id: null,
@@ -150,7 +150,7 @@ export default {
     async ajaxChildComment(params) {
       try {
         this.childListLoading = true
-        const { data } = await this.$axios1.get(`/api/comment/child_comment`, {
+        const { data } = await this.$axios1.get(`/comment/child_comment`, {
           params,
         })
         if (params.nowPage === 1) {
@@ -222,7 +222,7 @@ export default {
     },
     async ajaxCreateStar(item) {
       try {
-        await this.$axios1.post(`/api/star/create`, {
+        await this.$axios1.post(`/star/create`, {
           article_id: item.article_id,
           comment_id: item.id,
           to_user_id: item.from_user_id,
@@ -233,9 +233,7 @@ export default {
     },
     async ajaxDeleteStar(item) {
       try {
-        await this.$axios1.delete(`/api/star/delete/other`, {
-          data: { comment_id: item.id, article_id: item.article_id },
-        })
+        await this.$axios1.delete(`/star/delete/${item.is_star_id}`, {})
       } catch (error) {
         console.log(error)
       }
@@ -252,11 +250,11 @@ export default {
       if (type) {
         await this.ajaxCreateStar(item)
         this.$newmessage('点赞ok~', 'success')
-        this.refresh()
       } else if (type === false) {
         await this.ajaxDeleteStar(item)
         this.$newmessage('取消点赞ok~', 'success')
       }
+      this.refresh()
     },
     // handleChildrenPage(v) {
     //   v.nowPage = v.nowPage ? v.nowPage + 1 : 1
@@ -281,15 +279,19 @@ export default {
     },
     // 删除回复
     deleteReply(item) {
-      MessageBox.confirm('确定删除回复么?', '提示', {
+      const msg =
+        item.children_comment_total === 0
+          ? '确定删除评论吗?'
+          : `你的评论有${item.children_comment_total}条回复，确定删除评论吗？`
+      MessageBox.confirm(msg, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
         .then(async () => {
           try {
-            await this.$axios1.delete(`/api/comment/delete/${item.id}`)
-            this.$newmessage('删除成功~', 'success')
+            const res = await this.$axios1.delete(`/comment/delete/${item.id}`)
+            this.$newmessage(res.message, 'success')
             this.refresh()
           } catch (error) {
             this.$newmessage(error, 'error')
@@ -307,7 +309,7 @@ export default {
     // 新增回复
     async handleReply(content) {
       try {
-        await this.$axios1.post('/api/comment/create', {
+        await this.$axios1.post('/comment/create', {
           article_id: this.currentReplyComment.article_id,
           content,
           parent_comment_id:
@@ -367,7 +369,8 @@ export default {
       margin-left: 30px;
       .child-list {
         overflow-y: scroll;
-        height: 250px;
+        min-height: 200px;
+        max-height: 300px;
         @extend .hideScrollbar;
 
         .has-more-observer {

@@ -7,7 +7,7 @@ export const mutations = {}
 export const actions = {
   async reply({ commit, state }, payload) {
     try {
-      const { data } = await this.$axios1.post('/api/comment/create', {
+      const { data } = await this.$axios1.post('/comment/create', {
         article_id: payload.article_id,
         content: payload.content,
         parent_comment_id: payload.parent_comment_id,

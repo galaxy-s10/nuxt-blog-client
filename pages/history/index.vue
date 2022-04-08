@@ -38,14 +38,14 @@ export default {
       nowPage: 1,
       pageSize: 20,
     }
-    const { data } = await $axios1.get(`/api/article/list`, {
+    const { data } = await $axios1.get(`/article/list`, {
       params: {
         orderName: 'created_at',
         orderBy: 'desc',
         ...query,
       },
     })
-    return { ...query, historyArticleList: data.rows, total: data.count }
+    return { ...query, historyArticleList: data.rows, total: data.total }
   },
   data() {
     return {}
@@ -67,7 +67,7 @@ export default {
   mounted() {},
   methods: {
     async currentChange(nowPage) {
-      const { data } = await this.$axios1.get(`/api/article/list`, {
+      const { data } = await this.$axios1.get(`/article/list`, {
         params: {
           orderName: 'created_at',
           orderBy: 'desc',
@@ -76,7 +76,7 @@ export default {
         },
       })
       this.historyArticleList = data.rows
-      this.total = data.count
+      this.total = data.total
     },
   },
 }

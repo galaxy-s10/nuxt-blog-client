@@ -52,3 +52,10 @@ $theme-color10: #ecf5ff99;
     background: transparent;
   }
 }
+
+// 单行省略号
+.singleEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

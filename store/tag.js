@@ -15,7 +15,7 @@ export const actions = {
       pageSize: payload.pageSize,
     }
     try {
-      const { data } = await this.$axios1.get(`/api/tag/list`, {
+      const { data } = await this.$axios1.get(`/tag/list`, {
         params,
       })
       commit('setSideBarTagList', data.rows)

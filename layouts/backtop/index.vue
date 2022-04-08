@@ -69,7 +69,7 @@ export default {
     position: fixed;
     top: -100%;
     right: 10px;
-    z-index: 999;
+    z-index: 100;
     width: 100px;
     height: 85%;
     background: url('@/assets/img/back_top.png') no-repeat bottom;
@@ -102,7 +102,7 @@ export default {
       border-bottom-color: $theme-color1;
     }
     &.show-mini-back-top {
-      z-index: 999;
+      z-index: 100;
       opacity: 1;
     }
   }

@@ -5,7 +5,7 @@
       <span class="ani">(='◡'=)☆</span>
     </p>
     <a href="http://beian.miit.gov.cn" target="__blank" class="beianhao">
-      粤ICP备19114467号
+      粤ICP备19114467号-2
     </a>
   </div>
 </template>

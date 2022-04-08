@@ -29,7 +29,7 @@ export default {
   props: [],
   async asyncData({ $axios1, params, store }) {
     // 获取作品数据
-    const { data: worksData } = await $axios1.get('/api/works/list', {
+    const { data: worksData } = await $axios1.get('/works/list', {
       params: { nowPage: 1, pageSize: 100 },
     })
     return { worksList: worksData.rows }

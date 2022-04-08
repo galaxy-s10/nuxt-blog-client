@@ -7,7 +7,7 @@
     <!-- 发表留言 -->
     <div class="comment-wrap">
       <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
-      <div v-if="frontendData" class="btn">
+      <div v-if="frontendData && frontendData.frontend" class="btn">
         <el-button
           type="primary"
           :loading="submitCommentLoading"
@@ -49,7 +49,7 @@ export default {
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {
-      const orderName = 'star_total'
+      const orderName = 'created_at'
       const commentParams = {
         article_id: -1,
         nowPage: 1,
@@ -58,7 +58,7 @@ export default {
         orderName,
         orderBy: 'desc',
       }
-      const { data: commentData } = await $axios1.get(`/api/comment/comment`, {
+      const { data: commentData } = await $axios1.get(`/comment/comment`, {
         params: commentParams,
       })
       return {
@@ -75,7 +75,7 @@ export default {
   },
   data() {
     return {
-      sort: 'hot',
+      sort: '',
       commentList: [],
       total: 0,
       hasMore: false,
@@ -136,7 +136,7 @@ export default {
       }
       try {
         this.submitCommentLoading = true
-        await this.$axios1.post('/api/comment/create', {
+        await this.$axios1.post('/comment/create', {
           article_id: -1,
           content: this.commentContent,
           parent_comment_id: -1,
@@ -167,7 +167,7 @@ export default {
       }
       try {
         this.isLoading = true
-        const { data } = await this.$axios1.get(`/api/comment/comment`, {
+        const { data } = await this.$axios1.get(`/comment/comment`, {
           params: { ...query },
         })
         this.isLoading = false
@@ -183,17 +183,14 @@ export default {
     // 获取子评论分页
     async handleChildrenPage(query) {
       try {
-        const { data } = await this.$axios1.get(
-          `/api/comment/comment_children`,
-          {
-            params: {
-              parent_comment_id: query.parent_comment_id,
-              article_id: query.article_id,
-              pageSize: query.childrenPageSize,
-              childrenPageSize: this.childrenPageSize,
-            },
-          }
-        )
+        const { data } = await this.$axios1.get(`/comment/comment_children`, {
+          params: {
+            parent_comment_id: query.parent_comment_id,
+            article_id: query.article_id,
+            pageSize: query.childrenPageSize,
+            childrenPageSize: this.childrenPageSize,
+          },
+        })
         this.commentList.forEach((item) => {
           if (item.id === query.parent_comment_id) {
             item.children_comment.push(...data.rows)
@@ -206,7 +203,7 @@ export default {
     // 获取父评论分页
     async handleParentPage(query) {
       try {
-        const { data } = await this.$axios1.get(`/api/comment/comment`, {
+        const { data } = await this.$axios1.get(`/comment/comment`, {
           params: {
             article_id: -1,
             nowPage: query.nowPage + 1,

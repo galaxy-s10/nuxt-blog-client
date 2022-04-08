@@ -2,8 +2,15 @@ import { Message } from 'element-ui'
 
 export default function ({ $axios, store }, inject) {
   const axios = $axios
+  let baseURL = '/'
+  const isServer = typeof window === 'undefined'
+  if (process.env.NODE_ENV === 'development') {
+    baseURL = isServer ? 'http://localhost:3300' : '/api/'
+  } else {
+    baseURL = isServer ? 'http://localhost:3300' : '/prodapi/'
+  }
   const service = axios.create({
-    // baseURL: 'http://localhost:3100',
+    baseURL,
     timeout: 5000,
   })
 
@@ -28,40 +35,52 @@ export default function ({ $axios, store }, inject) {
       return response.data
     },
     (error) => {
-      const whiteList = ['400', '401', '403'] // 这三个状态码是后端会返回的
-      if (!whiteList.includes(`${error.response.status}`)) {
-        Message({
-          message: error,
-          type: 'error',
-          duration: 1000,
-        })
-        return Promise.reject(error)
-      }
-      if (error.response) {
-        const message =
-          error.response.data.error.message || error.response.data.message
-        Message({
-          message,
-          type: 'error',
-          duration: 1000,
-        })
+      if (error.response && error.response.status) {
+        const whiteList = ['400', '401', '403'] // 这三个状态码是后端会返回的
+        if (!whiteList.includes(`${error.response.status}`)) {
+          // 网关超时504
+          Message({
+            message: error.message,
+            type: 'error',
+          })
+          return Promise.reject(error)
+        }
         if (error.response.status === 400) {
           // 400错误不返回data
+          Message({
+            message: error.response.data.message,
+            type: 'error',
+          })
           return Promise.reject(error.response.data)
         }
         if (error.response.status === 401) {
+          Message({
+            message: error.response.data.message,
+            type: 'error',
+          })
           store.commit('user/logout')
           return Promise.reject(error.response.data)
         }
         if (error.response.status === 403) {
+          Message({
+            message: error.response.data.message,
+            type: 'error',
+          })
           return Promise.reject(error.response.data)
         }
       } else {
+        if (error.response) {
+          Message({
+            message: error.response.message,
+            type: 'error',
+          })
+          return Promise.reject(error.response)
+        }
         Message({
-          message: error.response.message,
+          message: error.message,
           type: 'error',
         })
-        return Promise.reject(error.response)
+        return Promise.reject(error)
       }
     }
   )

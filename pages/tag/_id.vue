@@ -102,11 +102,11 @@ export default {
     }
     const tagId = params.id
     try {
-      const { data: tagData } = await $axios1.get(`/api/tag/list`, {
+      const { data: tagData } = await $axios1.get(`/tag/list`, {
         params: tagListParams,
       })
       const { data: articleData } = await $axios1.get(
-        `/api/tag/article_list/${tagId}`,
+        `/tag/article_list/${tagId}`,
         {
           params: articleListParams,
         }
@@ -116,7 +116,7 @@ export default {
         currentTagId: +tagId,
         articleList: articleData.rows,
         hasMore: articleData.hasMore,
-        total: articleData.count,
+        total: articleData.total,
         tagList: tagData.rows,
       }
     } catch (error) {
@@ -158,13 +158,12 @@ export default {
       const tagId = this.$route.params.id
       this.currentTagId = +tagId
       try {
-        const { data } = await this.$axios1.get(
-          `/api/tag/article_list/${tagId}`,
-          { params: this.articleListParams }
-        )
+        const { data } = await this.$axios1.get(`/tag/article_list/${tagId}`, {
+          params: this.articleListParams,
+        })
         this.articleList = data.rows
         this.hasMore = data.hasMore
-        this.total = data.count
+        this.total = data.total
       } catch (error) {
         console.log(error)
       }
@@ -172,12 +171,12 @@ export default {
     prePage() {
       this.articleListParams.nowPage--
       this.$axios1
-        .get(`/api/tag/article_list/${this.currentTagId}`, {
+        .get(`/tag/article_list/${this.currentTagId}`, {
           params: this.articleListParams,
         })
         .then(({ data }) => {
           this.articleList = data.rows
-          this.total = data.count
+          this.total = data.total
           scrollTo({ top: 0 })
         })
     },
@@ -185,13 +184,13 @@ export default {
       this.articleListParams.nowPage++
       try {
         const { data } = await this.$axios1.get(
-          `/api/tag/article_list/${this.currentTagId}`,
+          `/tag/article_list/${this.currentTagId}`,
           {
             params: this.articleListParams,
           }
         )
         this.articleList = data.rows
-        this.total = data.count
+        this.total = data.total
         scrollTo({ top: 0 })
       } catch (error) {
         console.log(error)

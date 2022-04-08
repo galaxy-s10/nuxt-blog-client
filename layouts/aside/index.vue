@@ -102,7 +102,7 @@
             <span @click="switchSideBarArticleOrderName">切换</span>
           </div>
           <div v-loading="switchLoading">
-            <div v-if="sideBarArticleList">
+            <div v-if="sideBarArticleList && sideBarArticleList.length">
               <div
                 v-for="(item, index) in sideBarArticleList"
                 :key="index"
@@ -144,7 +144,7 @@
             <i class="el-icon-collection-tag"></i>
             <b>标签云</b>
           </div>
-          <div v-if="sideBarTagList">
+          <div v-if="sideBarTagList && sideBarTagList.length">
             <el-tooltip
               v-for="item in sideBarTagList"
               :key="item.id"
@@ -173,6 +173,8 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { IMG_CDN_URL } from '@/constant'
 import CatalogCpt from '@/components/Catalog'
+import { dateStartAndEnd } from '@/utils/format'
+
 export default {
   components: { CatalogCpt },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
@@ -230,6 +232,9 @@ export default {
     if (this.showCatalog) {
       this.cataLogObserver()
     }
+    this.$store.dispatch('app/getIpInfo')
+    this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()))
+    this.$store.dispatch('log/getVisitorHistoryData')
   },
   methods: {
     ...mapActions('article', ['getSideBarArticleList']),
@@ -244,7 +249,7 @@ export default {
           orderName,
           orderBy: 'desc',
         }
-        const { data } = await this.$axios1.get(`api/article/list`, {
+        const { data } = await this.$axios1.get(`/article/list`, {
           params,
         })
         return data

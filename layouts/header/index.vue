@@ -124,7 +124,7 @@ export default {
           pageSize: 20,
           keyword,
         }
-        const { data } = await this.$axios1.get(`/api/article/keyword_list`, {
+        const { data } = await this.$axios1.get(`/article/keyword_list`, {
           params,
         })
         cb(data.rows)

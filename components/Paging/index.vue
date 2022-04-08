@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center">
+  <div class="paging-cpt-wrap">
     <el-pagination
       background
       layout="prev, pager, next"
@@ -7,6 +7,7 @@
       :page-size="pageSize"
       :current-page="nowPage"
       :pager-count="5"
+      :hide-on-single-page="false"
       @current-change="currentChange"
     ></el-pagination>
   </div>
@@ -27,4 +28,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.paging-cpt-wrap {
+  text-align: center;
+}
+</style>

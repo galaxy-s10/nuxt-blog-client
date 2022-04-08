@@ -1,48 +1,52 @@
 <template>
-  <div class="login-wrap">
+  <div class="login-cpt-wrap">
     <el-dropdown v-if="isLogin" trigger="hover">
       <div class="el-dropdown-link">
         <a>登录</a>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
-      <el-dropdown-menu v-if="frontendData" slot="dropdown">
-        <el-dropdown-item>
-          <el-button
-            type="text"
-            :disabled="frontendData.frontend.frontend_register === -1"
-            @click="dialogtwo = true"
-          >
-            注册
-          </el-button>
-        </el-dropdown-item>
-        <el-dropdown-item>
-          <el-button
-            type="text"
-            :disabled="frontendData.frontend.frontend_login === -1"
-            @click="dialogVisible = true"
-          >
-            登录
-          </el-button>
-        </el-dropdown-item>
-        <el-dropdown-item>
-          <el-button
-            type="text"
-            :disabled="frontendData.frontend.frontend_qq_login === -1"
-            @click="qqLogin"
-          >
-            QQ登录
-          </el-button>
-        </el-dropdown-item>
-        <el-dropdown-item>
-          <el-button type="text" @click="githubLogin"> GitHub登录 </el-button>
-          <!-- <el-button
-            type="text"
-            :disabled="frontendData.frontend.frontend_github_login === -1"
-            @click="githubLogin"
-          >
-            GitHub登录
-          </el-button> -->
-        </el-dropdown-item>
+      <el-dropdown-menu slot="dropdown">
+        <template v-if="frontendData && frontendData.frontend">
+          <div>
+            <!-- <el-dropdown-item>
+              <el-button
+                type="text"
+                :disabled="frontendData.frontend.frontend_register === 2"
+                @click="dialogtwo = true"
+              >
+                注册
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                :disabled="frontendData.frontend.frontend_login === 2"
+                @click="dialogVisible = true"
+              >
+                登录
+              </el-button>
+            </el-dropdown-item> -->
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                :disabled="frontendData.frontend.frontend_qq_login === 2"
+                @click="qqLogin"
+              >
+                QQ登录
+              </el-button>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <el-button
+                type="text"
+                :disabled="frontendData.frontend.frontend_github_login === 2"
+                @click="githubLogin"
+              >
+                GitHub登录
+              </el-button>
+            </el-dropdown-item>
+          </div>
+        </template>
+        <el-dropdown-item v-else>未开启</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <el-dropdown v-else trigger="hover">
@@ -154,11 +158,11 @@ export default {
             )
           }
         } catch (error) {
-          this.$newmessage(err, 'error')
+          this.$newmessage(error, 'error')
           return
         }
         await this.$axios1
-          .post('/api/user/register', {
+          .post('user/register', {
             username: this.username,
             password: this.password,
           })
@@ -169,7 +173,7 @@ export default {
             }, 500)
           })
           .catch((error) => {
-            this.$newmessage(err.message, 'error')
+            this.$newmessage(error.message, 'error')
           })
       }
     },
@@ -200,6 +204,7 @@ export default {
         }, 300)
       } else {
         setTimeout(() => {
+          // eslint-disable-next-line node/no-callback-literal
           cb([])
         }, 300)
       }
@@ -228,7 +233,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.login-wrap {
+.login-cpt-wrap {
 }
 .qq-login {
   display: flex;

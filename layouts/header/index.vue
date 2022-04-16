@@ -36,7 +36,7 @@
         </div>
         <div class="search">
           <el-autocomplete
-            v-model="keyword"
+            v-model="keyWord"
             value-key="title"
             suffix-icon="el-icon-search"
             :fetch-suggestions="querySearchAsync"
@@ -62,7 +62,7 @@ export default {
     return {
       visible: true,
       title: '首页',
-      keyword: '',
+      keyWord: '',
       navList: [
         {
           title: '首页',
@@ -117,14 +117,14 @@ export default {
         this.$router.push('/article/' + id)
       }
     },
-    async querySearchAsync(keyword, cb) {
-      if (keyword) {
+    async querySearchAsync(keyWord, cb) {
+      if (keyWord) {
         const params = {
           nowPage: 1,
           pageSize: 20,
-          keyword,
+          keyWord,
         }
-        const { data } = await this.$axios1.get(`/article/keyword_list`, {
+        const { data } = await this.$axios1.get(`/article/keyWord_list`, {
           params,
         })
         cb(data.rows)

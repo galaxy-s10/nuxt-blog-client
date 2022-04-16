@@ -195,9 +195,9 @@ export default {
     logout() {
       this.userLogout()
     },
-    async querySearchAsync(keyword, cb) {
-      if (keyword) {
-        await this.$store.dispatch('user/findarticle', { keyword })
+    async querySearchAsync(keyWord, cb) {
+      if (keyWord) {
+        await this.$store.dispatch('user/findarticle', { keyWord })
         // cb(this.$store.state.article.search);
         setTimeout(() => {
           cb(this.$store.state.article.search)

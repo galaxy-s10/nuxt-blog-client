@@ -29,9 +29,7 @@
           <img
             ref="disk"
             :src="
-              IMG_CDN_URL + songList[currentIndex]
-                ? IMG_CDN_URL + songList[currentIndex]['cover_pic']
-                : '-'
+              songList[currentIndex] ? songList[currentIndex]['cover_pic'] : '-'
             "
             alt
             width="90"
@@ -53,12 +51,9 @@
 </template>
 
 <script>
-import { IMG_CDN_URL } from '@/constant'
-
 export default {
   data() {
     return {
-      IMG_CDN_URL,
       hiddenMusic: true,
       matrix: '',
       nowDeg: 0,
@@ -98,7 +93,7 @@ export default {
     })
     if (!this.songList.length) return
     this.audio = new Audio()
-    this.audio.src = IMG_CDN_URL + this.songList[0].audio_url
+    this.audio.src = this.songList[0].audio_url
     const timer = setInterval(() => {
       if (!isNaN(this.audio.duration)) {
         this.duration = this.audio.duration
@@ -168,7 +163,7 @@ export default {
             }
           })
         })
-        this.audio.src = IMG_CDN_URL + this.songList[index].audio_url
+        this.audio.src = this.songList[index].audio_url
         const timer = setInterval(() => {
           if (!isNaN(this.audio.duration)) {
             this.duration = this.audio.duration

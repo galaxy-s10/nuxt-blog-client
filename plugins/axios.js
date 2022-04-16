@@ -7,7 +7,7 @@ export default function ({ $axios, store }, inject) {
   if (process.env.NODE_ENV === 'development') {
     baseURL = isServer ? 'http://localhost:3300' : '/api/'
   } else {
-    baseURL = isServer ? 'http://localhost:3300' : '/prodapi/'
+    baseURL = isServer ? 'http://localhost:3200' : '/prodapi/'
   }
   const service = axios.create({
     baseURL,

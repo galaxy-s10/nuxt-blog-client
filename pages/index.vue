@@ -11,7 +11,7 @@
           <div
             v-lazy:background-image="
               item['head_img']
-                ? IMG_CDN_URL + item['head_img']
+                ? item['head_img']
                 : require('@/assets/img/nopic.png')
             "
             class="head-img"
@@ -71,7 +71,6 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import { IMG_CDN_URL } from '@/constant'
 import { getRandomInt } from '@/utils/index'
 export default {
   components: {},
@@ -102,7 +101,6 @@ export default {
       articleList: [],
       hasMore: false,
       articleParams: {},
-      IMG_CDN_URL,
       offsetList: [],
       visible: false,
       waterfallParams: {

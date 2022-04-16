@@ -14,7 +14,7 @@
         <div class="name">
           {{ userInfo ? userInfo.username : '未登录' }}
         </div>
-        <p class="title">{{ userInfo ? userInfo.title : 'hello world!' }}</p>
+        <p class="title">{{ userInfo ? userInfo.desc : 'hello world!' }}</p>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
         <b>用户信息</b>
       </div>
       <div class="item">
-        角色: {{ summary.roles.map((v) => v.role_description).join() }}
+        角色: {{ summary.roles.map((v) => v.role_name).join() }}
       </div>
       <div class="item">文章数: {{ summary.articlesTotal }}</div>
       <div class="item">累计发出点赞: {{ summary.sendStarsTotal }}</div>
@@ -110,7 +110,7 @@
               >
                 <div class="head-img">
                   <nuxt-link
-                    v-lazy="IMG_CDN_URL + item['head_img']"
+                    v-lazy="item['head_img']"
                     :to="'/article/' + item.id"
                     tag="img"
                   />
@@ -171,7 +171,6 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { IMG_CDN_URL } from '@/constant'
 import CatalogCpt from '@/components/Catalog'
 import { dateStartAndEnd } from '@/utils/format'
 
@@ -181,7 +180,6 @@ export default {
   asyncData({ $axios1, store }) {},
   data() {
     return {
-      IMG_CDN_URL,
       switchLoading: false,
       catalogFix: false,
     }

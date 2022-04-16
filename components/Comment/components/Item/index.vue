@@ -16,9 +16,9 @@
               </div>
               <p
                 class="desc"
-                :title="currentUserDetail && currentUserDetail.title"
+                :title="currentUserDetail && currentUserDetail.desc"
               >
-                {{ currentUserDetail && currentUserDetail.title }}
+                {{ currentUserDetail && currentUserDetail.desc }}
               </p>
             </div>
           </div>
@@ -57,10 +57,10 @@
               <template v-if="item.from_user.roles">
                 <span
                   v-for="role in item.from_user.roles"
-                  :key="role"
+                  :key="role.value"
                   class="role"
                 >
-                  {{ role.role_description }}
+                  {{ role.role_name }}
                 </span>
               </template>
             </span>

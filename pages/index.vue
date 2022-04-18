@@ -79,7 +79,7 @@ export default {
     const params = {
       orderName: 'created_at',
       orderBy: 'desc',
-      type_ids: store.state.type.typeId,
+      types: store.state.type.typeId,
       nowPage: 1,
       pageSize: 10,
     }
@@ -137,7 +137,7 @@ export default {
       const waterfallWrap = this.$refs['waterfall-wrap']
       waterfallWrap.style.height = '0px'
 
-      this.articleParams.type_ids = this.typeId
+      this.articleParams.types = this.typeId
       await this.ajaxArticleList(this.articleParams)
       this.handleWaterfall()
     },

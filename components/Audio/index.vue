@@ -258,6 +258,7 @@ export default {
 
 .music-wrap.hiddenMusic {
   right: -140px;
+  pointer-events: none;
 }
 .hiddenMusic .song-wrapper {
   background-color: transparent !important;
@@ -345,6 +346,7 @@ export default {
   top: -45px;
   left: 10px;
   transition: all 0.3s linear;
+  pointer-events: all;
 }
 .songImg {
   position: relative;

@@ -89,6 +89,10 @@ export default {
           path: '/msg',
         },
         {
+          title: '聊天',
+          path: '/chat',
+        },
+        {
           title: '关于',
           path: '/about',
         },
@@ -205,7 +209,7 @@ export default {
         margin: 0;
         padding: 0;
         .item {
-          margin: 0 25px;
+          margin: 0 20px;
           user-select: none;
         }
         .item:hover:before {

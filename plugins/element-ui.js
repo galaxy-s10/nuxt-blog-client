@@ -19,6 +19,7 @@ import {
   Loading,
   Switch,
   Dialog,
+  Popover,
 } from 'element-ui'
 
 const components = [
@@ -38,6 +39,7 @@ const components = [
   Pagination,
   Switch,
   Dialog,
+  Popover,
 ]
 
 const Element = {

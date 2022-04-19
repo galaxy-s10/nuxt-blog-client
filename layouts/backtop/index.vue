@@ -95,6 +95,8 @@ export default {
     opacity: 0;
     cursor: pointer;
     transition: opacity 1s;
+    pointer-events: none;
+
     .triangle {
       position: relative;
       top: -5px;
@@ -104,6 +106,7 @@ export default {
     &.show-mini-back-top {
       z-index: 100;
       opacity: 1;
+      pointer-events: auto;
     }
   }
 }

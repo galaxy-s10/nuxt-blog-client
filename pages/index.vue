@@ -71,7 +71,8 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import { getRandomInt } from '@/utils/index'
+import { getRandomInt, generaterStyle } from '@/utils/index'
+
 export default {
   components: {},
   layout: 'blog',
@@ -152,6 +153,17 @@ export default {
   },
   created() {},
   mounted() {
+    this.$axios1
+      .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
+      .then((res) => {
+        const { data } = res
+        const obj = {}
+        data.rows.forEach((v) => {
+          obj[v.key] = v.value
+        })
+        generaterStyle(obj)
+      })
+
     window.scrollTo({ top: 0 })
     const d = window.pageXOffset || document.documentElement.offsetWidth
     if (d <= 414) {

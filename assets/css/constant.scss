@@ -1,14 +1,24 @@
 $theme-color1: #0984e3;
 $theme-color2: #f9f9f9;
-$theme-color3: #f5f5f5;
+$theme-color3: var(--bg-color-light, #f5f5f5);
 $theme-color4: #f2f2f2;
-$theme-color5: #333333;
-$theme-color6: #ffffff;
+$theme-color5: var(--text-color-light, #333333);
+// $theme-color6: #ffffff;
+$theme-color6: var(--bg-item-color-light, #ffffff);
 $theme-color7: #ff0000;
 $theme-color8: rgba(0, 0, 0, 0.5);
 $theme-color9: #000000;
 $theme-color10: #ecf5ff99;
 $theme-color11: #a9ea7a;
+
+// .light {
+//   --bg-color-dark: --bg-color-light;
+//   --text-color-dark: --text-color-light;
+// }
+.dark {
+  --bg-color-light: red;
+  --text-color-light: --text-color-dark;
+}
 .hr-class {
   margin: 20px 0;
   height: 4px;

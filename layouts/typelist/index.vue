@@ -65,14 +65,18 @@ export default {
     transform: translateY(-70px);
   }
 }
-
+.dark {
+  .fix-type-wrapper {
+    background: $theme-color3;
+  }
+}
 .fix-type-wrapper {
   position: fixed;
   top: 70px;
   left: 0;
   z-index: 99;
   width: 100%;
-  border: 1px solid $theme-color4;
+  border-bottom: 1px solid $theme-color4;
   background-color: $theme-color6;
   .type-wrapper {
     margin: 0 auto;

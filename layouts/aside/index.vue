@@ -18,6 +18,43 @@
       </div>
     </div>
 
+    <div class="setting-info">
+      <div class="title">
+        <i class="el-icon-setting"></i>
+        <b>设置</b>
+      </div>
+      <div class="item">
+        <div class="switch">
+          <span class="txt">黑白主题：</span>
+          <el-switch
+            :value="theme === 'dark'"
+            :width="35"
+            @change="setTheme(theme === 'dark' ? 'light' : 'dark')"
+          ></el-switch>
+        </div>
+      </div>
+      <div class="item">
+        <div class="switch">
+          <span class="txt">梅花特效：</span>
+          <el-switch
+            :value="showPlum"
+            :width="35"
+            @change="setShowPlum(!showPlum)"
+          ></el-switch>
+        </div>
+      </div>
+      <div class="item">
+        <div class="switch">
+          <span class="txt">音乐播放器：</span>
+          <el-switch
+            :value="showMusicAudio"
+            :width="35"
+            @change="setShowMusicAudio(!showMusicAudio)"
+          ></el-switch>
+        </div>
+      </div>
+    </div>
+
     <div v-if="summary" class="summary-info">
       <div class="title">
         <i class="el-icon-user"></i>
@@ -204,6 +241,15 @@ export default {
       userInfo(state) {
         return state.user.userInfo
       },
+      theme(state) {
+        return state.app.theme
+      },
+      showPlum(state) {
+        return state.app.showPlum
+      },
+      showMusicAudio(state) {
+        return state.app.showMusicAudio
+      },
     }),
     sideBarTagList() {
       return this.$store.state.tag.sideBarTagList
@@ -238,6 +284,9 @@ export default {
     ...mapActions('article', ['getSideBarArticleList']),
     ...mapMutations({
       changeSideBarArticleOrderName: 'article/changeSideBarArticleOrderName',
+      setTheme: 'app/setTheme',
+      setShowPlum: 'app/setShowPlum',
+      setShowMusicAudio: 'app/setShowMusicAudio',
     }),
     async ajaxArticleList(orderName) {
       try {
@@ -350,6 +399,21 @@ export default {
         text-align: center;
         margin: 4px;
       }
+    }
+  }
+  .setting-info {
+    overflow: hidden;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid $theme-color4;
+    border-radius: 5px;
+    background: $theme-color6;
+
+    .title {
+      margin: 8px 0;
+    }
+    .item {
+      margin-bottom: 4px;
     }
   }
   .summary-info {

@@ -1,5 +1,9 @@
 <template>
-  <div class="markdown-body" v-html="content"></div>
+  <div
+    class="markdown-body"
+    :style="{ color: theme === 'light' ? 'auto' : 'white' }"
+    v-html="content"
+  ></div>
 </template>
 
 <script>
@@ -7,6 +11,7 @@ import { marked } from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import '@/assets/css/github-markdown.min.css'
+import { mapState } from 'vuex'
 export default {
   props: ['md'],
   data() {
@@ -14,7 +19,13 @@ export default {
       content: '',
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      theme(state) {
+        return state.app.theme
+      },
+    }),
+  },
   watch: {
     md() {
       this.initMarked()

@@ -176,6 +176,11 @@ export default {
     font-size: 10px;
   }
 }
+.dark {
+  .fix-header-wrapper {
+    background: $theme-color3;
+  }
+}
 .fix-header-wrapper {
   position: fixed;
   top: 0;

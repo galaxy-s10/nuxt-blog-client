@@ -1,25 +1,21 @@
 <template>
   <div class="plum-cpt-wrap">
-    <canvas v-show="switchValue" ref="Plum" @click="refresh()" />
-    <div class="switch">
-      <span class="txt">梅花特效:</span>
-      <el-switch v-model="switchValue" :width="35"></el-switch>
-    </div>
+    <canvas v-show="showPlum" ref="Plum" @click="refresh()" />
   </div>
 </template>
 
 <script>
-const branchLength = 6
+import { mapState } from 'vuex'
+
 export default {
   components: {},
   props: [],
   data() {
     return {
-      switchValue: true,
       width: 600,
       height: 600,
       ctx: null,
-      branchLength, // 左右分支长度
+      branchLength: 6, // 左右分支长度
       branchRandom: 0.5, // 左右分支的概率范围，0-1，值越大每次产生分支的概率就越大
       queue: [],
       initDepth: 4,
@@ -33,9 +29,15 @@ export default {
       duration: 5000, // 特效持续时间
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      showPlum(state) {
+        return state.app.showPlum
+      },
+    }),
+  },
   watch: {
-    switchValue(newVal) {
+    showPlum(newVal) {
       if (newVal) {
         this.refresh()
       } else {
@@ -54,12 +56,13 @@ export default {
     this.$refs.Plum.height = this.height
     const canvas = this.$refs.Plum
     this.ctx = canvas.getContext('2d')
-
-    this.handleStep()
-    this.handleFrame()
-    setTimeout(() => {
-      this.queue.splice(0)
-    }, this.duration)
+    if (this.showPlum) {
+      this.handleStep()
+      this.handleFrame()
+      setTimeout(() => {
+        this.queue.splice(0)
+      }, this.duration)
+    }
   },
   methods: {
     refresh() {
@@ -173,15 +176,5 @@ export default {
   left: 0;
   z-index: 101;
   pointer-events: none;
-}
-.switch {
-  position: fixed;
-  top: 150px;
-  right: 10px;
-  pointer-events: auto;
-}
-.txt {
-  font-size: 12px;
-  font-weight: bold;
 }
 </style>

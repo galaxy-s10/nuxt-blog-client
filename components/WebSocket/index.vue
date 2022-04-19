@@ -1,78 +1,79 @@
 <template>
   <div class="websocket-wrap">
     <div class="nav">
-      <div>
-        当前连接状态: {{ connectStatus }}，当前在线人数: {{ onlineCount }}
-      </div>
+      当前连接状态: {{ connectStatus }}，当前在线人数: {{ onlineCount }}
     </div>
-    <div ref="content-list" class="content-list">
-      <div v-for="(item, index) in chatList" :key="index" class="item">
-        <div v-if="item.type === webSocketMsgType.userInRoom" class="tip">
-          {{ item.nickname }}加入了聊天({{ item.time }})
-        </div>
-        <div v-if="item.type === webSocketMsgType.userOutRoom" class="tip">
-          {{ item.nickname }}退出了聊天({{ item.time }})
-        </div>
-        <div v-if="item.type === webSocketMsgType.userSendMsg">
-          <div :class="{ 'msg-item': true, 'is-me': item.id === wsId }">
-            <img :src="item.avatar" class="avatar" alt="" />
-            <div class="info">
-              <div v-if="item.id !== wsId" class="nickname">
-                {{ item.nickname }}
-              </div>
-              <div class="msg">
-                {{ item.msg }}
-                <i class="triangle"></i>
+    <div class="main">
+      <div ref="content-list" class="content-list">
+        <div v-for="(item, index) in chatList" :key="index" class="item">
+          <div v-if="item.type === webSocketMsgType.userInRoom" class="tip">
+            {{ item.nickname }}加入了聊天({{ item.time }})
+          </div>
+          <div v-if="item.type === webSocketMsgType.userOutRoom" class="tip">
+            {{ item.nickname }}退出了聊天({{ item.time }})
+          </div>
+          <div v-if="item.type === webSocketMsgType.userSendMsg">
+            <div :class="{ 'msg-item': true, 'is-me': item.id === wsId }">
+              <img :src="item.avatar" class="avatar" alt="" />
+              <div class="info">
+                <div v-if="item.id !== wsId" class="nickname">
+                  {{ item.nickname }}
+                </div>
+                <div class="msg">
+                  {{ item.msg }}
+                  <i class="triangle"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div v-if="!isJoin" class="mask"></div>
 
-    <div v-if="!isJoin" class="join">
-      <div class="item avatar">
-        <el-popover
-          popper-class="popover"
-          placement="bottom"
-          width="200"
-          trigger="click"
-        >
-          <div class="avatar-list">
-            <img
-              v-for="(item, index) in avatarList"
-              :key="index"
-              :src="item"
-              class="avatar"
-              alt=""
-              @click="avatar = item"
-            />
-          </div>
-          <div slot="reference">
-            <div class="curr-avatar">
-              <img width="50" class="avatar" :src="avatar" alt="" />
-              <i class="el-icon-caret-bottom bottom"></i>
+      <div v-if="!isJoin" class="join">
+        <div class="item avatar">
+          <el-popover
+            popper-class="popover"
+            placement="bottom"
+            width="200"
+            trigger="click"
+          >
+            <div class="avatar-list">
+              <img
+                v-for="(item, index) in avatarList"
+                :key="index"
+                :src="item"
+                class="avatar"
+                alt=""
+                @click="avatar = item"
+              />
             </div>
-          </div>
-        </el-popover>
-      </div>
-      <div class="item input">
-        <div>
-          <el-input
-            v-model="nickname"
-            maxlength="6"
-            placeholder="请输入昵称"
-          ></el-input>
+            <div slot="reference">
+              <div class="curr-avatar">
+                <img width="50" class="avatar" :src="avatar" alt="" />
+                <i class="el-icon-caret-bottom bottom"></i>
+              </div>
+            </div>
+          </el-popover>
         </div>
+        <div class="item input">
+          <div>
+            <el-input
+              v-model="nickname"
+              maxlength="6"
+              placeholder="请输入昵称"
+            ></el-input>
+          </div>
+        </div>
+        <div class="item btn" @click="join">加入</div>
       </div>
-      <div class="item btn" @click="join">加入</div>
-    </div>
-    <div v-else class="send-msg">
-      <el-input v-model="msg" placeholder="请输入内容"
-        ><template slot="append">
-          <el-button @click="userSendMsg">发送</el-button>
-        </template>
-      </el-input>
+      <div v-else class="send-msg">
+        <el-input v-model="msg" placeholder="请输入内容"
+          ><template slot="append">
+            <el-button @click="userSendMsg">发送</el-button>
+          </template>
+        </el-input>
+      </div>
     </div>
   </div>
 </template>
@@ -120,8 +121,9 @@ export default {
       msg: '',
       onlineCount: 0, // 当前在线人数
       // url: 'wss://www.zhengbeining.com/wss/',
-      // url: 'ws://localhost:3001/',
-      url: 'ws://localhost:3300',
+      url: 'wss://www.hsslive.cn/',
+      // url: 'ws://42.193.157.44:3200',
+      // url: 'ws://localhost:3300',
     }
   },
   computed: {},
@@ -247,109 +249,119 @@ export default {
 @import '@/assets/css/constant.scss';
 @import '@/assets/css/mixin.scss';
 .websocket-wrap {
-  position: relative;
-
-  .content-list {
-    height: 400px;
-    overflow-y: scroll;
-    background-color: $theme-color3;
-    @extend .hideScrollbar;
-    .item {
-      padding: 0 10px;
-      margin-bottom: 10px;
-    }
-    .tip {
-      text-align: center;
-      margin: 10px 0;
-    }
-    .msg-item {
-      display: flex;
-      &.is-me {
-        flex-direction: row-reverse;
+  .main {
+    position: relative;
+    .content-list {
+      height: 400px;
+      overflow-y: scroll;
+      background-color: $theme-color3;
+      @extend .hideScrollbar;
+      .item {
+        padding: 0 10px;
+        margin-bottom: 10px;
+      }
+      .tip {
+        text-align: center;
+        margin: 10px 0;
+      }
+      .msg-item {
+        display: flex;
+        &.is-me {
+          flex-direction: row-reverse;
+          .info {
+            .msg {
+              background-color: $theme-color11;
+              .triangle {
+                left: auto;
+                right: -5px;
+                top: 12px;
+              }
+            }
+          }
+        }
+        .avatar {
+          width: 40px;
+          height: 40px;
+        }
         .info {
+          margin: 0 10px;
+
+          .nickname {
+            font-size: 14px;
+          }
           .msg {
-            background-color: $theme-color11;
+            position: relative;
+            max-width: 200px;
+            border-radius: 5px;
+            word-break: break-all;
+            margin-top: 4px;
+            background-color: $theme-color6;
+            padding: 10px;
             .triangle {
-              left: auto;
-              right: -5px;
-              top: 12px;
+              width: 10px;
+              height: 10px;
+              background-color: inherit;
+              position: absolute;
+              left: -5px;
+              right: auto;
+              top: 15px;
+              transform: rotate(45deg);
             }
           }
         }
       }
-      .avatar {
-        width: 40px;
-        height: 40px;
-      }
-      .info {
-        margin: 0 10px;
+    }
+    .send-msg {
+      display: flex;
+    }
+    .mask {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: $theme-color3;
+    }
+    .join {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
-        .nickname {
-          font-size: 14px;
+      .item {
+        margin: 0 auto;
+        &.avatar {
+          width: 50px;
         }
-        .msg {
+        &.input {
+          margin-top: 20px;
+          width: 30%;
+        }
+        &.btn {
+          margin-top: 20px;
+          width: 60px;
+          height: 60px;
+          color: $theme-color6;
+          line-height: 60px;
+          border-radius: 50%;
+          text-align: center;
+          background-color: $theme-color1;
+          cursor: pointer;
+        }
+        .curr-avatar {
           position: relative;
-          max-width: 200px;
-          border-radius: 5px;
-          word-break: break-all;
-          margin-top: 4px;
-          background-color: $theme-color6;
-          padding: 10px;
-          .triangle {
-            width: 10px;
-            height: 10px;
-            background-color: inherit;
+          .bottom {
             position: absolute;
-            left: -5px;
-            right: auto;
-            top: 15px;
-            transform: rotate(45deg);
+            bottom: 0;
+            right: 0;
           }
         }
-      }
-    }
-  }
-  .send-msg {
-    display: flex;
-  }
-  .join {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .item {
-      margin: 0 auto;
-      &.avatar {
-        width: 50px;
-      }
-      &.input {
-        margin-top: 20px;
-        width: 30%;
-      }
-      &.btn {
-        margin-top: 20px;
-        width: 60px;
-        height: 60px;
-        color: $theme-color6;
-        line-height: 60px;
-        border-radius: 50%;
-        text-align: center;
-        background-color: $theme-color1;
-        cursor: pointer;
-      }
-      .curr-avatar {
-        position: relative;
-        .bottom {
-          position: absolute;
-          bottom: 0;
-          right: 0;
+        .avatar {
+          width: 50px;
+          border-radius: 50%;
+          cursor: pointer;
         }
-      }
-      .avatar {
-        width: 50px;
-        border-radius: 50%;
-        cursor: pointer;
       }
     }
   }

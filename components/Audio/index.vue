@@ -1,60 +1,66 @@
 <template>
-  <div
-    v-if="songList.length"
-    class="music-wrap"
-    :class="{ hiddenMusic: hiddenMusic }"
-  >
-    <div class="song-wrapper">
-      <div class="song-text">
-        <div class="text-item">
-          {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
+  <div class="audio-wrap">
+    <div
+      v-if="songList.length"
+      class="music-wrap"
+      :class="{ showMiniAudio: showMiniAudio, hiddenAudio: !showMusicAudio }"
+    >
+      <div class="song-wrapper">
+        <div class="song-text">
+          <div class="text-item">
+            {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
+          </div>
+          <div class="text-item">
+            {{ songList[currentIndex] ? songList[currentIndex].author : '-' }}
+          </div>
         </div>
-        <div class="text-item">
-          {{ songList[currentIndex] ? songList[currentIndex].author : '-' }}
+        <div class="song-bar">
+          <div ref="bar" class="song-bar-item">
+            <div
+              :style="{ width: nowTime * (100 / duration1) + '%' }"
+              class="currentTime"
+            ></div>
+          </div>
+          <div class="text">
+            {{ duration2(nowTime) }}/{{ duration2(duration) }}
+          </div>
         </div>
-      </div>
-      <div class="song-bar">
-        <div ref="bar" class="song-bar-item">
-          <div
-            :style="{ width: nowTime * (100 / duration1) + '%' }"
-            class="currentTime"
-          ></div>
+        <div class="songImg1" :class="{ disk_play: start }">
+          <div class="songImg2">
+            <img
+              ref="disk"
+              :src="
+                songList[currentIndex]
+                  ? songList[currentIndex]['cover_pic']
+                  : '-'
+              "
+              alt
+              width="90"
+              height="90"
+              class="songImg"
+              :style="{ transform: matrix }"
+              @click="showMusic"
+            />
+          </div>
         </div>
-        <div class="text">
-          {{ duration2(nowTime) }}/{{ duration2(duration) }}
+        <div class="songControl">
+          <div class="pre" @click="preSong"></div>
+          <div :class="!start ? 'start' : 'stop'" @click="switchBtn()"></div>
+          <div class="next" @click="nextSong"></div>
         </div>
-      </div>
-      <div class="songImg1" :class="{ disk_play: start }">
-        <div class="songImg2">
-          <img
-            ref="disk"
-            :src="
-              songList[currentIndex] ? songList[currentIndex]['cover_pic'] : '-'
-            "
-            alt
-            width="90"
-            height="90"
-            class="songImg"
-            :style="{ transform: matrix }"
-            @click="showMusic"
-          />
-        </div>
-      </div>
-      <div class="songControl">
-        <div class="pre" @click="preSong"></div>
-        <div :class="!start ? 'start' : 'stop'" @click="switchBtn()"></div>
-        <div class="next" @click="nextSong"></div>
       </div>
     </div>
+    <div v-else>暂无音乐~</div>
   </div>
-  <div v-else>暂无音乐~</div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
-      hiddenMusic: true,
+      showMiniAudio: true,
       matrix: '',
       nowDeg: 0,
       audio: null,
@@ -73,6 +79,11 @@ export default {
     this.songList = data.rows
   },
   computed: {
+    ...mapState({
+      showMusicAudio(state) {
+        return state.app.showMusicAudio
+      },
+    }),
     duration2(x) {
       return (x) => this.formatTime(x)
     },
@@ -80,14 +91,14 @@ export default {
   mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth
     if (d <= 414) {
-      this.hiddenMusic = true
+      this.showMiniAudio = true
     }
     window.addEventListener('resize', () => {
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth
       if (offsetWidth <= 414) {
-        if (this.hiddenMusic !== true) {
-          this.hiddenMusic = true
+        if (this.showMiniAudio !== true) {
+          this.showMiniAudio = true
         }
       }
     })
@@ -117,7 +128,7 @@ export default {
   },
   methods: {
     showMusic() {
-      this.hiddenMusic = !this.hiddenMusic
+      this.showMiniAudio = !this.showMiniAudio
     },
     formatTime(t) {
       let m = parseInt((t % 3600) / 60)
@@ -256,17 +267,23 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
-.music-wrap.hiddenMusic {
+.audio-wrap {
+  .hiddenAudio {
+    display: none;
+    pointer-events: none;
+  }
+}
+.music-wrap.showMiniAudio {
   right: -140px;
   pointer-events: none;
 }
-.hiddenMusic .song-wrapper {
+.showMiniAudio .song-wrapper {
   background-color: transparent !important;
   box-shadow: none !important;
 }
-.hiddenMusic .song-text,
-.hiddenMusic .song-bar,
-.hiddenMusic .songControl {
+.showMiniAudio .song-text,
+.showMiniAudio .song-bar,
+.showMiniAudio .songControl {
   display: none;
   background-color: transparent !important;
   box-shadow: none !important;

@@ -1,10 +1,18 @@
+import { generaterStyle } from '@/utils'
+
 export const state = () => ({
-  // id信息
+  // ip信息
   ipInfo: null,
   // 前端数据
   frontendData: null,
   // 是否显示文章目录
   showCatalog: false,
+  // 是否显示梅花特效
+  showPlum: true,
+  // 是否显示音乐播放器
+  showMusicAudio: true,
+  // 当前主题
+  theme: 'light',
   // 当前node环境
   CurrentNodeEnv: 'development',
 })
@@ -21,6 +29,32 @@ export const mutations = {
   },
   setShowCatalog(state, res) {
     state.showCatalog = res
+  },
+  setShowPlum(state, res) {
+    state.showPlum = res
+  },
+  setShowMusicAudio(state, res) {
+    state.showMusicAudio = res
+  },
+  setTheme(state, res) {
+    state.theme = res
+    if (res === 'dark') {
+      document.body.classList.add('dark')
+      document.body.classList.remove('light')
+      const styleContent = `
+      .dark {
+        --bg-color-light: #1a1a1a;
+        --text-color-light: #bbb;
+        --bg-item-color-light: #1a1a1a;
+      }
+      `
+      const styleEle = document.createElement('style')
+      styleEle.textContent = styleContent
+      document.head.appendChild(styleEle)
+    } else {
+      document.body.classList.remove('dark')
+      document.body.classList.add('light')
+    }
   },
 }
 

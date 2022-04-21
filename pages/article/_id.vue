@@ -61,37 +61,43 @@
       <span v-else>该文章没有关联标签~</span>
     </div>
 
-    <p class="star-wrap">
-      <span v-if="detail.is_star === 1">
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="取消点赞"
-          placement="top"
-          @click.native="starForArticle(0, detail.id)"
-        >
-          <i class="el-icon-star-on"></i>
-        </el-tooltip>
-      </span>
-      <span v-else>
-        如果本文章对你有所帮助，欢迎点赞~
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="赞一个"
-          placement="top"
-          @click.native="starForArticle(1, detail.id)"
-        >
-          <i class="el-icon-star-off"></i>
-        </el-tooltip>
-      </span>
-      {{ detail.star_total }}
-    </p>
+    <div class="star-wrap">
+      如果本文章对你有所帮助，欢迎点赞~
+      <div class="icon">
+        <span v-if="detail.is_star" v-loading="starLoaing">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="取消点赞"
+            placement="top"
+            @click.native="starForArticle(0, detail)"
+          >
+            <i class="el-icon-star-on"></i>
+          </el-tooltip>
+        </span>
+        <span v-else>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="赞一个"
+            placement="top"
+            @click.native="starForArticle(1, detail)"
+          >
+            <i class="el-icon-star-off"></i>
+          </el-tooltip>
+        </span>
+        {{ detail.star_info.count }}
+      </div>
+      <AvatarGroupCpt
+        class="avatar-list"
+        :list="detail.star_info.rows"
+      ></AvatarGroupCpt>
+    </div>
 
     <p class="last-update">最后更新于：{{ detail.updated_at | formatDate }}</p>
 
     <div class="comment-wrap">
-      <div v-if="detail.is_comment">
+      <div v-if="detail.is_comment === 1">
         <el-divider>欢迎评论留言~</el-divider>
         <div>
           <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
@@ -132,30 +138,38 @@
 import CommentCpt from '@/components/Comment'
 import RenderMarkdownCpt from '@/components/RenderMarkdown'
 import TextareaInputCpt from '@/components/TextareaInput'
+import AvatarGroupCpt from '@/components/AvatarGroup'
 
 export default {
   components: {
     CommentCpt,
     RenderMarkdownCpt,
     TextareaInputCpt,
+    AvatarGroupCpt,
   },
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {
       const articleId = params.id
       const { data } = await $axios1.get(`/article/find/${articleId}`)
+      let commentData = {}
+      let commentParams = {}
       const orderName = 'created_at'
-      const commentParams = {
-        article_id: articleId,
-        nowPage: store.state.comment.nowPage, // 当前父评论页数
-        pageSize: store.state.comment.pageSize, // 当前父评论分页大小
-        childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
-        orderName,
-        orderBy: 'desc',
+      if (data.is_comment === 1) {
+        commentParams = {
+          article_id: articleId,
+          nowPage: 1, // 当前父评论页数
+          pageSize: 2, // 当前父评论分页大小
+          childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
+          orderName,
+          orderBy: 'desc',
+        }
+        const result = await $axios1.get(`/comment/comment`, {
+          params: commentParams,
+        })
+        commentData = result.data
       }
-      const { data: commentData } = await $axios1.get(`/comment/comment`, {
-        params: commentParams,
-      })
+
       store.commit('app/setShowCatalog', true)
       return {
         sort: orderName === 'created_at' ? 'date' : 'hot',
@@ -172,9 +186,12 @@ export default {
   data() {
     return {
       submitCommentLoading: false,
-      loadingStar: false,
+      starLoaing: false,
       isLoading: false,
       commentContent: '',
+      articleId: undefined,
+      nowPage: undefined,
+      pageSize: undefined,
     }
   },
   head() {
@@ -206,12 +223,24 @@ export default {
   mounted() {
     window.scrollTo({ top: 0 })
     this.renderCatalog()
+    const articleId = this.$route.params.id
+    this.articleId = articleId
   },
   destroyed() {
     this.$store.commit('app/setShowCatalog', false)
     this.$store.commit('article/changeCatalogList', [])
   },
   methods: {
+    async getArticleDetail() {
+      try {
+        const { data } = await this.$axios1.get(
+          `/article/find/${this.articleId}`
+        )
+        this.detail = data
+      } catch (error) {
+        console.log(error)
+      }
+    },
     sortChange(sort) {
       this.sort = sort
       this.refreshCommentList()
@@ -239,9 +268,9 @@ export default {
     // 留言列表
     async refreshCommentList() {
       const query = {
-        article_id: this.detail.id,
-        nowPage: 1,
-        pageSize: 3,
+        article_id: this.articleId,
+        nowPage: this.nowPage,
+        pageSize: this.pageSize,
         childrenPageSize: this.childrenPageSize,
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         orderBy: 'desc',
@@ -283,10 +312,11 @@ export default {
     },
     // 获取父评论分页
     async handleParentPage(query) {
+      console.log(query, this.articleId, 3333)
       try {
         const { data } = await this.$axios1.get(`/comment/comment`, {
           params: {
-            article_id: -1,
+            article_id: this.articleId,
             nowPage: query.nowPage + 1,
             pageSize: this.pageSize,
             childrenPageSize: this.childrenPageSize,
@@ -333,36 +363,33 @@ export default {
     },
 
     // 给文章点赞/取消点赞
-    async starForArticle(type, articleId) {
-      if (this.userInfo) {
-        this.loadingStar = true
-        if (type === 1) {
-          const { data } = await this.$axios1.post(`/star/create`, {
-            article_id: articleId,
-            from_user_id: this.userInfo.id,
-            comment_id: -1,
-            to_user_id: -1,
-          })
-          this.$newmessage(data.message, 'success')
-          setTimeout(() => {
-            this.loadingStar = false
-            this.getArticleDetail()
-          }, 500)
+    async starForArticle(type, articleDetail) {
+      try {
+        if (this.userInfo) {
+          this.starLoaing = true
+          if (type === 1) {
+            await this.$axios1.post(`/star/create`, {
+              article_id: articleDetail.id,
+              from_user_id: this.userInfo.id,
+              comment_id: -1,
+              to_user_id: -1,
+            })
+            this.$newmessage('点赞成功！', 'success')
+            await this.getArticleDetail()
+            this.starLoaing = false
+          } else {
+            await this.$axios1.$delete(
+              `/star/delete/${articleDetail.is_star_id}`
+            )
+            await this.getArticleDetail()
+            this.$newmessage('取消点赞成功!', 'success')
+            this.starLoaing = false
+          }
         } else {
-          const { data } = await this.$axios1.$delete(`/star/delete`, {
-            article_id: articleId,
-            from_user_id: this.userInfo.id,
-            comment_id: -1,
-            to_user_id: -1,
-          })
-          this.$newmessage(data.message, 'success')
-          setTimeout(() => {
-            this.loadingStar = false
-            this.getArticleDetail()
-          }, 500)
+          this.$newmessage('暂未登录，请登录！', 'warning')
         }
-      } else {
-        this.$newmessage('暂未登录，请登录！', 'warning')
+      } catch (error) {
+        console.log(error)
       }
     },
 
@@ -437,6 +464,18 @@ export default {
       margin: 4px;
       border: none;
       color: $theme-color6;
+    }
+  }
+  .star-wrap {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    .icon {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .avatar-list {
+      margin-left: 10px;
     }
   }
   .last-update {

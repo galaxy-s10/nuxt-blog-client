@@ -136,6 +136,9 @@ export default {
       }
     },
   },
+  mounted() {
+    console.log(this.props, 3333)
+  },
   methods: {
     async refresh() {
       if (this.currentComment !== null) {

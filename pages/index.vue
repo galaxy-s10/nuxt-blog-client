@@ -32,8 +32,9 @@
                   :disable-transitions="false"
                   :color="tagItem.color"
                   @close="closeTag(tagItem.id)"
-                  >{{ tagItem.name }}</el-tag
                 >
+                  {{ tagItem.name }}
+                </el-tag>
               </div>
               <span v-else>该文章暂无标签~</span>
             </div>

@@ -58,11 +58,12 @@
 }
 
 // 箭头
-@mixin arrow($position) {
+@mixin arrow($position, $size: 5px) {
   position: relative;
   display: inline-block;
+  width: $size;
+  height: $size;
   &::after {
-    // & .arrow {
     position: absolute;
     top: 0;
     left: 0;

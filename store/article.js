@@ -4,7 +4,7 @@ export const state = () => ({
   // 侧边栏文章类型
   sideBarArticleOrderName: 'updated_at',
   // 文章目录
-  catalogList: null,
+  catalogList: [],
 })
 
 export const mutations = {

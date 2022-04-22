@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="list" class="catalog-cpt-wrap">
+  <ul v-if="list.length" class="catalog-cpt-wrap">
     <li
       v-for="(item, index) in list"
       :key="index"

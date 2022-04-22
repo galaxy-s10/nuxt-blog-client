@@ -18,63 +18,65 @@
       </div>
     </div>
 
-    <div class="setting-info">
-      <div class="title">
+    <CollapseCpt title="设置">
+      <template #ico>
         <i class="el-icon-setting"></i>
-        <b>设置</b>
-      </div>
-      <div class="item">
-        <div class="switch">
-          <span class="txt">黑白主题：</span>
-          <el-switch
-            :value="theme === 'dark'"
-            :width="35"
-            @change="setTheme(theme === 'dark' ? 'light' : 'dark')"
-          ></el-switch>
+      </template>
+      <div>
+        <div class="item">
+          <div class="switch">
+            <span class="txt">黑白主题：</span>
+            <el-switch
+              :value="theme === 'dark'"
+              :width="35"
+              @change="setTheme(theme === 'dark' ? 'light' : 'dark')"
+            ></el-switch>
+          </div>
+        </div>
+        <div class="item">
+          <div class="switch">
+            <span class="txt">梅花特效：</span>
+            <el-switch
+              :value="showPlum"
+              :width="35"
+              @change="setShowPlum(!showPlum)"
+            ></el-switch>
+          </div>
+        </div>
+        <div class="item">
+          <div class="switch">
+            <span class="txt">音乐播放器：</span>
+            <el-switch
+              :value="showMusicAudio"
+              :width="35"
+              @change="setShowMusicAudio(!showMusicAudio)"
+            ></el-switch>
+          </div>
         </div>
       </div>
-      <div class="item">
-        <div class="switch">
-          <span class="txt">梅花特效：</span>
-          <el-switch
-            :value="showPlum"
-            :width="35"
-            @change="setShowPlum(!showPlum)"
-          ></el-switch>
-        </div>
-      </div>
-      <div class="item">
-        <div class="switch">
-          <span class="txt">音乐播放器：</span>
-          <el-switch
-            :value="showMusicAudio"
-            :width="35"
-            @change="setShowMusicAudio(!showMusicAudio)"
-          ></el-switch>
-        </div>
-      </div>
-    </div>
+    </CollapseCpt>
 
-    <div v-if="summary" class="summary-info">
-      <div class="title">
+    <CollapseCpt v-if="userInfo" title="用户信息">
+      <template #ico>
         <i class="el-icon-user"></i>
-        <b>用户信息</b>
+      </template>
+      <div>
+        <div class="item">
+          角色: {{ summary.roles.map((v) => v.role_name).join() }}
+        </div>
+        <div class="item">文章数: {{ summary.articlesTotal }}</div>
+        <div class="item">累计发出点赞: {{ summary.sendStarsTotal }}</div>
+        <div class="item">累计收到点赞: {{ summary.receiveStarsTotal }}</div>
+        <div class="item">累计发出评论: {{ summary.sendCommentsTotal }}</div>
+        <div class="item">累计收到回复: {{ summary.receiveCommentsTotal }}</div>
+        <div class="item">
+          qq绑定: {{ summary.qq_users.length ? '已绑定' : '未绑定' }}
+        </div>
+        <div class="item">
+          github绑定: {{ summary.github_users.length ? '已绑定' : '未绑定' }}
+        </div>
       </div>
-      <div class="item">
-        角色: {{ summary.roles.map((v) => v.role_name).join() }}
-      </div>
-      <div class="item">文章数: {{ summary.articlesTotal }}</div>
-      <div class="item">累计发出点赞: {{ summary.sendStarsTotal }}</div>
-      <div class="item">累计收到点赞: {{ summary.receiveStarsTotal }}</div>
-      <div class="item">累计发出评论: {{ summary.sendCommentsTotal }}</div>
-      <div class="item">累计收到回复: {{ summary.receiveCommentsTotal }}</div>
-      <div class="item">
-        qq绑定: {{ summary.qq_users.length ? '已绑定' : '未绑定' }}
-      </div>
-      <div class="item">
-        github绑定: {{ summary.github_users.length ? '已绑定' : '未绑定' }}
-      </div>
-    </div>
+    </CollapseCpt>
 
     <template v-if="showCatalog">
       <div ref="catalogRef" class="catalog-ref"></div>
@@ -89,42 +91,47 @@
 
     <template v-else>
       <div>
-        <div class="visitor-info-wrap">
-          <div class="title">
+        <CollapseCpt title="访客信息" :open="true">
+          <template #ico>
             <i class="el-icon-position"></i>
-            <b>访客信息</b>
-          </div>
-          <template v-if="ipInfo">
-            <div class="item">ip: {{ ipInfo.ip }}</div>
-            <div class="item">
-              location:
-              {{ ipInfo | parseIpInfo }}
-            </div>
           </template>
-        </div>
+          <div>
+            <template v-if="ipInfo">
+              <div class="item">ip: {{ ipInfo.ip }}</div>
+              <div class="item">
+                location:
+                {{ ipInfo | parseIpInfo }}
+              </div>
+            </template>
+          </div>
+        </CollapseCpt>
 
-        <div class="log-info">
-          <div class="title">
+        <CollapseCpt class="log-info" title="流量信息">
+          <template #ico>
             <i class="el-icon-data-analysis"></i>
-            <b>流量信息</b>
+          </template>
+          <div v-loading="logLoading">
+            <template v-if="visitorHistoryData">
+              <div class="item">
+                历史总访问量: {{ visitorHistoryData.visit_total }}
+              </div>
+              <div class="item">
+                历史总访客量: {{ visitorHistoryData.visitor_total }}
+              </div>
+            </template>
+            <template v-if="visitorDayData">
+              <div class="item">
+                今天总访问数: {{ visitorDayData.visit_total }}
+              </div>
+              <div class="item">
+                今天总访客数: {{ visitorDayData.visitor_total }}
+              </div>
+            </template>
+            <div class="refresh" @click="refreshLog">
+              <i class="el-icon-refresh ico"></i>
+            </div>
           </div>
-          <template v-if="visitorHistoryData">
-            <div class="item">
-              历史总访问量: {{ visitorHistoryData.visit_total }}
-            </div>
-            <div class="item">
-              历史总访客量: {{ visitorHistoryData.visitor_total }}
-            </div>
-          </template>
-          <template v-if="visitorDayData">
-            <div class="item">
-              今天总访问数: {{ visitorDayData.visit_total }}
-            </div>
-            <div class="item">
-              今天总访客数: {{ visitorDayData.visitor_total }}
-            </div>
-          </template>
-        </div>
+        </CollapseCpt>
 
         <div class="article-info">
           <div class="title">
@@ -176,31 +183,32 @@
           </div>
         </div>
 
-        <div class="tag-info">
-          <div class="title">
+        <CollapseCpt class="tag-info" title="标签云" :open="true">
+          <template #ico>
             <i class="el-icon-collection-tag"></i>
-            <b>标签云</b>
-          </div>
-          <div v-if="sideBarTagList && sideBarTagList.length">
-            <el-tooltip
-              v-for="item in sideBarTagList"
-              :key="item.id"
-              effect="dark"
-              :content="'该标签下有' + item.article_total + '篇文章'"
-              placement="top"
-            >
-              <el-tag
-                class="tag-margin"
-                :disable-transitions="false"
-                :color="item.color"
-                @click="tagClick(item.id)"
+          </template>
+          <div>
+            <div v-if="sideBarTagList && sideBarTagList.length">
+              <el-tooltip
+                v-for="item in sideBarTagList"
+                :key="item.id"
+                effect="dark"
+                :content="'该标签下有' + item.article_total + '篇文章'"
+                placement="top"
               >
-                {{ item.name }}
-              </el-tag>
-            </el-tooltip>
+                <el-tag
+                  class="tag-margin"
+                  :disable-transitions="false"
+                  :color="item.color"
+                  @click="tagClick(item.id)"
+                >
+                  {{ item.name }}
+                </el-tag>
+              </el-tooltip>
+            </div>
+            <div v-else>暂无标签~</div>
           </div>
-          <div v-else>暂无标签~</div>
-        </div>
+        </CollapseCpt>
       </div>
     </template>
   </aside>
@@ -209,16 +217,18 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import CatalogCpt from '@/components/Catalog'
+import CollapseCpt from '@/components/Collapse'
 import { dateStartAndEnd } from '@/utils/format'
 
 export default {
-  components: { CatalogCpt },
+  components: { CatalogCpt, CollapseCpt },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
   asyncData({ $axios1, store }) {},
   data() {
     return {
       switchLoading: false,
       catalogFix: false,
+      logLoading: false,
     }
   },
   computed: {
@@ -288,6 +298,15 @@ export default {
       setShowPlum: 'app/setShowPlum',
       setShowMusicAudio: 'app/setShowMusicAudio',
     }),
+    async refreshLog() {
+      this.logLoading = true
+      await this.$store.dispatch(
+        'log/getVisitorDayData',
+        dateStartAndEnd(new Date())
+      )
+      await this.$store.dispatch('log/getVisitorHistoryData')
+      this.logLoading = false
+    },
     async ajaxArticleList(orderName) {
       try {
         const params = {
@@ -340,6 +359,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
+@import '@/assets/css/mixin.scss';
 
 .aside-wrap {
   width: inherit;
@@ -401,64 +421,6 @@ export default {
       }
     }
   }
-  .setting-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-
-    .title {
-      margin: 8px 0;
-    }
-    .item {
-      margin-bottom: 4px;
-    }
-  }
-  .summary-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-
-    .title {
-      margin: 8px 0;
-    }
-    .item {
-      margin-bottom: 4px;
-    }
-  }
-  .visitor-info-wrap {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-    .title {
-      margin: 8px 0;
-    }
-    .item {
-      margin-bottom: 4px;
-    }
-  }
-  .log-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-    .title {
-      margin: 8px 0;
-    }
-    .item {
-      margin-bottom: 4px;
-    }
-  }
   .article-info {
     overflow: hidden;
     margin-top: 20px;
@@ -514,12 +476,6 @@ export default {
     }
   }
   .tag-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
     /* 覆盖默认样式，加了/deep/或者>>>反而覆盖不了？ */
     .el-tag {
       color: $theme-color6;
@@ -536,6 +492,14 @@ export default {
   }
   .catalog-ref {
     transform: translateY(-50px);
+  }
+  .log-info {
+    .refresh {
+      text-align: right;
+      .ico {
+        cursor: pointer;
+      }
+    }
   }
   .catalog-info {
     overflow: hidden;

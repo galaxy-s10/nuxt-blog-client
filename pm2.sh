@@ -4,7 +4,7 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-10 15:25:30
-# LastEditTime: 2022-02-08 02:18:22
+# LastEditTime: 2022-04-22 12:45:01
 # Description: pm2维护脚本
 ###
 
@@ -33,4 +33,5 @@ yarn build
 
 echo 使用pm2维护:
 pm2 start npm --name $JOBNAME -- run start
+pm2 save
 # pm2 start npm --name $JOBNAME -- run dev

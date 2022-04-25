@@ -91,7 +91,7 @@
 
     <template v-else>
       <div>
-        <CollapseCpt title="访客信息" :open="true">
+        <CollapseCpt title="访客信息">
           <template #ico>
             <i class="el-icon-position"></i>
           </template>

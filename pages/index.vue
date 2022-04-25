@@ -298,74 +298,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
-
-@keyframes loading {
-  to {
-    background-position-x: -50%;
-  }
-}
-
-.tag-list {
-  .el-tag {
-    color: $theme-color6;
-    border: none;
-  }
-  .hss-el-tag {
-    margin-right: 5px;
-    margin-bottom: 3px;
-  }
-}
-
-.waterfall-wrap {
-  .waterfall-item {
-    overflow: hidden;
-    border: 1px solid $theme-color4;
-    border-radius: 6px;
-    background-color: $theme-color6;
-    transition: all 0.5s ease;
-    .a-link {
-      background-color: $theme-color6;
-      color: $theme-color5;
-      text-decoration: none;
-      display: block;
-      .head-img {
-        display: inline-block;
-        width: 100%;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        transition: all 0.3s ease 0s;
-        &:hover {
-          transform: scale(1.1);
-        }
-      }
-      .detail {
-        padding: 5px 10px;
-        .title {
-          margin: 10px 0;
-        }
-        .tag-list {
-          margin: 8px 0;
-        }
-        .info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 5px 0;
-          width: 90%;
-          font-size: 12px;
-        }
-      }
-    }
-  }
-  .load-more-ref {
-    position: absolute;
-    bottom: 200px;
-  }
-}
-.no-more {
-  text-align: center;
-}
+@import '@/assets/css/mixin.scss';
 
 .v-enter {
   opacity: 0;
@@ -373,5 +306,75 @@ export default {
 }
 .v-enter-active {
   transition: all 0.5s ease;
+}
+
+@keyframes loading {
+  to {
+    background-position-x: -50%;
+  }
+}
+
+.pages-wrap {
+  .tag-list {
+    .el-tag {
+      color: $theme-color6;
+      border: none;
+    }
+    .hss-el-tag {
+      margin-right: 5px;
+      margin-bottom: 3px;
+    }
+  }
+
+  .waterfall-wrap {
+    .waterfall-item {
+      overflow: hidden;
+      border: 1px solid $theme-color4;
+      border-radius: 6px;
+      background-color: $theme-color6;
+      transition: all 0.5s ease;
+      .a-link {
+        background-color: $theme-color6;
+        color: $theme-color5;
+        text-decoration: none;
+        display: block;
+        .head-img {
+          display: inline-block;
+          width: 100%;
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          transition: all 0.3s ease 0s;
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+        .detail {
+          padding: 5px 10px;
+          .title {
+            margin: 10px 0;
+          }
+          .tag-list {
+            margin: 8px 0;
+          }
+          .info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            width: 90%;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .load-more-ref {
+      position: absolute;
+      bottom: 200px;
+    }
+  }
+  .no-more {
+    text-align: center;
+  }
 }
 </style>

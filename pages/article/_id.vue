@@ -312,7 +312,6 @@ export default {
     },
     // 获取父评论分页
     async handleParentPage(query) {
-      console.log(query, this.articleId, 3333)
       try {
         const { data } = await this.$axios1.get(`/comment/comment`, {
           params: {
@@ -396,9 +395,11 @@ export default {
     // 渲染文章目录
     renderCatalog() {
       const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
-      const md = this.$refs['hss-md']?.$el.childNodes || []
+      const md =
+        this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || []
       const arr = []
-      md.forEach((item) => {
+      for (let i = 0; i < md.length; i++) {
+        const item = md[i]
         if (item.nodeType === 1 && list.includes(item.nodeName)) {
           const obj = {}
           obj.id =
@@ -413,7 +414,7 @@ export default {
           item.appendChild(ele1)
           arr.push(obj)
         }
-      })
+      }
       this.$store.commit('article/changeCatalogList', arr)
     },
   },

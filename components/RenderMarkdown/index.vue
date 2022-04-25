@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="render-markdown-wrap">
     <v-md-preview :text="md"></v-md-preview>
   </div>
 </template>
@@ -38,9 +38,14 @@ export default {
 }
 </script>
 
-<style>
-.github-markdown-body {
-  padding: 0px;
+<style></style>
+<style lang="scss" scoped>
+.render-markdown-wrap {
+  ::v-deep .github-markdown-body {
+    padding: 0px;
+    blockquote {
+      margin: 0;
+    }
+  }
 }
 </style>
-<style lang="scss" scoped></style>

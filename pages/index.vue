@@ -20,8 +20,8 @@
             }"
           ></div>
           <div class="detail">
-            <h3 class="title">{{ item.title }}</h3>
-            <p class="desc">{{ item.desc }}</p>
+            <h3 class="title" :title="item.title">{{ item.title }}</h3>
+            <p v-if="desc" class="desc" :title="item.desc">{{ item.desc }}</p>
             <div class="tag-list">
               <div v-if="item.tags.length">
                 <el-tag
@@ -353,6 +353,10 @@ export default {
           padding: 5px 10px;
           .title {
             margin: 10px 0;
+            @include multiEllipsis(2);
+          }
+          .desc {
+            @include multiEllipsis(2);
           }
           .tag-list {
             margin: 8px 0;

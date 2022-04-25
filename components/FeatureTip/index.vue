@@ -6,21 +6,11 @@
     :width="dialogWidth"
     :top="dialogTop"
   >
-    最近都在对博客进行比较彻底的重构（前台、后台、后端），目的是把项目做到可读、可复用、可扩展、可维护，以及能有一定用户体验。
-    <br />
-    <br />
-    虽然整个过程前端涉及的东西不多（或者说无关紧要），涉及最多的其实是业务方面（后端方面），但是整个重构过程中的引发的思考是非常锻炼的，
-    期待重构后的结果~
+    <RenderMarkdownCpt
+      v-if="frontendData"
+      :md="frontendData.frontend.frontend_dialog_content"
+    ></RenderMarkdownCpt>
 
-    <!-- <el-timeline>
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.timestamp"
-        >
-          {{ activity.content }}
-        </el-timeline-item>
-      </el-timeline> -->
     <span slot="footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="dialogVisible = false">
@@ -31,14 +21,16 @@
 </template>
 
 <script>
+import RenderMarkdownCpt from '@/components/RenderMarkdown'
+
 export default {
-  components: {},
+  components: { RenderMarkdownCpt },
   props: {},
   data() {
     return {
       dialogWidth: '500px',
       dialogTop: '30vh',
-      dialogVisible: true,
+      dialogVisible: false,
       activities: [
         {
           content: '热门文章/最近更新切换',
@@ -63,7 +55,18 @@ export default {
       ],
     }
   },
-  computed: {},
+  computed: {
+    frontendData() {
+      return this.$store.state.app.frontendData
+    },
+  },
+  watch: {
+    frontendData() {
+      this.dialogVisible = this.frontendData
+        ? this.frontendData.frontend.frontend_dialog === 1
+        : false
+    },
+  },
   created() {},
   mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth

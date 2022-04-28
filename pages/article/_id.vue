@@ -39,11 +39,14 @@
       v-lazy="detail['head_img']"
       class="head-img"
     />
-    <img v-else src="@/assets/img/nopic.png" class="head-img" alt />
+    <div v-else></div>
 
     <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
 
-    <RenderMarkdownCpt ref="hss-md" :md="detail.content"></RenderMarkdownCpt>
+    <AsyncRenderMarkdownCpt
+      ref="hss-md"
+      :md="detail.content"
+    ></AsyncRenderMarkdownCpt>
 
     <div class="tag-list">
       <span class="el-icon-collection-tag"></span>
@@ -100,7 +103,8 @@
       <div v-if="detail.is_comment === 1">
         <el-divider>欢迎评论留言~</el-divider>
         <div>
-          <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
+          <AsyncTextareaInputCpt @contentChange="contentChange">
+          </AsyncTextareaInputCpt>
           <div class="btn">
             <el-button
               type="primary"
@@ -112,7 +116,7 @@
           </div>
 
           <!-- 评论组件 -->
-          <CommentCpt
+          <AsyncCommentCpt
             v-loading="isLoading"
             :list="commentList"
             :total="total"
@@ -135,16 +139,13 @@
 </template>
 
 <script>
-import CommentCpt from '@/components/Comment'
-import RenderMarkdownCpt from '@/components/RenderMarkdown'
-import TextareaInputCpt from '@/components/TextareaInput'
 import AvatarGroupCpt from '@/components/AvatarGroup'
 
 export default {
   components: {
-    CommentCpt,
-    RenderMarkdownCpt,
-    TextareaInputCpt,
+    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncCommentCpt: () => import('@/components/Comment'),
+    AsyncTextareaInputCpt: () => import('@/components/TextareaInput'),
     AvatarGroupCpt,
   },
   layout: 'blog',
@@ -222,7 +223,9 @@ export default {
   created() {},
   mounted() {
     window.scrollTo({ top: 0 })
-    this.renderCatalog()
+    setTimeout(() => {
+      this.renderCatalog()
+    }, 0)
     const articleId = this.$route.params.id
     this.articleId = articleId
   },
@@ -397,6 +400,7 @@ export default {
       const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
       const md =
         this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || []
+      console.log(this.$refs['hss-md']?.$el.childNodes[0], 333333)
       const arr = []
       for (let i = 0; i < md.length; i++) {
         const item = md[i]
@@ -500,9 +504,6 @@ export default {
   }
   .content {
     padding: 0 10px;
-  }
-  .head-img {
-    height: 200px;
   }
 }
 .avatar {

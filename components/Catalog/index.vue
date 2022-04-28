@@ -62,6 +62,9 @@ export default {
   margin: 0;
   padding: 0;
   font-size: 16px;
+  max-height: 80vh;
+  overflow-y: scroll;
+  @extend .hideScrollbar;
   &::before {
     position: absolute;
     top: 0;

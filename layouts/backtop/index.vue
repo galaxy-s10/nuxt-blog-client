@@ -72,7 +72,7 @@ export default {
     z-index: 100;
     width: 100px;
     height: 85%;
-    background: url('@/assets/img/back_top.png') no-repeat bottom;
+    background: url('@/assets/img/back_top.webp') no-repeat bottom;
     cursor: pointer;
     transition: all 0.5s;
     animation: move 3s infinite linear;

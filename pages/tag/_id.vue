@@ -29,7 +29,9 @@
             :to="`/article/${item.id}`"
             tag="div"
             class="head-img"
-          />
+          >
+            <NoHeadImgCpt></NoHeadImgCpt>
+          </nuxt-link>
         </div>
         <div class="article-r">
           <nuxt-link
@@ -86,8 +88,9 @@
 </template>
 
 <script>
+import NoHeadImgCpt from '@/components/NoHeadImg'
 export default {
-  components: {},
+  components: { NoHeadImgCpt },
   layout: 'blog',
   async asyncData({ $axios1, store, params }) {
     const articleListParams = {
@@ -246,7 +249,6 @@ export default {
   .head-img {
     width: 100%;
     height: 100%;
-    background-image: url('@/assets/img/nopic.png');
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;

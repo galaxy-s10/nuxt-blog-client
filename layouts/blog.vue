@@ -7,12 +7,14 @@
       <div class="left">
         <MainCpt />
       </div>
-      <div class="right"><AsideCpt /></div>
+      <div class="right">
+        <AsideCpt />
+      </div>
     </div>
-    <AudioCpt></AudioCpt>
+    <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
+    <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
+    <AsnycFeatureTipCpt></AsnycFeatureTipCpt>
     <FooterCpt />
-    <PlumCpt></PlumCpt>
-    <FeatureTip></FeatureTip>
   </div>
 </template>
 <script>
@@ -24,9 +26,6 @@ import BacktopCpt from '@/layouts/backtop'
 import AsideCpt from '@/layouts/aside'
 import MainCpt from '@/layouts/main'
 import FooterCpt from '@/layouts/footer'
-import AudioCpt from '@/components/Audio'
-import PlumCpt from '@/components/Plum'
-import FeatureTip from '@/components/FeatureTip'
 export default {
   components: {
     HeaderCpt,
@@ -34,19 +33,24 @@ export default {
     BacktopCpt,
     AsideCpt,
     MainCpt,
-    AudioCpt,
+    AsnycAudioCpt: () => import('@/components/Audio'),
+    AsnycPlumCpt: () => import('@/components/Plum'),
+    AsnycFeatureTipCpt: () => import('@/components/FeatureTip'),
     FooterCpt,
-    PlumCpt,
-    FeatureTip,
   },
   computed: {
     CurrentNodeEnv() {
       return this.$store.state.app.CurrentNodeEnv
     },
+    showMusicAudio() {
+      return this.$store.state.app.showMusicAudio
+    },
+    showPlum() {
+      return this.$store.state.app.showPlum
+    },
   },
 
   mounted() {
-    // window.document.documentElement.style.filter = 'grayscale(1)'
     this.init()
     this.getFrontendData()
     if (this.CurrentNodeEnv !== 'development') {

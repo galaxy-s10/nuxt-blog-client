@@ -39,7 +39,7 @@
               height="90"
               class="songImg"
               :style="{ transform: matrix }"
-              @click="showMusic"
+              @click="showMiniMusic"
             />
           </div>
         </div>
@@ -60,7 +60,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      showMiniAudio: true,
+      showMiniAudio: false,
       matrix: '',
       nowDeg: 0,
       audio: null,
@@ -72,12 +72,7 @@ export default {
       songList: [],
     }
   },
-  async fetch() {
-    const { data } = await this.$axios1.get(`/music/list`, {
-      params: { nowPage: 1, pageSize: 10 },
-    })
-    this.songList = data.rows
-  },
+  async fetch() {},
   computed: {
     ...mapState({
       showMusicAudio(state) {
@@ -88,7 +83,7 @@ export default {
       return (x) => this.formatTime(x)
     },
   },
-  mounted() {
+  async mounted() {
     const d = window.pageXOffset || document.documentElement.offsetWidth
     if (d <= 414) {
       this.showMiniAudio = true
@@ -97,11 +92,13 @@ export default {
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth
       if (offsetWidth <= 414) {
-        if (this.showMiniAudio !== true) {
-          this.showMiniAudio = true
-        }
+        this.showMiniAudio = true
       }
     })
+    const { data } = await this.$axios1.get(`/music/list`, {
+      params: { nowPage: 1, pageSize: 10 },
+    })
+    this.songList = data.rows
     if (!this.songList.length) return
     this.audio = new Audio()
     this.audio.src = this.songList[0].audio_url
@@ -113,21 +110,24 @@ export default {
       }
     }, 100)
 
-    this.audio.addEventListener('timeupdate', () => {
-      this.nowTime = this.audio.currentTime
-      if (this.nowTime === this.duration1) {
-        this.nextSong()
-      }
-    })
-    this.$refs.bar.addEventListener('click', (e) => {
-      setTimeout(() => {
-        this.nowTime = (e.offsetX / 170) * this.duration1
-        this.audio.currentTime = this.nowTime
-      }, 100)
-    })
+    setTimeout(() => {
+      this.audio.addEventListener('timeupdate', () => {
+        this.nowTime = this.audio.currentTime
+        if (this.nowTime === this.duration1) {
+          this.nextSong()
+        }
+      })
+
+      this.$refs.bar.addEventListener('click', (e) => {
+        setTimeout(() => {
+          this.nowTime = (e.offsetX / 170) * this.duration1
+          this.audio.currentTime = this.nowTime
+        }, 100)
+      })
+    }, 0)
   },
   methods: {
-    showMusic() {
+    showMiniMusic() {
       this.showMiniAudio = !this.showMiniAudio
     },
     formatTime(t) {
@@ -148,7 +148,9 @@ export default {
         this.audio
           .play()
           .then((res) => {})
-          .catch((error) => {})
+          .catch((error) => {
+            console.log(error)
+          })
       } else {
         this.stopRotate()
         this.audio.pause()
@@ -185,7 +187,9 @@ export default {
         this.audio
           .play()
           .then((res) => {})
-          .catch((error) => {})
+          .catch((error) => {
+            console.log(error)
+          })
       }, 500)
     },
     preSong() {

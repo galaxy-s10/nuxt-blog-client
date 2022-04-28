@@ -2,7 +2,6 @@
   <div class="link-wrap">
     <h1 class="title">友链</h1>
     <hr class="hr-class" />
-
     <ul class="link-list-wrap">
       <template v-if="linkList.length">
         <li v-for="(item, index) in linkList" :key="index" class="li-item-wrap">

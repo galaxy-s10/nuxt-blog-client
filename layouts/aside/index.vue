@@ -7,7 +7,7 @@
         :src="
           userInfo
             ? userInfo.avatar
-            : require('@/assets/img/default_avatar.jpg')
+            : require('@/assets/img/default_avatar.webp')
         "
       />
       <div class="info">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <CollapseCpt title="设置">
+    <AsnycCollapseCpt title="设置">
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
@@ -54,9 +54,9 @@
           </div>
         </div>
       </div>
-    </CollapseCpt>
+    </AsnycCollapseCpt>
 
-    <CollapseCpt v-if="userInfo" title="用户信息">
+    <AsnycCollapseCpt v-if="userInfo" title="用户信息">
       <template #ico>
         <i class="el-icon-user"></i>
       </template>
@@ -76,7 +76,7 @@
           github绑定: {{ summary.github_users.length ? '已绑定' : '未绑定' }}
         </div>
       </div>
-    </CollapseCpt>
+    </AsnycCollapseCpt>
 
     <template v-if="showCatalog">
       <div ref="catalogRef" class="catalog-ref"></div>
@@ -85,13 +85,13 @@
           <i class="el-icon-paperclip"></i>
           <b>文章目录</b>
         </div>
-        <CatalogCpt :list="catalogList"></CatalogCpt>
+        <AsnycCatalogCpt :list="catalogList"></AsnycCatalogCpt>
       </nav>
     </template>
 
     <template v-else>
       <div>
-        <CollapseCpt title="访客信息">
+        <AsnycCollapseCpt title="访客信息">
           <template #ico>
             <i class="el-icon-position"></i>
           </template>
@@ -104,9 +104,9 @@
               </div>
             </template>
           </div>
-        </CollapseCpt>
+        </AsnycCollapseCpt>
 
-        <CollapseCpt class="log-info" title="流量信息">
+        <AsnycCollapseCpt class="log-info" title="流量信息">
           <template #ico>
             <i class="el-icon-data-analysis"></i>
           </template>
@@ -131,7 +131,7 @@
               <i class="el-icon-refresh ico"></i>
             </div>
           </div>
-        </CollapseCpt>
+        </AsnycCollapseCpt>
 
         <div class="article-info">
           <div class="title">
@@ -143,7 +143,9 @@
                 }}
               </b>
             </div>
-            <span @click="switchSideBarArticleOrderName">切换</span>
+            <span class="switch-btn" @click="switchSideBarArticleOrderName"
+              >切换</span
+            >
           </div>
           <div v-loading="switchLoading">
             <div v-if="sideBarArticleList && sideBarArticleList.length">
@@ -183,7 +185,7 @@
           </div>
         </div>
 
-        <CollapseCpt class="tag-info" title="标签云" :open="true">
+        <AsnycCollapseCpt class="tag-info" title="标签云" :open="true">
           <template #ico>
             <i class="el-icon-collection-tag"></i>
           </template>
@@ -208,7 +210,7 @@
             </div>
             <div v-else>暂无标签~</div>
           </div>
-        </CollapseCpt>
+        </AsnycCollapseCpt>
       </div>
     </template>
   </aside>
@@ -216,12 +218,15 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import CatalogCpt from '@/components/Catalog'
-import CollapseCpt from '@/components/Collapse'
 import { dateStartAndEnd } from '@/utils/format'
+import AsnycCatalogCpt from '@/components/Catalog'
 
 export default {
-  components: { CatalogCpt, CollapseCpt },
+  components: {
+    AsnycCatalogCpt,
+    // AsnycCatalogCpt: () => import('@/components/Catalog'),
+    AsnycCollapseCpt: () => import('@/components/Collapse'),
+  },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
   asyncData({ $axios1, store }) {},
   data() {
@@ -416,8 +421,8 @@ export default {
         font-weight: bold;
       }
       .title {
-        text-align: center;
         margin: 4px;
+        text-align: center;
       }
     }
   }
@@ -432,6 +437,9 @@ export default {
       display: flex;
       justify-content: space-between;
       margin: 8px 0;
+      .switch-btn {
+        cursor: pointer;
+      }
     }
     .item {
       display: flex;
@@ -478,8 +486,8 @@ export default {
   .tag-info {
     /* 覆盖默认样式，加了/deep/或者>>>反而覆盖不了？ */
     .el-tag {
-      color: $theme-color6;
       border: none;
+      color: $theme-color6;
     }
     .title {
       margin: 8px 0;

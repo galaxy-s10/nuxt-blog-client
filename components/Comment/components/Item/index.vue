@@ -152,11 +152,11 @@
 </template>
 
 <script>
-import RenderMarkdownCpt from '@/components/RenderMarkdown'
-
 export default {
   name: 'CItem',
-  components: { RenderMarkdownCpt },
+  components: {
+    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+  },
   props: ['item'],
   data() {
     return {

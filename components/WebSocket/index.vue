@@ -95,12 +95,12 @@ const connectStatusEnum = {
   reconnect: 'reconnect', // 重新连接
 }
 const avatarList = [
-  'https://img.cdn.hsslive.cn/1613141138717Billd.jpg',
-  'https://img.cdn.hsslive.cn/1610170474620Hololo.jpeg',
-  'https://img.cdn.hsslive.cn/1610170481257MoonTIT.png',
-  'https://img.cdn.hsslive.cn/1610170481257CoCo.png',
-  'https://img.cdn.hsslive.cn/1610170481257Nill.png	',
-  'https://img.cdn.hsslive.cn/1610170481257Ojin.png	',
+  'https://img.cdn.hsslive.cn/1613141138717Billd.webp',
+  'https://img.cdn.hsslive.cn/1610170474620Hololo.webp',
+  'https://img.cdn.hsslive.cn/1610170481257MoonTIT.webp',
+  'https://img.cdn.hsslive.cn/1610170481257CoCo.webp',
+  'https://img.cdn.hsslive.cn/1610170481257Nill.webp',
+  'https://img.cdn.hsslive.cn/1610170481257Ojin.webp',
 ]
 export default {
   name: 'App',

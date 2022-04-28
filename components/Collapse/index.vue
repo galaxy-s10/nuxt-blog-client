@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="content">
-      <div v-if="isOpen">
+      <div v-show="isOpen">
         <slot></slot>
       </div>
     </div>

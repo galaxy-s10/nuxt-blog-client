@@ -2,7 +2,7 @@
   <div class="msg-wrap">
     <h1 class="title">留言板</h1>
     <hr class="hr-class" />
-    <h2 class="title-desc">欢迎大家发表留言~</h2>
+    <h2 class="title-desc">欢迎大家留言评论~</h2>
 
     <!-- 发表留言 -->
     <div class="comment-wrap">

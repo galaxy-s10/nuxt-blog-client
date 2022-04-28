@@ -10,7 +10,6 @@
       v-if="frontendData"
       :md="frontendData.frontend.frontend_dialog_content"
     ></RenderMarkdownCpt>
-
     <span slot="footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="dialogVisible = false">
@@ -21,10 +20,10 @@
 </template>
 
 <script>
-import RenderMarkdownCpt from '@/components/RenderMarkdown'
-
 export default {
-  components: { RenderMarkdownCpt },
+  components: {
+    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+  },
   props: {},
   data() {
     return {

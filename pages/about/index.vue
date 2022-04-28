@@ -57,11 +57,9 @@
 </template>
 
 <script>
-import RenderMarkdownCpt from '@/components/RenderMarkdown'
-
 export default {
   components: {
-    RenderMarkdownCpt,
+    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
   },
   layout: 'blog',
   async asyncData({ $axios1 }) {

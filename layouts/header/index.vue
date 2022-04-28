@@ -3,7 +3,7 @@
     <div v-show="visible" class="fix-header-wrapper">
       <div class="header-wrapper">
         <div class="logo">
-          <nuxt-link tag="span" to="/">Nuxt</nuxt-link>
+          <nuxt-link tag="span" to="/">Natural</nuxt-link>
           <sup>Blog</sup>
         </div>
         <div class="nav">

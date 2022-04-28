@@ -1,6 +1,11 @@
 <template>
   <div class="pages-wrap">
-    <div ref="waterfall-wrap" v-loading="isLoading" class="waterfall-wrap">
+    <div
+      ref="waterfall-wrap"
+      v-loading="isLoading"
+      class="waterfall-wrap"
+      :style="{ opacity: isFirst ? 0 : 1 }"
+    >
       <article
         v-for="(item, index) in articleList"
         :key="index"
@@ -8,12 +13,10 @@
         class="waterfall-item"
       >
         <nuxt-link :to="`/article/${item.id}`" class="a-link">
+          <NoHeadImgCpt v-if="!item.head_img"></NoHeadImgCpt>
           <div
-            v-lazy:background-image="
-              item['head_img']
-                ? item['head_img']
-                : require('@/assets/img/nopic.png')
-            "
+            v-else
+            v-lazy:background-image="item.head_img"
             class="head-img"
             :style="{
               height: item.mockImgHeight + 'px',
@@ -42,8 +45,8 @@
             </div>
             <div class="info">
               <img
-                style="width: 20px; height: 20px; border-radius: 50%"
                 :src="item.users[0] && item.users[0].avatar"
+                class="avatar"
                 alt=""
               />
               <div>
@@ -75,9 +78,11 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import { getRandomInt, generaterStyle } from '@/utils/index'
-
+import NoHeadImgCpt from '@/components/NoHeadImg'
 export default {
-  components: {},
+  components: {
+    NoHeadImgCpt,
+  },
   layout: 'blog',
   async asyncData({ $axios1, store }) {
     const params = {
@@ -85,7 +90,7 @@ export default {
       orderBy: 'desc',
       types: store.state.type.typeId,
       nowPage: 1,
-      pageSize: 10,
+      pageSize: 20,
     }
     try {
       const { data } = await $axios1.get(`/article/list`, { params })
@@ -113,6 +118,7 @@ export default {
       },
       isLoading: true,
       isBottom: false, // 是否触底
+      isFirst: true, // 是否初次加载
     }
   },
 
@@ -175,12 +181,10 @@ export default {
     this.handleWaterfall()
     this.isLoading = false
     this.touchBottom()
-    // window.addEventListener('scroll', this.headershow)
   },
   destroyed() {
     window.removeEventListener('scroll', this.headershow)
   },
-
   methods: {
     ...mapActions({
       userLogin: 'user/login',
@@ -210,20 +214,6 @@ export default {
         console.log(error)
         this.isLoading = false
       }
-    },
-    headershow() {
-      // 头部高度为70px
-      // const height = 70
-      // const offsetTop = window.pageYOffset || document.documentElement.scrollTop
-      // this.visible = offsetTop > height
-      // if (
-      //   document.documentElement.offsetHeight -
-      //     (window.innerHeight + offsetTop) <
-      //   300
-      // ) {
-      //   if (this.isLoading || this.end) return
-      //   this.currentChange(this.nowPage + 1)
-      // }
     },
     // 触底事件
     touchBottom() {
@@ -291,6 +281,7 @@ export default {
           this.offsetList[minIndex] += waterfallItem[i].offsetHeight + gap
         }
       }
+      this.isFirst = false
       const maxIndex = getMaxIndex(this.offsetList)
       waterfallWrap.style.height = this.offsetList[maxIndex] + 'px'
     },
@@ -370,6 +361,11 @@ export default {
             padding: 5px 0;
             width: 90%;
             font-size: 12px;
+            .avatar {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+            }
           }
         }
       }

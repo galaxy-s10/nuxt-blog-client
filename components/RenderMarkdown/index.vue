@@ -30,9 +30,7 @@ export default {
     }),
   },
   watch: {},
-  mounted() {
-    console.log(this.md, 22222)
-  },
+  mounted() {},
   created() {},
   methods: {},
 }
@@ -44,7 +42,8 @@ export default {
   ::v-deep .github-markdown-body {
     padding: 0px;
     blockquote {
-      margin: 0;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 }

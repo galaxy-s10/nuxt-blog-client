@@ -21,7 +21,9 @@
           ></div>
           <div class="detail">
             <h3 class="title" :title="item.title">{{ item.title }}</h3>
-            <p v-if="desc" class="desc" :title="item.desc">{{ item.desc }}</p>
+            <p v-if="item.desc" class="desc" :title="item.desc">
+              {{ item.desc }}
+            </p>
             <div class="tag-list">
               <div v-if="item.tags.length">
                 <el-tag

@@ -53,17 +53,19 @@
                 <i class="el-icon-date"></i>
                 {{ item.created_at | convertDate }}
               </div>
-              <div>
-                <i class="el-icon-view"></i>
-                {{ item.click }}
-              </div>
-              <div>
-                <i class="el-icon-chat-line-round"></i>
-                {{ item.comment_total }}
-              </div>
-              <div>
-                <i class="el-icon-star-off"></i>
-                {{ item.star_total }}
+              <div class="relation">
+                <div>
+                  <i class="el-icon-view"></i>
+                  {{ item.click }}
+                </div>
+                <div>
+                  <i class="el-icon-chat-line-round"></i>
+                  {{ item.comment_total }}
+                </div>
+                <div>
+                  <i class="el-icon-star-off"></i>
+                  {{ item.star_total }}
+                </div>
               </div>
             </div>
           </div>
@@ -301,10 +303,37 @@ export default {
   transition: all 0.5s ease;
 }
 
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .pages-wrap {
+    .detail {
+      .info {
+        flex-wrap: wrap;
+        justify-content: center !important;
+        .avatar {
+          margin-right: 10px;
+        }
+        .relation {
+          width: 100%;
+          flex: auto !important;
+          justify-content: center !important;
+          margin-top: 5px;
+          & > div {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
 @keyframes loading {
   to {
     background-position-x: -50%;
   }
+}
+.left {
+  padding: 0;
 }
 
 .pages-wrap {
@@ -343,7 +372,7 @@ export default {
           }
         }
         .detail {
-          padding: 5px 10px;
+          padding: 0 5px 10px;
           .title {
             margin: 10px 0;
             @include multiEllipsis(2);
@@ -359,12 +388,17 @@ export default {
             align-items: center;
             justify-content: space-between;
             padding: 5px 0;
-            width: 90%;
             font-size: 12px;
             .avatar {
               width: 20px;
               height: 20px;
               border-radius: 50%;
+            }
+            .relation {
+              flex: 0.8;
+              display: flex;
+              align-items: center;
+              justify-content: space-around;
             }
           }
         }

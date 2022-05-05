@@ -18,6 +18,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .no-head-img {
+    font-size: 18px !important;
+  }
+}
 .no-head-img {
   text-align: center;
   height: 150px;

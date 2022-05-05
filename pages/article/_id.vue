@@ -43,10 +43,11 @@
 
     <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
 
-    <AsyncRenderMarkdownCpt
+    <RenderMarkdownCpt
       ref="hss-md"
+      class="hss-mdd"
       :md="detail.content"
-    ></AsyncRenderMarkdownCpt>
+    ></RenderMarkdownCpt>
 
     <div class="tag-list">
       <span class="el-icon-collection-tag"></span>
@@ -140,12 +141,13 @@
 
 <script>
 import AvatarGroupCpt from '@/components/AvatarGroup'
+import RenderMarkdownCpt from '@/components/RenderMarkdown'
 
 export default {
   components: {
-    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
     AsyncCommentCpt: () => import('@/components/Comment'),
     AsyncTextareaInputCpt: () => import('@/components/TextareaInput'),
+    RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
   },
   layout: 'blog',
@@ -170,7 +172,6 @@ export default {
         })
         commentData = result.data
       }
-
       store.commit('app/setShowCatalog', true)
       return {
         sort: orderName === 'created_at' ? 'date' : 'hot',
@@ -400,7 +401,6 @@ export default {
       const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
       const md =
         this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || []
-      console.log(this.$refs['hss-md']?.$el.childNodes[0], 333333)
       const arr = []
       for (let i = 0; i < md.length; i++) {
         const item = md[i]
@@ -429,11 +429,6 @@ export default {
 @import '@/assets/css/constant.scss';
 
 .article-detail-wrap {
-  overflow: hidden;
-  padding: 10px 20px;
-  border: 1px solid $theme-color4;
-  border-radius: 5px;
-  background-color: $theme-color6;
   .title {
     text-align: center;
   }

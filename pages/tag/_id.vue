@@ -1,22 +1,25 @@
 <template>
   <div class="tag-wrap">
     <div v-if="tagList">
-      <div
-        v-for="item in tagList"
-        :key="'tag-key-' + item.id"
-        class="tag-item"
-        :class="{ 'active-tag': currentTagId === item.id }"
-        @click="getTagArticle(item.id)"
-      >
-        <span>{{ item.name }}</span>
-        <span class="article-total">({{ item.article_total }})</span>
+      <div class="tag-info">
+        <div
+          v-for="item in tagList"
+          :key="'tag-key-' + item.id"
+          class="tag-item"
+          :class="{ 'active-tag': currentTagId === item.id }"
+          @click="getTagArticle(item.id)"
+        >
+          <span>{{ item.name }}</span>
+          <span class="article-total">({{ item.article_total }})</span>
+        </div>
       </div>
+
       <article
         v-for="item in articleList"
         :key="'article-key-' + item.id"
         class="article-item"
       >
-        <div class="article-l">
+        <div class="article-left">
           <nuxt-link
             v-if="item['head_img']"
             v-lazy="item['head_img']"
@@ -33,7 +36,7 @@
             <NoHeadImgCpt></NoHeadImgCpt>
           </nuxt-link>
         </div>
-        <div class="article-r">
+        <div class="article-right">
           <nuxt-link
             :to="'/article/' + item.id"
             tag="h2"
@@ -60,11 +63,11 @@
             <span class="jgh"></span>
             <span>{{ item.created_at | convertDate }}</span>
             <span class="jgh"></span>
-            <span>{{ item.click }}次浏览</span>
+            <span>{{ item.click }}浏览</span>
             <span class="jgh"></span>
-            <span>{{ item.comment_total }}条评论</span>
+            <span>{{ item.comment_total }}评论</span>
             <span class="jgh"></span>
-            <div>{{ item.star_total }}个star</div>
+            <div>{{ item.star_total }}star</div>
           </div>
         </div>
       </article>
@@ -72,13 +75,15 @@
         <div>
           <el-button
             v-show="articleListParams && articleListParams.nowPage !== 1"
-            @click="prePage"
+            @click="handlePage('prev')"
           >
             上一页
           </el-button>
         </div>
         <div>
-          <el-button v-show="hasMore" @click="nextPage">下一页</el-button>
+          <el-button v-show="hasMore" @click="handlePage('next')"
+            >下一页</el-button
+          >
         </div>
       </div>
       <div v-else class="no-data">{{ currentTagName }}标签下暂无文章~</div>
@@ -112,6 +117,7 @@ export default {
           params: articleListParams,
         }
       )
+
       return {
         articleListParams,
         currentTagId: +tagId,
@@ -168,20 +174,12 @@ export default {
         console.log(error)
       }
     },
-    prePage() {
-      this.articleListParams.nowPage--
-      this.$axios1
-        .get(`/tag/article_list/${this.currentTagId}`, {
-          params: this.articleListParams,
-        })
-        .then(({ data }) => {
-          this.articleList = data.rows
-          this.total = data.total
-          scrollTo({ top: 0 })
-        })
-    },
-    async nextPage() {
-      this.articleListParams.nowPage++
+    async handlePage(type) {
+      if (type === 'prev') {
+        this.articleListParams.nowPage--
+      } else {
+        this.articleListParams.nowPage++
+      }
       try {
         const { data } = await this.$axios1.get(
           `/tag/article_list/${this.currentTagId}`,
@@ -191,6 +189,7 @@ export default {
         )
         this.articleList = data.rows
         this.total = data.total
+        this.hasMore = data.hasMore
         scrollTo({ top: 0 })
       } catch (error) {
         console.log(error)
@@ -206,24 +205,64 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
+/* 响应式布局 - 小于 540px */
 @media screen and (max-width: 540px) {
-  .main {
-    margin: 135px auto 0;
-    padding: 0;
+  .tag-info {
+    font-size: 13px;
+    .tag-item {
+      margin: 8px 6px !important;
+    }
   }
-  .content {
-    padding: 0 10px;
-  }
-  .img {
-    height: 200px !important;
+  .article-item {
+    flex-wrap: wrap;
+
+    .article-left {
+      width: 100%;
+      flex: auto !important;
+    }
+    .article-right {
+      padding: 10px 20px !important;
+    }
   }
 }
 .tag-wrap {
-  overflow: hidden;
-  padding: 30px;
-  border: 1px solid $theme-color4;
-  border-radius: 5px;
-  background: $theme-color6;
+  .tag-info {
+    .tag-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px;
+      padding: 0 10px;
+      height: 30px;
+      border: 1px solid rgba(93, 121, 148, 0.15);
+      border-radius: 3px;
+      background-color: white;
+
+      &:hover {
+        cursor: pointer;
+      }
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: -1px;
+        width: 8px;
+        height: 8px;
+        border-width: 0 0 1px 1px;
+        border-style: solid;
+        border-color: inherit;
+        background-color: inherit;
+        content: '';
+        transform: translateX(-50%) translateY(-50%) rotate(45deg);
+      }
+      .article-total {
+        margin-left: 6px;
+      }
+      &.active-tag {
+        border: 1px solid #005cc5 !important;
+      }
+    }
+  }
   .no-data {
     padding: 40px 0;
     text-align: center;
@@ -241,81 +280,39 @@ export default {
   border-radius: 5px;
   background: white;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-.article-l {
-  overflow: hidden;
-  flex: 0 0 40%;
-  margin: 20px;
-  .head-img {
-    width: 100%;
-    height: 100%;
-    background-position: 50% 50%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    transition: all 0.3s ease 0s;
+  .article-left {
+    overflow: hidden;
+    flex: 0 0 40%;
+    margin: 20px;
+    .head-img {
+      width: 100%;
+      height: 100%;
+      background-position: 50% 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: pointer;
+      transition: all 0.3s ease 0s;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
-}
-.article-r {
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 30px;
-}
-.summary {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  font-size: 12px;
-  .user-avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-  }
-}
-.head_img {
-  width: 100%;
-  height: 100%;
-  background-position: 50% 50%;
-  background-size: cover;
-  transition: all 0.3s ease 0s;
-}
-.head_img:hover {
-  transform: scale(1.1);
-}
-
-.tag-item {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px;
-  padding: 0 10px;
-  height: 30px;
-  border: 1px solid rgba(93, 121, 148, 0.15);
-  border-radius: 3px;
-  background-color: white;
-
-  &:hover {
-    cursor: pointer;
-  }
-  &::after {
-    position: absolute;
-    top: 50%;
-    left: -1px;
-    width: 8px;
-    height: 8px;
-    border-width: 0 0 1px 1px;
-    border-style: solid;
-    border-color: inherit;
-    background-color: inherit;
-    content: '';
-    transform: translateX(-50%) translateY(-50%) rotate(45deg);
-  }
-  .article-total {
-    margin-left: 6px;
-  }
-  &.active-tag {
-    border: 1px solid #005cc5 !important;
+  .article-right {
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 30px;
+    .summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 12px;
+      .user-avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+      }
+    }
   }
 }
 
@@ -324,28 +321,9 @@ export default {
   content: '·';
   font-weight: 600;
 }
-.tag {
-  overflow: hidden;
-  padding: 30px;
-  background: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
 
 .overwrite-el-tag {
-  /* margin: 5px 10px; */
   color: white;
-}
-</style>
-
-<style scoped>
-.tag /deep/ .el-tag {
-  border: none;
-  color: white;
-}
-.tag /deep/ .el-tag .el-icon-close {
-  color: white;
-}
-.tag /deep/ .el-tag .el-icon-close:hover {
-  background-color: transparent;
+  margin-right: 10px;
 }
 </style>

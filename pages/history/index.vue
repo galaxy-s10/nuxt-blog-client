@@ -86,11 +86,6 @@ export default {
 @import '@/assets/css/constant.scss';
 
 .history-wrap {
-  overflow: hidden;
-  padding: 30px;
-  border: 1px solid $theme-color4;
-  border-radius: 5px;
-  background: $theme-color6;
   .a-link {
     color: $theme-color5;
     text-decoration: none;

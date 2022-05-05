@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="近期"
+    title="公告"
     :visible="dialogVisible"
     :before-close="handleClose"
     :width="dialogWidth"

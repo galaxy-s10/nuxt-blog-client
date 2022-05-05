@@ -1,4 +1,5 @@
 import CompressionPlugin from 'compression-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 
 export default {
   analyze: true,
@@ -31,6 +32,7 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [],
   },
+  corejs: 3,
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -103,6 +105,9 @@ export default {
     plugins: [
       new CompressionPlugin({
         test: /\.(js|css|html)$/,
+        threshold: 10 * 1024, // 大于10k的文件才进行压缩
+        minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+        algorithm: 'gzip', // 压缩算法
       }),
     ],
     babel: {
@@ -113,11 +118,73 @@ export default {
         ],
       ],
     },
+    extractCSS: true, // 单独提取css为文件
     optimization: {
+      // 拆分大文件
       splitChunks: {
-        minSize: 20 * 1024, // 生成 chunk 的最小体积。默认：20000（19.5kb）
-        maxSize: 50 * 1024, // 不写maxSize默认就是0，这里手动设置0
+        cacheGroups: {
+          // commons: {
+          //   // name: 'commons',
+          //   test: /[\\/]src[\\/]/,
+          //   chunks: 'all',
+          //   maxSize: 80 * 1024,
+          //   minChunks: 2, // 至少被minChunks个入口文件引入了minChunks次。
+          //   priority: 20,
+          // },
+          defaultVendors: {
+            // 重写默认的defaultVendors
+            chunks: 'initial',
+            minSize: 40 * 1024,
+            maxSize: 80 * 1024,
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+          },
+          default: {
+            // 重写默认的default
+            chunks: 'all',
+            minSize: 40 * 1024,
+            maxSize: 80 * 1024,
+            priority: 30,
+          },
+          // mdEditor: {
+          //   test: /[\\/]node_modules[\\/](@kangc)[\\/]/,
+          //   name: 'mdEditor',
+          //   chunks: 'all',
+          //   minSize: 30 * 1024,
+          //   maxSize: 60 * 1024,
+          //   priority: 20,
+          // },
+        },
       },
+      minimize: true, // 是否开启Terser,默认就是true，设置false后，不会压缩和转化
+      minimizer: [
+        new TerserPlugin({
+          parallel: true, // 使用多进程并发运行以提高构建速度
+          extractComments: false, // 去除打包生成的bundle.js.LICENSE.txt
+          terserOptions: {
+            // Terser 压缩配置
+            parse: {
+              // default {},如果希望指定其他解析选项，请传递一个对象。
+            },
+            compress: {
+              // default {},传递false表示完全跳过压缩。传递一个对象来指定自定义压缩选项。
+              arguments: true, // default: false,尽可能将参数[index]替换为函数参数名
+              dead_code: true, // 删除死代码，默认就会删除，实际测试设置false也没用，还是会删除
+              toplevel: false, // default: false,在顶级作用域中删除未引用的函数("funcs")和/或变量("vars"), 设置true表示同时删除未引用的函数和变量
+              keep_classnames: false, // default: false,传递true以防止压缩器丢弃类名
+              keep_fnames: false, // default: false,传递true以防止压缩器丢弃函数名
+            },
+            /**
+             * mangle,默认值true,会将keep_classnames,keep_fnames,toplevel等等mangle options的所有选项设为true。
+             * 传递false以跳过篡改名称，或者传递一个对象来指定篡改选项
+             */
+            mangle: true,
+            toplevel: true, // default false,如果希望启用顶级变量和函数名修改,并删除未使用的变量和函数,则设置为true。
+            keep_classnames: true, // default: undefined,传递true以防止丢弃或混淆类名。
+            keep_fnames: true, // default: false,传递true以防止函数名被丢弃或混淆。
+          },
+        }),
+      ],
     },
     // transpile: [/^element-ui/],
     extend(config, { isClient }) {

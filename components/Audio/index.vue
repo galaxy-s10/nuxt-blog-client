@@ -93,6 +93,8 @@ export default {
         window.pageXOffset || document.documentElement.offsetWidth
       if (offsetWidth <= 414) {
         this.showMiniAudio = true
+      } else {
+        this.showMiniAudio = false
       }
     })
     const { data } = await this.$axios1.get(`/music/list`, {

@@ -228,12 +228,6 @@ export default {
 @import '@/assets/css/mixin.scss';
 
 .msg-wrap {
-  overflow: hidden;
-  padding: 30px;
-  border: 1px solid $theme-color4;
-  border-radius: 5px;
-  background: $theme-color6;
-
   .title {
     display: block;
     text-align: center;

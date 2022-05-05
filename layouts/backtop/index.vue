@@ -94,14 +94,17 @@ export default {
     text-align: center;
     opacity: 0;
     cursor: pointer;
-    transition: opacity 1s;
+    transition: opacity 0.5s;
     pointer-events: none;
 
     .triangle {
-      position: relative;
-      top: -5px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: inline-block;
       border: 7px solid transparent;
       border-bottom-color: $theme-color1;
+      transform: translate(-50%, -90%);
     }
     &.show-mini-back-top {
       z-index: 100;

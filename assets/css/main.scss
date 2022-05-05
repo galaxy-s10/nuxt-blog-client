@@ -13,6 +13,10 @@ body {
   padding-right: 0 !important;
 }
 
+/* 响应式布局 - 小于 1200px */
+@media screen and (max-width: 1200px) {
+}
+
 /* 响应式布局 - 小于 992px */
 @media screen and (max-width: 992px) {
   .nav-menu {
@@ -39,10 +43,7 @@ body {
       display: none !important;
     }
   }
-  .article-con {
-    display: block !important;
-  }
-  .article-l {
+  .article-left {
     margin: 0 !important;
   }
 }

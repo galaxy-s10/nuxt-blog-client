@@ -8,18 +8,27 @@
 import { mapState } from 'vuex'
 import Vue from 'vue'
 import VMdPreview from '@kangc/v-md-editor/lib/preview'
-import '@kangc/v-md-editor/lib/style/preview.css'
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
-import '@kangc/v-md-editor/lib/theme/style/github.css'
 import hljs from 'highlight.js/lib/core'
-;['javascript', 'typescript', 'css', 'scss', 'bash'].forEach((langName) => {
-  const langModule = require(`highlight.js/lib/languages/${langName}`)
-  hljs.registerLanguage(langName, langModule)
-})
+import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
+import css from 'highlight.js/lib/languages/css'
+import scss from 'highlight.js/lib/languages/scss'
+import bash from 'highlight.js/lib/languages/bash'
+import '@kangc/v-md-editor/lib/style/preview.css'
+import '@kangc/v-md-editor/lib/theme/style/github.css'
+
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('scss', scss)
+hljs.registerLanguage('bash', bash)
+
 VMdPreview.use(githubTheme, {
   Hljs: hljs,
 })
 Vue.use(VMdPreview)
+
 export default {
   components: { VMdPreview },
   props: ['md'],
@@ -49,6 +58,9 @@ export default {
       margin-left: 0;
       margin-right: 0;
     }
+  }
+  ::v-deep .github-markdown-body > :last-child {
+    margin-bottom: 0 !important;
   }
 }
 </style>

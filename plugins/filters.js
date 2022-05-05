@@ -2,7 +2,7 @@ import Vue from 'vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/zh-cn'
-import ua from 'ua-device'
+import UAParser from 'ua-parser-js'
 
 dayjs.extend(relativeTime).locale('zh-cn')
 
@@ -27,13 +27,19 @@ const convertDate = (date) => {
 
 // 解析user-agent
 const parseUa = (v) => {
-  const osName = ua(v).os.name
-  const osVersion = ua(v).os.version ? ua(v).os.version.original : ''
+  const parser = new UAParser()
+  const uaParser = parser.setUA(v)
+  const uaResult = uaParser.getResult()
+  const osName = uaResult.os.name
+  const osVersion = uaResult.os.version
   return osName + ' ' + osVersion
 }
 
 // 解析ipInfo
 const parseIpInfo = (ipInfo) => {
+  if (ipInfo.province.length <= 0) {
+    return ''
+  }
   const str = ipInfo.province + ' - ' + ipInfo.city
   return str
 }

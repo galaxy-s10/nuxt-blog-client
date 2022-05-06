@@ -1,42 +1,42 @@
 <template>
   <div>
-    <HeaderCpt />
-    <TypeListCpt />
-    <BacktopCpt />
+    <LyHeader />
+    <LyTypeList />
+    <LyBacktop />
     <div class="main-wrapper">
       <div class="left">
-        <MainCpt />
+        <LyMain />
       </div>
       <div class="right">
-        <AsideCpt />
+        <LyAside />
       </div>
     </div>
     <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
     <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
     <AsnycFeatureTipCpt></AsnycFeatureTipCpt>
-    <FooterCpt />
+    <LyFooter />
   </div>
 </template>
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import Cookies from 'js-cookie'
-import HeaderCpt from '@/layouts/header'
-import TypeListCpt from '@/layouts/typelist'
-import BacktopCpt from '@/layouts/backtop'
-import AsideCpt from '@/layouts/aside'
-import MainCpt from '@/layouts/main'
-import FooterCpt from '@/layouts/footer'
+import LyHeader from '@/layouts/header'
+import LyTypeList from '@/layouts/typelist'
+import LyBacktop from '@/layouts/backtop'
+import LyAside from '@/layouts/aside'
+import LyMain from '@/layouts/main'
+import LyFooter from '@/layouts/footer'
 export default {
   components: {
-    HeaderCpt,
-    TypeListCpt,
-    BacktopCpt,
-    AsideCpt,
-    MainCpt,
+    LyHeader,
+    LyTypeList,
+    LyBacktop,
+    LyAside,
+    LyMain,
+    LyFooter,
     AsnycAudioCpt: () => import('@/components/Audio'),
     AsnycPlumCpt: () => import('@/components/Plum'),
     AsnycFeatureTipCpt: () => import('@/components/FeatureTip'),
-    FooterCpt,
   },
   computed: {
     CurrentNodeEnv() {

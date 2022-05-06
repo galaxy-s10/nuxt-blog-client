@@ -36,7 +36,7 @@
     </div>
 
     <!-- about富文本 -->
-    <RenderMarkdownCpt :md="detail"></RenderMarkdownCpt>
+    <AsyncRenderMarkdownCpt :md="detail"></AsyncRenderMarkdownCpt>
 
     <h1>本站发展历史</h1>
 
@@ -59,7 +59,7 @@
 <script>
 export default {
   components: {
-    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
   },
   layout: 'blog',
   async asyncData({ $axios1 }) {

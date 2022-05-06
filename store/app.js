@@ -1,5 +1,3 @@
-import { generaterStyle } from '@/utils'
-
 export const state = () => ({
   // ip信息
   ipInfo: null,
@@ -10,7 +8,7 @@ export const state = () => ({
   // 是否显示梅花特效
   showPlum: false,
   // 是否显示音乐播放器
-  showMusicAudio: true,
+  showMusicAudio: false,
   // 当前主题
   theme: 'light',
   // 当前node环境

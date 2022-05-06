@@ -2,8 +2,6 @@ import CompressionPlugin from 'compression-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 
 export default {
-  analyze: true,
-
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'new-blog-client',
@@ -102,6 +100,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    // analyze: true,
     plugins: [
       new CompressionPlugin({
         test: /\.(js|css|html)$/,
@@ -146,14 +145,6 @@ export default {
             maxSize: 80 * 1024,
             priority: 30,
           },
-          // mdEditor: {
-          //   test: /[\\/]node_modules[\\/](@kangc)[\\/]/,
-          //   name: 'mdEditor',
-          //   chunks: 'all',
-          //   minSize: 30 * 1024,
-          //   maxSize: 60 * 1024,
-          //   priority: 20,
-          // },
         },
       },
       minimize: true, // 是否开启Terser,默认就是true，设置false后，不会压缩和转化

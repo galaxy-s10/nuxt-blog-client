@@ -80,7 +80,7 @@
           </div>
         </div>
         <div class="content">
-          <RenderMarkdownCpt :md="item.content"></RenderMarkdownCpt>
+          <AsyncRenderMarkdownCpt :md="item.content"></AsyncRenderMarkdownCpt>
           <div
             v-if="
               item.reply_comment &&
@@ -89,9 +89,9 @@
             class="parent-content"
           >
             <div v-if="!item.reply_comment.deleted_at" class="padding">
-              <RenderMarkdownCpt
+              <AsyncRenderMarkdownCpt
                 :md="item.reply_comment.content"
-              ></RenderMarkdownCpt>
+              ></AsyncRenderMarkdownCpt>
             </div>
             <div v-else>该评论已被删除</div>
           </div>
@@ -155,7 +155,7 @@
 export default {
   name: 'CItem',
   components: {
-    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
   },
   props: ['item'],
   data() {

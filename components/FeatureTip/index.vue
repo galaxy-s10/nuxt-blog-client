@@ -6,10 +6,10 @@
     :width="dialogWidth"
     :top="dialogTop"
   >
-    <RenderMarkdownCpt
+    <AsyncRenderMarkdownCpt
       v-if="frontendData"
       :md="frontendData.frontend.frontend_dialog_content"
-    ></RenderMarkdownCpt>
+    ></AsyncRenderMarkdownCpt>
     <span slot="footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="dialogVisible = false">
@@ -22,7 +22,7 @@
 <script>
 export default {
   components: {
-    RenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
   },
   props: {},
   data() {

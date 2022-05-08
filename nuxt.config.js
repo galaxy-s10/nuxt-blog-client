@@ -28,8 +28,16 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [],
+    script: [
+      { src: 'https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js' },
+      { src: 'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js' },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js',
+      },
+      { src: 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js' },
+    ],
   },
+
   corejs: 3,
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -100,7 +108,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // analyze: true,
+    analyze: true,
     plugins: [
       new CompressionPlugin({
         test: /\.(js|css|html)$/,
@@ -183,6 +191,14 @@ export default {
       // if (isClient) {
       //   config.devtool = 'source-map'
       // }
+      if (isClient) {
+        config.externals = {
+          vue: 'Vue',
+          vuex: 'Vuex',
+          'vue-router': 'VueRouter',
+          axios: 'axios',
+        }
+      }
     },
   },
 }

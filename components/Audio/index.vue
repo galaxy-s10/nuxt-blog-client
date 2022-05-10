@@ -1,6 +1,5 @@
 <template>
   <div class="audio-wrap">
-    音乐组件
     <div
       v-if="songList.length"
       class="music-wrap"

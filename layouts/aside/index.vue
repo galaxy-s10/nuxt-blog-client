@@ -156,10 +156,14 @@
               >
                 <div class="head-img">
                   <nuxt-link
+                    v-if="item['head_img']"
                     v-lazy="item['head_img']"
                     :to="'/article/' + item.id"
                     tag="img"
                   />
+                  <nuxt-link v-else :to="`/article/${item.id}`" tag="div">
+                    <NoHeadImgCpt></NoHeadImgCpt>
+                  </nuxt-link>
                 </div>
                 <div class="desc">
                   <nuxt-link :to="'/article/' + item.id" tag="b">
@@ -220,10 +224,12 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { dateStartAndEnd } from '@/utils/format'
 import AsnycCatalogCpt from '@/components/Catalog'
+import NoHeadImgCpt from '@/components/NoHeadImg'
 
 export default {
   components: {
     AsnycCatalogCpt,
+    NoHeadImgCpt,
     // AsnycCatalogCpt: () => import('@/components/Catalog'),
     AsnycCollapseCpt: () => import('@/components/Collapse'),
   },
@@ -453,11 +459,19 @@ export default {
       .head-img {
         overflow: hidden;
         width: 40%;
+        cursor: pointer;
+
+        ::v-deep .no-head-img {
+          font-size: 12px !important;
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+
         img {
           display: block;
           width: 100%;
           border-radius: 5px;
-          cursor: pointer;
           transition: all 0.3s ease 0s;
           &:hover {
             transform: scale(1.1);

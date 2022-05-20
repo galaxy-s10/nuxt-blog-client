@@ -29,12 +29,12 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     script: [
-      { src: 'https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js' },
-      { src: 'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js' },
+      { src: 'https://unpkg.com/vue@2.6.14/dist/vue.runtime.min.js' },
+      { src: 'https://unpkg.com/vuex@3.6.2/dist/vuex.min.js' },
       {
-        src: 'https://cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js',
+        src: 'https://unpkg.com/vue-router@3.5.4/dist/vue-router.min.js',
       },
-      { src: 'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js' },
+      { src: 'https://unpkg.com/axios@0.27.2/dist/axios.min.js' },
     ],
   },
 

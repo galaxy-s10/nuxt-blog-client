@@ -56,7 +56,29 @@ export default {
     if (this.CurrentNodeEnv !== 'development') {
       this.$axios1.post('visitor_log/create') // 新增访客记录
     }
-    window.addEventListener('message', async (e) => {
+    window.addEventListener('message', this.messageFn)
+  },
+  destroyed() {
+    window.removeEventListener('message', this.messageFn)
+  },
+  methods: {
+    ...mapActions({
+      getUserInfo: 'user/getUserInfo',
+      getFrontendData: 'app/getFrontendData',
+    }),
+    ...mapMutations({
+      setToken: 'user/setToken',
+      logout: 'user/logout',
+    }),
+
+    init() {
+      const token = localStorage.token
+      if (token) {
+        this.setToken(token)
+        this.getUserInfo()
+      }
+    },
+    async messageFn(e) {
       const { type, data: code } = e.data
       if (type === 'qq_login') {
         if (code) {
@@ -85,24 +107,6 @@ export default {
             console.log(error)
           }
         }
-      }
-    })
-  },
-  methods: {
-    ...mapActions({
-      getUserInfo: 'user/getUserInfo',
-      getFrontendData: 'app/getFrontendData',
-    }),
-    ...mapMutations({
-      setToken: 'user/setToken',
-      logout: 'user/logout',
-    }),
-
-    init() {
-      const token = localStorage.token
-      if (token) {
-        this.setToken(token)
-        this.getUserInfo()
       }
     },
   },

@@ -88,15 +88,7 @@ export default {
     if (d <= 414) {
       this.showMiniAudio = true
     }
-    window.addEventListener('resize', () => {
-      const offsetWidth =
-        window.pageXOffset || document.documentElement.offsetWidth
-      if (offsetWidth <= 414) {
-        this.showMiniAudio = true
-      } else {
-        this.showMiniAudio = false
-      }
-    })
+    window.addEventListener('resize', this.resizeFn)
     const { data } = await this.$axios1.get(`/music/list`, {
       params: { nowPage: 1, pageSize: 10 },
     })
@@ -112,7 +104,7 @@ export default {
       }
     }, 100)
 
-    setTimeout(() => {
+    const timer1 = setTimeout(() => {
       this.audio.addEventListener('timeupdate', () => {
         this.nowTime = this.audio.currentTime
         if (this.nowTime === this.duration1) {
@@ -126,9 +118,22 @@ export default {
           this.audio.currentTime = this.nowTime
         }, 100)
       })
+      clearTimeout(timer1)
     }, 0)
   },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeFn)
+  },
   methods: {
+    resizeFn() {
+      const offsetWidth =
+        window.pageXOffset || document.documentElement.offsetWidth
+      if (offsetWidth <= 414) {
+        this.showMiniAudio = true
+      } else {
+        this.showMiniAudio = false
+      }
+    },
     showMiniMusic() {
       this.showMiniAudio = !this.showMiniAudio
     },
@@ -179,13 +184,13 @@ export default {
           })
         })
         this.audio.src = this.songList[index].audio_url
-        const timer = setInterval(() => {
-          if (!isNaN(this.audio.duration)) {
-            this.duration = this.audio.duration
-            this.duration1 = this.audio.duration
-            clearInterval(timer)
-          }
-        }, 100)
+        // const timer = setInterval(() => {
+        //   if (!isNaN(this.audio.duration)) {
+        //     this.duration = this.audio.duration
+        //     this.duration1 = this.audio.duration
+        //     clearInterval(timer)
+        //   }
+        // }, 100)
         this.audio
           .play()
           .then((res) => {})

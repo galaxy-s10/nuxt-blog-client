@@ -100,6 +100,9 @@ export default {
   },
   created() {},
   mounted() {},
+  destroyed() {
+    window.removeEventListener('scroll', this.headershow)
+  },
   methods: {
     ...mapActions({
       getFrontendData: 'app/getFrontendData',
@@ -168,8 +171,10 @@ export default {
           })
           .then((res) => {
             this.$newmessage('注册成功!', 'success')
-            setTimeout(() => {
+            let timer = null
+            timer = setTimeout(() => {
               this.dialogtwo = false
+              clearTimeout(timer)
             }, 500)
           })
           .catch((error) => {
@@ -199,13 +204,17 @@ export default {
       if (keyWord) {
         await this.$store.dispatch('user/findarticle', { keyWord })
         // cb(this.$store.state.article.search);
-        setTimeout(() => {
+        let timer = null
+        timer = setTimeout(() => {
           cb(this.$store.state.article.search)
+          clearTimeout(timer)
         }, 300)
       } else {
-        setTimeout(() => {
+        let timer = null
+        timer = setTimeout(() => {
           // eslint-disable-next-line node/no-callback-literal
           cb([])
+          clearTimeout(timer)
         }, 300)
       }
     },

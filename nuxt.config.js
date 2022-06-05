@@ -73,6 +73,8 @@ export default {
     '@nuxtjs/axios',
   ],
 
+  hooks: {},
+
   server: {
     // 注意，因为是服务端渲染，因此这个port不仅仅是开发时启动的端口，也是部署上线后生产模式的端口
     port: 3000, // default: 3000
@@ -108,7 +110,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    analyze: true,
+    // analyze: true,
     plugins: [
       new CompressionPlugin({
         test: /\.(js|css|html)$/,

@@ -224,8 +224,10 @@ export default {
   created() {},
   mounted() {
     window.scrollTo({ top: 0 })
-    setTimeout(() => {
+    let timer = null
+    timer = setTimeout(() => {
       this.renderCatalog()
+      clearTimeout(timer)
     }, 0)
     const articleId = this.$route.params.id
     this.articleId = articleId

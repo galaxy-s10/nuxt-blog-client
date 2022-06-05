@@ -14,14 +14,6 @@ class HeartBeat {
     clearTimeout(this.serverTimeoutObj)
     return this
   }
-
-  start() {
-    this.timeoutObj = setTimeout(() => {
-      this.serverTimeoutObj = setTimeout(() => {
-        this.ws.close()
-      }, this.timeout)
-    }, this.timeout)
-  }
 }
 
 export default HeartBeat

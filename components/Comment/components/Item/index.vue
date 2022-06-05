@@ -179,8 +179,10 @@ export default {
       this.currentUserDetail = data
     },
     mouseleave() {
-      setTimeout(() => {
+      let timer = null
+      timer = setTimeout(() => {
         this.currentUserDetail = null
+        clearTimeout(timer)
       }, 300)
     },
     sortChange(val) {

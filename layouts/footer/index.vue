@@ -21,19 +21,23 @@ export default {
       runningTime: null,
     }
   },
-  created() {
+  created() {},
+  mounted() {
     this.init()
   },
+  destroyed() {},
   methods: {
     init() {
-      setInterval(() => {
-        const startDate = dayjs('2019-09-01 00:00:00')
-        const nowDate = dayjs()
-        const res = dayjs
-          .duration(nowDate - startDate)
-          .format('Y年M个月D天H小时m分s秒')
-        this.runningTime = res
-      }, 1000)
+      for (let i = 0; i < 1000; i++) {
+        setInterval(() => {
+          const startDate = dayjs('2019-09-01 00:00:00')
+          const nowDate = dayjs()
+          const res = dayjs
+            .duration(nowDate - startDate)
+            .format('Y年M个月D天H小时m分s秒')
+          this.runningTime = res
+        }, 1000)
+      }
     },
   },
 }

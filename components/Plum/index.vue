@@ -59,8 +59,10 @@ export default {
     if (this.showPlum) {
       this.handleStep()
       this.handleFrame()
-      setTimeout(() => {
+      let timer = null
+      timer = setTimeout(() => {
         this.queue.splice(0)
+        clearTimeout(timer)
       }, this.duration)
     }
   },
@@ -70,8 +72,10 @@ export default {
       this.depth = 0
       this.handleStep()
       this.handleFrame()
-      setTimeout(() => {
+      let timer = null
+      timer = setTimeout(() => {
         this.queue.splice(0)
+        clearTimeout(timer)
       }, this.duration)
     },
     handleStep() {

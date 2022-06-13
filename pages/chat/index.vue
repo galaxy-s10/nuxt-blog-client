@@ -2,14 +2,15 @@
   <div class="chat-wrap">
     <h1 class="title">在线聊天</h1>
     <hr class="hr-class" />
-    <WebSocketCpt></WebSocketCpt>
+    <p>暂时关闭~</p>
+    <!-- <WebSocketCpt></WebSocketCpt> -->
   </div>
 </template>
 
 <script>
-import WebSocketCpt from '@/components/WebSocket'
+// import WebSocketCpt from '@/components/WebSocket'
 export default {
-  components: { WebSocketCpt },
+  components: {},
   layout: 'blog',
   async asyncData({ $axios1, store, params }) {},
   data() {

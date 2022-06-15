@@ -72,7 +72,6 @@ export default {
       songList: [],
     }
   },
-  async fetch() {},
   computed: {
     ...mapState({
       showMusicAudio(state) {

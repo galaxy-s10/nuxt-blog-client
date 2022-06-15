@@ -142,6 +142,7 @@
 <script>
 import AvatarGroupCpt from '@/components/AvatarGroup'
 import RenderMarkdownCpt from '@/components/RenderMarkdown'
+import { init } from '@/mixin/init'
 
 export default {
   components: {
@@ -150,6 +151,7 @@ export default {
     RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
   },
+  mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {

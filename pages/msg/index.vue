@@ -40,12 +40,15 @@
 <script>
 import CommentCpt from '@/components/Comment'
 import TextareaInputCpt from '@/components/TextareaInput'
+import { init } from '@/mixin/init'
 
 export default {
   components: {
     CommentCpt,
     TextareaInputCpt,
   },
+  mixins: [init],
+
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {

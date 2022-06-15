@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { init } from '@/mixin/init'
+
 const validateEmail = (rule, value, callback) => {
   const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
   if (value) {
@@ -87,6 +89,7 @@ const validateEmail = (rule, value, callback) => {
 
 export default {
   components: {},
+  mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     // 获取友链数据

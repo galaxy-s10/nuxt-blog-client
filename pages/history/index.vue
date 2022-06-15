@@ -27,11 +27,14 @@
 </template>
 
 <script>
+import { init } from '@/mixin/init'
+
 import pagingCpt from '@/components/Paging'
 export default {
   components: {
     pagingCpt,
   },
+  mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, store, params }) {
     const query = {

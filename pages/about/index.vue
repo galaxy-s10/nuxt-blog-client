@@ -57,10 +57,12 @@
 </template>
 
 <script>
+import { init } from '@/mixin/init'
 export default {
   components: {
     AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
   },
+  mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1 }) {
     const { data } = await $axios1.get('/frontend/detail')

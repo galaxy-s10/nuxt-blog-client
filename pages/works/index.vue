@@ -23,9 +23,13 @@
 </template>
 
 <script>
+import { init } from '@/mixin/init'
+
 export default {
   components: {},
+  mixins: [init],
   layout: 'blog',
+
   props: [],
   async asyncData({ $axios1, params, store }) {
     // 获取作品数据

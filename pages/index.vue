@@ -80,11 +80,13 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import { getRandomInt, generaterStyle } from '@/utils/index'
+import { init } from '@/mixin/init'
 import NoHeadImgCpt from '@/components/NoHeadImg'
 export default {
   components: {
     NoHeadImgCpt,
   },
+  mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, store }) {
     const params = {
@@ -123,7 +125,6 @@ export default {
       isFirst: true, // 是否初次加载
     }
   },
-
   head() {
     return {
       title: '首页 - 自然博客',

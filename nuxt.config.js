@@ -70,7 +70,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
+    '@nuxtjs/proxy',
   ],
 
   hooks: {},
@@ -81,7 +82,7 @@ export default {
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: { proxy: true },
+  // axios: { proxy: true },
 
   proxy: {
     '/api': {

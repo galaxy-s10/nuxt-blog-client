@@ -1,7 +1,7 @@
 import { Message } from 'element-ui'
-
+import axios from 'axios'
 export default function ({ $axios, store }, inject) {
-  const axios = $axios
+  // const axios = $axios
   let baseURL = '/'
   const isServer = typeof window === 'undefined'
   if (process.env.NODE_ENV === 'development') {

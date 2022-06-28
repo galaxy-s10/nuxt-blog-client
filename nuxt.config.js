@@ -1,6 +1,5 @@
 import CompressionPlugin from 'compression-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
-
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -111,14 +110,16 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    publicPath: 'https://resource.cdn.hsslive.cn/nuxt-blog-client/',
+
     // analyze: true,
     plugins: [
-      new CompressionPlugin({
-        test: /\.(js|css|html)$/,
-        threshold: 10 * 1024, // 大于10k的文件才进行压缩
-        minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
-        algorithm: 'gzip', // 压缩算法
-      }),
+      // new CompressionPlugin({
+      //   test: /\.(js|css|html)$/,
+      //   threshold: 10 * 1024, // 大于10k的文件才进行压缩
+      //   minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+      //   algorithm: 'gzip', // 压缩算法
+      // }),
     ],
     babel: {
       plugins: [
@@ -128,7 +129,7 @@ export default {
         ],
       ],
     },
-    extractCSS: true, // 单独提取css为文件
+    extractCSS: false, // true:单独提取css为文件，省点cdn流量，不提取。
     optimization: {
       // 拆分大文件
       splitChunks: {

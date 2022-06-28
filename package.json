@@ -17,6 +17,7 @@
     "core-js": "^3.9.1",
     "dayjs": "^1.10.8",
     "element-ui": "^2.15.1",
+    "heapdump": "^0.3.15",
     "highlight.js": "^11.4.0",
     "js-cookie": "^3.0.1",
     "normalize.css": "^8.0.1",

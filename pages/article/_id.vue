@@ -43,11 +43,7 @@
 
     <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
 
-    <RenderMarkdownCpt
-      ref="hss-md"
-      class="hss-mdd"
-      :md="detail.content"
-    ></RenderMarkdownCpt>
+    <RenderMarkdownCpt ref="hss-md" :md="detail.content"></RenderMarkdownCpt>
 
     <div class="tag-list">
       <span class="el-icon-collection-tag"></span>
@@ -154,6 +150,7 @@ export default {
   mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
+    console.log('asyncData')
     try {
       const articleId = params.id
       const { data } = await $axios1.get(`/article/find/${articleId}`)
@@ -226,11 +223,13 @@ export default {
   created() {},
   mounted() {
     window.scrollTo({ top: 0 })
-    let timer = null
-    timer = setTimeout(() => {
-      this.renderCatalog()
-      clearTimeout(timer)
-    }, 0)
+    const timer = setInterval(() => {
+      console.log(this.$refs['hss-md'].$el)
+      if (this.$refs['hss-md'].$el) {
+        this.renderCatalog()
+        clearInterval(timer)
+      }
+    }, 50)
     const articleId = this.$route.params.id
     this.articleId = articleId
   },
@@ -402,6 +401,9 @@ export default {
 
     // 渲染文章目录
     renderCatalog() {
+      // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
+      // https://blog.lichter.io/posts/vue-hydration-error/
+      // https://github.com/nuxt/nuxt.js/issues/5612
       const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
       const md =
         this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || []

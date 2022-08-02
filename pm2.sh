@@ -4,7 +4,7 @@
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-10 15:25:30
-# LastEditTime: 2022-06-30 09:10:54
+# LastEditTime: 2022-08-02 10:19:36
 # Description: pm2维护脚本
 ###
 
@@ -38,7 +38,7 @@ yarn build
 
 # 上传七牛云cdn：https://github.com/qiniu/qshell/blob/master/docs/qupload.md
 # 注意--rescan-local这个参数，不设置它的话可能文件不发生更改就不会覆盖
-qshell qupload2 --key_prefix=$JOBNAME --src-dir=$PUBLICDIR/$JOBNAME/.nuxt/client --bucket=hssblog --overwrite=true --rescan-local=true
+qshell qupload2 --src-dir=$PUBLICDIR/$JOBNAME/.nuxt/dist/client --bucket=hssblog --overwrite=true --key-prefix=$JOBNAME/ --rescan-local=true
 
 echo 使用pm2维护:
 pm2 start npm --name $JOBNAME-$ENV-$PORT -- run start

@@ -110,7 +110,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    publicPath: 'https://resource.cdn.hsslive.cn/nuxt-blog-client/',
+    publicPath: 'https://resource.hsslive.cn/nuxt-blog-client/',
 
     // analyze: true,
     plugins: [

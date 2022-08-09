@@ -2,28 +2,28 @@ export const state = () => ({
   summary: null,
   userInfo: null,
   token: null,
-})
+});
 
 export const mutations = {
   logout(state) {
-    localStorage.removeItem('token')
-    state.userInfo = null
+    localStorage.removeItem('token');
+    state.userInfo = null;
   },
   setToken(state, res) {
     if (res === null) {
-      localStorage.removeItem('token')
+      localStorage.removeItem('token');
     } else {
-      localStorage.setItem('token', res)
+      localStorage.setItem('token', res);
     }
-    state.token = res
+    state.token = res;
   },
   setUserInfo(state, res) {
-    state.userInfo = res
+    state.userInfo = res;
   },
   setSummary(state, res) {
-    state.summary = res
+    state.summary = res;
   },
-}
+};
 
 export const actions = {
   async login({ commit }, payload) {
@@ -31,17 +31,17 @@ export const actions = {
       const { data } = await this.$axios1.post('/user/login', {
         ...payload,
         exp: 24,
-      })
-      commit('setToken', data)
-      return Promise.resolve(data)
+      });
+      commit('setToken', data);
+      return Promise.resolve(data);
     } catch (error) {
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   },
   async getUserInfo({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/user/get_user_info')
-      commit('setUserInfo', data)
+      const { data } = await this.$axios1.get('/user/get_user_info');
+      commit('setUserInfo', data);
       commit('setSummary', {
         articlesTotal: data.articles_total,
         receiveCommentsTotal: data.receive_comments_total,
@@ -51,11 +51,11 @@ export const actions = {
         qq_users: data.qq_users,
         github_users: data.github_users,
         roles: data.roles,
-      })
-      return Promise.resolve(true)
+      });
+      return Promise.resolve(true);
     } catch (error) {
-      console.log(error)
-      return Promise.reject(error)
+      console.log(error);
+      return Promise.reject(error);
     }
   },
-}
+};

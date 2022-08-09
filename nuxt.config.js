@@ -1,5 +1,45 @@
-import CompressionPlugin from 'compression-webpack-plugin'
-import TerserPlugin from 'terser-webpack-plugin'
+import { execSync } from 'child_process';
+
+import CompressionPlugin from 'compression-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import webpack from 'webpack';
+
+let commitHash;
+let commitUserName;
+let commitDate;
+let commitMessage;
+try {
+  // commit哈希
+  commitHash = execSync('git show -s --format=%H', {
+    cwd: process.env.JENKINS_WORKSPACE,
+  })
+    .toString()
+    .trim();
+  // commit用户名
+  commitUserName = execSync('git show -s --format=%cn', {
+    cwd: process.env.JENKINS_WORKSPACE,
+  })
+    .toString()
+    .trim();
+  // commit日期
+  commitDate = new Date(
+    execSync(`git show -s --format=%cd`, {
+      cwd: process.env.JENKINS_WORKSPACE,
+    }).toString()
+  ).toLocaleString();
+  // commit消息
+  commitMessage = execSync('git show -s --format=%s', {
+    cwd: process.env.JENKINS_WORKSPACE,
+  })
+    .toString()
+    .trim();
+  console.log(commitHash, commitDate, commitUserName, commitMessage);
+} catch (error) {
+  console.log('获取git信息错误', error);
+}
+
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -27,7 +67,10 @@ export default {
       },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [
+    // 如果不是开发环境，则使用cdn加载这些库
+    script: !isDevelopment && [
+      // { src: 'https://unpkg.com/vue@2.6.14/dist/vue.js' },
+      // { src: 'https://unpkg.com/vue@2.6.14/dist/vue.min.js' },
       { src: 'https://unpkg.com/vue@2.6.14/dist/vue.runtime.min.js' },
       { src: 'https://unpkg.com/vuex@3.6.2/dist/vuex.min.js' },
       {
@@ -114,12 +157,23 @@ export default {
 
     // analyze: true,
     plugins: [
-      // new CompressionPlugin({
-      //   test: /\.(js|css|html)$/,
-      //   threshold: 10 * 1024, // 大于10k的文件才进行压缩
-      //   minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
-      //   algorithm: 'gzip', // 压缩算法
-      // }),
+      new CompressionPlugin({
+        test: /\.(js|css|html)$/,
+        threshold: 10 * 1024, // 大于10k的文件才进行压缩
+        minRatio: 0.8, // 只有压缩比这个比率更好的资产才会被处理(minRatio =压缩大小/原始大小),即压缩如果达不到0.8就不会进行压缩
+        algorithm: 'gzip', // 压缩算法
+      }),
+      new webpack.DefinePlugin({
+        'process.env': {
+          BLOG_PROJECT_GIT: JSON.stringify({
+            commitHash,
+            commitDate,
+            commitUserName,
+            commitMessage,
+          }),
+          BLOG_PROJECT_LAST_BUILD: JSON.stringify(new Date().toLocaleString()),
+        },
+      }),
     ],
     babel: {
       plugins: [
@@ -190,19 +244,24 @@ export default {
       ],
     },
     // transpile: [/^element-ui/],
-    extend(config, { isClient }) {
+    extend(config, { isDev, isClient, isServer }) {
       // Extend only webpack config for client-bundle
-      // if (isClient) {
-      //   config.devtool = 'source-map'
-      // }
-      if (isClient) {
-        config.externals = {
+      console.log('isDev, isClient, isServer', isDev, isClient, isServer);
+
+      if (isDev && isClient) {
+        config.devtool = 'source-map';
+      }
+
+      if (!isDev && isClient) {
+        // 如果不是开发环境且当前是客户端（服务端是不会用cdn加载的，也用不了cdn加载），则使用cdn加载这些库
+        config.externals = config.externals || {};
+        Object.assign(config.externals, {
           vue: 'Vue',
           vuex: 'Vuex',
           'vue-router': 'VueRouter',
           axios: 'axios',
-        }
+        });
       }
     },
   },
-}
+};

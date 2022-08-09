@@ -163,11 +163,11 @@ export default {
       currentComment: null,
       sort: 'hot',
       currentUserDetail: null,
-    }
+    };
   },
   computed: {
     userInfo() {
-      return this.$store.state.user.userInfo
+      return this.$store.state.user.userInfo;
     },
   },
   watch: {},
@@ -175,40 +175,40 @@ export default {
   mounted() {},
   methods: {
     async loadingUserDetail(v) {
-      const { data } = await this.$axios1.get(`/user/find/${v.id}`, {})
-      this.currentUserDetail = data
+      const { data } = await this.$axios1.get(`/user/find/${v.id}`, {});
+      this.currentUserDetail = data;
     },
     mouseleave() {
-      let timer = null
+      let timer = null;
       timer = setTimeout(() => {
-        this.currentUserDetail = null
-        clearTimeout(timer)
-      }, 300)
+        this.currentUserDetail = null;
+        clearTimeout(timer);
+      }, 300);
     },
     sortChange(val) {
-      this.sort = val
+      this.sort = val;
     },
     closeModal() {
-      this.$emit('closeModal')
+      this.$emit('closeModal');
     },
     // 弹窗回复数据
     handleModal(item) {
-      this.$emit('handleModal', item)
+      this.$emit('handleModal', item);
     },
     // 处理点击/取消star
     handleStar(item) {
-      this.$emit('handleStar', item)
+      this.$emit('handleStar', item);
     },
     // 显示回复框
     showReply(item) {
-      this.$emit('showReply', item)
+      this.$emit('showReply', item);
     },
     // 删除回复
     deleteReply(item) {
-      this.$emit('deleteReply', item)
+      this.$emit('deleteReply', item);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -330,7 +330,7 @@ export default {
           .padding {
             padding: 6px 0;
           }
-          & ::v-deep .markdown-body {
+          & :deep(.markdown-body) {
             color: #8a919f;
           }
         }

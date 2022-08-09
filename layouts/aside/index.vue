@@ -85,7 +85,7 @@
           <i class="el-icon-paperclip"></i>
           <b>文章目录</b>
         </div>
-        <AsnycCatalogCpt :list="catalogList"></AsnycCatalogCpt>
+        <CatalogCpt :list="catalogList"></CatalogCpt>
       </nav>
     </template>
 
@@ -143,9 +143,9 @@
                 }}
               </b>
             </div>
-            <span class="switch-btn" @click="switchSideBarArticleOrderName"
-              >切换</span
-            >
+            <span class="switch-btn" @click="switchSideBarArticleOrderName">
+              切换
+            </span>
           </div>
           <div v-loading="switchLoading">
             <div v-if="sideBarArticleList && sideBarArticleList.length">
@@ -157,17 +157,17 @@
                 <div class="head-img">
                   <nuxt-link
                     v-if="item['head_img']"
-                    v-lazy="item['head_img']"
                     :to="'/article/' + item.id"
-                    tag="img"
-                  />
-                  <nuxt-link v-else :to="`/article/${item.id}`" tag="div">
+                  >
+                    <img v-lazy="item['head_img']" alt="" />
+                  </nuxt-link>
+                  <nuxt-link v-else :to="`/article/${item.id}`">
                     <NoHeadImgCpt></NoHeadImgCpt>
                   </nuxt-link>
                 </div>
                 <div class="desc">
-                  <nuxt-link :to="'/article/' + item.id" tag="b">
-                    #{{ item.title }}
+                  <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id">
+                    <b class="b-hover" @click="navigate"> #{{ item.title }}</b>
                   </nuxt-link>
                   <div class="info">
                     <span class="view">
@@ -221,16 +221,16 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-import { dateStartAndEnd } from '@/utils/format'
-import AsnycCatalogCpt from '@/components/Catalog'
-import NoHeadImgCpt from '@/components/NoHeadImg'
+import { mapState, mapActions, mapMutations } from 'vuex';
+
+import CatalogCpt from '@/components/Catalog';
+import NoHeadImgCpt from '@/components/NoHeadImg';
+import { dateStartAndEnd } from '@/utils/format';
 
 export default {
   components: {
-    AsnycCatalogCpt,
+    CatalogCpt,
     NoHeadImgCpt,
-    // AsnycCatalogCpt: () => import('@/components/Catalog'),
     AsnycCollapseCpt: () => import('@/components/Collapse'),
   },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
@@ -240,66 +240,64 @@ export default {
       switchLoading: false,
       catalogFix: false,
       logLoading: false,
-    }
+    };
   },
   computed: {
     ...mapState({
       sideBarArticleOrderName(state) {
-        return state.article.sideBarArticleOrderName
+        return state.article.sideBarArticleOrderName;
       },
       ipInfo(state) {
-        return state.app.ipInfo
+        return state.app.ipInfo;
       },
       visitorDayData() {
-        return this.$store.state.log.dayData
+        return this.$store.state.log.dayData;
       },
       visitorHistoryData() {
-        return this.$store.state.log.historyData
+        return this.$store.state.log.historyData;
       },
       summary(state) {
-        return state.user.summary
+        return state.user.summary;
       },
       userInfo(state) {
-        return state.user.userInfo
+        return state.user.userInfo;
       },
       theme(state) {
-        return state.app.theme
+        return state.app.theme;
       },
       showPlum(state) {
-        return state.app.showPlum
+        return state.app.showPlum;
       },
       showMusicAudio(state) {
-        return state.app.showMusicAudio
+        return state.app.showMusicAudio;
       },
     }),
     sideBarTagList() {
-      return this.$store.state.tag.sideBarTagList
+      return this.$store.state.tag.sideBarTagList;
     },
     sideBarArticleList() {
-      return this.$store.state.article.sideBarArticleList
+      return this.$store.state.article.sideBarArticleList;
     },
     catalogList() {
-      return this.$store.state.article.catalogList
+      return this.$store.state.article.catalogList;
     },
     showCatalog() {
-      return this.$store.state.app.showCatalog
+      return this.$store.state.app.showCatalog;
     },
   },
   watch: {
     showCatalog(newVal, oldVal) {
+      console.log('newVal', newVal);
       newVal &&
         this.$nextTick(() => {
-          this.cataLogObserver()
-        })
+          this.cataLogObserver();
+        });
     },
   },
   mounted() {
-    if (this.showCatalog) {
-      this.cataLogObserver()
-    }
-    this.$store.dispatch('app/getIpInfo')
-    this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()))
-    this.$store.dispatch('log/getVisitorHistoryData')
+    this.$store.dispatch('app/getIpInfo');
+    this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()));
+    this.$store.dispatch('log/getVisitorHistoryData');
   },
   methods: {
     ...mapActions('article', ['getSideBarArticleList']),
@@ -310,13 +308,13 @@ export default {
       setShowMusicAudio: 'app/setShowMusicAudio',
     }),
     async refreshLog() {
-      this.logLoading = true
+      this.logLoading = true;
       await this.$store.dispatch(
         'log/getVisitorDayData',
         dateStartAndEnd(new Date())
-      )
-      await this.$store.dispatch('log/getVisitorHistoryData')
-      this.logLoading = false
+      );
+      await this.$store.dispatch('log/getVisitorHistoryData');
+      this.logLoading = false;
     },
     async ajaxArticleList(orderName) {
       try {
@@ -325,47 +323,48 @@ export default {
           pageSize: 5,
           orderName,
           orderBy: 'desc',
-        }
+        };
         const { data } = await this.$axios1.get(`/article/list`, {
           params,
-        })
-        return data
+        });
+        return data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     // 目录监听
     cataLogObserver() {
+      console.log('目录监听', this.$refs.catalogRef);
       const intersectionObserver = new IntersectionObserver((entries) => {
         entries.forEach((item) => {
           if (!item.isIntersecting) {
-            this.catalogFix = true
+            this.catalogFix = true;
           } else {
-            this.catalogFix = false
+            this.catalogFix = false;
           }
-        })
-      })
-      intersectionObserver.observe(this.$refs.catalogRef)
+        });
+      });
+      intersectionObserver.observe(this.$refs.catalogRef);
     },
     tagClick(id) {
-      this.$router.push({ path: `/tag/${id}` })
+      this.$router.push({ path: `/tag/${id}` });
     },
     async switchSideBarArticleOrderName() {
       const orderName =
-        this.sideBarArticleOrderName === 'click' ? 'updated_at' : 'click'
-      this.switchLoading = true
-      this.changeSideBarArticleOrderName(orderName)
+        this.sideBarArticleOrderName === 'click' ? 'updated_at' : 'click';
+      this.switchLoading = true;
+      this.changeSideBarArticleOrderName(orderName);
       await this.getSideBarArticleList({
         nowPage: 1,
         pageSize: 5,
         orderName,
         orderBy: 'desc',
-      })
-      this.switchLoading = false
+      });
+      this.switchLoading = false;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -461,7 +460,8 @@ export default {
         width: 40%;
         cursor: pointer;
 
-        ::v-deep .no-head-img {
+        :deep(.no-head-img) {
+          // ::v-deep .no-head-img {
           font-size: 12px !important;
           &:hover {
             transform: scale(1.1);
@@ -493,6 +493,9 @@ export default {
           .view {
             margin-right: 6px;
           }
+        }
+        .b-hover {
+          cursor: pointer;
         }
       }
     }

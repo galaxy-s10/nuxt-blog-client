@@ -9,18 +9,18 @@ export default {
   data() {
     return {
       route: '',
-    }
+    };
   },
   watch: {
     $route: {
       handler(val) {
-        this.route = val.path
+        this.route = val.path;
       },
       deep: true,
       immediate: true,
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

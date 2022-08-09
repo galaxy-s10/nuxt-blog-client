@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init'
+import { init } from '@/mixin/init';
 export default {
   components: {
     AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
@@ -65,11 +65,11 @@ export default {
   mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1 }) {
-    const { data } = await $axios1.get('/frontend/detail')
+    const { data } = await $axios1.get('/frontend/detail');
     return {
       detail: data.frontend ? data.frontend.frontend_about : '暂无介绍~',
       summary: data,
-    }
+    };
   },
   data() {
     return {
@@ -105,7 +105,7 @@ export default {
           color: '#8137a5',
         },
       ],
-    }
+    };
   },
   head() {
     return {
@@ -117,27 +117,27 @@ export default {
           content: 'Natural Blog - About',
         },
       ],
-    }
+    };
   },
   computed: {
     visitorHistoryData() {
-      return this.$store.state.log.historyData
+      return this.$store.state.log.historyData;
     },
   },
   methods: {
     filterNum(v) {
-      let res = v
+      let res = v;
       if (v < 1000) {
-        res = v
+        res = v;
       } else if (v >= 1000 && v < 10000) {
-        res = (v / 1000).toFixed(1) + 'k+'
+        res = `${(v / 1000).toFixed(1)}k+`;
       } else {
-        res = (v / 10000).toFixed(2) + 'w+'
+        res = `${(v / 10000).toFixed(2)}w+`;
       }
-      return res || 0
+      return res || 0;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

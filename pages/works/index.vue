@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init'
+import { init } from '@/mixin/init';
 
 export default {
   components: {},
@@ -35,11 +35,11 @@ export default {
     // 获取作品数据
     const { data: worksData } = await $axios1.get('/works/list', {
       params: { nowPage: 1, pageSize: 100 },
-    })
-    return { worksList: worksData.rows }
+    });
+    return { worksList: worksData.rows };
   },
   data() {
-    return {}
+    return {};
   },
   head() {
     return {
@@ -51,14 +51,14 @@ export default {
           content: 'Natural Blog - Works',
         },
       ],
-    }
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {},
-}
+};
 </script>
 
 <style lang="scss" scoped>

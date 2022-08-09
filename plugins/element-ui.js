@@ -1,6 +1,3 @@
-import Vue from 'vue'
-// import Element from 'element-ui'
-// import locale from 'element-ui/lib/locale/lang/en'
 import {
   Button,
   Tooltip,
@@ -20,7 +17,10 @@ import {
   Switch,
   Dialog,
   Popover,
-} from 'element-ui'
+} from 'element-ui';
+import Vue from 'vue';
+// import Element from 'element-ui'
+// import locale from 'element-ui/lib/locale/lang/en'
 
 const components = [
   Button,
@@ -40,17 +40,17 @@ const components = [
   Switch,
   Dialog,
   Popover,
-]
+];
 
 const Element = {
-  install(Vue) {
+  install(vue) {
     components.forEach((component) => {
-      Vue.component(component.name, component)
-    })
+      vue.component(component.name, component);
+    });
   },
-}
+};
 
-Vue.use(Element)
-Vue.use(Loading)
+Vue.use(Element);
+Vue.use(Loading);
 
 // Vue.use(Element, { locale })

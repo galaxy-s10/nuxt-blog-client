@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+
 ###
 # Author: shuisheng
 # Email: 2274751790@qq.com
 # Github: https://github.com/galaxy-s10
 # Date: 2022-01-10 15:25:30
-# LastEditTime: 2022-08-02 10:19:36
+# LastEditTime: 2022-08-09 12:56:45
 # Description: pm2维护脚本
 ###
 
@@ -34,7 +35,7 @@ echo 删除旧的pm2服务:
 pm2 del $JOBNAME-$ENV-$PORT
 
 echo 开始构建:
-yarn build
+npx cross-env JENKINS_WORKSPACE=$3 nuxt build
 
 # 上传七牛云cdn：https://github.com/qiniu/qshell/blob/master/docs/qupload.md
 # 注意--rescan-local这个参数，不设置它的话可能文件不发生更改就不会覆盖

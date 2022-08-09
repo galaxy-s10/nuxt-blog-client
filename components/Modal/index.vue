@@ -24,7 +24,7 @@ export default {
   components: {},
   props: ['title', 'top'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
   watch: {},
@@ -32,11 +32,11 @@ export default {
   mounted() {},
   methods: {
     closeModal() {
-      this.loading = false
-      this.$emit('closeModal')
+      this.loading = false;
+      this.$emit('closeModal');
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

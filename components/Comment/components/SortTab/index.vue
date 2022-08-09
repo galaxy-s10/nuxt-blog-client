@@ -23,7 +23,7 @@ export default {
   components: {},
   props: ['sort'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
   watch: {},
@@ -31,10 +31,10 @@ export default {
   mounted() {},
   methods: {
     sortChange(val) {
-      this.$emit('sortChange', val)
+      this.$emit('sortChange', val);
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

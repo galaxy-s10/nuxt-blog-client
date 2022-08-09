@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ModalCpt from '@/components/Modal'
-import TextareaInputCpt from '@/components/TextareaInput'
+import ModalCpt from '@/components/Modal';
+import TextareaInputCpt from '@/components/TextareaInput';
 
 export default {
   components: { TextareaInputCpt, ModalCpt },
@@ -22,7 +22,7 @@ export default {
     return {
       loading: false,
       content: '',
-    }
+    };
   },
   computed: {},
   watch: {},
@@ -30,26 +30,26 @@ export default {
   mounted() {},
   methods: {
     contentChange(newVal, oldVal) {
-      this.content = newVal
+      this.content = newVal;
     },
     reply() {
       if (!this.$store.state.user.userInfo) {
-        this.$newmessage('暂未登录，请登录！', 'warning')
-        return
+        this.$newmessage('暂未登录，请登录！', 'warning');
+        return;
       }
       if (this.content.length < 5) {
-        this.$newmessage('回复内容至少5个字符~', 'warning')
-        return
+        this.$newmessage('回复内容至少5个字符~', 'warning');
+        return;
       }
-      this.loading = !this.loading
-      this.$emit('reply', this.content)
+      this.loading = !this.loading;
+      this.$emit('reply', this.content);
     },
     closeModal() {
-      this.loading = false
-      this.$emit('closeReply')
+      this.loading = false;
+      this.$emit('closeReply');
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

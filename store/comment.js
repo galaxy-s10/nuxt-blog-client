@@ -1,8 +1,8 @@
 export const state = () => ({
   childrenPageSize: 2,
-})
+});
 
-export const mutations = {}
+export const mutations = {};
 
 export const actions = {
   async reply({ commit, state }, payload) {
@@ -12,10 +12,10 @@ export const actions = {
         content: payload.content,
         parent_comment_id: payload.parent_comment_id,
         to_user_id: payload.to_user_id,
-      })
-      return Promise.resolve(data)
+      });
+      return Promise.resolve(data);
     } catch (error) {
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   },
-}
+};

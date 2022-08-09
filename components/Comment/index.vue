@@ -81,13 +81,15 @@
 </template>
 
 <script>
-import { MessageBox } from 'element-ui'
-import ItemCpt from './components/Item'
-import SortTabCpt from './components/SortTab'
-import { deepCloneByJson } from '@/utils/index'
-import LoginCpt from '@/components/Login'
-import ReplyCpt from '@/components/Reply'
-import ModalCpt from '@/components/Modal'
+import { MessageBox } from 'element-ui';
+
+import ItemCpt from './components/Item';
+import SortTabCpt from './components/SortTab';
+
+import LoginCpt from '@/components/Login';
+import ModalCpt from '@/components/Modal';
+import ReplyCpt from '@/components/Reply';
+import { deepCloneByJson } from '@/utils/index';
 export default {
   components: {
     LoginCpt,
@@ -124,15 +126,15 @@ export default {
       childListLoading: false,
       childListHasMore: false,
       childListIsBottom: false, // 是否触底
-    }
+    };
   },
   computed: {},
   watch: {
     childListIsBottom(newVal, oldVal) {
-      if (this.childListLoading) return
+      if (this.childListLoading) return;
       if (newVal && this.childListHasMore) {
-        this.childListParams.nowPage++
-        this.ajaxChildComment(this.childListParams)
+        this.childListParams.nowPage += 1;
+        this.ajaxChildComment(this.childListParams);
       }
     },
   },
@@ -140,30 +142,30 @@ export default {
   methods: {
     async refresh() {
       if (this.currentComment !== null) {
-        this.childListParams.nowPage = 1
-        await this.ajaxChildComment(this.childListParams)
+        this.childListParams.nowPage = 1;
+        await this.ajaxChildComment(this.childListParams);
       }
-      this.$emit('refresh')
+      this.$emit('refresh');
     },
     closeModal() {
-      this.currentComment = null
+      this.currentComment = null;
     },
     async ajaxChildComment(params) {
       try {
-        this.childListLoading = true
+        this.childListLoading = true;
         const { data } = await this.$axios1.get(`/comment/child_comment`, {
           params,
-        })
+        });
         if (params.nowPage === 1) {
-          this.childList = data.rows
+          this.childList = data.rows;
         } else {
-          this.childList = [...this.childList, ...data.rows]
+          this.childList = [...this.childList, ...data.rows];
         }
-        this.childListHasMore = data.hasMore
-        this.childListLoading = false
+        this.childListHasMore = data.hasMore;
+        this.childListLoading = false;
       } catch (error) {
-        console.log(error)
-        this.childListLoading = false
+        console.log(error);
+        this.childListLoading = false;
       }
     },
     // 触底事件
@@ -173,22 +175,22 @@ export default {
           (entries) => {
             entries.forEach((item) => {
               if (!item.isIntersecting) {
-                this.childListIsBottom = false
+                this.childListIsBottom = false;
               } else {
-                this.childListIsBottom = true
+                this.childListIsBottom = true;
               }
-            })
+            });
           },
           { root: this.$refs.childListRef }
-        )
-        intersectionObserver.observe(this.$refs.childListHasMoreRef)
-      })
+        );
+        intersectionObserver.observe(this.$refs.childListHasMoreRef);
+      });
     },
     // 弹窗回复数据
     async handleModal(v) {
-      const item = deepCloneByJson(v)
-      delete item.children_comment
-      this.currentComment = item
+      const item = deepCloneByJson(v);
+      delete item.children_comment;
+      this.currentComment = item;
       const params = {
         article_id: item.article_id,
         nowPage: this.nowPage,
@@ -196,16 +198,16 @@ export default {
         orderBy: 'desc',
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         parent_comment_id: item.id,
-      }
-      this.childListParams = params
-      await this.ajaxChildComment(params)
-      this.touchBottom()
+      };
+      this.childListParams = params;
+      await this.ajaxChildComment(params);
+      this.touchBottom();
     },
     // 修改了弹窗的tab
     async changeModalSort(val) {
-      const wrap = this.$refs.childListRef
-      wrap.scrollTo({ top: 0 })
-      this.modalSort = val
+      const wrap = this.$refs.childListRef;
+      wrap.scrollTo({ top: 0 });
+      this.modalSort = val;
       const params = {
         article_id: this.currentComment.article_id,
         nowPage: this.nowPage,
@@ -213,13 +215,13 @@ export default {
         orderBy: 'desc',
         orderName: val === 'date' ? 'created_at' : 'star_total',
         parent_comment_id: this.currentComment.id,
-      }
-      this.childListParams = params
-      await this.ajaxChildComment(params)
-      this.touchBottom()
+      };
+      this.childListParams = params;
+      await this.ajaxChildComment(params);
+      this.touchBottom();
     },
     sortChange(val) {
-      this.$emit('sortChange', val)
+      this.$emit('sortChange', val);
     },
     async ajaxCreateStar(item) {
       try {
@@ -227,35 +229,35 @@ export default {
           article_id: item.article_id,
           comment_id: item.id,
           to_user_id: item.from_user_id,
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async ajaxDeleteStar(item) {
       try {
-        await this.$axios1.delete(`/star/delete/${item.is_star_id}`, {})
+        await this.$axios1.delete(`/star/delete/${item.is_star_id}`, {});
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     /**
      * 点赞
      */
     async handleStar(item) {
-      const type = item.is_star === false
+      const type = item.is_star === false;
       if (!this.$store.state.user.userInfo) {
-        this.$newmessage('暂未登录，请登录！', 'warning')
-        return
+        this.$newmessage('暂未登录，请登录！', 'warning');
+        return;
       }
       if (type) {
-        await this.ajaxCreateStar(item)
-        this.$newmessage('点赞ok~', 'success')
+        await this.ajaxCreateStar(item);
+        this.$newmessage('点赞ok~', 'success');
       } else if (type === false) {
-        await this.ajaxDeleteStar(item)
-        this.$newmessage('取消点赞ok~', 'success')
+        await this.ajaxDeleteStar(item);
+        this.$newmessage('取消点赞ok~', 'success');
       }
-      this.refresh()
+      this.refresh();
     },
     // handleChildrenPage(v) {
     //   v.nowPage = v.nowPage ? v.nowPage + 1 : 1
@@ -271,19 +273,19 @@ export default {
         pageSize: this.pageSize,
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         orderBy: 'desc',
-      })
+      });
     },
     // 显示回复框
     showReply(item) {
-      this.currentReplyComment = item
-      this.currentComponent = 'ReplyCpt'
+      this.currentReplyComment = item;
+      this.currentComponent = 'ReplyCpt';
     },
     // 删除回复
     deleteReply(item) {
       const msg =
         item.children_comment_total === 0
           ? '确定删除评论吗?'
-          : `你的评论有${item.children_comment_total}条回复，确定删除评论吗？`
+          : `你的评论有${item.children_comment_total}条回复，确定删除评论吗？`;
       MessageBox.confirm(msg, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -291,21 +293,21 @@ export default {
       })
         .then(async () => {
           try {
-            const res = await this.$axios1.delete(`/comment/delete/${item.id}`)
-            this.$newmessage(res.message, 'success')
-            this.refresh()
+            const res = await this.$axios1.delete(`/comment/delete/${item.id}`);
+            this.$newmessage(res.message, 'success');
+            this.refresh();
           } catch (error) {
-            this.$newmessage(error, 'error')
+            this.$newmessage(error, 'error');
           }
         })
         .catch(() => {
-          this.$newmessage('已取消删除', 'info')
-        })
+          this.$newmessage('已取消删除', 'info');
+        });
     },
     // 关闭回复框
     closeReply() {
-      this.currentReplyComment = null
-      this.currentComponent = null
+      this.currentReplyComment = null;
+      this.currentComponent = null;
     },
     // 新增回复
     async handleReply(content) {
@@ -319,16 +321,16 @@ export default {
               : this.currentReplyComment.parent_comment_id,
           reply_comment_id: this.currentReplyComment.id,
           to_user_id: this.currentReplyComment.from_user_id,
-        })
-        this.$newmessage('回复成功~', 'success')
-        this.refresh()
-        this.closeReply()
+        });
+        this.$newmessage('回复成功~', 'success');
+        this.refresh();
+        this.closeReply();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

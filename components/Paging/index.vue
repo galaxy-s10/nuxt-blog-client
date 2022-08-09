@@ -17,16 +17,16 @@
 export default {
   props: ['count', 'nowPage', 'pageSize'],
   data() {
-    return {}
+    return {};
   },
   computed: {},
   methods: {
     currentChange(nowPage) {
-      this.$emit('currentChange', nowPage)
-      scrollTo({ top: 0 })
+      this.$emit('currentChange', nowPage);
+      scrollTo({ top: 0 });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

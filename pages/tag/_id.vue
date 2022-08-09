@@ -20,29 +20,16 @@
         class="article-item"
       >
         <div class="article-left">
-          <nuxt-link
-            v-if="item['head_img']"
-            v-lazy="item['head_img']"
-            :to="`/article/${item.id}`"
-            tag="img"
-            class="head-img"
-          />
-          <nuxt-link
-            v-else
-            :to="`/article/${item.id}`"
-            tag="div"
-            class="head-img"
-          >
-            <NoHeadImgCpt></NoHeadImgCpt>
+          <nuxt-link v-if="item['head_img']" :to="`/article/${item.id}`">
+            <img v-lazy="item['head_img']" class="head-img" alt="" />
+          </nuxt-link>
+          <nuxt-link v-else :to="`/article/${item.id}`">
+            <div class="head-img"><NoHeadImgCpt></NoHeadImgCpt></div>
           </nuxt-link>
         </div>
         <div class="article-right">
-          <nuxt-link
-            :to="'/article/' + item.id"
-            tag="h2"
-            class="singleEllipsis"
-          >
-            {{ item.title }}
+          <nuxt-link :to="'/article/' + item.id">
+            <span class="singleEllipsis"> {{ item.title }} </span>
           </nuxt-link>
           <el-divider></el-divider>
           <el-tag
@@ -93,9 +80,9 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init'
+import NoHeadImgCpt from '@/components/NoHeadImg';
+import { init } from '@/mixin/init';
 
-import NoHeadImgCpt from '@/components/NoHeadImg'
 export default {
   components: { NoHeadImgCpt },
   mixins: [init],
@@ -105,22 +92,22 @@ export default {
     const articleListParams = {
       nowPage: 1,
       pageSize: 3,
-    }
+    };
     const tagListParams = {
       nowPage: 1,
       pageSize: 100,
-    }
-    const tagId = params.id
+    };
+    const tagId = params.id;
     try {
       const { data: tagData } = await $axios1.get(`/tag/list`, {
         params: tagListParams,
-      })
+      });
       const { data: articleData } = await $axios1.get(
         `/tag/article_list/${tagId}`,
         {
           params: articleListParams,
         }
-      )
+      );
 
       return {
         articleListParams,
@@ -129,26 +116,26 @@ export default {
         hasMore: articleData.hasMore,
         total: articleData.total,
         tagList: tagData.rows,
-      }
+      };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   data() {
     return {
       currentTagId: 1,
       currentTagName: '',
-    }
+    };
   },
   head() {
-    let title = ''
+    let title = '';
     this.tagList?.forEach((item) => {
       if (item.id === this.currentTagId) {
-        title = item.name
+        title = item.name;
       }
-    })
+    });
     return {
-      title: '标签 - ' + title + ' - 自然博客',
+      title: `标签 - ${title} - 自然博客`,
       meta: [
         {
           hid: 'description',
@@ -156,7 +143,7 @@ export default {
           content: 'Natural Blog - Tag',
         },
       ],
-    }
+    };
   },
   computed: {},
   watch: {},
@@ -165,24 +152,24 @@ export default {
   methods: {
     // 获取当前标签下的文章
     async getArticleList() {
-      const tagId = this.$route.params.id
-      this.currentTagId = +tagId
+      const tagId = this.$route.params.id;
+      this.currentTagId = +tagId;
       try {
         const { data } = await this.$axios1.get(`/tag/article_list/${tagId}`, {
           params: this.articleListParams,
-        })
-        this.articleList = data.rows
-        this.hasMore = data.hasMore
-        this.total = data.total
+        });
+        this.articleList = data.rows;
+        this.hasMore = data.hasMore;
+        this.total = data.total;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async handlePage(type) {
       if (type === 'prev') {
-        this.articleListParams.nowPage--
+        this.articleListParams.nowPage -= 1;
       } else {
-        this.articleListParams.nowPage++
+        this.articleListParams.nowPage += 1;
       }
       try {
         const { data } = await this.$axios1.get(
@@ -190,20 +177,20 @@ export default {
           {
             params: this.articleListParams,
           }
-        )
-        this.articleList = data.rows
-        this.total = data.total
-        this.hasMore = data.hasMore
-        scrollTo({ top: 0 })
+        );
+        this.articleList = data.rows;
+        this.total = data.total;
+        this.hasMore = data.hasMore;
+        scrollTo({ top: 0 });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     getTagArticle(id) {
-      this.$router.push({ path: `/tag/${id}` })
+      this.$router.push({ path: `/tag/${id}` });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

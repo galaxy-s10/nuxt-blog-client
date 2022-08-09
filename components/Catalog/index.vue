@@ -35,12 +35,12 @@ export default {
     list: {
       type: Array,
       default() {
-        return []
+        return [];
       },
     },
   },
   data() {
-    return {}
+    return {};
   },
   computed: {},
   watch: {},
@@ -48,10 +48,10 @@ export default {
   mounted() {},
   methods: {
     formatLeft(v, num) {
-      return v.type.slice(1) === num
+      return v.type.slice(1) === num;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

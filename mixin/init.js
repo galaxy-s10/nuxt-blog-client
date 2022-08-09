@@ -1,7 +1,7 @@
 export const init = {
   async fetch({ store }) {
-    const { commit, dispatch } = store
-    commit('app/setCurrentNodeEnv', process.env.NODE_ENV)
+    const { commit, dispatch } = store;
+    commit('app/setCurrentNodeEnv', process.env.NODE_ENV);
     await Promise.all([
       dispatch('type/getTypeList'),
       dispatch('tag/getSideBarTagList', { nowPage: 1, pageSize: 10 }),
@@ -11,6 +11,6 @@ export const init = {
         orderName: 'updated_at',
         orderBy: 'desc',
       }),
-    ])
+    ]);
   },
-}
+};

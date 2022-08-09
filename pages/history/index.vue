@@ -10,8 +10,8 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <router-link :to="'/article/' + item.id" class="a-link">
-            {{ item.title }}
+          <router-link :to="'/article/' + item.id">
+            <span class="a-link"> {{ item.title }} </span>
           </router-link>
         </el-timeline-item>
       </template>
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init'
+import pagingCpt from '@/components/Paging';
+import { init } from '@/mixin/init';
 
-import pagingCpt from '@/components/Paging'
 export default {
   components: {
     pagingCpt,
@@ -40,18 +40,18 @@ export default {
     const query = {
       nowPage: 1,
       pageSize: 20,
-    }
+    };
     const { data } = await $axios1.get(`/article/list`, {
       params: {
         orderName: 'created_at',
         orderBy: 'desc',
         ...query,
       },
-    })
-    return { ...query, historyArticleList: data.rows, total: data.total }
+    });
+    return { ...query, historyArticleList: data.rows, total: data.total };
   },
   data() {
-    return {}
+    return {};
   },
   head() {
     return {
@@ -63,7 +63,7 @@ export default {
           content: 'Natural Blog - History',
         },
       ],
-    }
+    };
   },
   computed: {},
   created() {},
@@ -77,12 +77,12 @@ export default {
           pageSize: this.pageSize,
           nowPage,
         },
-      })
-      this.historyArticleList = data.rows
-      this.total = data.total
+      });
+      this.historyArticleList = data.rows;
+      this.total = data.total;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

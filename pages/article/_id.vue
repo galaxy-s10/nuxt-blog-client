@@ -113,7 +113,7 @@
           </div>
 
           <!-- 评论组件 -->
-          <AsyncCommentCpt
+          <CommentCpt
             v-loading="isLoading"
             :list="commentList"
             :total="total"
@@ -136,13 +136,15 @@
 </template>
 
 <script>
-import AvatarGroupCpt from '@/components/AvatarGroup'
-import RenderMarkdownCpt from '@/components/RenderMarkdown'
-import { init } from '@/mixin/init'
+import AvatarGroupCpt from '@/components/AvatarGroup';
+import CommentCpt from '@/components/Comment';
+import RenderMarkdownCpt from '@/components/RenderMarkdown';
+import { init } from '@/mixin/init';
 
 export default {
   components: {
-    AsyncCommentCpt: () => import('@/components/Comment'),
+    // CommentCpt: () => import('@/components/Comment'),
+    CommentCpt,
     AsyncTextareaInputCpt: () => import('@/components/TextareaInput'),
     RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
@@ -150,13 +152,13 @@ export default {
   mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
-    console.log('asyncData')
+    console.log('asyncData');
     try {
-      const articleId = params.id
-      const { data } = await $axios1.get(`/article/find/${articleId}`)
-      let commentData = {}
-      let commentParams = {}
-      const orderName = 'created_at'
+      const articleId = params.id;
+      const { data } = await $axios1.get(`/article/find/${articleId}`);
+      let commentData = {};
+      let commentParams = {};
+      const orderName = 'created_at';
       if (data.is_comment === 1) {
         commentParams = {
           article_id: articleId,
@@ -165,13 +167,12 @@ export default {
           childrenPageSize: store.state.comment.childrenPageSize, // 当前子评论分页大小
           orderName,
           orderBy: 'desc',
-        }
+        };
         const result = await $axios1.get(`/comment/comment`, {
           params: commentParams,
-        })
-        commentData = result.data
+        });
+        commentData = result.data;
       }
-      store.commit('app/setShowCatalog', true)
       return {
         sort: orderName === 'created_at' ? 'date' : 'hot',
         commentList: commentData.rows,
@@ -179,9 +180,9 @@ export default {
         hasMore: commentData.hasMore,
         detail: data,
         ...commentParams,
-      }
+      };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   data() {
@@ -193,13 +194,13 @@ export default {
       articleId: undefined,
       nowPage: undefined,
       pageSize: undefined,
-    }
+    };
   },
   head() {
     return {
-      title: this.detail && this.detail.title + ' - 自然博客',
+      title: this.detail && `${this.detail.title} - 自然博客`,
       meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
-    }
+    };
   },
   computed: {
     // 如果直接使用userInfo(){}这种方式设置计算属性，get和set都会触发！
@@ -212,60 +213,61 @@ export default {
     //   },
     // },
     userInfo() {
-      return this.$store.state.user.userInfo
+      return this.$store.state.user.userInfo;
     },
   },
   watch: {
     userInfo() {
-      this.refreshCommentList()
+      this.refreshCommentList();
     },
   },
   created() {},
   mounted() {
-    window.scrollTo({ top: 0 })
+    window.scrollTo({ top: 0 });
+    this.$store.commit('app/setShowCatalog', true);
     const timer = setInterval(() => {
-      console.log(this.$refs['hss-md'].$el)
+      console.log(this.$refs['hss-md'].$el);
       if (this.$refs['hss-md'].$el) {
-        this.renderCatalog()
-        clearInterval(timer)
+        this.renderCatalog();
+        clearInterval(timer);
       }
-    }, 50)
-    const articleId = this.$route.params.id
-    this.articleId = articleId
+    }, 50);
+    const articleId = this.$route.params.id;
+    this.articleId = articleId;
   },
   destroyed() {
-    this.$store.commit('app/setShowCatalog', false)
-    this.$store.commit('article/changeCatalogList', [])
+    this.$store.commit('app/setShowCatalog', false);
+    this.$store.commit('article/changeCatalogList', []);
   },
   methods: {
     async getArticleDetail() {
       try {
         const { data } = await this.$axios1.get(
           `/article/find/${this.articleId}`
-        )
-        this.detail = data
+        );
+        this.detail = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     sortChange(sort) {
-      this.sort = sort
-      this.refreshCommentList()
+      this.sort = sort;
+      this.refreshCommentList();
     },
     deleteReply(item) {
       if (item.parent_comment_id !== -1) {
-        for (let index = 0; index < this.commentList.length; index++) {
-          const element = this.commentList[index]
+        for (let index = 0; index < this.commentList.length; index = 1) {
+          const element = this.commentList[index];
           if (element.id === item.parent_comment_id) {
             for (
-              let index = 0;
-              index < element.children_comment.length;
-              index++
+              let indey = 0;
+              indey < element.children_comment.length;
+              indey += 1
             ) {
-              const child = element.children_comment[index]
+              const child = element.children_comment[indey];
               if (child.id === item.id) {
-                element.children_comment.splice(index, 1)
-                break
+                element.children_comment.splice(indey, 1);
+                break;
               }
             }
           }
@@ -281,19 +283,19 @@ export default {
         childrenPageSize: this.childrenPageSize,
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         orderBy: 'desc',
-      }
+      };
       try {
-        this.isLoading = true
+        this.isLoading = true;
         const { data } = await this.$axios1.get(`/comment/comment`, {
           params: { ...query },
-        })
-        this.isLoading = false
-        this.commentList = data.rows
-        this.total = data.total
-        this.hasMore = data.hasMore
+        });
+        this.isLoading = false;
+        this.commentList = data.rows;
+        this.total = data.total;
+        this.hasMore = data.hasMore;
       } catch (error) {
-        console.log(error)
-        this.isLoading = false
+        console.log(error);
+        this.isLoading = false;
       }
     },
 
@@ -307,14 +309,14 @@ export default {
             pageSize: query.childrenPageSize,
             childrenPageSize: this.childrenPageSize,
           },
-        })
+        });
         this.commentList.forEach((item) => {
           if (item.id === query.parent_comment_id) {
-            item.children_comment.push(...data.rows)
+            item.children_comment.push(...data.rows);
           }
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     // 获取父评论分页
@@ -329,106 +331,116 @@ export default {
             orderName: query.orderName,
             orderBy: query.orderBy,
           },
-        })
-        this.commentList.push(...data.rows)
-        this.hasMore = data.hasMore
+        });
+        this.commentList.push(...data.rows);
+        this.hasMore = data.hasMore;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     // 新增回复
     async addComment() {
       if (!this.$store.state.user.userInfo) {
-        this.$newmessage('暂未登录，请登录！', 'warning')
-        return
+        this.$newmessage('暂未登录，请登录！', 'warning');
+        return;
       }
       if (this.commentContent.length < 5) {
-        this.$newmessage('评论内容至少5个字符~', 'warning')
-        return
+        this.$newmessage('评论内容至少5个字符~', 'warning');
+        return;
       }
       try {
-        this.submitCommentLoading = true
+        this.submitCommentLoading = true;
         await this.$axios1.post('/comment/create', {
           article_id: this.detail.id,
           content: this.commentContent,
           parent_comment_id: -1,
           reply_comment_id: -1,
           to_user_id: -1,
-        })
-        this.submitCommentLoading = false
-        this.$newmessage('评论成功~', 'success')
-        this.refreshCommentList()
+        });
+        this.submitCommentLoading = false;
+        this.$newmessage('评论成功~', 'success');
+        this.refreshCommentList();
       } catch (error) {
-        console.log(error)
-        this.submitCommentLoading = false
+        console.log(error);
+        this.submitCommentLoading = false;
       }
     },
     contentChange(newVal, oldVal) {
-      this.commentContent = newVal
+      this.commentContent = newVal;
     },
 
     // 给文章点赞/取消点赞
     async starForArticle(type, articleDetail) {
       try {
         if (this.userInfo) {
-          this.starLoaing = true
+          this.starLoaing = true;
           if (type === 1) {
             await this.$axios1.post(`/star/create`, {
               article_id: articleDetail.id,
               from_user_id: this.userInfo.id,
               comment_id: -1,
               to_user_id: -1,
-            })
-            this.$newmessage('点赞成功！', 'success')
-            await this.getArticleDetail()
-            this.starLoaing = false
+            });
+            this.$newmessage('点赞成功！', 'success');
+            await this.getArticleDetail();
+            this.starLoaing = false;
           } else {
             await this.$axios1.$delete(
               `/star/delete/${articleDetail.is_star_id}`
-            )
-            await this.getArticleDetail()
-            this.$newmessage('取消点赞成功!', 'success')
-            this.starLoaing = false
+            );
+            await this.getArticleDetail();
+            this.$newmessage('取消点赞成功!', 'success');
+            this.starLoaing = false;
           }
         } else {
-          this.$newmessage('暂未登录，请登录！', 'warning')
+          this.$newmessage('暂未登录，请登录！', 'warning');
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
 
     // 渲染文章目录
     renderCatalog() {
-      // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
-      // https://blog.lichter.io/posts/vue-hydration-error/
-      // https://github.com/nuxt/nuxt.js/issues/5612
-      const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
-      const md =
-        this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || []
-      const arr = []
-      for (let i = 0; i < md.length; i++) {
-        const item = md[i]
-        if (item.nodeType === 1 && list.includes(item.nodeName)) {
-          const obj = {}
-          obj.id =
-            item.innerText.slice(0, 10) +
-            '_' +
-            Math.floor(Math.random() * 100 + 1)
-          obj.type = item.nodeName
-          obj.text = item.innerText
-          // 创建一个a元素
-          const ele1 = document.createElement('a')
-          ele1.setAttribute('id', obj.id)
-          item.appendChild(ele1)
-          arr.push(obj)
+      this.$nextTick(() => {
+        console.log('渲染文章目录');
+        // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
+        // https://blog.lichter.io/posts/vue-hydration-error/
+        // https://github.com/nuxt/nuxt.js/issues/5612
+        const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+        const md =
+          this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || [];
+        const arr = [];
+        for (let i = 0; i < md.length; i += 1) {
+          const item = md[i];
+          if (item.nodeType === 1 && list.includes(item.nodeName)) {
+            const obj = {};
+            obj.id = `${item.innerText.slice(0, 10)}_${Math.floor(
+              Math.random() * 100 + 1
+            )}`;
+            obj.type = item.nodeName;
+            obj.text = item.innerText;
+            try {
+              // console.log('????', obj, item.nodeName, item.innerText, item)
+              // 创建一个a元素
+              const ele1 = document.createElement('div');
+              // console.log(ele1, 'll')
+              ele1.setAttribute('id', obj.id);
+              console.log(item, ele1.type);
+              item.appendChild(ele1);
+            } catch (err) {
+              console.log(err);
+            }
+
+            arr.push(obj);
+          }
         }
-      }
-      this.$store.commit('article/changeCatalogList', arr)
+        this.$store.commit('article/changeCatalogList', arr);
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

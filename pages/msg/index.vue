@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import CommentCpt from '@/components/Comment'
-import TextareaInputCpt from '@/components/TextareaInput'
-import { init } from '@/mixin/init'
+import CommentCpt from '@/components/Comment';
+import TextareaInputCpt from '@/components/TextareaInput';
+import { init } from '@/mixin/init';
 
 export default {
   components: {
@@ -52,7 +52,7 @@ export default {
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {
-      const orderName = 'created_at'
+      const orderName = 'created_at';
       const commentParams = {
         article_id: -1,
         nowPage: 1,
@@ -60,10 +60,10 @@ export default {
         childrenPageSize: store.state.comment.childrenPageSize, // 子评论分页大小
         orderName,
         orderBy: 'desc',
-      }
+      };
       const { data: commentData } = await $axios1.get(`/comment/comment`, {
         params: commentParams,
-      })
+      });
       return {
         sort: orderName === 'created_at' ? 'date' : 'hot',
         commentList: commentData.rows,
@@ -71,9 +71,9 @@ export default {
         hasMore: commentData.hasMore,
         nowPage: commentParams.nowPage,
         pageSize: commentParams.pageSize,
-      }
+      };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   data() {
@@ -91,7 +91,7 @@ export default {
       isshow: '',
       isLoading: false,
       content: '',
-    }
+    };
   },
   head() {
     return {
@@ -103,60 +103,60 @@ export default {
           content: 'Natural Blog - Msg',
         },
       ],
-    }
+    };
   },
   computed: {
     frontendData() {
-      return this.$store.state.app.frontendData
+      return this.$store.state.app.frontendData;
     },
     userInfo() {
-      return this.$store.state.user.userInfo
+      return this.$store.state.user.userInfo;
     },
     childrenPageSize() {
-      return this.$store.state.comment.childrenPageSize
+      return this.$store.state.comment.childrenPageSize;
     },
   },
   watch: {
     userInfo() {
-      this.refreshCommentList()
+      this.refreshCommentList();
     },
   },
   mounted() {},
   methods: {
     contentChange(newVal, oldVal) {
-      this.commentContent = newVal
+      this.commentContent = newVal;
     },
 
     // 新增回复
     async addComment() {
       if (!this.userInfo) {
-        this.$newmessage('暂未登录，请登录!', 'warning')
-        return
+        this.$newmessage('暂未登录，请登录!', 'warning');
+        return;
       }
       if (this.commentContent.length < 5) {
-        this.$newmessage('评论内容至少5个字符~', 'warning')
-        return
+        this.$newmessage('评论内容至少5个字符~', 'warning');
+        return;
       }
       try {
-        this.submitCommentLoading = true
+        this.submitCommentLoading = true;
         await this.$axios1.post('/comment/create', {
           article_id: -1,
           content: this.commentContent,
           parent_comment_id: -1,
           reply_comment_id: -1,
           to_user_id: -1,
-        })
-        this.submitCommentLoading = false
-        this.$newmessage('评论成功~', 'success')
-        this.refreshCommentList()
+        });
+        this.submitCommentLoading = false;
+        this.$newmessage('评论成功~', 'success');
+        this.refreshCommentList();
       } catch (error) {
-        console.log(error)
-        this.submitCommentLoading = false
+        console.log(error);
+        this.submitCommentLoading = false;
       }
     },
     sortChange(sort) {
-      this.sort = sort
-      this.refreshCommentList()
+      this.sort = sort;
+      this.refreshCommentList();
     },
     // 留言列表
     async refreshCommentList() {
@@ -167,19 +167,19 @@ export default {
         childrenPageSize: this.childrenPageSize,
         orderName: this.sort === 'date' ? 'created_at' : 'star_total',
         orderBy: 'desc',
-      }
+      };
       try {
-        this.isLoading = true
+        this.isLoading = true;
         const { data } = await this.$axios1.get(`/comment/comment`, {
           params: { ...query },
-        })
-        this.isLoading = false
-        this.commentList = data.rows
-        this.total = data.total
-        this.hasMore = data.hasMore
+        });
+        this.isLoading = false;
+        this.commentList = data.rows;
+        this.total = data.total;
+        this.hasMore = data.hasMore;
       } catch (error) {
-        console.log(error)
-        this.isLoading = false
+        console.log(error);
+        this.isLoading = false;
       }
     },
 
@@ -193,14 +193,14 @@ export default {
             pageSize: query.childrenPageSize,
             childrenPageSize: this.childrenPageSize,
           },
-        })
+        });
         this.commentList.forEach((item) => {
           if (item.id === query.parent_comment_id) {
-            item.children_comment.push(...data.rows)
+            item.children_comment.push(...data.rows);
           }
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     // 获取父评论分页
@@ -215,15 +215,15 @@ export default {
             orderName: query.orderName,
             orderBy: query.orderBy,
           },
-        })
-        this.commentList.push(...data.rows)
-        this.hasMore = data.hasMore
+        });
+        this.commentList.push(...data.rows);
+        this.hasMore = data.hasMore;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

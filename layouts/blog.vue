@@ -18,14 +18,16 @@
   </div>
 </template>
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import Cookies from 'js-cookie'
-import LyHeader from '@/layouts/header'
-import LyTypeList from '@/layouts/typelist'
-import LyBacktop from '@/layouts/backtop'
-import LyAside from '@/layouts/aside'
-import LyMain from '@/layouts/main'
-import LyFooter from '@/layouts/footer'
+import Cookies from 'js-cookie';
+import { mapActions, mapMutations } from 'vuex';
+
+import LyAside from '@/layouts/aside';
+import LyBacktop from '@/layouts/backtop';
+import LyFooter from '@/layouts/footer';
+import LyHeader from '@/layouts/header';
+import LyMain from '@/layouts/main';
+import LyTypeList from '@/layouts/typelist';
+import { showProjectInfo } from '@/utils/ShowProjectInfo';
 export default {
   components: {
     LyHeader,
@@ -45,36 +47,37 @@ export default {
       types: 1,
       nowPage: 1,
       pageSize: 20,
-    }
+    };
     try {
-      const { data } = await $axios1.get(`/article/list`, { params })
-      console.log(data, '---')
+      const { data } = await $axios1.get(`/article/list`, { params });
+      console.log(data, '---');
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   computed: {
     CurrentNodeEnv() {
-      return this.$store.state.app.CurrentNodeEnv
+      return this.$store.state.app.CurrentNodeEnv;
     },
     showMusicAudio() {
-      return this.$store.state.app.showMusicAudio
+      return this.$store.state.app.showMusicAudio;
     },
     showPlum() {
-      return this.$store.state.app.showPlum
+      return this.$store.state.app.showPlum;
     },
   },
 
   mounted() {
-    this.init()
-    this.getFrontendData()
+    showProjectInfo();
+    this.init();
+    this.getFrontendData();
     if (this.CurrentNodeEnv !== 'development') {
-      this.$axios1.post('visitor_log/create') // 新增访客记录
+      this.$axios1.post('visitor_log/create'); // 新增访客记录
     }
-    window.addEventListener('message', this.messageFn)
+    window.addEventListener('message', this.messageFn);
   },
   destroyed() {
-    window.removeEventListener('message', this.messageFn)
+    window.removeEventListener('message', this.messageFn);
   },
   methods: {
     ...mapActions({
@@ -87,45 +90,45 @@ export default {
     }),
 
     init() {
-      const token = localStorage.token
+      const token = localStorage.token;
       if (token) {
-        this.setToken(token)
-        this.getUserInfo()
+        this.setToken(token);
+        this.getUserInfo();
       }
     },
     async messageFn(e) {
-      const { type, data: code } = e.data
+      const { type, data: code } = e.data;
       if (type === 'qq_login') {
         if (code) {
           try {
-            await this.$axios1.post(`/qq_user/login`, { code })
-            const token = Cookies.get('token')
+            await this.$axios1.post(`/qq_user/login`, { code });
+            const token = Cookies.get('token');
             if (token) {
-              this.setToken(token)
-              this.getUserInfo()
+              this.setToken(token);
+              this.getUserInfo();
             }
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         }
       }
       if (type === 'github_login') {
         if (code) {
           try {
-            await this.$axios1.post(`/github_user/login`, { code })
-            const token = Cookies.get('token')
+            await this.$axios1.post(`/github_user/login`, { code });
+            const token = Cookies.get('token');
             if (token) {
-              this.setToken(token)
-              this.getUserInfo()
+              this.setToken(token);
+              this.getUserInfo();
             }
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         }
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -11,36 +11,36 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-dayjs.extend(duration)
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
 export default {
   data() {
     return {
       runningTime: null,
-    }
+    };
   },
   created() {},
   mounted() {
-    this.init()
+    this.init();
   },
   destroyed() {},
   methods: {
     init() {
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < 1000; i += 1) {
         setInterval(() => {
-          const startDate = dayjs('2019-09-01 00:00:00')
-          const nowDate = dayjs()
+          const startDate = dayjs('2019-09-01 00:00:00');
+          const nowDate = dayjs();
           const res = dayjs
             .duration(nowDate - startDate)
-            .format('Y年M个月D天H小时m分s秒')
-          this.runningTime = res
-        }, 1000)
+            .format('Y年M个月D天H小时m分s秒');
+          this.runningTime = res;
+        }, 1000);
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

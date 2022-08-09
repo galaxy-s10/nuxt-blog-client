@@ -52,33 +52,33 @@ export default {
         //   timestamp: "2021-02-02",
         // },
       ],
-    }
+    };
   },
   computed: {
     frontendData() {
-      return this.$store.state.app.frontendData
+      return this.$store.state.app.frontendData;
     },
   },
   watch: {
     frontendData() {
       this.dialogVisible = this.frontendData
         ? this.frontendData.frontend.frontend_dialog === 1
-        : false
+        : false;
     },
   },
   created() {},
   mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth
+    const d = window.pageXOffset || document.documentElement.offsetWidth;
     if (d <= 414) {
-      this.dialogWidth = '80%'
+      this.dialogWidth = '80%';
     }
   },
   methods: {
     handleClose() {
-      this.dialogVisible = false
+      this.dialogVisible = false;
     },
   },
-}
+};
 </script>
 
 <style scoped>

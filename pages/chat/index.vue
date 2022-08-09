@@ -17,7 +17,7 @@ export default {
     return {
       currentTagId: 1,
       currentTagName: '',
-    }
+    };
   },
   head() {
     return {
@@ -29,14 +29,14 @@ export default {
           content: 'Natural Blog - Chat',
         },
       ],
-    }
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {},
-}
+};
 </script>
 
 <style lang="scss" scoped>

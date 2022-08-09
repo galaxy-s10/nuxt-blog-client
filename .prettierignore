@@ -1,0 +1,7 @@
+/node_modules/
+.gitignore
+.prettierignore
+.eslintignore
+.browserlistrc
+.editorconfig
+.nuxt

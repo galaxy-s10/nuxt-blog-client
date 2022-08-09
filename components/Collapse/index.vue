@@ -30,18 +30,18 @@ export default {
   data() {
     return {
       isOpen: false,
-    }
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {
-    this.isOpen = Boolean(this.open)
+    this.isOpen = Boolean(this.open);
   },
   methods: {
     handleClick() {},
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

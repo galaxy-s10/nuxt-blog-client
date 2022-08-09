@@ -64,14 +64,15 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex';
+
 import {
   GITHUB_OAUTH_URL,
   QQ_OAUTH_URL,
   REDIRECT_URI,
   QQ_CLIENT_ID,
   GITHUB_CLIENT_ID,
-} from '@/constant'
+} from '@/constant';
 export default {
   components: {},
   data() {
@@ -81,27 +82,27 @@ export default {
       visible: true,
       dialogVisible: false,
       dialogtwo: false,
-    }
+    };
   },
   computed: {
     frontendData() {
-      return this.$store.state.app.frontendData
+      return this.$store.state.app.frontendData;
     },
     userInfo() {
-      return this.$store.state.user.userInfo
+      return this.$store.state.user.userInfo;
     },
     isLogin() {
       if (!this.$store.state.user.userInfo) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     },
   },
   created() {},
   mounted() {},
   destroyed() {
-    window.removeEventListener('scroll', this.headershow)
+    window.removeEventListener('scroll', this.headershow);
   },
   methods: {
     ...mapActions({
@@ -114,55 +115,45 @@ export default {
     }),
     qqLogin() {
       const url =
-        QQ_OAUTH_URL +
-        'client_id=' +
-        QQ_CLIENT_ID +
-        '&redirect_uri=' +
-        REDIRECT_URI +
-        'qq_login' +
-        '&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info'
+        `${QQ_OAUTH_URL}client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
+        `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
       window.open(
         url,
         'qq_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
-      )
+      );
     },
     githubLogin() {
       const url =
-        GITHUB_OAUTH_URL +
-        'client_id=' +
-        GITHUB_CLIENT_ID +
-        '&redirect_uri=' +
-        REDIRECT_URI +
-        'github_login' +
-        '&scope=user'
+        `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
+        `&scope=user`;
       window.open(
         url,
         'github_login_window',
         'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
-      )
+      );
     },
     async register() {
       if (this.username === '' || this.password === '') {
-        this.$newmessage('请输入完整！', 'error')
+        this.$newmessage('请输入完整！', 'error');
       } else {
         try {
           // 正则匹配用户名，格式要求：8-16位；只允许大小写字母、数字、下划线
-          const usernameReg = /[0-9a-zA-Z_]{6,12}$/g
+          const usernameReg = /[0-9a-zA-Z_]{6,12}$/g;
           if (!usernameReg.test(this.username)) {
-            throw new Error('格式要求：8-16位；只允许大小写字母、数字、下划线')
+            throw new Error('格式要求：8-16位；只允许大小写字母、数字、下划线');
           }
           // 正则匹配密码，格式要求：8-16位；只允许大小写字母、数字、下划线；且不能全是大小写字母/数字/下划线
           const pwdReg =
-            /^(?![0-9]+$)(?![a-zA-Z]+$)(?![_]+$)[0-9a-zA-Z_]{8,16}$/g
+            /^(?![0-9]+$)(?![a-zA-Z]+$)(?![_]+$)[0-9a-zA-Z_]{8,16}$/g;
           if (!pwdReg.test(this.password)) {
             throw new Error(
               '密码格式要求：8-16位；只允许大小写字母、数字、下划线；且不能全是大小写字母/数字/下划线'
-            )
+            );
           }
         } catch (error) {
-          this.$newmessage(error, 'error')
-          return
+          this.$newmessage(error, 'error');
+          return;
         }
         await this.$axios1
           .post('user/register', {
@@ -170,62 +161,63 @@ export default {
             password: this.password,
           })
           .then((res) => {
-            this.$newmessage('注册成功!', 'success')
-            let timer = null
+            this.$newmessage('注册成功!', 'success');
+            let timer = null;
             timer = setTimeout(() => {
-              this.dialogtwo = false
-              clearTimeout(timer)
-            }, 500)
+              this.dialogtwo = false;
+              clearTimeout(timer);
+            }, 500);
           })
           .catch((error) => {
-            this.$newmessage(error.message, 'error')
-          })
+            this.$newmessage(error.message, 'error');
+          });
       }
     },
     login() {
       if (this.username === '' || this.password === '') {
-        this.$newmessage('请输入完整！', 'error')
+        this.$newmessage('请输入完整！', 'error');
       } else {
         this.userLogin({ username: this.username, password: this.password })
           .then((res) => {
-            this.$newmessage(res.message, 'success')
-            this.dialogVisible = false
-            this.getUserInfo()
+            this.$newmessage(res.message, 'success');
+            this.dialogVisible = false;
+            this.getUserInfo();
           })
           .catch((error) => {
-            console.log(error)
-          })
+            console.log(error);
+          });
       }
     },
     logout() {
-      this.userLogout()
+      this.userLogout();
     },
     async querySearchAsync(keyWord, cb) {
       if (keyWord) {
-        await this.$store.dispatch('user/findarticle', { keyWord })
+        await this.$store.dispatch('user/findarticle', { keyWord });
         // cb(this.$store.state.article.search);
-        let timer = null
+        let timer = null;
         timer = setTimeout(() => {
-          cb(this.$store.state.article.search)
-          clearTimeout(timer)
-        }, 300)
+          cb(this.$store.state.article.search);
+          clearTimeout(timer);
+        }, 300);
       } else {
-        let timer = null
+        let timer = null;
         timer = setTimeout(() => {
           // eslint-disable-next-line node/no-callback-literal
-          cb([])
-          clearTimeout(timer)
-        }, 300)
+          cb([]);
+          clearTimeout(timer);
+        }, 300);
       }
     },
     headershow() {
       // 头部高度为70px
-      const height = 70
-      const offsetTop = window.pageYOffset || document.documentElement.scrollTop
-      this.visible = offsetTop < height
+      const height = 70;
+      const offsetTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      this.visible = offsetTop < height;
     },
   },
-}
+};
 </script>
 
 <style>

@@ -17,18 +17,18 @@ export default {
   components: {},
   props: [],
   data() {
-    return { content: null }
+    return { content: null };
   },
   computed: {},
   watch: {
     content(v, o) {
-      this.$emit('contentChange', v, o)
+      this.$emit('contentChange', v, o);
     },
   },
   created() {},
   mounted() {},
   methods: {},
-}
+};
 </script>
 
 <style>

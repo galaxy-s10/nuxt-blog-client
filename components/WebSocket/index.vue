@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { io } from 'socket.io-client'
+import { io } from 'socket.io-client';
 const webSocketMsgType = {
   connect: 'connect', // 用户连接
   userInRoom: 'userInRoom', // 用户进入聊天
@@ -87,13 +87,13 @@ const webSocketMsgType = {
   userSendMsg: 'userSendMsg', // 用户发送消息
   heartbeatCheck: 'heartbeatCheck', // 心跳检测
   getOnlineUser: 'getOnlineUser', // 获取在线用户
-}
+};
 const connectStatusEnum = {
   connecting: 'connecting', // 连接中
   connected: 'connected', // 已连接
   disconnect: 'disconnect', // 断开连接
   reconnect: 'reconnect', // 重新连接
-}
+};
 const avatarList = [
   'https://img.cdn.hsslive.cn/1613141138717Billd.webp',
   'https://img.cdn.hsslive.cn/1610170474620Hololo.webp',
@@ -101,7 +101,7 @@ const avatarList = [
   'https://img.cdn.hsslive.cn/1610170481257CoCo.webp',
   'https://img.cdn.hsslive.cn/1610170481257Nill.webp',
   'https://img.cdn.hsslive.cn/1610170481257Ojin.webp',
-]
+];
 export default {
   name: 'App',
   data() {
@@ -124,63 +124,63 @@ export default {
       url: 'wss://www.hsslive.cn/',
       // url: 'ws://42.193.157.44:3200',
       // url: 'ws://localhost:3300',
-    }
+    };
   },
   computed: {},
   watch: {
     chatList() {
       this.$nextTick(() => {
         this.$refs['content-list'].scrollTop =
-          this.$refs['content-list'].scrollHeight
-      })
+          this.$refs['content-list'].scrollHeight;
+      });
     },
   },
   mounted() {
-    this.createWebSocket(this.url)
+    this.createWebSocket(this.url);
   },
   destroyed() {
-    this.closeWs()
+    this.closeWs();
   },
   methods: {
     join() {
       if (this.nickname.length > 6) {
-        this.$newmessage('昵称最多6个字符!', 'info')
+        this.$newmessage('昵称最多6个字符!', 'info');
       }
-      this.isJoin = true
+      this.isJoin = true;
       this.wsInstance.emit(webSocketMsgType.userInRoom, {
         nickname: this.nickname,
         msg: this.msg,
-      })
+      });
     },
     // 关闭websocket连接
     closeWs() {
-      this.connectStatus = this.connectStatusEnum.disconnect
-      this.wsInstance.close()
+      this.connectStatus = this.connectStatusEnum.disconnect;
+      this.wsInstance.close();
     },
     // 处理收到的消息
     handleReceiveMessage() {
       this.wsInstance.on(webSocketMsgType.getOnlineUser, (data) => {
-        this.onlineCount = data.count
-      })
+        this.onlineCount = data.count;
+      });
       this.wsInstance.on(webSocketMsgType.userInRoom, (data) => {
-        const { nickname, msg, time } = data
+        const { nickname, msg, time } = data;
         this.chatList.push({
           type: webSocketMsgType.userInRoom,
           nickname,
           msg,
           time,
-        })
-      })
+        });
+      });
       this.wsInstance.on(webSocketMsgType.userOutRoom, (data) => {
-        const { nickname, time } = data
+        const { nickname, time } = data;
         this.chatList.push({
           type: webSocketMsgType.userOutRoom,
           nickname,
           time,
-        })
-      })
+        });
+      });
       this.wsInstance.on(webSocketMsgType.userSendMsg, (data) => {
-        const { id, nickname, avatar, msg, time } = data
+        const { id, nickname, avatar, msg, time } = data;
         this.chatList.push({
           type: webSocketMsgType.userSendMsg,
           id,
@@ -188,61 +188,61 @@ export default {
           avatar,
           msg,
           time,
-        })
-      })
+        });
+      });
     },
     // 新建WebSocket
     createWebSocket(url) {
       try {
         if ('WebSocket' in window) {
-          this.wsInstance = io(url, { transports: ['websocket'] })
-          this.initWebSocket()
+          this.wsInstance = io(url, { transports: ['websocket'] });
+          this.initWebSocket();
         } else {
-          console.log('你的浏览器不支持WebSocket！')
+          console.log('你的浏览器不支持WebSocket！');
         }
       } catch (error) {
-        console.log('新建WebSocket出错', error)
+        console.log('新建WebSocket出错', error);
       }
     },
     // 初始化
     initWebSocket() {
       this.wsInstance.on('connect', () => {
-        this.wsId = this.wsInstance.id
-        this.connectStatus = this.connectStatusEnum.connected
-        this.wsInstance.emit(webSocketMsgType.getOnlineUser, {})
-        this.handleReceiveMessage()
-      })
+        this.wsId = this.wsInstance.id;
+        this.connectStatus = this.connectStatusEnum.connected;
+        this.wsInstance.emit(webSocketMsgType.getOnlineUser, {});
+        this.handleReceiveMessage();
+      });
       this.wsInstance.on('disconnect', (reason) => {
         if (reason === 'io server disconnect') {
           // the disconnection was initiated by the server, you need to reconnect manually
-          this.wsInstance.connect()
+          this.wsInstance.connect();
         }
-        console.log('断开websocket连接!')
-      })
+        console.log('断开websocket连接!');
+      });
       this.wsInstance.on('connect_error', () => {
-        console.log('连接websocket错误，开始重连！')
-        this.wsInstance.connect()
-      })
+        console.log('连接websocket错误，开始重连！');
+        this.wsInstance.connect();
+      });
     },
     // 用户发送消息
     userSendMsg() {
       if (this.msg.trim() === '') {
-        this.$newmessage('请输入内容', 'info')
-        return
+        this.$newmessage('请输入内容', 'info');
+        return;
       }
       if (this.msg.length > 100) {
-        this.$newmessage('最多输入100个字符', 'info')
-        return
+        this.$newmessage('最多输入100个字符', 'info');
+        return;
       }
       this.wsInstance.emit(webSocketMsgType.userSendMsg, {
         nickname: this.nickname,
         avatar: this.avatar,
         msg: this.msg,
-      })
-      this.msg = ''
+      });
+      this.msg = '';
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

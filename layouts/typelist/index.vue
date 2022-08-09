@@ -18,42 +18,43 @@ export default {
   data() {
     return {
       visible: false,
-    }
+    };
   },
   computed: {
     typeList() {
-      return this.$store.state.type.typeList
+      return this.$store.state.type.typeList;
     },
   },
   mounted() {
-    window.addEventListener('scroll', this.headershow)
+    window.addEventListener('scroll', this.headershow);
   },
   destroyed() {
-    window.removeEventListener('scroll', this.headershow)
+    window.removeEventListener('scroll', this.headershow);
   },
   methods: {
     headershow() {
       // 头部高度为70px
-      const height = 70
-      const offsetTop = window.pageYOffset || document.documentElement.scrollTop
-      this.visible = offsetTop > height
+      const height = 70;
+      const offsetTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      this.visible = offsetTop > height;
     },
     changeType(typeId) {
-      this.$store.commit('type/changeTypeId', typeId + '')
+      this.$store.commit('type/changeTypeId', `${typeId}`);
       if (this.$route.path !== '/') {
-        this.$router.push('/')
+        this.$router.push('/');
       }
     },
     all() {
       if (this.$store.state.type.typeId) {
-        this.$store.commit('type/changeTypeId', '')
+        this.$store.commit('type/changeTypeId', '');
       }
       if (this.$route.path !== '/') {
-        this.$router.push('/')
+        this.$router.push('/');
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

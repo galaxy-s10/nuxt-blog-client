@@ -73,19 +73,19 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init'
+import { init } from '@/mixin/init';
 
 const validateEmail = (rule, value, callback) => {
-  const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+  const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
   if (value) {
     if (!reg.test(value)) {
-      callback(new Error('请输入正确的邮箱!'))
+      callback(new Error('请输入正确的邮箱!'));
     }
-    return callback()
+    return callback();
   } else {
-    callback()
+    callback();
   }
-}
+};
 
 export default {
   components: {},
@@ -95,8 +95,8 @@ export default {
     // 获取友链数据
     const { data: linkData } = await $axios1.get('/link/list', {
       params: { nowPage: 1, pageSize: 100 },
-    })
-    return { linkList: linkData.rows }
+    });
+    return { linkList: linkData.rows };
   },
   data() {
     return {
@@ -151,7 +151,7 @@ export default {
           },
         ],
       },
-    }
+    };
   },
   head() {
     return {
@@ -163,11 +163,11 @@ export default {
           content: 'Natural Blog - Link',
         },
       ],
-    }
+    };
   },
   computed: {
     frontendData() {
-      return this.$store.state.app.frontendData
+      return this.$store.state.app.frontendData;
     },
   },
   watch: {},
@@ -182,21 +182,21 @@ export default {
               ...this.linkForm,
               email:
                 this.linkForm.email === '' ? undefined : this.linkForm.email,
-            })
-            this.$newmessage('已提交友链申请~', 'success')
-            for (const i in this.linkForm) {
-              this.linkForm[i] = ''
-            }
+            });
+            this.$newmessage('已提交友链申请~', 'success');
+            Object.keys(this.linkForm).forEach((i) => {
+              this.linkForm[i] = '';
+            });
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
         } else {
-          this.$newmessage('请按要求输入正确!', 'error')
+          this.$newmessage('请按要求输入正确!', 'error');
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

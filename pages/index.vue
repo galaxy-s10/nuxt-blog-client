@@ -78,10 +78,11 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import { getRandomInt, generaterStyle } from '@/utils/index'
-import { init } from '@/mixin/init'
-import NoHeadImgCpt from '@/components/NoHeadImg'
+import { mapActions, mapMutations } from 'vuex';
+
+import NoHeadImgCpt from '@/components/NoHeadImg';
+import { init } from '@/mixin/init';
+import { getRandomInt, generaterStyle } from '@/utils/index';
 export default {
   components: {
     NoHeadImgCpt,
@@ -95,18 +96,18 @@ export default {
       types: store.state.type.typeId,
       nowPage: 1,
       pageSize: 20,
-    }
+    };
     try {
-      const { data } = await $axios1.get(`/article/list`, { params })
+      const { data } = await $axios1.get(`/article/list`, { params });
       data.rows.forEach((v) => {
-        const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50)
-        v.mockImgHeight = mockImgHeight
-      })
-      const articleList = data.rows
-      const hasMore = data.hasMore
-      return { articleList, hasMore, articleParams: params }
+        const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50);
+        v.mockImgHeight = mockImgHeight;
+      });
+      const articleList = data.rows;
+      const hasMore = data.hasMore;
+      return { articleList, hasMore, articleParams: params };
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   data() {
@@ -123,7 +124,7 @@ export default {
       isLoading: true,
       isBottom: false, // 是否触底
       isFirst: true, // 是否初次加载
-    }
+    };
   },
   head() {
     return {
@@ -135,31 +136,31 @@ export default {
           content: 'Natural Blog - Home',
         },
       ],
-    }
+    };
   },
   computed: {
     typeId() {
-      return this.$store.state.type.typeId
+      return this.$store.state.type.typeId;
     },
   },
   watch: {
     async typeId() {
-      this.offsetList = []
-      this.articleList = []
-      this.articleParams.nowPage = 1
-      const waterfallWrap = this.$refs['waterfall-wrap']
-      waterfallWrap.style.height = '0px'
+      this.offsetList = [];
+      this.articleList = [];
+      this.articleParams.nowPage = 1;
+      const waterfallWrap = this.$refs['waterfall-wrap'];
+      waterfallWrap.style.height = '0px';
 
-      this.articleParams.types = this.typeId
-      await this.ajaxArticleList(this.articleParams)
-      this.handleWaterfall()
+      this.articleParams.types = this.typeId;
+      await this.ajaxArticleList(this.articleParams);
+      this.handleWaterfall();
     },
     async isBottom(newVal) {
-      if (this.isLoading) return
+      if (this.isLoading) return;
       if (newVal && this.hasMore) {
-        this.articleParams.nowPage++
-        await this.ajaxArticleList(this.articleParams)
-        this.handleWaterfall()
+        this.articleParams.nowPage += 1;
+        await this.ajaxArticleList(this.articleParams);
+        this.handleWaterfall();
       }
     },
   },
@@ -168,25 +169,25 @@ export default {
     this.$axios1
       .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
       .then((res) => {
-        const { data } = res
-        const obj = {}
+        const { data } = res;
+        const obj = {};
         data.rows.forEach((v) => {
-          obj[v.key] = v.value
-        })
-        generaterStyle(obj)
-      })
+          obj[v.key] = v.value;
+        });
+        generaterStyle(obj);
+      });
 
-    window.scrollTo({ top: 0 })
-    const d = window.pageXOffset || document.documentElement.offsetWidth
+    window.scrollTo({ top: 0 });
+    const d = window.pageXOffset || document.documentElement.offsetWidth;
     if (d <= 414) {
-      this.waterfallParams.column = 2
+      this.waterfallParams.column = 2;
     }
-    this.handleWaterfall()
-    this.isLoading = false
-    this.touchBottom()
+    this.handleWaterfall();
+    this.isLoading = false;
+    this.touchBottom();
   },
   destroyed() {
-    window.removeEventListener('scroll', this.headershow)
+    window.removeEventListener('scroll', this.headershow);
   },
   methods: {
     ...mapActions({
@@ -200,22 +201,22 @@ export default {
 
     async ajaxArticleList(params) {
       try {
-        this.isLoading = true
-        const { data } = await this.$axios1.get(`/article/list`, { params })
+        this.isLoading = true;
+        const { data } = await this.$axios1.get(`/article/list`, { params });
         data.rows.forEach((v) => {
-          const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50)
-          v.mockImgHeight = mockImgHeight
-        })
+          const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50);
+          v.mockImgHeight = mockImgHeight;
+        });
         if (params.nowPage === 1) {
-          this.articleList = data.rows
+          this.articleList = data.rows;
         } else {
-          this.articleList = [...this.articleList, ...data.rows]
+          this.articleList = [...this.articleList, ...data.rows];
         }
-        this.hasMore = data.hasMore
-        this.isLoading = false
+        this.hasMore = data.hasMore;
+        this.isLoading = false;
       } catch (error) {
-        console.log(error)
-        this.isLoading = false
+        console.log(error);
+        this.isLoading = false;
       }
     },
     // 触底事件
@@ -224,72 +225,72 @@ export default {
         const intersectionObserver = new IntersectionObserver((entries) => {
           entries.forEach((item) => {
             if (!item.isIntersecting) {
-              this.isBottom = false
+              this.isBottom = false;
             } else {
-              this.isBottom = true
+              this.isBottom = true;
             }
-          })
-        })
-        intersectionObserver.observe(this.$refs.loadMoreRef)
-      })
+          });
+        });
+        intersectionObserver.observe(this.$refs.loadMoreRef);
+      });
     },
     // 瀑布流定位
     handleWaterfall() {
       // 获取数组最小值的下标
       function getMinIndex(arr) {
-        return [].indexOf.call(arr, Math.min.apply(null, arr))
+        return [].indexOf.call(arr, Math.min.apply(null, arr));
       }
       // 获取数组最大值的下标
       function getMaxIndex(arr) {
-        return [].indexOf.call(arr, Math.max.apply(null, arr))
+        return [].indexOf.call(arr, Math.max.apply(null, arr));
       }
       // 列数
-      const column = this.waterfallParams.column
+      const column = this.waterfallParams.column;
       // 间隙
-      const gap = this.waterfallParams.gap
-      const waterfallWrap = this.$refs['waterfall-wrap']
-      const waterfallItem = this.$refs['waterfall-item']
+      const gap = this.waterfallParams.gap;
+      const waterfallWrap = this.$refs['waterfall-wrap'];
+      const waterfallItem = this.$refs['waterfall-item'];
       // 瀑布流容器的宽度
-      const waterfallWrapWidth = window.getComputedStyle(waterfallWrap).width
+      const waterfallWrapWidth = window.getComputedStyle(waterfallWrap).width;
       // 计算减去间隙后，每个item的平均宽度
       const waterfallItemWidth =
-        (waterfallWrapWidth.replace('px', '') - (column - 1) * gap) / column
-      waterfallWrap.style.position = 'relative'
+        (waterfallWrapWidth.replace('px', '') - (column - 1) * gap) / column;
+      waterfallWrap.style.position = 'relative';
 
-      if (!waterfallItem) return
+      if (!waterfallItem) return;
 
       for (
         let i = (this.articleParams.nowPage - 1) * this.articleParams.pageSize;
         i < waterfallItem.length;
-        i++
+        i += 1
       ) {
-        waterfallItem[i].style.position = 'absolute'
-        waterfallItem[i].style.width = waterfallItemWidth + 'px'
+        waterfallItem[i].style.position = 'absolute';
+        waterfallItem[i].style.width = `${waterfallItemWidth}px`;
         if (i < column) {
-          this.offsetList.push(waterfallItem[i].offsetHeight) // 第一行不用判断，直接将每个item的offsetHeight保存在数组里
-          waterfallItem[i].style.top = '0' // 第一行的top都是0
+          this.offsetList.push(waterfallItem[i].offsetHeight); // 第一行不用判断，直接将每个item的offsetHeight保存在数组里
+          waterfallItem[i].style.top = '0'; // 第一行的top都是0
           if ((i + 1) % column === 1) {
-            waterfallItem[i].style.left = 0
+            waterfallItem[i].style.left = 0;
           } else {
-            const w = i * waterfallItemWidth
-            const g = i * gap
-            waterfallItem[i].style.left = w + g + 'px'
+            const w = i * waterfallItemWidth;
+            const g = i * gap;
+            waterfallItem[i].style.left = `${w + g}px`;
           }
         } else {
-          const minIndex = getMinIndex(this.offsetList)
-          const w = minIndex * waterfallItemWidth
-          const g = minIndex * gap
-          waterfallItem[i].style.top = this.offsetList[minIndex] + gap + 'px' // 计算top
-          waterfallItem[i].style.left = w + g + 'px'
-          this.offsetList[minIndex] += waterfallItem[i].offsetHeight + gap
+          const minIndex = getMinIndex(this.offsetList);
+          const w = minIndex * waterfallItemWidth;
+          const g = minIndex * gap;
+          waterfallItem[i].style.top = `${this.offsetList[minIndex] + gap}px`; // 计算top
+          waterfallItem[i].style.left = `${w + g}px`;
+          this.offsetList[minIndex] += waterfallItem[i].offsetHeight + gap;
         }
       }
-      this.isFirst = false
-      const maxIndex = getMaxIndex(this.offsetList)
-      waterfallWrap.style.height = this.offsetList[maxIndex] + 'px'
+      this.isFirst = false;
+      const maxIndex = getMaxIndex(this.offsetList);
+      waterfallWrap.style.height = `${this.offsetList[maxIndex]}px`;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import 'dayjs/locale/zh-cn'
-import UAParser from 'ua-parser-js'
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import UAParser from 'ua-parser-js';
+import Vue from 'vue';
 
-dayjs.extend(relativeTime).locale('zh-cn')
+import 'dayjs/locale/zh-cn';
+
+dayjs.extend(relativeTime).locale('zh-cn');
 
 /**
  * https://day.js.org/docs/zh-CN/display/format
@@ -13,8 +14,8 @@ dayjs.extend(relativeTime).locale('zh-cn')
  * dayjs().format() // 默认返回的是 ISO8601 格式字符串 '2020-04-02T08:02:17-05:00'
  */
 const formatDate = (date, str) => {
-  return dayjs(date).format(str || 'YYYY-MM-DD HH:mm:ss')
-}
+  return dayjs(date).format(str || 'YYYY-MM-DD HH:mm:ss');
+};
 
 /**
  * https://dayjs.gitee.io/docs/zh-CN/plugin/relative-time
@@ -22,29 +23,29 @@ const formatDate = (date, str) => {
  * dayjs().from(dayjs('1990-01-01'), true) // 31 年
  */
 const convertDate = (date) => {
-  return dayjs(date).fromNow()
-}
+  return dayjs(date).fromNow();
+};
 
 // 解析user-agent
 const parseUa = (v) => {
-  const parser = new UAParser()
-  const uaParser = parser.setUA(v)
-  const uaResult = uaParser.getResult()
-  const osName = uaResult.os.name
-  const osVersion = uaResult.os.version
-  return osName + ' ' + osVersion
-}
+  const parser = new UAParser();
+  const uaParser = parser.setUA(v);
+  const uaResult = uaParser.getResult();
+  const osName = uaResult.os.name;
+  const osVersion = uaResult.os.version;
+  return `${osName} ${osVersion}`;
+};
 
 // 解析ipInfo
 const parseIpInfo = (ipInfo) => {
   if (ipInfo.province.length <= 0) {
-    return ''
+    return '';
   }
-  const str = ipInfo.province + ' - ' + ipInfo.city
-  return str
-}
+  const str = `${ipInfo.province} - ${ipInfo.city}`;
+  return str;
+};
 
-Vue.filter('parseUa', parseUa)
-Vue.filter('formatDate', formatDate)
-Vue.filter('convertDate', convertDate)
-Vue.filter('parseIpInfo', parseIpInfo)
+Vue.filter('parseUa', parseUa);
+Vue.filter('formatDate', formatDate);
+Vue.filter('convertDate', convertDate);
+Vue.filter('parseIpInfo', parseIpInfo);

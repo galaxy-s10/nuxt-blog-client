@@ -3,14 +3,17 @@
     <div v-show="visible" class="fix-header-wrapper">
       <div class="header-wrapper">
         <div class="logo">
-          <nuxt-link tag="span" to="/">Natural</nuxt-link>
+          <nuxt-link v-slot="{ navigate }" to="/">
+            <span @click="navigate">Natural</span>
+          </nuxt-link>
           <sup>Blog</sup>
         </div>
         <div class="nav">
           <ul class="nav-menu">
             <li v-for="(item, index) in navList" :key="index" class="item">
-              <nuxt-link :to="item.path" tag="span">
-                <span>{{ item.title }}</span>
+              <!-- https://router.vuejs.org/zh/api/#custom，好像vue-router4.x的时候custom才有用 -->
+              <nuxt-link v-slot="{ navigate }" :to="item.path" custom>
+                <span @click="navigate">{{ item.title }}</span>
               </nuxt-link>
             </li>
           </ul>
@@ -26,8 +29,8 @@
                   :key="index"
                   :command="item.title"
                 >
-                  <nuxt-link tag="span" :to="item.path">
-                    {{ item.title }}
+                  <nuxt-link :to="item.path">
+                    <span> {{ item.title }}</span>
                   </nuxt-link>
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import LoginCpt from '@/components/Login'
+import LoginCpt from '@/components/Login';
 
 export default {
   components: {
@@ -97,28 +100,28 @@ export default {
           path: '/about',
         },
       ],
-    }
+    };
   },
   computed: {},
   mounted() {
-    window.addEventListener('scroll', this.headershow)
+    window.addEventListener('scroll', this.headershow);
   },
   destroyed() {
-    window.removeEventListener('scroll', this.headershow)
+    window.removeEventListener('scroll', this.headershow);
   },
   methods: {
     register() {},
     login() {},
     logout() {
-      this.$store.commit('user/setToken', null)
+      this.$store.commit('user/setToken', null);
     },
     handleCommand(x) {
-      this.title = x
+      this.title = x;
     },
     handleSelect(res) {
-      const id = res.id
-      if (this.$route.path !== '/article/' + id) {
-        this.$router.push('/article/' + id)
+      const id = res.id;
+      if (this.$route.path !== `/article/${id}`) {
+        this.$router.push(`/article/${id}`);
       }
     },
     async querySearchAsync(keyWord, cb) {
@@ -127,24 +130,25 @@ export default {
           nowPage: 1,
           pageSize: 20,
           keyWord,
-        }
+        };
         const { data } = await this.$axios1.get(`/article/keyWord_list`, {
           params,
-        })
-        cb(data.rows)
+        });
+        cb(data.rows);
       } else {
         // eslint-disable-next-line node/no-callback-literal
-        cb([])
+        cb([]);
       }
     },
     headershow() {
       // 头部高度为70px
-      const height = 70
-      const offsetTop = window.pageYOffset || document.documentElement.scrollTop
-      this.visible = offsetTop < height
+      const height = 70;
+      const offsetTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      this.visible = offsetTop < height;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scope>

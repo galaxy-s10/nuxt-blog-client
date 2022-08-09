@@ -20,14 +20,14 @@ export default {
   data() {
     return {
       size: 30,
-    }
+    };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
   methods: {},
-}
+};
 </script>
 
 <style lang="scss" scoped>

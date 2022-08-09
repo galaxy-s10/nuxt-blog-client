@@ -13,64 +13,64 @@ export const state = () => ({
   theme: 'light',
   // 当前node环境
   CurrentNodeEnv: 'development',
-})
+});
 
 export const mutations = {
   setIpInfo(state, res) {
-    state.ipInfo = res
+    state.ipInfo = res;
   },
   setCurrentNodeEnv(state, res) {
-    state.CurrentNodeEnv = res
+    state.CurrentNodeEnv = res;
   },
   setFrontendData(state, res) {
-    state.frontendData = res
+    state.frontendData = res;
   },
   setShowCatalog(state, res) {
-    state.showCatalog = res
+    state.showCatalog = res;
   },
   setShowPlum(state, res) {
-    state.showPlum = res
+    state.showPlum = res;
   },
   setShowMusicAudio(state, res) {
-    state.showMusicAudio = res
+    state.showMusicAudio = res;
   },
   setTheme(state, res) {
-    state.theme = res
+    state.theme = res;
     if (res === 'dark') {
-      document.body.classList.add('dark')
-      document.body.classList.remove('light')
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
       const styleContent = `
       .dark {
         --bg-color-light: #1a1a1a;
         --text-color-light: #bbb;
         --bg-item-color-light: #1a1a1a;
       }
-      `
-      const styleEle = document.createElement('style')
-      styleEle.textContent = styleContent
-      document.head.appendChild(styleEle)
+      `;
+      const styleEle = document.createElement('style');
+      styleEle.textContent = styleContent;
+      document.head.appendChild(styleEle);
     } else {
-      document.body.classList.remove('dark')
-      document.body.classList.add('light')
+      document.body.classList.remove('dark');
+      document.body.classList.add('light');
     }
   },
-}
+};
 
 export const actions = {
   async getIpInfo({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/position/get')
-      commit('setIpInfo', data)
+      const { data } = await this.$axios1.get('/position/get');
+      commit('setIpInfo', data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
   async getFrontendData({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/frontend/detail')
-      commit('setFrontendData', data)
+      const { data } = await this.$axios1.get('/frontend/detail');
+      commit('setFrontendData', data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   },
-}
+};

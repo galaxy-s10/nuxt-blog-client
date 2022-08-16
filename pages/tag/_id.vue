@@ -20,16 +20,29 @@
         class="article-item"
       >
         <div class="article-left">
-          <nuxt-link v-if="item['head_img']" :to="`/article/${item.id}`">
-            <img v-lazy="item['head_img']" class="head-img" alt="" />
+          <nuxt-link
+            v-if="item['head_img']"
+            v-slot="{ navigate }"
+            :to="`/article/${item.id}`"
+          >
+            <img
+              v-lazy="item['head_img']"
+              class="head-img"
+              alt=""
+              @click="navigate"
+            />
           </nuxt-link>
-          <nuxt-link v-else :to="`/article/${item.id}`">
-            <div class="head-img"><NoHeadImgCpt></NoHeadImgCpt></div>
+          <nuxt-link v-else v-slot="{ navigate }" :to="`/article/${item.id}`">
+            <div class="head-img" @click="navigate">
+              <NoHeadImgCpt></NoHeadImgCpt>
+            </div>
           </nuxt-link>
         </div>
         <div class="article-right">
-          <nuxt-link :to="'/article/' + item.id">
-            <span class="singleEllipsis"> {{ item.title }} </span>
+          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id">
+            <span class="article-right-txt" @click="navigate">
+              {{ item.title }}
+            </span>
           </nuxt-link>
           <el-divider></el-divider>
           <el-tag
@@ -292,6 +305,10 @@ export default {
     overflow: hidden;
     box-sizing: border-box;
     padding: 30px;
+    .article-right-txt {
+      @extend .singleEllipsis;
+      cursor: pointer;
+    }
     .summary {
       display: flex;
       align-items: center;

@@ -13,6 +13,7 @@ import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
+import Vue from 'vue';
 import { mapState } from 'vuex';
 
 import '@kangc/v-md-editor/lib/style/preview.css';
@@ -24,12 +25,14 @@ hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('bash', bash);
 
-VMdPreview.use(githubTheme, {
-  Hljs: hljs,
-});
-
-VMdPreview.use(createTodoListPlugin()); // 任务列表
-VMdPreview.use(createCopyCodePlugin()); // 快捷复制代码
+if (!Vue._is_use_VMdPreview) {
+  VMdPreview.use(githubTheme, {
+    Hljs: hljs,
+  });
+  VMdPreview.use(createTodoListPlugin()); // 任务列表
+  VMdPreview.use(createCopyCodePlugin()); // 快捷复制代码
+  Vue._is_use_VMdPreview = true;
+}
 
 export default {
   components: { VMdPreview },

@@ -10,8 +10,8 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <router-link :to="'/article/' + item.id">
-            <span class="a-link"> {{ item.title }} </span>
+          <router-link v-slot="{ navigate }" :to="'/article/' + item.id">
+            <span class="a-link" @click="navigate"> {{ item.title }} </span>
           </router-link>
         </el-timeline-item>
       </template>
@@ -91,8 +91,9 @@ export default {
 .history-wrap {
   .a-link {
     color: $theme-color5;
-    text-decoration: none;
+    // text-decoration: none;
     font-size: 18px;
+    cursor: pointer;
     &:hover {
       color: $theme-color1;
     }

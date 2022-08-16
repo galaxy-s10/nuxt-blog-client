@@ -50,7 +50,13 @@ const Element = {
   },
 };
 
-Vue.use(Element);
-Vue.use(Loading);
+export default () => {
+  if (Vue._is_use_elementui) {
+    return;
+  }
+  Vue.use(Element);
+  Vue.use(Loading);
 
+  Vue._is_use_elementui = true;
+};
 // Vue.use(Element, { locale })

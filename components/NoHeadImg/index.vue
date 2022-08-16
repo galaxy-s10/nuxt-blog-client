@@ -25,10 +25,11 @@ export default {
   }
 }
 .no-head-img {
-  text-align: center;
   height: 150px;
-  line-height: 150px;
+  text-align: center;
+  text-decoration: none;
   font-size: 24px;
+  line-height: 150px;
   user-select: none;
 }
 </style>

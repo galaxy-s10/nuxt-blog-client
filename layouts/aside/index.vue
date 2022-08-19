@@ -287,7 +287,6 @@ export default {
   },
   watch: {
     showCatalog(newVal, oldVal) {
-      console.log('newVal', newVal);
       newVal &&
         this.$nextTick(() => {
           this.cataLogObserver();
@@ -335,7 +334,6 @@ export default {
 
     // 目录监听
     cataLogObserver() {
-      console.log('目录监听', this.$refs.catalogRef);
       const intersectionObserver = new IntersectionObserver((entries) => {
         entries.forEach((item) => {
           if (!item.isIntersecting) {

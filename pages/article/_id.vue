@@ -152,7 +152,6 @@ export default {
   mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
-    console.log('asyncData');
     try {
       const articleId = params.id;
       const { data } = await $axios1.get(`/article/find/${articleId}`);
@@ -226,7 +225,6 @@ export default {
     window.scrollTo({ top: 0 });
     this.$store.commit('app/setShowCatalog', true);
     const timer = setInterval(() => {
-      console.log(this.$refs['hss-md'].$el);
       if (this.$refs['hss-md'].$el) {
         this.renderCatalog();
         clearInterval(timer);
@@ -404,7 +402,6 @@ export default {
     // 渲染文章目录
     renderCatalog() {
       this.$nextTick(() => {
-        console.log('渲染文章目录');
         // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
         // https://blog.lichter.io/posts/vue-hydration-error/
         // https://github.com/nuxt/nuxt.js/issues/5612
@@ -422,12 +419,9 @@ export default {
             obj.type = item.nodeName;
             obj.text = item.innerText;
             try {
-              // console.log('????', obj, item.nodeName, item.innerText, item)
               // 创建一个a元素
               const ele1 = document.createElement('div');
-              // console.log(ele1, 'll')
               ele1.setAttribute('id', obj.id);
-              console.log(item, ele1.type);
               item.appendChild(ele1);
             } catch (err) {
               console.log(err);

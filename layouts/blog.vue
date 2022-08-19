@@ -40,21 +40,7 @@ export default {
     AsnycPlumCpt: () => import('@/components/Plum'),
     AsnycFeatureTipCpt: () => import('@/components/FeatureTip'),
   },
-  async asyncData({ $axios1, store }) {
-    const params = {
-      orderName: 'created_at',
-      orderBy: 'desc',
-      types: 1,
-      nowPage: 1,
-      pageSize: 20,
-    };
-    try {
-      const { data } = await $axios1.get(`/article/list`, { params });
-      console.log(data, '---');
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  asyncData({ $axios1, store }) {},
   computed: {
     CurrentNodeEnv() {
       return this.$store.state.app.CurrentNodeEnv;

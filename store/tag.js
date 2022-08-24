@@ -3,6 +3,7 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   setSideBarTagList(state, res) {
     state.sideBarTagList = res;
   },

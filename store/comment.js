@@ -5,6 +5,7 @@ export const state = () => ({
 export const mutations = {};
 
 export const actions = {
+  // eslint-disable-next-line no-shadow
   async reply({ commit, state }, payload) {
     try {
       const { data } = await this.$axios1.post('/comment/create', {

@@ -16,24 +16,31 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   setIpInfo(state, res) {
     state.ipInfo = res;
   },
+  // eslint-disable-next-line no-shadow
   setCurrentNodeEnv(state, res) {
     state.CurrentNodeEnv = res;
   },
+  // eslint-disable-next-line no-shadow
   setFrontendData(state, res) {
     state.frontendData = res;
   },
+  // eslint-disable-next-line no-shadow
   setShowCatalog(state, res) {
     state.showCatalog = res;
   },
+  // eslint-disable-next-line no-shadow
   setShowPlum(state, res) {
     state.showPlum = res;
   },
+  // eslint-disable-next-line no-shadow
   setShowMusicAudio(state, res) {
     state.showMusicAudio = res;
   },
+  // eslint-disable-next-line no-shadow
   setTheme(state, res) {
     state.theme = res;
     if (res === 'dark') {

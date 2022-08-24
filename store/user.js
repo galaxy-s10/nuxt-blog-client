@@ -5,10 +5,12 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   logout(state) {
     localStorage.removeItem('token');
     state.userInfo = null;
   },
+  // eslint-disable-next-line no-shadow
   setToken(state, res) {
     if (res === null) {
       localStorage.removeItem('token');
@@ -17,9 +19,11 @@ export const mutations = {
     }
     state.token = res;
   },
+  // eslint-disable-next-line no-shadow
   setUserInfo(state, res) {
     state.userInfo = res;
   },
+  // eslint-disable-next-line no-shadow
   setSummary(state, res) {
     state.summary = res;
   },

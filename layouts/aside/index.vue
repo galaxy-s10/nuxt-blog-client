@@ -157,16 +157,27 @@
                 <div class="head-img">
                   <nuxt-link
                     v-if="item['head_img']"
+                    v-slot="{ navigate }"
                     :to="'/article/' + item.id"
+                    custom
                   >
-                    <img v-lazy="item['head_img']" alt="" />
+                    <img v-lazy="item['head_img']" alt="" @click="navigate" />
                   </nuxt-link>
-                  <nuxt-link v-else :to="`/article/${item.id}`">
-                    <NoHeadImgCpt></NoHeadImgCpt>
+                  <nuxt-link
+                    v-else
+                    v-slot="{ navigate }"
+                    :to="`/article/${item.id}`"
+                    custom
+                  >
+                    <NoHeadImgCpt @click="navigate"></NoHeadImgCpt>
                   </nuxt-link>
                 </div>
                 <div class="desc">
-                  <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id">
+                  <nuxt-link
+                    v-slot="{ navigate }"
+                    :to="'/article/' + item.id"
+                    custom
+                  >
                     <b class="b-hover" @click="navigate"> #{{ item.title }}</b>
                   </nuxt-link>
                   <div class="info">
@@ -494,6 +505,9 @@ export default {
         }
         .b-hover {
           cursor: pointer;
+          &:hover {
+            transform: translateX(4px);
+          }
         }
       }
     }

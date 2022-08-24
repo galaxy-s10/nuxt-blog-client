@@ -32,14 +32,19 @@
               @click="navigate"
             />
           </nuxt-link>
-          <nuxt-link v-else v-slot="{ navigate }" :to="`/article/${item.id}`">
+          <nuxt-link
+            v-else
+            v-slot="{ navigate }"
+            :to="`/article/${item.id}`"
+            custom
+          >
             <div class="head-img" @click="navigate">
               <NoHeadImgCpt></NoHeadImgCpt>
             </div>
           </nuxt-link>
         </div>
         <div class="article-right">
-          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id">
+          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id" custom>
             <span class="article-right-txt" @click="navigate">
               {{ item.title }}
             </span>

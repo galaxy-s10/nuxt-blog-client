@@ -3,7 +3,7 @@
     <div v-show="visible" class="fix-header-wrapper">
       <div class="header-wrapper">
         <div class="logo">
-          <nuxt-link v-slot="{ navigate }" to="/">
+          <nuxt-link v-slot="{ navigate }" to="/" custom>
             <span @click="navigate">Natural</span>
           </nuxt-link>
           <sup>Blog</sup>
@@ -11,7 +11,7 @@
         <div class="nav">
           <ul class="nav-menu">
             <li v-for="(item, index) in navList" :key="index" class="item">
-              <!-- https://router.vuejs.org/zh/api/#custom，好像vue-router4.x的时候custom才有用 -->
+              <!-- https://router.vuejs.org/zh/api/#custom，默认用a标签包裹元素，可以添加custom改掉这个行为 -->
               <nuxt-link v-slot="{ navigate }" :to="item.path" custom>
                 <span @click="navigate">{{ item.title }}</span>
               </nuxt-link>
@@ -29,8 +29,8 @@
                   :key="index"
                   :command="item.title"
                 >
-                  <nuxt-link :to="item.path">
-                    <span> {{ item.title }}</span>
+                  <nuxt-link v-slot="{ navigate }" :to="item.path" custom>
+                    <span @click="navigate"> {{ item.title }}</span>
                   </nuxt-link>
                 </el-dropdown-item>
               </el-dropdown-menu>

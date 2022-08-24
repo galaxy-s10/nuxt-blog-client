@@ -10,9 +10,9 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <router-link v-slot="{ navigate }" :to="'/article/' + item.id">
+          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id" custom>
             <span class="a-link" @click="navigate"> {{ item.title }} </span>
-          </router-link>
+          </nuxt-link>
         </el-timeline-item>
       </template>
     </el-timeline>

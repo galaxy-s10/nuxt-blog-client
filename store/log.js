@@ -4,9 +4,11 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   setDayData(state, res) {
     state.dayData = res;
   },
+  // eslint-disable-next-line no-shadow
   setHistoryData(state, res) {
     state.historyData = res;
   },

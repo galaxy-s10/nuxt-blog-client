@@ -7,4 +7,4 @@ export const QQ_OAUTH_URL =
 export const GITHUB_CLIENT_ID = '8c2c07b574ae70ecfa9d';
 export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 
-export const IMG_CDN_URL = 'https://img.cdn.hsslive.cn';
+export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';

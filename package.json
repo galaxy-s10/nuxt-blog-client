@@ -1,6 +1,10 @@
 {
   "name": "nuxt-blog-client",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/galaxy-s10/nuxt-blog-client"
+  },
   "scripts": {
     "build": "nuxt build",
     "cz": "cz",

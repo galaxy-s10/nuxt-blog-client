@@ -4,9 +4,11 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   changeTypeId(state, res) {
     state.typeId = res;
   },
+  // eslint-disable-next-line no-shadow
   changeTypeList(state, res) {
     state.typeList = res;
   },

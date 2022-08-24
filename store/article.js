@@ -8,12 +8,15 @@ export const state = () => ({
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
   changeSidebarArticleList(state, res) {
     state.sideBarArticleList = res;
   },
+  // eslint-disable-next-line no-shadow
   changeCatalogList(state, res) {
     state.catalogList = res;
   },
+  // eslint-disable-next-line no-shadow
   changeSideBarArticleOrderName(state, res) {
     state.sideBarArticleOrderName = res;
   },

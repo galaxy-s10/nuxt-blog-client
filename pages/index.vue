@@ -12,59 +12,62 @@
         ref="waterfall-item"
         class="waterfall-item"
       >
-        <nuxt-link :to="`/article/${item.id}`" class="a-link">
-          <NoHeadImgCpt v-if="!item.head_img"></NoHeadImgCpt>
-          <div
-            v-else
-            v-lazy:background-image="item.head_img"
-            class="head-img"
-            :style="{
-              height: item.mockImgHeight + 'px',
-            }"
-          ></div>
-          <div class="detail">
-            <h3 class="title" :title="item.title">{{ item.title }}</h3>
-            <p v-if="item.desc" class="desc" :title="item.desc">
-              {{ item.desc }}
-            </p>
-            <div class="tag-list">
-              <div v-if="item.tags.length">
-                <el-tag
-                  v-for="tagItem in item.tags"
-                  :key="tagItem.id"
-                  class="hss-el-tag"
-                  size="mini"
-                  :disable-transitions="false"
-                  :color="tagItem.color"
-                  @close="closeTag(tagItem.id)"
-                >
-                  {{ tagItem.name }}
-                </el-tag>
-              </div>
-              <span v-else>该文章暂无标签~</span>
-            </div>
-            <div class="info">
-              <img
-                :src="item.users[0] && item.users[0].avatar"
-                class="avatar"
-                alt=""
-              />
-              <div>
-                <i class="el-icon-date"></i>
-                {{ item.created_at | convertDate }}
-              </div>
-              <div class="relation">
-                <div>
-                  <i class="el-icon-view"></i>
-                  {{ item.click }}
+        <nuxt-link v-slot="{ navigate }" :to="`/article/${item.id}`" custom>
+          <div class="a-link" @click="navigate">
+            <div v-if="item.priority === 99" class="top">置顶</div>
+            <NoHeadImgCpt v-if="!item.head_img"></NoHeadImgCpt>
+            <div
+              v-else
+              v-lazy:background-image="item.head_img"
+              class="head-img"
+              :style="{
+                height: item.mockImgHeight + 'px',
+              }"
+            ></div>
+            <div class="detail">
+              <h3 class="title" :title="item.title">{{ item.title }}</h3>
+              <p v-if="item.desc" class="desc" :title="item.desc">
+                {{ item.desc }}
+              </p>
+              <div class="tag-list">
+                <div v-if="item.tags.length">
+                  <el-tag
+                    v-for="tagItem in item.tags"
+                    :key="tagItem.id"
+                    class="hss-el-tag"
+                    size="mini"
+                    :disable-transitions="false"
+                    :color="tagItem.color"
+                    @close="closeTag(tagItem.id)"
+                  >
+                    {{ tagItem.name }}
+                  </el-tag>
                 </div>
+                <span v-else>该文章暂无标签~</span>
+              </div>
+              <div class="info">
+                <img
+                  :src="item.users[0] && item.users[0].avatar"
+                  class="avatar"
+                  alt=""
+                />
                 <div>
-                  <i class="el-icon-chat-line-round"></i>
-                  {{ item.comment_total }}
+                  <i class="el-icon-date"></i>
+                  {{ item.created_at | convertDate }}
                 </div>
-                <div>
-                  <i class="el-icon-star-off"></i>
-                  {{ item.star_total }}
+                <div class="relation">
+                  <div>
+                    <i class="el-icon-view"></i>
+                    {{ item.click }}
+                  </div>
+                  <div>
+                    <i class="el-icon-chat-line-round"></i>
+                    {{ item.comment_total }}
+                  </div>
+                  <div>
+                    <i class="el-icon-star-off"></i>
+                    {{ item.star_total }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -358,10 +361,21 @@ export default {
       background-color: $theme-color6;
       transition: all 0.5s ease;
       .a-link {
-        background-color: $theme-color6;
-        color: $theme-color5;
-        text-decoration: none;
-        display: block;
+        cursor: pointer;
+        .top {
+          width: 140px;
+          height: 25px;
+          top: 8px;
+          display: inline;
+          right: -50px;
+          text-align: center;
+          line-height: 25px;
+          transform: rotate(45deg);
+          position: absolute;
+          color: white;
+          background: #c551af;
+          z-index: 1;
+        }
         .head-img {
           display: inline-block;
           width: 100%;

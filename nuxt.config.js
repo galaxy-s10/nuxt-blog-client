@@ -4,6 +4,9 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
+import { QINIU_CDN_URL } from './constant';
+import pkg from './package.json';
+
 let commitHash;
 let commitUserName;
 let commitDate;
@@ -33,7 +36,6 @@ try {
   })
     .toString()
     .trim();
-  console.log(commitHash, commitDate, commitUserName, commitMessage);
 } catch (error) {
   console.log('获取git信息错误', error);
 }
@@ -153,7 +155,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    publicPath: 'https://resource.hsslive.cn/nuxt-blog-client/',
+    publicPath: `${QINIU_CDN_URL}${pkg.name}/v${pkg.version}`,
 
     // analyze: true,
     plugins: [
@@ -165,13 +167,21 @@ export default {
       }),
       new webpack.DefinePlugin({
         'process.env': {
-          BLOG_PROJECT_GIT: JSON.stringify({
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          NUXT_APP_RELEASE_PROJECT_PACKAGE: JSON.stringify({
+            name: pkg.name,
+            version: pkg.version,
+            repository: pkg.repository.url,
+          }),
+          NUXT_APP_RELEASE_PROJECT_GIT: JSON.stringify({
             commitHash,
             commitDate,
             commitUserName,
             commitMessage,
           }),
-          BLOG_PROJECT_LAST_BUILD: JSON.stringify(new Date().toLocaleString()),
+          NUXT_APP_RELEASE_PROJECT_LASTBUILD: JSON.stringify(
+            new Date().toLocaleString()
+          ),
         },
       }),
     ],

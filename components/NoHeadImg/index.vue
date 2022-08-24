@@ -31,5 +31,6 @@ export default {
   font-size: 24px;
   line-height: 150px;
   user-select: none;
+  transition: all 0.3s ease 0s;
 }
 </style>

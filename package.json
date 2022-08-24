@@ -12,7 +12,14 @@
     "nuxt-lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
     "prettier": "prettier --write .",
+    "release": "standard-version",
+    "release:first": "standard-version --first-release",
     "start": "nuxt start"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "dependencies": {
     "@kangc/v-md-editor": "^1.7.11",
@@ -52,11 +59,7 @@
     "lint-staged": "^13.0.3",
     "prettier": "^2.2.1",
     "sass": "^1.49.7",
-    "sass-loader": "^10"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "sass-loader": "^10",
+    "standard-version": "^9.5.0"
   }
 }

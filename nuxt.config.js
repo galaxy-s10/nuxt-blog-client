@@ -4,8 +4,8 @@ import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
-import { QINIU_CDN_URL } from './constant';
 import pkg from './package.json';
+import { QINIU_CDN_URL } from './src/constant';
 
 let commitHash;
 let commitUserName;
@@ -90,7 +90,7 @@ export default {
     '@/assets/css/main.scss',
     'normalize.css/normalize.css',
   ],
-
+  srcDir: 'src/',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/axios',

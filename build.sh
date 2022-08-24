@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 ###
 # Author: shuisheng
 # Date: 2022-04-26 01:54:48
@@ -6,7 +7,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-08-25 04:45:32
+# LastEditTime: 2022-08-25 06:22:29
 # LastEditors: shuisheng
 ###
 

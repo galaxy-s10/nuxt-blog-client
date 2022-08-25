@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
-import { version as axiosVersion } from 'axios';
+import { VERSION as axiosVersion } from 'axios';
 import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { version as vueVersion } from 'vue';

@@ -21,7 +21,13 @@
 <script>
 export default {
   components: {},
-  props: ['sort'],
+  props: {
+    sort: {
+      type: String,
+      require: true,
+      default: 'date',
+    },
+  },
   data() {
     return {};
   },

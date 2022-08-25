@@ -49,7 +49,6 @@ export default {
     TextareaInputCpt,
   },
   mixins: [init],
-
   layout: 'blog',
   async asyncData({ $axios1, params, store }) {
     try {

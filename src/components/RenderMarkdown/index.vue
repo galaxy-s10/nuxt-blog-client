@@ -36,7 +36,13 @@ if (!Vue._is_use_VMdPreview) {
 
 export default {
   components: { VMdPreview },
-  props: ['md'],
+  props: {
+    md: {
+      type: String,
+      require: true,
+      default: '',
+    },
+  },
   data() {
     return {};
   },

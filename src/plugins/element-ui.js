@@ -1,4 +1,5 @@
 import {
+  Loading,
   Button,
   Tooltip,
   Dropdown,
@@ -13,7 +14,6 @@ import {
   FormItem,
   Autocomplete,
   Pagination,
-  Loading,
   Switch,
   Dialog,
   Popover,
@@ -23,6 +23,7 @@ import Vue from 'vue';
 // import Element from 'element-ui'
 // import locale from 'element-ui/lib/locale/lang/en'
 
+// 别把Loading放里面！
 const components = [
   Button,
   Tooltip,
@@ -38,7 +39,6 @@ const components = [
   FormItem,
   Autocomplete,
   Pagination,
-  Loading,
   Switch,
   Dialog,
   Popover,
@@ -56,8 +56,9 @@ export default () => {
   if (Vue._is_use_elementui) {
     return;
   }
+
   Vue.use(Element);
-  Vue.use(Loading);
+  Vue.use(Loading.directive);
 
   Vue._is_use_elementui = true;
 };

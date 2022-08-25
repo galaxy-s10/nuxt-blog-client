@@ -1,8 +1,12 @@
 import { execSync } from 'child_process';
 import path from 'path';
 
+import { version as axiosVersion } from 'axios';
 import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
+import { version as vueVersion } from 'vue';
+import { version as vueRouterVersion } from 'vue-router';
+import vuex from 'vuex';
 import webpack from 'webpack';
 
 import pkg from './package.json';
@@ -42,11 +46,10 @@ try {
 }
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'new-blog-client',
+    title: 'nuxt-blog-client',
     htmlAttrs: {
       lang: 'en',
     },
@@ -72,14 +75,12 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 如果不是开发环境，则使用cdn加载这些库
     script: !isDevelopment && [
-      // { src: 'https://unpkg.com/vue@2.6.14/dist/vue.js' },
-      // { src: 'https://unpkg.com/vue@2.6.14/dist/vue.min.js' },
-      { src: 'https://unpkg.com/vue@2.6.14/dist/vue.runtime.min.js' },
-      { src: 'https://unpkg.com/vuex@3.6.2/dist/vuex.min.js' },
+      { src: `https://unpkg.com/vue@${vueVersion}/dist/vue.runtime.min.js` },
+      { src: `https://unpkg.com/vuex@${vuex.version}/dist/vuex.min.js` },
       {
-        src: 'https://unpkg.com/vue-router@3.5.4/dist/vue-router.min.js',
+        src: `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.min.js`,
       },
-      { src: 'https://unpkg.com/axios@0.27.2/dist/axios.min.js' },
+      { src: `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js` },
     ],
   },
   alias: {

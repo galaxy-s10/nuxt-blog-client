@@ -109,6 +109,7 @@ export default {
         return;
       }
 
+      // eslint-disable-next-line no-shadow
       const getEndPoin1 = (x, y, angle) => {
         // const length = this.branchLength
         const length = Math.random() * this.branchLength;

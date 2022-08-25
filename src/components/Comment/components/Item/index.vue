@@ -157,7 +157,15 @@ export default {
   components: {
     AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
   },
-  props: ['item'],
+  props: {
+    item: {
+      type: Array,
+      require: true,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       currentComment: null,

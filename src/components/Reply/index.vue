@@ -17,7 +17,13 @@ import TextareaInputCpt from 'components/TextareaInput/index.vue';
 
 export default {
   components: { TextareaInputCpt, ModalCpt },
-  props: ['username'],
+  props: {
+    username: {
+      type: String,
+      require: true,
+      default: '',
+    },
+  },
   data() {
     return {
       loading: false,

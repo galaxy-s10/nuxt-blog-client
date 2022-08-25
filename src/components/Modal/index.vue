@@ -22,7 +22,17 @@
 <script>
 export default {
   components: {},
-  props: ['title', 'top'],
+  props: {
+    title: {
+      type: String,
+      require: true,
+      default: '',
+    },
+    top: {
+      type: Boolean,
+      require: true,
+    },
+  },
   data() {
     return {};
   },

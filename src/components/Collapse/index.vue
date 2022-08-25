@@ -26,7 +26,17 @@
 <script>
 export default {
   components: {},
-  props: ['title', 'open'],
+  props: {
+    title: {
+      type: String,
+      require: true,
+      default: '',
+    },
+    open: {
+      type: Boolean,
+      require: true,
+    },
+  },
   data() {
     return {
       isOpen: false,

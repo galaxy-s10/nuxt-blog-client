@@ -15,7 +15,23 @@
 
 <script>
 export default {
-  props: ['count', 'nowPage', 'pageSize'],
+  props: {
+    count: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+    nowPage: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+    pageSize: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+  },
   data() {
     return {};
   },

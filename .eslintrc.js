@@ -13,7 +13,8 @@ module.exports = {
     node: true,
   },
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false,
   },
   extends: [
     '@nuxtjs',
@@ -22,7 +23,6 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   plugins: ['import'],
-  // add your custom rules here
   // rules优先级最高，会覆盖上面的
   rules: {
     /**
@@ -93,5 +93,10 @@ module.exports = {
     'import/prefer-default-export': 0, // 当模块只有一个导出时，更喜欢使用默认导出而不是命名导出。
     'import/extensions': 0, // 确保在导入路径中一致使用文件扩展名。在js/ts等文件里引其他文件都不能带后缀，这样就没办法引其他类型文件
     'import/no-unresolved': 0, // 不能解析带别名的路径的模块，但实际上是不影响代码运行的。找不到解决办法，暂时关掉。
+    'import/no-named-as-default-member': 1, // import vue from 'vue';console.log(vue.version)，如果vue有导出version，会提示替换为import { version } from 'vue';
+    'import/named': 2, // 如：import { version } from 'vuex'，会验证vuex有没有具名导出version
+
+    // eslint-plugin-vue
+    'vue/multi-word-component-names': 0,
   },
 };

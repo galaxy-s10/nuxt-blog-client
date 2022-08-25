@@ -106,7 +106,6 @@ export default {
   components: { NoHeadImgCpt },
   mixins: [init],
   layout: 'blog',
-
   async asyncData({ $axios1, store, params }) {
     const articleListParams = {
       nowPage: 1,

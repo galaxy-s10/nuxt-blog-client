@@ -16,7 +16,15 @@
 <script>
 export default {
   components: {},
-  props: ['list'],
+  list: {
+    title: {
+      type: Array,
+      require: true,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       size: 30,

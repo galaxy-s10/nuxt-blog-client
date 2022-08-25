@@ -98,15 +98,44 @@ export default {
     ItemCpt,
     ModalCpt,
   },
-  props: [
-    'sort',
-    'list',
-    'pageSize',
-    'nowPage',
-    'childrenPageSize',
-    'hasMore',
-    'total',
-  ],
+  props: {
+    sort: {
+      type: String,
+      require: true,
+      default: 'date',
+    },
+    list: {
+      type: Array,
+      require: true,
+      default() {
+        return [];
+      },
+    },
+    nowPage: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+    pageSize: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+    childrenPageSize: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+    hasMore: {
+      type: Boolean,
+      require: true,
+    },
+    total: {
+      type: Number,
+      require: true,
+      default: 0,
+    },
+  },
   data() {
     return {
       currentComponent: null,

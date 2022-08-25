@@ -136,16 +136,17 @@
 </template>
 
 <script>
-import AvatarGroupCpt from '@/components/AvatarGroup';
-import CommentCpt from '@/components/Comment';
-import RenderMarkdownCpt from '@/components/RenderMarkdown';
+import AvatarGroupCpt from 'components/AvatarGroup/index.vue';
+import CommentCpt from 'components/Comment/index.vue';
+import RenderMarkdownCpt from 'components/RenderMarkdown/index.vue';
+
 import { init } from '@/mixin/init';
 
 export default {
   components: {
-    // CommentCpt: () => import('@/components/Comment'),
+    // CommentCpt: () => import('components/Comment'),
     CommentCpt,
-    AsyncTextareaInputCpt: () => import('@/components/TextareaInput'),
+    AsyncTextareaInputCpt: () => import('components/TextareaInput/index.vue'),
     RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
   },

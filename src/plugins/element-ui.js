@@ -19,6 +19,7 @@ import {
   Popover,
 } from 'element-ui';
 import Vue from 'vue';
+
 // import Element from 'element-ui'
 // import locale from 'element-ui/lib/locale/lang/en'
 
@@ -37,6 +38,7 @@ const components = [
   FormItem,
   Autocomplete,
   Pagination,
+  Loading,
   Switch,
   Dialog,
   Popover,

@@ -98,7 +98,8 @@
 </template>
 
 <script>
-import NoHeadImgCpt from '@/components/NoHeadImg';
+import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
+
 import { init } from '@/mixin/init';
 
 export default {

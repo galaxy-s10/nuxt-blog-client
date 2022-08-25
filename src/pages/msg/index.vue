@@ -38,8 +38,9 @@
 </template>
 
 <script>
-import CommentCpt from '@/components/Comment';
-import TextareaInputCpt from '@/components/TextareaInput';
+import CommentCpt from 'components/Comment/index.vue';
+import TextareaInputCpt from 'components/TextareaInput/index.vue';
+
 import { init } from '@/mixin/init';
 
 export default {

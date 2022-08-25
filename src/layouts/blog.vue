@@ -19,14 +19,14 @@
 </template>
 <script>
 import Cookies from 'js-cookie';
+import LyAside from 'layouts/aside/index.vue';
+import LyBacktop from 'layouts/backtop/index.vue';
+import LyFooter from 'layouts/footer/index.vue';
+import LyHeader from 'layouts/header/index.vue';
+import LyMain from 'layouts/main/index.vue';
+import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
-import LyAside from '@/layouts/aside';
-import LyBacktop from '@/layouts/backtop';
-import LyFooter from '@/layouts/footer';
-import LyHeader from '@/layouts/header';
-import LyMain from '@/layouts/main';
-import LyTypeList from '@/layouts/typelist';
 import { showProjectInfo } from '@/utils/ShowProjectInfo';
 export default {
   components: {
@@ -36,9 +36,9 @@ export default {
     LyAside,
     LyMain,
     LyFooter,
-    AsnycAudioCpt: () => import('@/components/Audio'),
-    AsnycPlumCpt: () => import('@/components/Plum'),
-    AsnycFeatureTipCpt: () => import('@/components/FeatureTip'),
+    AsnycAudioCpt: () => import('components/Audio/index.vue'),
+    AsnycPlumCpt: () => import('components/Plum/index.vue'),
+    AsnycFeatureTipCpt: () => import('components/FeatureTip/index.vue'),
   },
   asyncData({ $axios1, store }) {},
   computed: {

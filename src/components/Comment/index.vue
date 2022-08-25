@@ -81,14 +81,14 @@
 </template>
 
 <script>
+import LoginCpt from 'components/Login/index.vue';
+import ModalCpt from 'components/Modal/index.vue';
+import ReplyCpt from 'components/Reply/index.vue';
 import { MessageBox } from 'element-ui';
 
-import ItemCpt from './components/Item';
-import SortTabCpt from './components/SortTab';
+import ItemCpt from './components/Item/index.vue';
+import SortTabCpt from './components/SortTab/index.vue';
 
-import LoginCpt from '@/components/Login';
-import ModalCpt from '@/components/Modal';
-import ReplyCpt from '@/components/Reply';
 import { deepCloneByJson } from '@/utils/index';
 export default {
   components: {

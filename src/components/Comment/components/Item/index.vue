@@ -155,7 +155,7 @@
 export default {
   name: 'CItem',
   components: {
-    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
   },
   props: ['item'],
   data() {

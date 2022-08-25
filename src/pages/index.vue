@@ -81,9 +81,9 @@
 </template>
 
 <script>
+import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
-import NoHeadImgCpt from '@/components/NoHeadImg';
 import { init } from '@/mixin/init';
 import { getRandomInt, generaterStyle } from '@/utils/index';
 export default {

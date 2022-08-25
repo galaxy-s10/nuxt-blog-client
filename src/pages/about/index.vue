@@ -60,7 +60,7 @@
 import { init } from '@/mixin/init';
 export default {
   components: {
-    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
   },
   mixins: [init],
   layout: 'blog',

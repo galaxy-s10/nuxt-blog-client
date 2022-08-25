@@ -22,7 +22,7 @@
 <script>
 export default {
   components: {
-    AsyncRenderMarkdownCpt: () => import('@/components/RenderMarkdown'),
+    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
   },
   props: {},
   data() {

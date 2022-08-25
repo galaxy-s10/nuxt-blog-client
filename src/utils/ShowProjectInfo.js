@@ -29,6 +29,12 @@ export const showProjectInfo = () => {
   prettierLog('构建仓库git提交信息：', commitMessage);
   prettierLog('构建仓库git提交哈希：', commitHash);
   console.warn(
-    `当前项目的代码是在github，但是线上构建由于拉取github太慢以及一些秘钥文件不方便处理等原因，因此是将github的代码处理一层然后再复制提交到gitee的私有仓库进行构建的，github和gitee提交的数据不一致，因此项目信息和git信息会对不上~`
+    '当前项目的代码是托管在github，但由于线上构建如果使用github的话，会因为github拉取代码太慢以及一些秘钥文件不方便处理等原因，'
+  );
+  console.warn(
+    '因此目前的线上构建是将github的代码做一层处理，然后再复制到gitee的私有仓库，使用gitee的代码进行构建的，'
+  );
+  console.warn(
+    '因为github和gitee提交的数据不一致，因此项目信息和git信息会对不上，大多数情况下github和gitee仓库代码都会尽量保持同步~'
   );
 };

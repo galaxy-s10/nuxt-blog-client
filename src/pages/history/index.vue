@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import pagingCpt from '@/components/Paging';
+import pagingCpt from 'components/Paging/index.vue';
+
 import { init } from '@/mixin/init';
 
 export default {

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-// import WebSocketCpt from '@/components/WebSocket'
+// import WebSocketCpt from 'components/WebSocket'
 export default {
   components: {},
   layout: 'blog',

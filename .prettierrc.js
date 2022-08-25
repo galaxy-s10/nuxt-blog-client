@@ -9,7 +9,7 @@ console.log(
 module.exports = {
   bracketSpacing: true, // 默认为true,即{ foo: bar }；可改为false，即{foo: bar}
   singleQuote: true, // 默认为false,即{foo:"bar"}，可改为true，即{foo:'bar'}
-  bracketSameLine: false, // https://prettier.io/blog/2021/09/09/2.4.0.html
+  bracketSameLine: false, // https://prettier.io/blog/2021/09/09/2.4.0.html，此版本将jsxBracketSameLine选项重命名为bracketSameLine，除了 JSX 之外，它还支持 HTML、Vue 和 Angular。旧名称已被弃用。
   // jsxBracketSameLine: false, // true：将多行JSX元素的 > 放在最后一行的末尾。false：将多行JSX元素的 > 单独放在下一行
   trailingComma: 'es5', // 默认"es5"：在ES5中有效的尾随逗号（对象、数组等）。可选："none"：没有尾随逗号；"all"：尽可能尾随逗号
   printWidth: 80, // 默认80,printWidth不是硬性的允许行长度上限，不要试图将 printWidth 当作 ESLint 的max-len 来使用——它们不一样

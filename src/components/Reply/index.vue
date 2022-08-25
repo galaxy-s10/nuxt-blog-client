@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ModalCpt from '@/components/Modal';
-import TextareaInputCpt from '@/components/TextareaInput';
+import ModalCpt from 'components/Modal/index.vue';
+import TextareaInputCpt from 'components/TextareaInput/index.vue';
 
 export default {
   components: { TextareaInputCpt, ModalCpt },

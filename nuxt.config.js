@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import path from 'path';
 
 import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -81,7 +82,11 @@ export default {
       { src: 'https://unpkg.com/axios@0.27.2/dist/axios.min.js' },
     ],
   },
-
+  alias: {
+    '@': path.resolve(__dirname, './src/'),
+    components: path.resolve(__dirname, './src/components'),
+    layouts: path.resolve(__dirname, './src/layouts'),
+  },
   corejs: 3,
 
   // Global CSS: https://go.nuxtjs.dev/config-css

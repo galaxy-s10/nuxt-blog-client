@@ -94,7 +94,7 @@ export default {
   async asyncData({ $axios1, params, store }) {
     // 获取友链数据
     const { data: linkData } = await $axios1.get('/link/list', {
-      params: { nowPage: 1, pageSize: 100 },
+      // params: { nowPage: 1, pageSize: 100 },
     });
     return { linkList: linkData.rows };
   },

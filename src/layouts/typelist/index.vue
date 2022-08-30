@@ -1,10 +1,13 @@
 <template>
   <div class="fix-type-wrapper" :class="{ show: visible }">
     <ul class="type-wrapper">
-      <li @click="all()">全部</li>
+      <li :class="{ active: typeId === '' ? true : false }" @click="all()">
+        全部
+      </li>
       <li
         v-for="(item, index) in typeList"
         :key="index"
+        :class="{ active: item.id === typeId ? true : false }"
         @click="changeType(item.id)"
       >
         {{ item.name }}
@@ -24,6 +27,9 @@ export default {
     typeList() {
       return this.$store.state.type.typeList;
     },
+    typeId() {
+      return this.$store.state.type.typeId;
+    },
   },
   mounted() {
     window.addEventListener('scroll', this.headershow);
@@ -40,7 +46,7 @@ export default {
       this.visible = offsetTop > height;
     },
     changeType(typeId) {
-      this.$store.commit('type/changeTypeId', `${typeId}`);
+      this.$store.commit('type/changeTypeId', typeId);
       if (this.$route.path !== '/') {
         this.$router.push('/');
       }
@@ -66,9 +72,24 @@ export default {
     transform: translateY(-70px);
   }
 }
+
 .dark {
   .fix-type-wrapper {
     background: $theme-color3;
+  }
+}
+.active {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 60%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba($color: #604bc3, $alpha: 0.6);
   }
 }
 .fix-type-wrapper {

@@ -58,6 +58,7 @@ export const actions = {
       });
       return Promise.resolve(true);
     } catch (error) {
+      commit('logout');
       console.log(error);
       return Promise.reject(error);
     }

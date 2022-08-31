@@ -4,6 +4,10 @@
       博客已运行 {{ runningTime ? runningTime : '正在加载...' }}
       <span class="ani">(='◡'=)☆</span>
     </p>
+    <p class="fixed-powered">
+      <span class="txt">Powered by</span>
+      <span class="author" @click="jumpToUrl">galaxy-s10</span>
+    </p>
     <a href="http://beian.miit.gov.cn" target="__blank" class="beianhao">
       粤ICP备19114467号-2
     </a>
@@ -13,6 +17,8 @@
 <script>
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+
+import { GITHUB_REPO } from '@/constant';
 dayjs.extend(duration);
 
 export default {
@@ -27,6 +33,9 @@ export default {
   },
   destroyed() {},
   methods: {
+    jumpToUrl() {
+      window.open(GITHUB_REPO);
+    },
     init() {
       for (let i = 0; i < 1000; i += 1) {
         setInterval(() => {
@@ -34,7 +43,7 @@ export default {
           const nowDate = dayjs();
           const res = dayjs
             .duration(nowDate - startDate)
-            .format('Y年M个月D天H小时m分s秒');
+            .format('Y年M个月D天HH小时mm分ss秒');
           this.runningTime = res;
         }, 1000);
       }
@@ -67,6 +76,18 @@ export default {
   padding: 20px;
   text-align: center;
   font-size: 14px;
+  .fixed-powered {
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+    user-select: none;
+    .txt {
+    }
+    .author {
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
   .beianhao {
     color: $theme-color5;
     text-decoration: none;

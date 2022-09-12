@@ -58,10 +58,10 @@
             placeholder="审核结果会通过邮件通知您"
           ></el-input>
         </el-form-item>
-        <el-form-item v-if="frontendData && frontendData.frontend">
+        <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.frontend.frontend_link === -1"
+            :disabled="frontendData.frontend_link === -1"
             @click="addLink()"
           >
             提交申请

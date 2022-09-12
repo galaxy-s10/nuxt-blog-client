@@ -103,8 +103,13 @@ export default {
     '@/plugins/element-ui',
     '@/plugins/vue-lazyload',
     '@/plugins/filters',
+    '@/plugins/router',
     { src: '@/plugins/tip' },
   ],
+  // router: {
+  // Run the middleware/auth.js on every page
+  // middleware: 'auth',
+  // },
 
   loading: { color: '#0984e3' },
 

@@ -1,8 +1,9 @@
 const actions = {
   // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
-  async nuxtServerInit({ commit, dispatch }) {
+  async nuxtServerInit({ state, commit, dispatch }, { app }) {
     try {
       commit('app/setCurrentNodeEnv', process.env.NODE_ENV);
+      // await dispatch('app/getFrontendData');
       await Promise.all([
         dispatch('type/getTypeList'),
         dispatch('tag/getSideBarTagList', { nowPage: 1, pageSize: 10 }),

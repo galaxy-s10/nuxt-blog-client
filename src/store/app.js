@@ -3,6 +3,8 @@ export const state = () => ({
   ipInfo: null,
   // 前端数据
   frontendData: null,
+  // 统计数据
+  statisData: null,
   // 是否显示文章目录
   showCatalog: false,
   // 是否显示梅花特效
@@ -26,6 +28,10 @@ export const mutations = {
   },
   // eslint-disable-next-line no-shadow
   setFrontendData(state, res) {
+    state.frontendData = res;
+  },
+  // eslint-disable-next-line no-shadow
+  setStatisData(state, res) {
     state.frontendData = res;
   },
   // eslint-disable-next-line no-shadow
@@ -68,6 +74,14 @@ export const actions = {
     try {
       const { data } = await this.$axios1.get('/position/get');
       commit('setIpInfo', data);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  async getStatisData({ commit }) {
+    try {
+      const { data } = await this.$axios1.get('/statis/detail');
+      commit('setStatisData', data);
     } catch (error) {
       console.log(error);
     }

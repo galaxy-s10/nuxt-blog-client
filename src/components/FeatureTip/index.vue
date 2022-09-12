@@ -8,7 +8,7 @@
   >
     <AsyncRenderMarkdownCpt
       v-if="frontendData"
-      :md="frontendData.frontend.frontend_dialog_content"
+      :md="frontendData.frontend_dialog_content"
     ></AsyncRenderMarkdownCpt>
     <span slot="footer">
       <el-button @click="dialogVisible = false">取消</el-button>
@@ -62,7 +62,7 @@ export default {
   watch: {
     frontendData() {
       this.dialogVisible = this.frontendData
-        ? this.frontendData.frontend.frontend_dialog === 1
+        ? this.frontendData.frontend_dialog === 1
         : false;
     },
   },

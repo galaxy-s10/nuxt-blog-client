@@ -36,7 +36,9 @@
     </div>
 
     <!-- about富文本 -->
-    <AsyncRenderMarkdownCpt :md="detail"></AsyncRenderMarkdownCpt>
+    <AsyncRenderMarkdownCpt
+      :md="frontendData.frontend_about"
+    ></AsyncRenderMarkdownCpt>
 
     <h1>本站发展历史</h1>
 
@@ -65,9 +67,8 @@ export default {
   mixins: [init],
   layout: 'blog',
   async asyncData({ $axios1 }) {
-    const { data } = await $axios1.get('/frontend/detail');
+    const { data } = await $axios1.get('/statis/detail');
     return {
-      detail: data.frontend ? data.frontend.frontend_about : '暂无介绍~',
       summary: data,
     };
   },
@@ -120,6 +121,9 @@ export default {
     };
   },
   computed: {
+    frontendData() {
+      return this.$store.state.app.frontendData;
+    },
     visitorHistoryData() {
       return this.$store.state.log.historyData;
     },

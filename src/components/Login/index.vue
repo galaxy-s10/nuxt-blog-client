@@ -6,12 +6,12 @@
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
-        <template v-if="frontendData && frontendData.frontend">
+        <template v-if="frontendData">
           <div>
             <!-- <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend.frontend_register === 2"
+                :disabled="frontendData.frontend_register === 2"
                 @click="dialogtwo = true"
               >
                 注册
@@ -20,7 +20,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend.frontend_login === 2"
+                :disabled="frontendData.frontend_login === 2"
                 @click="dialogVisible = true"
               >
                 登录
@@ -29,7 +29,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend.frontend_qq_login === 2"
+                :disabled="frontendData.frontend_qq_login === 2"
                 @click="qqLogin"
               >
                 QQ登录
@@ -38,7 +38,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend.frontend_github_login === 2"
+                :disabled="frontendData.frontend_github_login === 2"
                 @click="githubLogin"
               >
                 GitHub登录

@@ -159,10 +159,10 @@ export default {
   },
   props: {
     item: {
-      type: Array,
+      type: Object,
       require: true,
       default() {
-        return [];
+        return {};
       },
     },
   },

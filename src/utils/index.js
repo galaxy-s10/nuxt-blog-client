@@ -1,4 +1,14 @@
 /**
+ * @description 判断是否是浏览器环境
+ * @param {*} boolean
+ * @return {*}
+ */
+export const isBrowser = () =>
+  typeof window !== 'undefined' &&
+  typeof window.document !== 'undefined' &&
+  typeof window.document.createElement !== 'undefined';
+
+/**
  * 使用json进行深克隆
  */
 export const deepCloneByJson = (obj) => JSON.parse(JSON.stringify(obj));

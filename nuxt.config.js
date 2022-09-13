@@ -9,6 +9,7 @@ import { version as vueRouterVersion } from 'vue-router';
 import vuex from 'vuex';
 import webpack from 'webpack';
 
+import InjectProjectInfoPlugin from './InjectProjectInfoPlugin';
 import pkg from './package.json';
 import { QINIU_CDN_URL } from './src/constant';
 
@@ -107,8 +108,8 @@ export default {
     { src: '@/plugins/tip' },
   ],
   // router: {
-  // Run the middleware/auth.js on every page
-  // middleware: 'auth',
+  //   // Run the middleware/auth.js on every page
+  //   middleware: 'auth',
   // },
 
   loading: { color: '#0984e3' },
@@ -196,7 +197,9 @@ export default {
           ),
         },
       }),
+      new InjectProjectInfoPlugin({ isProduction: isDevelopment }),
     ].filter(Boolean),
+
     babel: {
       plugins: [
         [

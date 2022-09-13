@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import path from 'path';
 
 import { VERSION as axiosVersion } from 'axios';
@@ -13,40 +12,8 @@ import InjectProjectInfoPlugin from './InjectProjectInfoPlugin';
 import pkg from './package.json';
 import { QINIU_CDN_URL } from './src/constant';
 
-let commitHash;
-let commitUserName;
-let commitDate;
-let commitMessage;
-try {
-  // commit哈希
-  commitHash = execSync('git show -s --format=%H', {
-    cwd: process.env.JENKINS_WORKSPACE,
-  })
-    .toString()
-    .trim();
-  // commit用户名
-  commitUserName = execSync('git show -s --format=%cn', {
-    cwd: process.env.JENKINS_WORKSPACE,
-  })
-    .toString()
-    .trim();
-  // commit日期
-  commitDate = new Date(
-    execSync(`git show -s --format=%cd`, {
-      cwd: process.env.JENKINS_WORKSPACE,
-    }).toString()
-  ).toLocaleString();
-  // commit消息
-  commitMessage = execSync('git show -s --format=%s', {
-    cwd: process.env.JENKINS_WORKSPACE,
-  })
-    .toString()
-    .trim();
-} catch (error) {
-  console.log('获取git信息错误', error);
-}
-
 const isDevelopment = process.env.NODE_ENV === 'development';
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -181,22 +148,9 @@ export default {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-          NUXT_APP_RELEASE_PROJECT_PACKAGE: JSON.stringify({
-            name: pkg.name,
-            version: pkg.version,
-            repository: pkg.repository.url,
-          }),
-          NUXT_APP_RELEASE_PROJECT_GIT: JSON.stringify({
-            commitHash,
-            commitDate,
-            commitUserName,
-            commitMessage,
-          }),
-          NUXT_APP_RELEASE_PROJECT_LASTBUILD: JSON.stringify(
-            new Date().toLocaleString()
-          ),
         },
       }),
+      // 注入项目信息
       new InjectProjectInfoPlugin({ isProduction: isDevelopment }),
     ].filter(Boolean),
 

@@ -98,8 +98,6 @@ class InjectProjectInfoPlugin {
             '</head>',
             `\n<script>\n${info}\n</script>\n</head>`
           );
-          console.log('2222211', data.html);
-
           cb(null, data);
         }
       );

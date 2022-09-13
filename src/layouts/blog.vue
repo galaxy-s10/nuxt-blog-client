@@ -27,7 +27,6 @@ import LyMain from 'layouts/main/index.vue';
 import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
-import { showProjectInfo } from '@/utils/ShowProjectInfo';
 export default {
   components: {
     LyHeader,
@@ -54,7 +53,6 @@ export default {
   },
 
   mounted() {
-    showProjectInfo();
     this.init();
     this.getFrontendData();
     if (this.CurrentNodeEnv !== 'development') {

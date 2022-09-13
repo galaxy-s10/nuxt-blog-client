@@ -85,5 +85,5 @@ export default function ({ $axios, store }, inject) {
       }
     }
   );
-  inject('axios1', service);
+  inject('myaxios', service);
 }

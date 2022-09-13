@@ -11,6 +11,8 @@ export const state = () => ({
   showPlum: false,
   // 是否显示音乐播放器
   showMusicAudio: false,
+  // 是否使用瀑布流
+  isWaterFall: false,
   // 当前主题
   theme: 'light',
   // 当前node环境
@@ -37,6 +39,10 @@ export const mutations = {
   // eslint-disable-next-line no-shadow
   setShowCatalog(state, res) {
     state.showCatalog = res;
+  },
+  // eslint-disable-next-line no-shadow
+  setIsWaterFall(state, res) {
+    state.isWaterFall = res;
   },
   // eslint-disable-next-line no-shadow
   setShowPlum(state, res) {
@@ -72,7 +78,7 @@ export const mutations = {
 export const actions = {
   async getIpInfo({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/position/get');
+      const { data } = await this.$myaxios.get('/position/get');
       commit('setIpInfo', data);
     } catch (error) {
       console.log(error);
@@ -80,7 +86,7 @@ export const actions = {
   },
   async getStatisData({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/statis/detail');
+      const { data } = await this.$myaxios.get('/statis/detail');
       commit('setStatisData', data);
     } catch (error) {
       console.log(error);
@@ -88,7 +94,7 @@ export const actions = {
   },
   async getFrontendData({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/frontend/detail');
+      const { data } = await this.$myaxios.get('/frontend/detail');
       commit('setFrontendData', data);
     } catch (error) {
       console.log(error);

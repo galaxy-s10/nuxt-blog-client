@@ -50,7 +50,7 @@ export default {
   },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, params, store }) {
+  async asyncData({ $myaxios, params, store }) {
     try {
       const orderName = 'created_at';
       const commentParams = {
@@ -61,7 +61,7 @@ export default {
         orderName,
         orderBy: 'desc',
       };
-      const { data: commentData } = await $axios1.get(`/comment/comment`, {
+      const { data: commentData } = await $myaxios.get(`/comment/comment`, {
         params: commentParams,
       });
       return {
@@ -139,7 +139,7 @@ export default {
       }
       try {
         this.submitCommentLoading = true;
-        await this.$axios1.post('/comment/create', {
+        await this.$myaxios.post('/comment/create', {
           article_id: -1,
           content: this.commentContent,
           parent_comment_id: -1,
@@ -170,7 +170,7 @@ export default {
       };
       try {
         this.isLoading = true;
-        const { data } = await this.$axios1.get(`/comment/comment`, {
+        const { data } = await this.$myaxios.get(`/comment/comment`, {
           params: { ...query },
         });
         this.isLoading = false;
@@ -186,7 +186,7 @@ export default {
     // 获取子评论分页
     async handleChildrenPage(query) {
       try {
-        const { data } = await this.$axios1.get(`/comment/comment_children`, {
+        const { data } = await this.$myaxios.get(`/comment/comment_children`, {
           params: {
             parent_comment_id: query.parent_comment_id,
             article_id: query.article_id,
@@ -206,7 +206,7 @@ export default {
     // 获取父评论分页
     async handleParentPage(query) {
       try {
-        const { data } = await this.$axios1.get(`/comment/comment`, {
+        const { data } = await this.$myaxios.get(`/comment/comment`, {
           params: {
             article_id: -1,
             nowPage: query.nowPage + 1,

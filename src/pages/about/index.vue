@@ -66,8 +66,8 @@ export default {
   },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1 }) {
-    const { data } = await $axios1.get('/statis/detail');
+  async asyncData({ $myaxios }) {
+    const { data } = await $myaxios.get('/statis/detail');
     return {
       summary: data,
     };

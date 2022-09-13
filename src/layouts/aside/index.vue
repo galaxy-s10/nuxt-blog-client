@@ -18,11 +18,39 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt title="设置">
+    <AsnycCollapseCpt title="联系" open>
+      <template #ico>
+        <i class="el-icon-setting"></i>
+      </template>
+      <div class="releation-info">
+        <div class="item">
+          <div class="wechat_logo_wrap">
+            <img
+              src="@/assets/img/wechat_logo.webp"
+              class="wechat_logo"
+              alt=""
+            />
+            <img src="@/assets/img/wechat_code.webp" class="code" alt="" />
+          </div>
+        </div>
+      </div>
+    </AsnycCollapseCpt>
+
+    <AsnycCollapseCpt title="设置" open>
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
       <div>
+        <div class="item">
+          <div class="switch">
+            <span class="txt">瀑布流展示：</span>
+            <el-switch
+              :value="isWaterFall"
+              :width="35"
+              @change="setIsWaterFall(!isWaterFall)"
+            ></el-switch>
+          </div>
+        </div>
         <div class="item">
           <div class="switch">
             <span class="txt">黑白主题：</span>
@@ -245,7 +273,7 @@ export default {
     AsnycCollapseCpt: () => import('components/Collapse/index.vue'),
   },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
-  asyncData({ $axios1, store }) {},
+  asyncData({ $myaxios, store }) {},
   data() {
     return {
       switchLoading: false,
@@ -282,6 +310,9 @@ export default {
       showMusicAudio(state) {
         return state.app.showMusicAudio;
       },
+      isWaterFall(state) {
+        return state.app.isWaterFall;
+      },
     }),
     sideBarTagList() {
       return this.$store.state.tag.sideBarTagList;
@@ -314,6 +345,7 @@ export default {
     ...mapMutations({
       changeSideBarArticleOrderName: 'article/changeSideBarArticleOrderName',
       setTheme: 'app/setTheme',
+      setIsWaterFall: 'app/setIsWaterFall',
       setShowPlum: 'app/setShowPlum',
       setShowMusicAudio: 'app/setShowMusicAudio',
     }),
@@ -334,7 +366,7 @@ export default {
           orderName,
           orderBy: 'desc',
         };
-        const { data } = await this.$axios1.get(`/article/list`, {
+        const { data } = await this.$myaxios.get(`/article/list`, {
           params,
         });
         return data;
@@ -535,6 +567,32 @@ export default {
       text-align: right;
       .ico {
         cursor: pointer;
+      }
+    }
+  }
+  .releation-info {
+    :global {
+      // color: red;
+    }
+    .wechat_logo_wrap {
+      position: relative;
+      .wechat_logo {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      &:hover {
+        .code {
+          display: block;
+        }
+      }
+      .code {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 0;
+        transform: translate(0, -100%);
+        display: none;
       }
     }
   }

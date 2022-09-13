@@ -30,9 +30,9 @@ export default {
   mixins: [init],
   layout: 'blog',
   props: [],
-  async asyncData({ $axios1, params, store }) {
+  async asyncData({ $myaxios, params, store }) {
     // 获取作品数据
-    const { data: worksData } = await $axios1.get('/works/list', {
+    const { data: worksData } = await $myaxios.get('/works/list', {
       params: { nowPage: 1, pageSize: 100 },
     });
     return { worksList: worksData.rows };

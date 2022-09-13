@@ -39,7 +39,7 @@ export default {
     AsnycPlumCpt: () => import('components/Plum/index.vue'),
     AsnycFeatureTipCpt: () => import('components/FeatureTip/index.vue'),
   },
-  asyncData({ $axios1, store }) {},
+  asyncData({ $myaxios, store }) {},
   computed: {
     CurrentNodeEnv() {
       return this.$store.state.app.CurrentNodeEnv;
@@ -56,7 +56,7 @@ export default {
     this.init();
     this.getFrontendData();
     if (this.CurrentNodeEnv !== 'development') {
-      this.$axios1.post('visitor_log/create'); // 新增访客记录
+      this.$myaxios.post('visitor_log/create'); // 新增访客记录
     }
     window.addEventListener('message', this.messageFn);
   },
@@ -85,7 +85,7 @@ export default {
       if (type === 'qq_login') {
         if (code) {
           try {
-            await this.$axios1.post(`/qq_user/login`, { code });
+            await this.$myaxios.post(`/qq_user/login`, { code });
             const token = Cookies.get('token');
             if (token) {
               this.setToken(token);
@@ -99,7 +99,7 @@ export default {
       if (type === 'github_login') {
         if (code) {
           try {
-            await this.$axios1.post(`/github_user/login`, { code });
+            await this.$myaxios.post(`/github_user/login`, { code });
             const token = Cookies.get('token');
             if (token) {
               this.setToken(token);
@@ -120,7 +120,7 @@ export default {
 
 .main-wrapper {
   display: flex;
-  overflow: hidden;
+  // overflow: hidden;
   justify-content: space-between;
   margin: 0 auto;
   margin-top: 130px;

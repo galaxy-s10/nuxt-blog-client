@@ -152,10 +152,10 @@ export default {
   },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, params, store }) {
+  async asyncData({ $myaxios, params, store }) {
     try {
       const articleId = params.id;
-      const { data } = await $axios1.get(`/article/find/${articleId}`);
+      const { data } = await $myaxios.get(`/article/find/${articleId}`);
       let commentData = {};
       let commentParams = {};
       const orderName = 'created_at';
@@ -168,7 +168,7 @@ export default {
           orderName,
           orderBy: 'desc',
         };
-        const result = await $axios1.get(`/comment/comment`, {
+        const result = await $myaxios.get(`/comment/comment`, {
           params: commentParams,
         });
         commentData = result.data;
@@ -241,7 +241,7 @@ export default {
   methods: {
     async getArticleDetail() {
       try {
-        const { data } = await this.$axios1.get(
+        const { data } = await this.$myaxios.get(
           `/article/find/${this.articleId}`
         );
         this.detail = data;
@@ -285,7 +285,7 @@ export default {
       };
       try {
         this.isLoading = true;
-        const { data } = await this.$axios1.get(`/comment/comment`, {
+        const { data } = await this.$myaxios.get(`/comment/comment`, {
           params: { ...query },
         });
         this.isLoading = false;
@@ -301,7 +301,7 @@ export default {
     // 获取子评论分页
     async handleChildrenPage(query) {
       try {
-        const { data } = await this.$axios1.get(`/comment/comment_children`, {
+        const { data } = await this.$myaxios.get(`/comment/comment_children`, {
           params: {
             parent_comment_id: query.parent_comment_id,
             article_id: query.article_id,
@@ -321,7 +321,7 @@ export default {
     // 获取父评论分页
     async handleParentPage(query) {
       try {
-        const { data } = await this.$axios1.get(`/comment/comment`, {
+        const { data } = await this.$myaxios.get(`/comment/comment`, {
           params: {
             article_id: this.articleId,
             nowPage: query.nowPage + 1,
@@ -350,7 +350,7 @@ export default {
       }
       try {
         this.submitCommentLoading = true;
-        await this.$axios1.post('/comment/create', {
+        await this.$myaxios.post('/comment/create', {
           article_id: this.detail.id,
           content: this.commentContent,
           parent_comment_id: -1,
@@ -375,7 +375,7 @@ export default {
         if (this.userInfo) {
           this.starLoaing = true;
           if (type === 1) {
-            await this.$axios1.post(`/star/create`, {
+            await this.$myaxios.post(`/star/create`, {
               article_id: articleDetail.id,
               from_user_id: this.userInfo.id,
               comment_id: -1,
@@ -385,7 +385,7 @@ export default {
             await this.getArticleDetail();
             this.starLoaing = false;
           } else {
-            await this.$axios1.$delete(
+            await this.$myaxios.$delete(
               `/star/delete/${articleDetail.is_star_id}`
             );
             await this.getArticleDetail();

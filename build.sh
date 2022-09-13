@@ -7,7 +7,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-08-25 06:22:29
+# LastEditTime: 2022-09-14 05:44:20
 # LastEditors: shuisheng
 ###
 
@@ -50,3 +50,6 @@ yarn config get registry
 
 echo 开始安装依赖:
 yarn install
+
+echo 开始构建:
+npx cross-env JENKINS_WORKSPACE=$3 nuxt build

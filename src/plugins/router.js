@@ -1,4 +1,4 @@
-export default ({ app, store, $axios1 }) => {
+export default ({ app, store, $myaxios }) => {
   app.router.beforeEach((to, from, next) => {
     // const isClient = process.client;
     // console.log(isClient);

@@ -7,7 +7,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-08-25 06:22:46
+# LastEditTime: 2022-09-14 05:44:09
 # LastEditors: shuisheng
 ###
 
@@ -19,14 +19,6 @@ WORKSPACE=$3    #约定$3为Jenkins工作区
 PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
-
-# 约定$1为任务名, $2为环境, $3为Jenkins工作区, $4为端口号, $5为git标签
-JOBNAME=$1 # 注意: JOBNAME=$1,这个等号左右不能有空格！
-ENV=$2
-WORKSPACE=$3
-PORT=$4
-TAG=$5
-PUBLICDIR=/node
 
 if ! type pm2 >/dev/null 2>&1; then
   echo pm2未安装,先全局安装pm2
@@ -45,9 +37,6 @@ fi
 
 echo 删除旧的pm2服务:
 pm2 del $JOBNAME-$ENV-$PORT
-
-echo 开始构建:
-npx cross-env JENKINS_WORKSPACE=$3 nuxt build
 
 # 上传七牛云cdn：https://github.com/qiniu/qshell/blob/master/docs/qupload.md
 # 注意--rescan-local这个参数，不设置它的话可能文件不发生更改就不会覆盖

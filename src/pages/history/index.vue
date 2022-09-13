@@ -37,12 +37,12 @@ export default {
   },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, store, params }) {
+  async asyncData({ $myaxios, store, params }) {
     const query = {
       nowPage: 1,
       pageSize: 20,
     };
-    const { data } = await $axios1.get(`/article/list`, {
+    const { data } = await $myaxios.get(`/article/list`, {
       params: {
         orderName: 'created_at',
         orderBy: 'desc',
@@ -71,7 +71,7 @@ export default {
   mounted() {},
   methods: {
     async currentChange(nowPage) {
-      const { data } = await this.$axios1.get(`/article/list`, {
+      const { data } = await this.$myaxios.get(`/article/list`, {
         params: {
           orderName: 'created_at',
           orderBy: 'desc',

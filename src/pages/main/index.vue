@@ -93,7 +93,7 @@ export default {
   },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, store }) {
+  async asyncData({ $myaxios, store }) {
     const params = {
       orderName: 'created_at',
       orderBy: 'desc',
@@ -102,7 +102,7 @@ export default {
       pageSize: 20,
     };
     try {
-      const { data } = await $axios1.get(`/article/list`, { params });
+      const { data } = await $myaxios.get(`/article/list`, { params });
       data.rows.forEach((v) => {
         const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50);
         v.mockImgHeight = mockImgHeight;
@@ -170,7 +170,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.$axios1
+    this.$myaxios
       .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
       .then((res) => {
         const { data } = res;
@@ -208,7 +208,7 @@ export default {
     async ajaxArticleList(params) {
       try {
         this.isLoading = true;
-        const { data } = await this.$axios1.get(`/article/list`, { params });
+        const { data } = await this.$myaxios.get(`/article/list`, { params });
         data.rows.forEach((v) => {
           const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50);
           v.mockImgHeight = mockImgHeight;

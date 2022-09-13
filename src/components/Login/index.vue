@@ -155,7 +155,7 @@ export default {
           this.$newmessage(error, 'error');
           return;
         }
-        await this.$axios1
+        await this.$myaxios
           .post('user/register', {
             username: this.username,
             password: this.password,

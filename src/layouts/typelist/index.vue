@@ -83,9 +83,9 @@ export default {
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 60%);
+    top: 0;
+    right: 0;
+    transform: translate(90%, -50%);
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -105,11 +105,13 @@ export default {
     padding: 0;
     height: 40px;
     color: $theme-color1;
-    line-height: 40px;
+    display: flex;
+    align-items: center;
     li {
-      display: inline;
-      margin-right: 8px;
+      display: block;
+      margin-right: 10px;
       cursor: pointer;
+      user-select: none;
     }
   }
 }

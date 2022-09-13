@@ -182,7 +182,7 @@ export default {
     async ajaxChildComment(params) {
       try {
         this.childListLoading = true;
-        const { data } = await this.$axios1.get(`/comment/child_comment`, {
+        const { data } = await this.$myaxios.get(`/comment/child_comment`, {
           params,
         });
         if (params.nowPage === 1) {
@@ -254,7 +254,7 @@ export default {
     },
     async ajaxCreateStar(item) {
       try {
-        await this.$axios1.post(`/star/create`, {
+        await this.$myaxios.post(`/star/create`, {
           article_id: item.article_id,
           comment_id: item.id,
           to_user_id: item.from_user_id,
@@ -265,7 +265,7 @@ export default {
     },
     async ajaxDeleteStar(item) {
       try {
-        await this.$axios1.delete(`/star/delete/${item.is_star_id}`, {});
+        await this.$myaxios.delete(`/star/delete/${item.is_star_id}`, {});
       } catch (error) {
         console.log(error);
       }
@@ -322,7 +322,9 @@ export default {
       })
         .then(async () => {
           try {
-            const res = await this.$axios1.delete(`/comment/delete/${item.id}`);
+            const res = await this.$myaxios.delete(
+              `/comment/delete/${item.id}`
+            );
             this.$newmessage(res.message, 'success');
             this.refresh();
           } catch (error) {
@@ -341,7 +343,7 @@ export default {
     // 新增回复
     async handleReply(content) {
       try {
-        await this.$axios1.post('/comment/create', {
+        await this.$myaxios.post('/comment/create', {
           article_id: this.currentReplyComment.article_id,
           content,
           parent_comment_id:

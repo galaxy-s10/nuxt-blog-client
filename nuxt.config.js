@@ -230,7 +230,7 @@ export default {
 
       if (isDev && isClient) {
         // https://v4.webpack.docschina.org/configuration/devtool/
-        config.devtool = 'cheap-module-eval-source-map';
+        config.devtool = 'cheap-eval-source-map';
       }
 
       if (!isDev && isClient) {

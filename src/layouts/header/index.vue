@@ -131,7 +131,7 @@ export default {
           pageSize: 20,
           keyWord,
         };
-        const { data } = await this.$axios1.get(`/article/keyWord_list`, {
+        const { data } = await this.$myaxios.get(`/article/keyWord_list`, {
           params,
         });
         cb(data.rows);

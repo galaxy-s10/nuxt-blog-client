@@ -183,7 +183,7 @@ export default {
   mounted() {},
   methods: {
     async loadingUserDetail(v) {
-      const { data } = await this.$axios1.get(`/user/find/${v.id}`, {});
+      const { data } = await this.$myaxios.get(`/user/find/${v.id}`, {});
       this.currentUserDetail = data;
     },
     mouseleave() {

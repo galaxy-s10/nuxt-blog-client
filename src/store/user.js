@@ -32,7 +32,7 @@ export const mutations = {
 export const actions = {
   async login({ commit }, payload) {
     try {
-      const { data } = await this.$axios1.post('/user/login', {
+      const { data } = await this.$myaxios.post('/user/login', {
         ...payload,
         exp: 24,
       });
@@ -44,7 +44,7 @@ export const actions = {
   },
   async getUserInfo({ commit }) {
     try {
-      const { data } = await this.$axios1.get('/user/get_user_info');
+      const { data } = await this.$myaxios.get('/user/get_user_info');
       commit('setUserInfo', data);
       commit('setSummary', {
         articlesTotal: data.articles_total,

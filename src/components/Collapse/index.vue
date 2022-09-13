@@ -59,7 +59,7 @@ export default {
 @import '@/assets/css/mixin.scss';
 
 .collapse-wrap {
-  overflow: hidden;
+  // overflow: hidden;
   margin-top: 20px;
   padding: 10px;
   border: 1px solid $theme-color4;

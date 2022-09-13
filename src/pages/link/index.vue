@@ -91,9 +91,9 @@ export default {
   components: {},
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, params, store }) {
+  async asyncData({ $myaxios, params, store }) {
     // 获取友链数据
-    const { data: linkData } = await $axios1.get('/link/list', {
+    const { data: linkData } = await $myaxios.get('/link/list', {
       // params: { nowPage: 1, pageSize: 100 },
     });
     return { linkList: linkData.rows };
@@ -178,7 +178,7 @@ export default {
       this.$refs.linkForm.validate(async (valid) => {
         if (valid) {
           try {
-            await this.$axios1.post('/link/create', {
+            await this.$myaxios.post('/link/create', {
               ...this.linkForm,
               email:
                 this.linkForm.email === '' ? undefined : this.linkForm.email,

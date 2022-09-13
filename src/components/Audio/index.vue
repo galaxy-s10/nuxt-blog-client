@@ -88,7 +88,7 @@ export default {
       this.showMiniAudio = true;
     }
     window.addEventListener('resize', this.resizeFn);
-    const { data } = await this.$axios1.get(`/music/list`, {
+    const { data } = await this.$myaxios.get(`/music/list`, {
       params: { nowPage: 1, pageSize: 10 },
     });
     this.songList = data.rows;

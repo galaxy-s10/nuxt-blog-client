@@ -8,7 +8,7 @@ export const actions = {
   // eslint-disable-next-line no-shadow
   async reply({ commit, state }, payload) {
     try {
-      const { data } = await this.$axios1.post('/comment/create', {
+      const { data } = await this.$myaxios.post('/comment/create', {
         article_id: payload.article_id,
         content: payload.content,
         parent_comment_id: payload.parent_comment_id,

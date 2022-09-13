@@ -24,6 +24,7 @@
             v-if="item['head_img']"
             v-slot="{ navigate }"
             :to="`/article/${item.id}`"
+            custom
           >
             <img
               v-lazy="item['head_img']"
@@ -106,7 +107,7 @@ export default {
   components: { NoHeadImgCpt },
   mixins: [init],
   layout: 'blog',
-  async asyncData({ $axios1, store, params }) {
+  async asyncData({ $myaxios, store, params }) {
     const articleListParams = {
       nowPage: 1,
       pageSize: 3,
@@ -117,10 +118,10 @@ export default {
     };
     const tagId = params.id;
     try {
-      const { data: tagData } = await $axios1.get(`/tag/list`, {
+      const { data: tagData } = await $myaxios.get(`/tag/list`, {
         params: tagListParams,
       });
-      const { data: articleData } = await $axios1.get(
+      const { data: articleData } = await $myaxios.get(
         `/tag/article_list/${tagId}`,
         {
           params: articleListParams,
@@ -173,7 +174,7 @@ export default {
       const tagId = this.$route.params.id;
       this.currentTagId = +tagId;
       try {
-        const { data } = await this.$axios1.get(`/tag/article_list/${tagId}`, {
+        const { data } = await this.$myaxios.get(`/tag/article_list/${tagId}`, {
           params: this.articleListParams,
         });
         this.articleList = data.rows;
@@ -190,7 +191,7 @@ export default {
         this.articleListParams.nowPage += 1;
       }
       try {
-        const { data } = await this.$axios1.get(
+        const { data } = await this.$myaxios.get(
           `/tag/article_list/${this.currentTagId}`,
           {
             params: this.articleListParams,
@@ -236,6 +237,9 @@ export default {
 }
 .tag-wrap {
   .tag-info {
+    height: 180px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
     .tag-item {
       position: relative;
       display: inline-flex;

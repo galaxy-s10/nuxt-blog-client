@@ -12,7 +12,7 @@
 export default {
   components: {},
   layout: 'blog',
-  async asyncData({ $axios1, store, params }) {},
+  async asyncData({ $myaxios, store, params }) {},
   data() {
     return {
       currentTagId: 1,

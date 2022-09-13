@@ -27,7 +27,7 @@ export const actions = {
   async getSideBarArticleList({ commit }, params) {
     const { nowPage, pageSize, orderName, orderBy } = params;
     try {
-      const { data } = await this.$axios1.get(`/article/list`, {
+      const { data } = await this.$myaxios.get(`/article/list`, {
         params: {
           orderName,
           orderBy,

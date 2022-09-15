@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt title="联系">
+    <AsnycCollapseCpt class="releation-info" title="联系">
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
@@ -36,7 +36,7 @@
       </div>
     </AsnycCollapseCpt>
 
-    <AsnycCollapseCpt title="设置" open>
+    <AsnycCollapseCpt class="setting-info" title="设置" open>
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
@@ -108,7 +108,7 @@
 
     <template v-if="showCatalog">
       <div ref="catalogRef" class="catalog-ref"></div>
-      <nav class="catalog-info" :class="{ fix: catalogFix }">
+      <nav class="catalog-info" :class="{ fix: catalogFixed }">
         <div class="title">
           <i class="el-icon-paperclip"></i>
           <b>文章目录</b>
@@ -118,142 +118,149 @@
     </template>
 
     <template v-else>
-      <div>
-        <AsnycCollapseCpt title="访客信息">
-          <template #ico>
-            <i class="el-icon-position"></i>
-          </template>
-          <div>
-            <template v-if="ipInfo">
-              <div class="item">ip: {{ ipInfo.ip }}</div>
-              <div class="item">
-                location:
-                {{ ipInfo | parseIpInfo }}
-              </div>
-            </template>
-          </div>
-        </AsnycCollapseCpt>
-
-        <AsnycCollapseCpt class="log-info" title="流量信息">
-          <template #ico>
-            <i class="el-icon-data-analysis"></i>
-          </template>
-          <div v-loading="logLoading">
-            <template v-if="visitorHistoryData">
-              <div class="item">
-                历史总访问量: {{ visitorHistoryData.visit_total }}
-              </div>
-              <div class="item">
-                历史总访客量: {{ visitorHistoryData.visitor_total }}
-              </div>
-            </template>
-            <template v-if="visitorDayData">
-              <div class="item">
-                今天总访问数: {{ visitorDayData.visit_total }}
-              </div>
-              <div class="item">
-                今天总访客数: {{ visitorDayData.visitor_total }}
-              </div>
-            </template>
-            <div class="refresh" @click="refreshLog">
-              <i class="el-icon-refresh ico"></i>
+      <AsnycCollapseCpt class="visitor-info" title="访客信息">
+        <template #ico>
+          <i class="el-icon-position"></i>
+        </template>
+        <div>
+          <template v-if="ipInfo">
+            <div class="item">ip: {{ ipInfo.ip }}</div>
+            <div class="item">
+              location:
+              {{ ipInfo | parseIpInfo }}
             </div>
-          </div>
-        </AsnycCollapseCpt>
+          </template>
+        </div>
+      </AsnycCollapseCpt>
 
-        <div class="article-info">
-          <div class="title">
-            <div>
-              <i class="el-icon-medal"></i>
-              <b>
-                {{
-                  sideBarArticleOrderName === 'click' ? '热门文章' : '最近更新'
-                }}
-              </b>
+      <AsnycCollapseCpt class="log-info" title="流量信息">
+        <template #ico>
+          <i class="el-icon-data-analysis"></i>
+        </template>
+        <div v-loading="logLoading">
+          <template v-if="visitorHistoryData">
+            <div class="item">
+              历史总访问量: {{ visitorHistoryData.visit_total }}
             </div>
-            <span class="switch-btn" @click="switchSideBarArticleOrderName">
-              切换
-            </span>
+            <div class="item">
+              历史总访客量: {{ visitorHistoryData.visitor_total }}
+            </div>
+          </template>
+          <template v-if="visitorDayData">
+            <div class="item">
+              今天总访问数: {{ visitorDayData.visit_total }}
+            </div>
+            <div class="item">
+              今天总访客数: {{ visitorDayData.visitor_total }}
+            </div>
+          </template>
+          <div class="refresh" @click="refreshLog">
+            <i class="el-icon-refresh ico"></i>
           </div>
-          <div v-loading="switchLoading">
-            <div v-if="sideBarArticleList && sideBarArticleList.length">
-              <div
-                v-for="(item, index) in sideBarArticleList"
-                :key="index"
-                class="item"
-              >
-                <div class="head-img">
-                  <nuxt-link
-                    v-if="item['head_img']"
-                    v-slot="{ navigate }"
-                    :to="'/article/' + item.id"
-                    custom
-                  >
-                    <img v-lazy="item['head_img']" alt="" @click="navigate" />
-                  </nuxt-link>
-                  <nuxt-link
-                    v-else
-                    v-slot="{ navigate }"
-                    :to="`/article/${item.id}`"
-                    custom
-                  >
-                    <NoHeadImgCpt @click="navigate"></NoHeadImgCpt>
-                  </nuxt-link>
-                </div>
-                <div class="desc">
-                  <nuxt-link
-                    v-slot="{ navigate }"
-                    :to="'/article/' + item.id"
-                    custom
-                  >
-                    <b class="b-hover" @click="navigate"> #{{ item.title }}</b>
-                  </nuxt-link>
-                  <div class="info">
-                    <span class="view">
-                      <i class="el-icon-view"></i>
-                      {{ item.click }}
-                    </span>
-                    <div v-if="sideBarArticleOrderName === 'click'">
-                      <i class="el-icon-star-off"></i>{{ item.star_total }}
-                    </div>
-                    <div v-else>
-                      <i class="el-icon-date"></i>
-                      {{ item.updated_at | convertDate }}更新
+        </div>
+      </AsnycCollapseCpt>
+
+      <div class="main-folat-wrap">
+        <div ref="mainFolatRef" class="main-folat-ref"></div>
+        <div :class="{ fix: sidebarFixed }">
+          <div class="article-info" title="文章排行">
+            <div class="title">
+              <div>
+                <i class="el-icon-medal"></i>
+                <b>
+                  {{
+                    sideBarArticleOrderName === 'click'
+                      ? '热门文章'
+                      : '最近更新'
+                  }}
+                </b>
+              </div>
+              <span class="switch-btn" @click="switchSideBarArticleOrderName">
+                切换
+              </span>
+            </div>
+            <div v-loading="switchLoading">
+              <div v-if="sideBarArticleList && sideBarArticleList.length">
+                <div
+                  v-for="(item, index) in sideBarArticleList"
+                  :key="index"
+                  class="item"
+                >
+                  <div class="head-img">
+                    <nuxt-link
+                      v-if="item['head_img']"
+                      v-slot="{ navigate }"
+                      :to="'/article/' + item.id"
+                      custom
+                    >
+                      <img v-lazy="item['head_img']" alt="" @click="navigate" />
+                    </nuxt-link>
+                    <nuxt-link
+                      v-else
+                      v-slot="{ navigate }"
+                      :to="`/article/${item.id}`"
+                      custom
+                    >
+                      <NoHeadImgCpt @click="navigate"></NoHeadImgCpt>
+                    </nuxt-link>
+                  </div>
+                  <div class="desc">
+                    <nuxt-link
+                      v-slot="{ navigate }"
+                      :to="'/article/' + item.id"
+                      custom
+                    >
+                      <b class="b-hover" @click="navigate">
+                        #{{ item.title }}
+                      </b>
+                    </nuxt-link>
+                    <div class="info">
+                      <span class="view">
+                        <i class="el-icon-view"></i>
+                        {{ item.click }}
+                      </span>
+                      <div v-if="sideBarArticleOrderName === 'click'">
+                        <i class="el-icon-star-off"></i>{{ item.star_total }}
+                      </div>
+                      <div v-else>
+                        <i class="el-icon-date"></i>
+                        {{ item.updated_at | convertDate }}更新
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div v-else>暂无文章~</div>
             </div>
-            <div v-else>暂无文章~</div>
           </div>
-        </div>
 
-        <AsnycCollapseCpt class="tag-info" title="标签云" :open="true">
-          <template #ico>
-            <i class="el-icon-collection-tag"></i>
-          </template>
-          <div>
-            <div v-if="sideBarTagList && sideBarTagList.length">
-              <el-tooltip
-                v-for="item in sideBarTagList"
-                :key="item.id"
-                effect="dark"
-                :content="'该标签下有' + item.article_total + '篇文章'"
-                placement="top"
-              >
-                <el-tag
-                  class="tag-margin"
-                  :disable-transitions="false"
-                  :color="item.color"
-                  @click="tagClick(item.id)"
+          <AsnycCollapseCpt class="tag-info" title="标签云" :open="true">
+            <template #ico>
+              <i class="el-icon-collection-tag"></i>
+            </template>
+            <div>
+              <div v-if="sideBarTagList && sideBarTagList.length">
+                <el-tooltip
+                  v-for="item in sideBarTagList"
+                  :key="item.id"
+                  effect="dark"
+                  :content="'该标签下有' + item.article_total + '篇文章'"
+                  placement="top"
                 >
-                  {{ item.name }}
-                </el-tag>
-              </el-tooltip>
+                  <el-tag
+                    class="tag-margin"
+                    :disable-transitions="false"
+                    :color="item.color"
+                    @click="tagClick(item.id)"
+                  >
+                    {{ item.name }}
+                  </el-tag>
+                </el-tooltip>
+              </div>
+              <div v-else>暂无标签~</div>
             </div>
-            <div v-else>暂无标签~</div>
-          </div>
-        </AsnycCollapseCpt>
+          </AsnycCollapseCpt>
+        </div>
       </div>
     </template>
   </aside>
@@ -277,8 +284,11 @@ export default {
   data() {
     return {
       switchLoading: false,
-      catalogFix: false,
+      catalogFixed: false,
+      sidebarFixed: false,
       logLoading: false,
+      catalogObserver: null,
+      sidebarObserver: null,
     };
   },
   computed: {
@@ -328,14 +338,33 @@ export default {
     },
   },
   watch: {
-    showCatalog(newVal, oldVal) {
-      newVal &&
+    $route(to, from) {
+      // if (to.name === 'article-id') {
+      //   this.$refs.mainFolatRef &&
+      //     this.catalogObserver.unobserve(this.$refs.mainFolatRef);
+      // }
+      if (to.name !== 'article-id') {
         this.$nextTick(() => {
-          this.cataLogObserver();
+          this.$refs.mainFolatRef &&
+            this.handleSidebarObserver(this.$refs.mainFolatRef);
+          this.$refs.catalogRef &&
+            this.catalogObserver.unobserve(this.$refs.catalogRef);
         });
+      }
+    },
+    showCatalog(newVal, oldVal) {
+      if (newVal) {
+        this.catalogFixed = false;
+        this.$nextTick(() => {
+          this.$refs.catalogRef &&
+            this.handleCataLogObserver(this.$refs.catalogRef);
+        });
+      }
     },
   },
   mounted() {
+    // this.handleCataLogObserver(this.$refs.catalogRef);
+    this.handleSidebarObserver(this.$refs.mainFolatRef);
     this.$store.dispatch('app/getIpInfo');
     this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()));
     this.$store.dispatch('log/getVisitorHistoryData');
@@ -376,19 +405,29 @@ export default {
     },
 
     // 文章目录监听
-    cataLogObserver() {
-      const intersectionObserver = new IntersectionObserver((entries) => {
+    handleCataLogObserver(ref) {
+      this.catalogObserver = new IntersectionObserver((entries) => {
         entries.forEach((item) => {
           if (!item.isIntersecting) {
-            console.log('无交叉');
-            this.catalogFix = true;
+            this.catalogFixed = true;
           } else {
-            console.log('交叉了');
-            this.catalogFix = false;
+            this.catalogFixed = false;
           }
         });
       });
-      intersectionObserver.observe(this.$refs.catalogRef);
+      this.catalogObserver.observe(ref);
+    },
+    handleSidebarObserver(ref) {
+      this.sidebarObserver = new IntersectionObserver((entries) => {
+        entries.forEach((item) => {
+          if (!item.isIntersecting) {
+            this.sidebarFixed = true;
+          } else {
+            this.sidebarFixed = false;
+          }
+        });
+      });
+      this.sidebarObserver.observe(ref);
     },
     tagClick(id) {
       this.$router.push({ path: `/tag/${id}` });
@@ -415,7 +454,7 @@ export default {
 @import '@/assets/css/mixin.scss';
 
 .aside-wrap {
-  width: inherit;
+  // width: inherit;
   .user-info {
     overflow: hidden;
     padding-bottom: 10px;
@@ -474,93 +513,106 @@ export default {
       }
     }
   }
-  .article-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-    .title {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-      .switch-btn {
-        cursor: pointer;
-      }
+  .main-folat-wrap {
+    .fix {
+      position: fixed;
+      top: 50px;
+      box-sizing: border-box;
+      width: 300px;
     }
-    .item {
-      display: flex;
+    .main-folat-ref {
+      position: relative;
+      top: -50px;
+    }
+    .article-info {
       overflow: hidden;
-      align-items: center;
-      margin-bottom: 10px;
-      height: 60px;
-      &:last-child {
-        margin-bottom: 0 !important;
-      }
-      .head-img {
-        overflow: hidden;
-        width: 40%;
-        cursor: pointer;
-
-        :deep(.no-head-img) {
-          // ::v-deep .no-head-img {
-          font-size: 12px !important;
-          &:hover {
-            transform: scale(1.1);
-          }
-        }
-
-        img {
-          display: block;
-          width: 100%;
-          border-radius: 5px;
-          transition: all 0.3s ease 0s;
-          &:hover {
-            transform: scale(1.1);
-          }
-        }
-      }
-      .desc {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid $theme-color4;
+      border-radius: 5px;
+      background: $theme-color6;
+      .title {
         display: flex;
-        flex: 1;
-        flex-wrap: wrap;
-        padding-left: 4px;
+        justify-content: space-between;
+        margin: 8px 0;
+        .switch-btn {
+          cursor: pointer;
+        }
+      }
+      .item {
+        display: flex;
+        overflow: hidden;
+        align-items: center;
+        margin-bottom: 10px;
+        height: 60px;
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+        .head-img {
+          overflow: hidden;
+          width: 40%;
+          cursor: pointer;
 
-        justify-items: center;
-        .info {
-          display: flex;
-          margin-top: 4px;
-          width: 100%;
-          font-size: 12px;
-          .view {
-            margin-right: 6px;
+          :deep(.no-head-img) {
+            // ::v-deep .no-head-img {
+            font-size: 12px !important;
+            &:hover {
+              transform: scale(1.1);
+            }
+          }
+
+          img {
+            display: block;
+            width: 100%;
+            border-radius: 5px;
+            transition: all 0.3s;
+            &:hover {
+              transform: scale(1.1);
+            }
           }
         }
-        .b-hover {
-          cursor: pointer;
-          &:hover {
-            transform: translateX(4px);
+        .desc {
+          display: flex;
+          flex: 1;
+          flex-wrap: wrap;
+          padding-left: 4px;
+
+          justify-items: center;
+          .info {
+            display: flex;
+            margin-top: 4px;
+            width: 100%;
+            font-size: 12px;
+            .view {
+              margin-right: 6px;
+            }
+          }
+          .b-hover {
+            cursor: pointer;
+            &:hover {
+              transform: translateX(4px);
+            }
           }
         }
       }
     }
+    .tag-info {
+      /* 覆盖默认样式，加了/deep/或者>>>反而覆盖不了？ */
+      .el-tag {
+        border: none;
+        color: $theme-color6;
+      }
+      .title {
+        margin: 8px 0;
+      }
+      .tag-margin {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        color: $theme-color6;
+      }
+    }
   }
-  .tag-info {
-    /* 覆盖默认样式，加了/deep/或者>>>反而覆盖不了？ */
-    .el-tag {
-      border: none;
-      color: $theme-color6;
-    }
-    .title {
-      margin: 8px 0;
-    }
-    .tag-margin {
-      margin-right: 5px;
-      margin-bottom: 5px;
-      color: $theme-color6;
-    }
-  }
+
   .catalog-ref {
     transform: translateY(-50px);
   }
@@ -573,11 +625,9 @@ export default {
     }
   }
   .releation-info {
-    :global {
-      // color: red;
-    }
     .wechat_logo_wrap {
       position: relative;
+      display: inline-block;
       .wechat_logo {
         width: 30px;
         height: 30px;
@@ -589,12 +639,12 @@ export default {
         }
       }
       .code {
-        width: 100px;
-        height: 100px;
         position: absolute;
         top: 0;
-        transform: translate(0, -100%);
         display: none;
+        width: 100px;
+        height: 100px;
+        transform: translate(0, -100%);
       }
     }
   }

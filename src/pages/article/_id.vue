@@ -474,10 +474,6 @@ export default {
   }
 }
 .article-detail-wrap {
-  // width: 65vw;
-  // width: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
   // 加这个transform: none;的作用主要是因为article-suspended-panel使用了fixed，如果的它的祖先元素的transform非none，就会fixed就会失效
   // 因为layout里面使用了transition组件，里面自定义了v-enter，使用了transform，因此如果article-suspended-panel的父级没有设置transform: none;就会使用找到
   // 祖先v-enter的transform，就会导致fixed定位失效，因此这里使用transform: none;覆盖掉v-enter的v-enter的transform

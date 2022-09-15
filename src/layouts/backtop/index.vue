@@ -1,5 +1,5 @@
 <template>
-  <div class="back-top-wrapper">
+  <div class="back-top-wrap">
     <div
       v-if="toggle"
       :class="{ 'back-top': true, 'show-back-top': visible }"
@@ -41,8 +41,8 @@ export default {
       this.toggle = width > 1200;
     },
     headershow() {
-      // 向下滚动超过2000px才显示
-      const height = 2000;
+      // 向下滚动超过1200px才显示
+      const height = 1200;
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop > height;
@@ -65,7 +65,7 @@ export default {
     transform: translatey(0);
   }
 }
-.back-top-wrapper {
+.back-top-wrap {
   .back-top {
     position: fixed;
     top: -100%;

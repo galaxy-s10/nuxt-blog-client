@@ -1,7 +1,7 @@
 <template>
   <transition>
-    <header :class="{ 'fix-header-wrapper': true, hidden: hiddenHeader }">
-      <div class="header-wrapper">
+    <header :class="{ 'fix-header-wrap': true, hidden: hiddenHeader }">
+      <div class="header-wrap">
         <div class="logo">
           <nuxt-link v-slot="{ navigate }" to="/" custom>
             <span @click="navigate">Natural</span>
@@ -45,6 +45,7 @@
             :fetch-suggestions="querySearchAsync"
             size="small"
             placeholder="搜索本站"
+            clearable
             @select="handleSelect"
           ></el-autocomplete>
         </div>
@@ -163,11 +164,11 @@ export default {
   }
 }
 .dark {
-  .fix-header-wrapper {
+  .fix-header-wrap {
     background: $theme-color3;
   }
 }
-.fix-header-wrapper {
+.fix-header-wrap {
   position: fixed;
   top: 0;
   z-index: 100;
@@ -180,13 +181,12 @@ export default {
   &.hidden {
     transform: translate3d(0, -100%, 0);
   }
-  .header-wrapper {
+  .header-wrap {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
     height: 70px;
     line-height: 70px;
-    // transition: all 2.5s;
     .logo {
       font-size: 20px;
       sup {

@@ -3,13 +3,15 @@
     <LyHeader />
     <LyTypeList />
     <LyBacktop />
-    <div class="main-wrapper">
-      <div class="left">
-        <LyMain />
-      </div>
-      <div class="right">
+    <div class="main-wrap">
+      <LyMain class="left" />
+      <LyAside class="right" />
+      <!-- <div class="right">
         <LyAside />
-      </div>
+      </div> -->
+      <!-- <div class="left">
+        <LyMain />
+      </div> -->
     </div>
     <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
     <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
@@ -158,25 +160,25 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 @media screen and (max-width: 540px) {
-  .main-wrapper {
+  .main-wrap {
     margin-top: 120px !important;
     width: 100%;
   }
 }
 
-.main-wrapper {
-  display: flex;
-  // overflow: hidden;
-  justify-content: space-between;
+.main-wrap {
   margin: 0 auto;
   margin-top: 130px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   .left {
-    // flex: 1;
-    width: 70%;
+    box-sizing: border-box;
+    width: calc(100% - 320px);
   }
   .right {
-    margin-left: 20px;
     width: 300px;
+    box-sizing: border-box;
   }
 }
 .mini-catalog-ico {

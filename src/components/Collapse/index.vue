@@ -79,7 +79,7 @@ export default {
       transform: translateY(2px);
       cursor: pointer;
       .ico {
-        transition: all 0.3s ease;
+        transition: all 0.3s;
         transform: rotate(0deg);
         &.down {
           transform: rotate(180deg);
@@ -88,7 +88,7 @@ export default {
     }
   }
   .content {
-    transition: height 0.5s ease;
+    transition: height 0.5s;
     height: 100%;
     .item {
       margin-bottom: 4px;

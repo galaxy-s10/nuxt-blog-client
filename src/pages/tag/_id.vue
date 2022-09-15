@@ -13,6 +13,7 @@
           <span class="article-total">({{ item.article_total }})</span>
         </div>
       </div>
+      <p class="desc">目前一共：{{ tagList.length }}个标签</p>
 
       <article
         v-for="item in articleList"
@@ -276,6 +277,9 @@ export default {
       }
     }
   }
+  .desc {
+    text-align: right;
+  }
   .no-data {
     padding: 40px 0;
     text-align: center;
@@ -304,7 +308,7 @@ export default {
       background-size: cover;
       background-repeat: no-repeat;
       cursor: pointer;
-      transition: all 0.3s ease 0s;
+      transition: all 0.3s;
       &:hover {
         transform: scale(1.1);
       }

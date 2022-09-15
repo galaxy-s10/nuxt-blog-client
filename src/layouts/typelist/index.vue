@@ -1,6 +1,6 @@
 <template>
-  <nav class="fix-type-wrapper" :class="{ show: hiddenHeader }">
-    <ul class="type-wrapper">
+  <nav class="fix-type-wrap" :class="{ show: hiddenHeader }">
+    <ul class="type-wrap">
       <li :class="{ active: typeId === '' ? true : false }" @click="all()">
         全部
       </li>
@@ -66,7 +66,7 @@ export default {
 }
 
 .dark {
-  .fix-type-wrapper {
+  .fix-type-wrap {
     background: $theme-color3;
   }
 }
@@ -84,7 +84,7 @@ export default {
     background-color: rgba($color: #604bc3, $alpha: 0.6);
   }
 }
-.fix-type-wrapper {
+.fix-type-wrap {
   position: fixed;
   top: 70px;
   left: 0;
@@ -98,7 +98,7 @@ export default {
   &.show {
     transform: translate3d(0, -70px, 0);
   }
-  .type-wrapper {
+  .type-wrap {
     margin: 0 auto;
     padding: 0;
     height: 40px;

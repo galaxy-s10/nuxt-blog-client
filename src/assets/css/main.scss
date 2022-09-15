@@ -29,13 +29,13 @@ body {
 
 /* 响应式布局 - 小于 540px */
 @media screen and (max-width: 540px) {
-  .fix-header-wrapper,
-  .fix-type-wrapper,
-  .main-wrapper {
+  .fix-header-wrap,
+  .fix-type-wrap,
+  .main-wrap {
     box-sizing: border-box;
     padding: 0 10px;
   }
-  .main-wrapper {
+  .main-wrap {
     .left {
       width: 100% !important;
     }
@@ -50,31 +50,31 @@ body {
 
 /* 响应式布局 - 大于540px */
 @media screen and (min-width: 540px) {
-  .header-wrapper,
-  .main-wrapper,
-  .type-wrapper {
+  .header-wrap,
+  .main-wrap,
+  .type-wrap {
     width: 100%;
   }
 }
 
 /* 响应式布局 - 大于 990px */
 @media screen and (min-width: 990px) {
-  .main-wrapper,
-  .type-wrapper {
+  .main-wrap,
+  .type-wrap {
     width: 900px;
   }
-  .header-wrapper {
+  .header-wrap {
     width: 960px;
   }
 }
 
 /* 响应式布局 - 大于 1200px */
 @media screen and (min-width: 1200px) {
-  .main-wrapper,
-  .type-wrapper {
+  .main-wrap,
+  .type-wrap {
     width: 1100px;
   }
-  .header-wrapper {
+  .header-wrap {
     width: 1200px;
   }
 }

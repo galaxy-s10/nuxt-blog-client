@@ -99,6 +99,7 @@ export default {
     justify-content: space-between;
 
     .item-wrap {
+      position: relative;
       overflow: hidden;
       box-sizing: border-box;
       margin-bottom: 20px;
@@ -107,7 +108,6 @@ export default {
       border-radius: 10px;
       color: $theme-color6;
       text-align: center;
-      position: relative;
       &:hover {
         .item {
           transform: translateY(0%);
@@ -141,39 +141,36 @@ export default {
             padding: 10px 20px;
             border-radius: 999px;
             background-color: $theme-color1;
-            font-weight: bold;
-            font-size: 14px;
             color: $theme-color6;
             text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
             cursor: pointer;
           }
         }
       }
       .bg-url {
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: 50%;
         position: absolute;
         top: 0;
+        right: 0;
         bottom: 0;
         left: 0;
-        right: 0;
+        background-position: 50%;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
       &:hover:after {
         transform: translateY(-50%);
       }
       &::after {
-        content: '';
-        display: block;
         position: absolute;
         top: 0;
+        right: 0;
         bottom: 0;
         left: 0;
-        right: 0;
+        display: block;
         width: 100%;
         height: 200%;
-        transform: translateY(0%);
-        transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
         background-image: linear-gradient(
           180deg,
           transparent 0,
@@ -193,6 +190,9 @@ export default {
           rgba(0, 0, 0, 0.762) 94.1%,
           rgba(0, 0, 0, 0.79)
         );
+        content: '';
+        transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+        transform: translateY(0%);
       }
     }
   }

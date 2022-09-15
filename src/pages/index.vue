@@ -429,7 +429,7 @@ export default {
       height: 250px;
 
       &:hover {
-        transition: all 0.3s ease-in-out;
+        transition: all 0.3s;
         transform: scale(1.02);
       }
       // .a-link {
@@ -460,7 +460,7 @@ export default {
           height: 250px;
           line-height: 250px;
           &:hover {
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s;
             transform: scale(1.1);
           }
         }
@@ -472,7 +472,7 @@ export default {
           background-size: cover;
           background-repeat: no-repeat;
           &:hover {
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s;
             transform: scale(1.1);
           }
         }

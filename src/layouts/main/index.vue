@@ -28,13 +28,11 @@ export default {
 
 .v-enter {
   // transform: translateX(-10px);
-  // margin-left: 15px;
+  margin-left: -15px;
   opacity: 0;
 }
 .v-enter-active {
-  // margin: 0;
-  // margin-left: 0;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 
 /* 响应式布局 - 小于 540px */

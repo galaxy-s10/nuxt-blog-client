@@ -5,7 +5,7 @@
       class="music-wrap"
       :class="{ showMiniAudio: showMiniAudio, hiddenAudio: !showMusicAudio }"
     >
-      <div class="song-wrapper">
+      <div class="song-wrap">
         <div class="song-text">
           <div class="text-item">
             {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
@@ -287,7 +287,7 @@ export default {
   right: -140px;
   pointer-events: none;
 }
-.showMiniAudio .song-wrapper {
+.showMiniAudio .song-wrap {
   background-color: transparent !important;
   box-shadow: none !important;
 }
@@ -334,7 +334,7 @@ export default {
   right: 10px;
   transition: all 0.2s linear;
 }
-.song-wrapper {
+.song-wrap {
   position: relative;
   width: 250px;
   height: 80px;

@@ -16,8 +16,8 @@
 <script>
 export default {
   components: {},
-  list: {
-    title: {
+  props: {
+    list: {
       type: Array,
       require: true,
       default() {

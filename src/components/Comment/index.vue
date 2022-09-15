@@ -281,10 +281,10 @@ export default {
       }
       if (type) {
         await this.ajaxCreateStar(item);
-        this.$newmessage('点赞ok~', 'success');
+        this.$newmessage('点赞成功！', 'success');
       } else if (type === false) {
         await this.ajaxDeleteStar(item);
-        this.$newmessage('取消点赞ok~', 'success');
+        this.$newmessage('取消点赞成功！', 'success');
       }
       this.refresh();
     },

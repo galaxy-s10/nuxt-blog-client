@@ -105,7 +105,7 @@ export default {
     try {
       const { data } = await $myaxios.get(`/article/list`, { params });
       data.rows.forEach((v) => {
-        v.mockImgHeight = getRandomInt(220, 260);
+        v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
       });
       const articleList = data.rows;
       const hasMore = data.hasMore;
@@ -125,7 +125,7 @@ export default {
         column: 3,
         gap: 20,
       },
-      isLoading: true,
+      isLoading: false,
       isBottom: false, // 是否触底
       isFirst: true, // 是否初次加载
       doneNums: 0, // 已经定位了几个元素
@@ -167,10 +167,12 @@ export default {
           const headImg = v.$el.querySelector('.head-img');
           const noHeadImg = v.$el.querySelector('.no-head-img');
           if (headImg) {
-            headImg.style.height = `100%`;
+            headImg.style.removeProperty('height');
+            headImg.style.removeProperty('line-height');
           }
           if (noHeadImg) {
-            noHeadImg.style.height = `100%`;
+            noHeadImg.style.removeProperty('height');
+            noHeadImg.style.removeProperty('line-height');
           }
         });
       }
@@ -211,10 +213,9 @@ export default {
       }
       this.handlePage();
     });
-    window.scrollTo({ top: 0 });
 
+    window.scrollTo({ top: 0 });
     this.handlePage();
-    this.isLoading = false;
     this.touchBottom();
   },
   destroyed() {
@@ -245,8 +246,7 @@ export default {
         this.isLoading = true;
         const { data } = await this.$myaxios.get(`/article/list`, { params });
         data.rows.forEach((v) => {
-          const mockImgHeight = getRandomInt(100, 200) + getRandomInt(0, 50);
-          v.mockImgHeight = mockImgHeight;
+          v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
         });
         if (params.nowPage === 1) {
           this.articleList = data.rows;
@@ -314,6 +314,9 @@ export default {
           noHeadImg.style.height = `${noHeadImg.getAttribute(
             'mock-img-height'
           )}px`;
+          noHeadImg.style.lineHeight = `${noHeadImg.getAttribute(
+            'mock-img-height'
+          )}px`;
         }
 
         if (i < column) {
@@ -347,14 +350,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 @import '@/assets/css/mixin.scss';
-
-.v-enter {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-.v-enter-active {
-  transition: all 0.5s ease-in-out;
-}
 
 /* 响应式布局 - 小于 720px */
 @media screen and (max-width: 720px) {
@@ -489,6 +484,9 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
+        p {
+          margin: 6px 0;
+        }
         .title {
           margin: 10px 0;
 

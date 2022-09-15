@@ -144,7 +144,7 @@ export default {
   methods: {
     join() {
       if (this.nickname.length > 6) {
-        this.$newmessage('昵称最多6个字符!', 'info');
+        this.$newmessage('昵称最多6个字符！', 'info');
       }
       this.isJoin = true;
       this.wsInstance.emit(webSocketMsgType.userInRoom, {
@@ -217,7 +217,7 @@ export default {
           // the disconnection was initiated by the server, you need to reconnect manually
           this.wsInstance.connect();
         }
-        console.log('断开websocket连接!');
+        console.log('断开websocket连接！');
       });
       this.wsInstance.on('connect_error', () => {
         console.log('连接websocket错误，开始重连！');

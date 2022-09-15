@@ -79,7 +79,7 @@ const validateEmail = (rule, value, callback) => {
   const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
   if (value) {
     if (!reg.test(value)) {
-      callback(new Error('请输入正确的邮箱!'));
+      callback(new Error('请输入正确的邮箱！'));
     }
     return callback();
   } else {
@@ -191,7 +191,7 @@ export default {
             console.log(error);
           }
         } else {
-          this.$newmessage('请按要求输入正确!', 'error');
+          this.$newmessage('请按要求输入正确！', 'error');
         }
       });
     },

@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div v-show="visible" class="fix-header-wrapper">
+    <header :class="{ 'fix-header-wrapper': true, hidden: hiddenHeader }">
       <div class="header-wrapper">
         <div class="logo">
           <nuxt-link v-slot="{ navigate }" to="/" custom>
@@ -50,7 +50,7 @@
         </div>
         <LoginCpt />
       </div>
-    </div>
+    </header>
   </transition>
 </template>
 
@@ -102,13 +102,13 @@ export default {
       ],
     };
   },
-  computed: {},
-  mounted() {
-    window.addEventListener('scroll', this.headershow);
+  computed: {
+    hiddenHeader() {
+      return this.$store.state.app.hiddenHeader;
+    },
   },
-  destroyed() {
-    window.removeEventListener('scroll', this.headershow);
-  },
+  mounted() {},
+  destroyed() {},
   methods: {
     register() {},
     login() {},
@@ -140,30 +140,12 @@ export default {
         cb([]);
       }
     },
-    headershow() {
-      // 头部高度为70px
-      const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      this.visible = offsetTop < height;
-    },
   },
 };
 </script>
 
 <style lang="scss" scope>
 @import '@/assets/css/constant.scss';
-
-.v-enter-active {
-  transition: all 0.5s ease;
-}
-.v-leave-active {
-  transition: all 0.5s ease;
-}
-.v-enter,
-.v-leave-to {
-  transform: translateY(-70px);
-}
 
 @media screen and (max-width: 540px) {
   .header {
@@ -192,13 +174,19 @@ export default {
   width: 100%;
   border-bottom: 1px solid $theme-color2;
   background: $theme-color6;
+  transition: all 0.3s;
+  transform: translateZ(0);
+
+  &.hidden {
+    transform: translate3d(0, -100%, 0);
+  }
   .header-wrapper {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
     height: 70px;
     line-height: 70px;
-    transition: all 0.2s;
+    // transition: all 2.5s;
     .logo {
       font-size: 20px;
       sup {
@@ -218,7 +206,7 @@ export default {
         margin: 0;
         padding: 0;
         .item {
-          margin: 0 20px;
+          margin: 0 15px;
           user-select: none;
         }
         .item:hover:before {
@@ -233,7 +221,7 @@ export default {
           height: 2px;
           background-color: $theme-color1;
           content: '';
-          transition: all 0.3s ease;
+          transition: all 0.3s;
         }
       }
       .nav-menu-mini {

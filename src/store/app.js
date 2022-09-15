@@ -13,6 +13,8 @@ export const state = () => ({
   showMusicAudio: false,
   // 是否使用瀑布流
   isWaterFall: false,
+  // 是否隐藏header
+  hiddenHeader: false,
   // 当前主题
   theme: 'light',
   // 当前node环境
@@ -39,6 +41,10 @@ export const mutations = {
   // eslint-disable-next-line no-shadow
   setShowCatalog(state, res) {
     state.showCatalog = res;
+  },
+  // eslint-disable-next-line no-shadow
+  setHiddenHeader(state, res) {
+    state.hiddenHeader = res;
   },
   // eslint-disable-next-line no-shadow
   setIsWaterFall(state, res) {

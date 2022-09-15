@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer-wrap">
     <p>
       博客已运行 {{ runningTime ? runningTime : '正在加载...' }}
       <span class="ani">(='◡'=)☆</span>
@@ -72,7 +72,7 @@ export default {
     transform: rotate(15deg);
   }
 }
-.footer {
+.footer-wrap {
   padding: 20px;
   text-align: center;
   font-size: 14px;

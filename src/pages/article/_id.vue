@@ -1,5 +1,35 @@
 <template>
   <div class="article-detail-wrap">
+    <div class="article-suspended-panel-wrap">
+      <div class="article-suspended-panel">
+        <div
+          v-loading="starLoaing"
+          element-loading-background="rgba(0, 0, 0, 0)"
+          class="panel-btn"
+          @click="starForArticle(detail.is_star || isStar ? 0 : 1, detail)"
+        >
+          <i
+            :class="{
+              [detail.is_star || isStar
+                ? 'el-icon-star-on'
+                : 'el-icon-star-off']: true,
+              ico: true,
+              rotate: true,
+            }"
+          ></i>
+          <span v-if="detail.star_info.count" class="badge">
+            {{ detail.star_info.count }}
+          </span>
+        </div>
+        <div class="panel-btn" @click="jumpToComment">
+          <i class="el-icon-chat-dot-round ico"></i>
+          <span v-if="detail.comment_total" class="badge">
+            {{ detail.comment_total }}
+          </span>
+        </div>
+      </div>
+    </div>
+
     <h1 class="title">
       {{ detail.title }}
     </h1>
@@ -61,42 +91,18 @@
       <span v-else>该文章没有关联标签~</span>
     </div>
 
-    <div class="star-wrap">
-      如果本文章对你有所帮助，欢迎点赞~
-      <div class="icon">
-        <span v-if="detail.is_star" v-loading="starLoaing">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="取消点赞"
-            placement="top"
-            @click.native="starForArticle(0, detail)"
-          >
-            <i class="el-icon-star-on"></i>
-          </el-tooltip>
-        </span>
-        <span v-else>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="赞一个"
-            placement="top"
-            @click.native="starForArticle(1, detail)"
-          >
-            <i class="el-icon-star-off"></i>
-          </el-tooltip>
-        </span>
-        {{ detail.star_info.count }}
-      </div>
+    <div v-if="detail.star_info.rows.length" class="star-wrap">
+      最近他们赞了该文章：
       <AvatarGroupCpt
         class="avatar-list"
-        :list="detail.star_info.rows"
+        :list="detail.star_info.rows.slice(0, 10)"
       ></AvatarGroupCpt>
     </div>
 
     <p class="last-update">最后更新于：{{ detail.updated_at | formatDate }}</p>
 
     <div class="comment-wrap">
+      <div id="comment-anchor"></div>
       <div v-if="detail.is_comment === 1">
         <el-divider>欢迎评论留言~</el-divider>
         <div>
@@ -194,6 +200,7 @@ export default {
       articleId: undefined,
       nowPage: undefined,
       pageSize: undefined,
+      isStar: false, // 是否已经点赞了
     };
   },
   head() {
@@ -219,26 +226,39 @@ export default {
   watch: {
     userInfo() {
       this.refreshCommentList();
+      this.refreshStar();
     },
   },
   created() {},
   mounted() {
     window.scrollTo({ top: 0 });
     this.$store.commit('app/setShowCatalog', true);
-    const timer = setInterval(() => {
-      if (this.$refs['hss-md'].$el) {
-        this.renderCatalog();
-        clearInterval(timer);
-      }
-    }, 50);
+    if (this.$refs['hss-md'].$el) {
+      this.renderCatalog();
+    }
     const articleId = this.$route.params.id;
     this.articleId = articleId;
+    if (this.detail.star_info.rows.includes((v) => v.id === this.userInfo.id)) {
+      this.isStar = true;
+    }
+    if (window.location.hash) {
+      window.location.href = window.location.hash;
+    }
   },
   destroyed() {
     this.$store.commit('app/setShowCatalog', false);
     this.$store.commit('article/changeCatalogList', []);
   },
   methods: {
+    refreshStar() {
+      const res = this.detail.star_info.rows.find((v) => {
+        return v.id === this.userInfo.id;
+      });
+      this.isStar = res;
+    },
+    jumpToComment() {
+      window.location.href = '#comment-anchor';
+    },
     async getArticleDetail() {
       try {
         const { data } = await this.$myaxios.get(
@@ -369,7 +389,7 @@ export default {
       this.commentContent = newVal;
     },
 
-    // 给文章点赞/取消点赞
+    /** type:1给文章点赞,type:0取消点赞 */
     async starForArticle(type, articleDetail) {
       try {
         if (this.userInfo) {
@@ -385,11 +405,12 @@ export default {
             await this.getArticleDetail();
             this.starLoaing = false;
           } else {
-            await this.$myaxios.$delete(
-              `/star/delete/${articleDetail.is_star_id}`
+            await this.$myaxios.delete(
+              `/star/delete/${articleDetail.is_star_id || this.isStar.star_id}`
             );
+            this.isStar = false;
             await this.getArticleDetail();
-            this.$newmessage('取消点赞成功!', 'success');
+            this.$newmessage('取消点赞成功！', 'success');
             this.starLoaing = false;
           }
         } else {
@@ -414,22 +435,25 @@ export default {
           const item = md[i];
           if (item.nodeType === 1 && list.includes(item.nodeName)) {
             const obj = {};
-            obj.id = `${item.innerText.slice(0, 10)}_${Math.floor(
-              Math.random() * 100 + 1
-            )}`;
+            obj.id = `heading-${i}`;
             obj.type = item.nodeName;
             obj.text = item.innerText;
             try {
               // 创建一个a元素
-              const ele1 = document.createElement('div');
-              ele1.setAttribute('id', obj.id);
-              item.appendChild(ele1);
+              const el = document.createElement('a');
+              el.style.position = 'relative';
+              el.style.top = '-50px';
+              el.setAttribute('id', obj.id);
+              item.appendChild(el);
             } catch (err) {
               console.log(err);
             }
 
             arr.push(obj);
           }
+        }
+        if (window.location.hash) {
+          window.location.href = window.location.hash;
         }
         this.$store.commit('article/changeCatalogList', arr);
       });
@@ -440,8 +464,78 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
-
+@media screen and (max-width: 540px) {
+  .main {
+    margin: 135px auto 0;
+    padding: 0;
+  }
+  .content {
+    padding: 0 10px;
+  }
+}
 .article-detail-wrap {
+  // width: 65vw;
+  // width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  // 加这个transform: none;的作用主要是因为article-suspended-panel使用了fixed，如果的它的祖先元素的transform非none，就会fixed就会失效
+  // 因为layout里面使用了transition组件，里面自定义了v-enter，使用了transform，因此如果article-suspended-panel的父级没有设置transform: none;就会使用找到
+  // 祖先v-enter的transform，就会导致fixed定位失效，因此这里使用transform: none;覆盖掉v-enter的v-enter的transform
+  // transform: none; //在这里设置的话，会覆盖掉v-enter的v-enter的transform，缺点就是因为这一个none导致了整个dom都没有这个transform,
+  // FIX: 将v-enter的transform:translate(-10px)替换margin-left，这样就不会有fixed问题
+  .article-suspended-panel-wrap {
+    // transform: none; //这里设置的话没用，因为是根据祖先的transform定位
+    .article-suspended-panel {
+      position: fixed;
+      top: 250px;
+      margin-left: -100px;
+      .panel-btn {
+        position: relative;
+        margin-bottom: 30px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #fff;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
+        text-align: center;
+        cursor: pointer;
+        @keyframes rotate {
+          0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+          }
+          100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+          }
+        }
+        &:hover {
+          .rotate {
+            animation: rotate 2s infinite linear;
+          }
+        }
+        .ico {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          font-size: 24px;
+          transform: translate(-50%, -50%);
+          transition: all 1s;
+        }
+        .badge {
+          position: absolute;
+          top: 0;
+          right: -5px;
+          padding: 0 5px;
+          border-radius: 10px;
+          background-color: #c2c8d1;
+          color: white;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+
   .title {
     text-align: center;
   }
@@ -495,23 +589,14 @@ export default {
     text-align: right;
   }
   .comment-wrap {
+    #comment-anchor {
+      position: relative;
+      top: -50px;
+    }
     .btn {
       margin-top: 20px;
       text-align: right;
     }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@media screen and (max-width: 540px) {
-  .main {
-    margin: 135px auto 0;
-    padding: 0;
-  }
-  .content {
-    padding: 0 10px;
   }
 }
 .avatar {

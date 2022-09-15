@@ -17,8 +17,8 @@ body {
 @media screen and (max-width: 1200px) {
 }
 
-/* 响应式布局 - 小于 992px */
-@media screen and (max-width: 992px) {
+/* 响应式布局 - 小于 990px */
+@media screen and (max-width: 990px) {
   .nav-menu {
     display: none !important;
   }
@@ -57,20 +57,24 @@ body {
   }
 }
 
-/* 响应式布局 - 大于 992px */
-@media screen and (min-width: 992px) {
-  .header-wrapper,
+/* 响应式布局 - 大于 990px */
+@media screen and (min-width: 990px) {
   .main-wrapper,
   .type-wrapper {
+    width: 900px;
+  }
+  .header-wrapper {
     width: 960px;
   }
 }
 
 /* 响应式布局 - 大于 1200px */
 @media screen and (min-width: 1200px) {
-  .header-wrapper,
   .main-wrapper,
   .type-wrapper {
-    width: 1140px;
+    width: 1100px;
+  }
+  .header-wrapper {
+    width: 1200px;
   }
 }

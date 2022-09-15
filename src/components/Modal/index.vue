@@ -29,8 +29,9 @@ export default {
       default: '',
     },
     top: {
-      type: Boolean,
+      type: String,
       require: true,
+      default: '20%',
     },
   },
   data() {

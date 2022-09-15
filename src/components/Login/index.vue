@@ -51,8 +51,8 @@
     </el-dropdown>
     <el-dropdown v-else trigger="hover">
       <div class="el-dropdown-link">
-        <a>{{ userInfo ? userInfo.username : '登录' }}</a>
-        <i class="el-icon-arrow-down el-icon--right"></i>
+        <img v-if="userInfo" :src="userInfo.avatar" class="avatar" alt="" />
+        <a v-else>登录<i class="el-icon-arrow-down el-icon--right"></i></a>
       </div>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>
@@ -161,7 +161,7 @@ export default {
             password: this.password,
           })
           .then((res) => {
-            this.$newmessage('注册成功!', 'success');
+            this.$newmessage('注册成功！', 'success');
             let timer = null;
             timer = setTimeout(() => {
               this.dialogtwo = false;
@@ -221,7 +221,7 @@ export default {
 </script>
 
 <style>
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 990px) {
   .dialog .el-dialog {
     width: 50% !important;
   }
@@ -235,6 +235,17 @@ export default {
 
 <style lang="scss" scoped>
 .login-cpt-wrap {
+  display: flex;
+  align-items: center;
+  .el-dropdown-link {
+    display: flex;
+    align-items: center;
+  }
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+  }
 }
 .qq-login {
   display: flex;

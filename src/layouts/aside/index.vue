@@ -14,7 +14,7 @@
         <div class="name">
           {{ userInfo ? userInfo.username : '未登录' }}
         </div>
-        <p class="title">{{ userInfo ? userInfo.desc : 'hello world!' }}</p>
+        <p class="title">{{ userInfo ? userInfo.desc : 'hello world！' }}</p>
       </div>
     </div>
 
@@ -43,16 +43,6 @@
       <div>
         <div class="item">
           <div class="switch">
-            <span class="txt">瀑布流展示：</span>
-            <el-switch
-              :value="isWaterFall"
-              :width="35"
-              @change="setIsWaterFall(!isWaterFall)"
-            ></el-switch>
-          </div>
-        </div>
-        <div class="item">
-          <div class="switch">
             <span class="txt">黑白主题：</span>
             <el-switch
               :value="theme === 'dark'"
@@ -68,6 +58,16 @@
               :value="showPlum"
               :width="35"
               @change="setShowPlum(!showPlum)"
+            ></el-switch>
+          </div>
+        </div>
+        <div class="item">
+          <div class="switch">
+            <span class="txt">瀑布流展示：</span>
+            <el-switch
+              :value="isWaterFall"
+              :width="35"
+              @change="setIsWaterFall(!isWaterFall)"
             ></el-switch>
           </div>
         </div>
@@ -375,13 +375,15 @@ export default {
       }
     },
 
-    // 目录监听
+    // 文章目录监听
     cataLogObserver() {
       const intersectionObserver = new IntersectionObserver((entries) => {
         entries.forEach((item) => {
           if (!item.isIntersecting) {
+            console.log('无交叉');
             this.catalogFix = true;
           } else {
+            console.log('交叉了');
             this.catalogFix = false;
           }
         });

@@ -1,5 +1,5 @@
 <template>
-  <div class="fix-type-wrapper" :class="{ show: visible }">
+  <nav class="fix-type-wrapper" :class="{ show: hiddenHeader }">
     <ul class="type-wrapper">
       <li :class="{ active: typeId === '' ? true : false }" @click="all()">
         全部
@@ -13,7 +13,7 @@
         {{ item.name }}
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -30,21 +30,13 @@ export default {
     typeId() {
       return this.$store.state.type.typeId;
     },
-  },
-  mounted() {
-    window.addEventListener('scroll', this.headershow);
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.headershow);
-  },
-  methods: {
-    headershow() {
-      // 头部高度为70px
-      const height = 70;
-      const offsetTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      this.visible = offsetTop > height;
+    hiddenHeader() {
+      return this.$store.state.app.hiddenHeader;
     },
+  },
+  mounted() {},
+  destroyed() {},
+  methods: {
     changeType(typeId) {
       this.$store.commit('type/changeTypeId', typeId);
       if (this.$route.path !== '/') {
@@ -100,6 +92,12 @@ export default {
   width: 100%;
   border-bottom: 1px solid $theme-color4;
   background-color: $theme-color6;
+  transform: translateZ(0);
+  transition: all 0.3s;
+
+  &.show {
+    transform: translate3d(0, -70px, 0);
+  }
   .type-wrapper {
     margin: 0 auto;
     padding: 0;
@@ -114,9 +112,5 @@ export default {
       user-select: none;
     }
   }
-}
-.show {
-  transition: all 0.5s;
-  transform: translateY(-70px);
 }
 </style>

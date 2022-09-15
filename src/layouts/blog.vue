@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-blog-wrap">
     <LyHeader />
     <LyTypeList />
     <LyBacktop />
@@ -14,10 +14,25 @@
     <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
     <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
     <AsnycFeatureTipCpt></AsnycFeatureTipCpt>
+    <div
+      v-if="showMinCatalogIco"
+      class="mini-catalog-ico"
+      @click="showMinCatalog = !showMinCatalog"
+    >
+      <i class="el-icon-notebook-2"></i>
+    </div>
+    <div v-if="showMinCatalog" class="mini-catalog-wrap">
+      <div class="mask" @click.self="showMinCatalog = !showMinCatalog">
+        <div class="content">
+          <CatalogCpt :list="catalogList"></CatalogCpt>
+        </div>
+      </div>
+    </div>
     <LyFooter />
   </div>
 </template>
 <script>
+import CatalogCpt from 'components/Catalog/index.vue';
 import Cookies from 'js-cookie';
 import LyAside from 'layouts/aside/index.vue';
 import LyBacktop from 'layouts/backtop/index.vue';
@@ -35,11 +50,15 @@ export default {
     LyAside,
     LyMain,
     LyFooter,
+    CatalogCpt,
     AsnycAudioCpt: () => import('components/Audio/index.vue'),
     AsnycPlumCpt: () => import('components/Plum/index.vue'),
     AsnycFeatureTipCpt: () => import('components/FeatureTip/index.vue'),
   },
   asyncData({ $myaxios, store }) {},
+  data() {
+    return { showMinCatalogIco: false, showMinCatalog: false };
+  },
   computed: {
     CurrentNodeEnv() {
       return this.$store.state.app.CurrentNodeEnv;
@@ -50,29 +69,50 @@ export default {
     showPlum() {
       return this.$store.state.app.showPlum;
     },
+    catalogList() {
+      return this.$store.state.article.catalogList;
+    },
   },
-
   mounted() {
     this.init();
-    this.getFrontendData();
     if (this.CurrentNodeEnv !== 'development') {
       this.$myaxios.post('visitor_log/create'); // 新增访客记录
     }
+    this.handleResize();
     window.addEventListener('message', this.messageFn);
+    window.addEventListener('scroll', this.headershow);
+    window.addEventListener('resize', this.handleResize);
   },
   destroyed() {
     window.removeEventListener('message', this.messageFn);
+    window.removeEventListener('scroll', this.headershow);
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
-      getFrontendData: 'app/getFrontendData',
     }),
     ...mapMutations({
       setToken: 'user/setToken',
       logout: 'user/logout',
+      setHiddenHeader: 'app/setHiddenHeader',
     }),
-
+    handleResize() {
+      const offsetWidth =
+        window.pageXOffset || document.documentElement.offsetWidth;
+      if (offsetWidth <= 425) {
+        this.showMinCatalogIco = true;
+      } else {
+        this.showMinCatalogIco = false;
+      }
+    },
+    headershow() {
+      // 向下滚动超过350px才显示
+      const height = 350;
+      const offsetTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      this.setHiddenHeader(offsetTop > height);
+    },
     init() {
       const token = localStorage.token;
       if (token) {
@@ -117,6 +157,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
+@media screen and (max-width: 540px) {
+  .main-wrapper {
+    margin-top: 120px !important;
+    width: 100%;
+  }
+}
 
 .main-wrapper {
   display: flex;
@@ -125,18 +171,48 @@ export default {
   margin: 0 auto;
   margin-top: 130px;
   .left {
-    flex: 1;
-    width: 65%;
+    // flex: 1;
+    width: 70%;
   }
   .right {
     margin-left: 20px;
     width: 300px;
   }
 }
-@media screen and (max-width: 540px) {
-  .main-wrapper {
-    margin-top: 120px !important;
-    width: 100%;
+.mini-catalog-ico {
+  position: fixed;
+  bottom: 20px;
+  left: 10px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: wheat;
+  box-shadow: 0 0 5px $theme-color2;
+}
+.mini-catalog-wrap {
+  .mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    .content {
+      position: fixed;
+      bottom: 70px;
+      left: 10px;
+      width: 250px;
+      border-radius: 10px;
+      background-color: wheat;
+      box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
+      :deep(.catalog-cpt-wrap) {
+        max-height: 50vh;
+      }
+    }
   }
 }
 </style>

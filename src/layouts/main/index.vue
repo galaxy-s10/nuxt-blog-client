@@ -26,6 +26,17 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
+.v-enter {
+  // transform: translateX(-10px);
+  // margin-left: 15px;
+  opacity: 0;
+}
+.v-enter-active {
+  // margin: 0;
+  // margin-left: 0;
+  transition: all 0.2s;
+}
+
 /* 响应式布局 - 小于 540px */
 @media screen and (max-width: 540px) {
   .padding {
@@ -34,18 +45,10 @@ export default {
 }
 
 .padding {
-  overflow: hidden;
+  // overflow: hidden;
   padding: 30px;
   border: 1px solid $theme-color4;
   border-radius: 5px;
   background: $theme-color6;
-}
-
-.v-enter {
-  transform: translateX(-10px);
-  opacity: 0;
-}
-.v-enter-active {
-  transition: all 0.5s ease;
 }
 </style>

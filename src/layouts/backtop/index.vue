@@ -41,8 +41,8 @@ export default {
       this.toggle = width > 1200;
     },
     headershow() {
-      // 头部高度为70px
-      const height = 70;
+      // 向下滚动超过2000px才显示
+      const height = 2000;
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop > height;

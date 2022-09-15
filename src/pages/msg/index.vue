@@ -130,7 +130,7 @@ export default {
     // 新增回复
     async addComment() {
       if (!this.userInfo) {
-        this.$newmessage('暂未登录，请登录!', 'warning');
+        this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }
       if (this.commentContent.length < 5) {

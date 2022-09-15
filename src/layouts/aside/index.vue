@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt title="联系" open>
+    <AsnycCollapseCpt title="联系">
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>

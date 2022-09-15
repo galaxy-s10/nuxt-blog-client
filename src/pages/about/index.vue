@@ -25,11 +25,7 @@
           <div class="type">用户</div>
         </div>
         <div class="item">
-          <div class="num">
-            {{
-              visitorHistoryData && filterNum(visitorHistoryData.visit_total)
-            }}
-          </div>
+          <div class="num">{{ filterNum(summary.visit.total) }}</div>
           <div class="type">访问量</div>
         </div>
       </div>
@@ -52,8 +48,9 @@
         :color="activity.color"
         :size="activity.size"
         :timestamp="activity.timestamp"
-        >{{ activity.content }}</el-timeline-item
       >
+        {{ activity.content }}
+      </el-timeline-item>
     </el-timeline>
   </div>
 </template>
@@ -123,9 +120,6 @@ export default {
   computed: {
     frontendData() {
       return this.$store.state.app.frontendData;
-    },
-    visitorHistoryData() {
-      return this.$store.state.log.historyData;
     },
   },
   methods: {

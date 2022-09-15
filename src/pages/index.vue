@@ -13,12 +13,15 @@
         <article @click="navigate">
           <div class="head-img-wrap">
             <div v-if="item.priority === 99" class="top">置顶</div>
-            <NoHeadImgCpt v-if="!item.head_img"></NoHeadImgCpt>
+            <NoHeadImgCpt
+              v-if="!item.head_img"
+              :mock-img-height="item.mockImgHeight"
+            ></NoHeadImgCpt>
             <div
               v-else
               v-lazy:background-image="item.head_img"
               class="head-img"
-              :mockImgHeight="item.mockImgHeight"
+              :mock-img-height="item.mockImgHeight"
             ></div>
           </div>
 
@@ -158,8 +161,17 @@ export default {
         const waterfallItem = this.$refs['waterfall-item'];
         const waterfallWrap = this.$refs['waterfall-wrap'];
         waterfallWrap.style.height = 'initial';
+
         waterfallItem.forEach((v) => {
           v.$el.setAttribute('style', 'width:100%');
+          const headImg = v.$el.querySelector('.head-img');
+          const noHeadImg = v.$el.querySelector('.no-head-img');
+          if (headImg) {
+            headImg.style.height = `100%`;
+          }
+          if (noHeadImg) {
+            noHeadImg.style.height = `100%`;
+          }
         });
       }
     },
@@ -293,10 +305,15 @@ export default {
         el.style.height = `initial`;
         el.style.marginBottom = `0px`;
         el.style.display = 'block';
-        if (el.querySelector('.head-img')?.$el) {
-          el.querySelector('.head-img').$el.style.height = `${waterfallItem[i]
-            .querySelector('.head-img')
-            .getAttribute('mockImgHeight')}px`;
+        const headImg = el.querySelector('.head-img');
+        const noHeadImg = el.querySelector('.no-head-img');
+        if (headImg) {
+          headImg.style.height = `${headImg.getAttribute('mock-img-height')}px`;
+        }
+        if (noHeadImg) {
+          noHeadImg.style.height = `${noHeadImg.getAttribute(
+            'mock-img-height'
+          )}px`;
         }
 
         if (i < column) {
@@ -427,7 +444,7 @@ export default {
       .head-img-wrap {
         position: relative;
         overflow: hidden;
-        flex: 0 0 40%;
+        flex: 0 0 45%;
 
         .top {
           position: absolute;

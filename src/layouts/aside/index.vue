@@ -363,7 +363,6 @@ export default {
     },
   },
   mounted() {
-    // this.handleCataLogObserver(this.$refs.catalogRef);
     this.handleSidebarObserver(this.$refs.mainFolatRef);
     this.$store.dispatch('app/getIpInfo');
     this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()));
@@ -406,27 +405,50 @@ export default {
 
     // 文章目录监听
     handleCataLogObserver(ref) {
-      this.catalogObserver = new IntersectionObserver((entries) => {
-        entries.forEach((item) => {
-          if (!item.isIntersecting) {
-            this.catalogFixed = true;
-          } else {
-            this.catalogFixed = false;
-          }
-        });
-      });
+      const rootMargin = { top: -40, right: 0, bottom: 0, left: 0 };
+      this.catalogObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((item) => {
+            const height = window.innerHeight + rootMargin.top;
+            if (height <= item.boundingClientRect.top) return;
+            if (item.isIntersecting) {
+              this.catalogFixed = false;
+            } else {
+              this.catalogFixed = true;
+            }
+          });
+        },
+        {
+          rootMargin: `${rootMargin.top}px ${rootMargin.right}px ${rootMargin.bottom}px ${rootMargin.left}px`,
+        }
+      );
       this.catalogObserver.observe(ref);
     },
+    // 侧边栏监听
     handleSidebarObserver(ref) {
-      this.sidebarObserver = new IntersectionObserver((entries) => {
-        entries.forEach((item) => {
-          if (!item.isIntersecting) {
-            this.sidebarFixed = true;
-          } else {
-            this.sidebarFixed = false;
-          }
-        });
-      });
+      const rootMargin = { top: -40, right: 0, bottom: 0, left: 0 };
+      this.sidebarObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((item) => {
+            // 因为需求是entries出现的位置到超过屏幕的顶部，就固定位置，
+            // 但是IntersectionObserver是不管在屏幕顶部还是左右底部的，只要出现在屏幕就会触发
+            // 所以，根据当前的场景，是有可能entries出现到屏幕底部的（联系、设置、访客信息、流量信息这些折叠面板展开后，entries就会被超出屏幕底部），
+            // 我们需要排除这种情况。不能使用IntersectionObserver的第二个option参数，添加root属性，因为root得为entries的祖先
+            const height = window.innerHeight + rootMargin.top;
+            if (height <= item.boundingClientRect.top) return;
+            if (item.isIntersecting) {
+              // console.log('entries和屏幕有交叉，即出现在了屏幕');
+              this.sidebarFixed = false;
+            } else {
+              // console.log('entries和屏幕没有交叉，即没出现在屏幕');
+              this.sidebarFixed = true;
+            }
+          });
+        },
+        {
+          rootMargin: `${rootMargin.top}px ${rootMargin.right}px ${rootMargin.bottom}px ${rootMargin.left}px`,
+        }
+      );
       this.sidebarObserver.observe(ref);
     },
     tagClick(id) {
@@ -516,13 +538,13 @@ export default {
   .main-folat-wrap {
     .fix {
       position: fixed;
-      top: 50px;
+      top: 40px;
       box-sizing: border-box;
       width: 300px;
     }
     .main-folat-ref {
-      position: relative;
-      top: -50px;
+      width: 1px;
+      height: 1px;
     }
     .article-info {
       overflow: hidden;
@@ -614,7 +636,8 @@ export default {
   }
 
   .catalog-ref {
-    transform: translateY(-50px);
+    width: 1px;
+    height: 1px;
   }
   .log-info {
     .refresh {
@@ -657,7 +680,7 @@ export default {
     background: $theme-color6;
     &.fix {
       position: fixed;
-      top: 50px;
+      top: 40px;
       box-sizing: border-box;
       width: inherit;
     }

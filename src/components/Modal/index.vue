@@ -56,38 +56,37 @@ export default {
 .mask-cpt-wrap {
   position: fixed;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   z-index: 102;
   background-color: $theme-color8;
   .modal-wrap {
     position: absolute;
     top: 30%;
     left: 50%;
-    transform: translateX(-50%);
     width: 600px;
-    background: $theme-color6;
     border: 1px solid $theme-color4;
-
     border-radius: 12px;
+    background: $theme-color6;
+    transform: translateX(-50%);
     .title-wrap {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       padding: 20px;
       border-bottom: 1px solid $theme-color2;
       .title {
-        font-size: 16px;
         font-weight: bold;
+        font-size: 16px;
       }
     }
     .content {
       padding: 0 20px;
     }
     .footer {
-      padding: 20px;
       margin-top: 20px;
+      padding: 20px;
       text-align: right;
     }
   }

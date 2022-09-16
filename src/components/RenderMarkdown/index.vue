@@ -67,8 +67,8 @@ export default {
     // ::v-deep .github-markdown-body {
     padding: 0px;
     blockquote {
-      margin-left: 0;
       margin-right: 0;
+      margin-left: 0;
     }
   }
   :deep(.github-markdown-body > :last-child) {

@@ -210,8 +210,8 @@ export default {
       }
     },
     headershow() {
-      // 头部高度为70px
-      const height = 70;
+      // 头部高度为60px
+      const height = 60;
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
       this.visible = offsetTop < height;

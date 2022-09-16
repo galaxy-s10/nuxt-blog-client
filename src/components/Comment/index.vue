@@ -203,10 +203,10 @@ export default {
         const intersectionObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((item) => {
-              if (!item.isIntersecting) {
-                this.childListIsBottom = false;
-              } else {
+              if (item.isIntersecting) {
                 this.childListIsBottom = true;
+              } else {
+                this.childListIsBottom = false;
               }
             });
           },
@@ -405,6 +405,7 @@ export default {
         overflow-y: scroll;
         min-height: 200px;
         max-height: 300px;
+
         @extend .hideScrollbar;
 
         .has-more-observer {

@@ -83,8 +83,8 @@ export default {
     },
   },
   async mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth;
-    if (d <= 414) {
+    const width = window.pageXOffset || document.documentElement.offsetWidth;
+    if (width <= 414) {
       this.showMiniAudio = true;
     }
     window.addEventListener('resize', this.resizeFn);
@@ -300,18 +300,18 @@ export default {
 }
 .currentTime {
   height: 10px;
-  background-color: rgba(205, 225, 247, 1);
   border-radius: 10px;
+  background-color: rgba(205, 225, 247, 1);
   transition: all 0.2s linear;
 }
 .song-bar {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   width: 100%;
   height: 15px;
-  position: absolute;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  bottom: 0;
   border-radius: 10px;
   font-size: 12px;
 }
@@ -319,8 +319,8 @@ export default {
   display: block;
   width: 170px;
   height: 10px;
-  background-color: rgba(236, 245, 255, 1);
   border-radius: 10px;
+  background-color: rgba(236, 245, 255, 1);
 }
 .song-bar-item:hover {
   cursor: pointer;
@@ -330,29 +330,29 @@ export default {
 }
 .music-wrap {
   position: fixed;
-  bottom: 50px;
   right: 10px;
+  bottom: 50px;
   transition: all 0.2s linear;
 }
 .song-wrap {
   position: relative;
   width: 250px;
   height: 80px;
-  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
-  background-color: white;
   border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
 }
 .song-text {
-  font-size: 12px;
   position: absolute;
+  top: -42%;
+  left: 50%;
+  padding-top: 4px;
   width: 230px;
   height: 50px;
   border-radius: 5px;
-  padding-top: 4px;
-  top: -42%;
-  left: 50%;
-  transform: translateX(-50%);
   background-color: rgb(255, 255, 255, 0.6);
+  font-size: 12px;
+  transform: translateX(-50%);
 }
 .text-item {
   padding-left: 45%;
@@ -368,32 +368,32 @@ export default {
 }
 .songImg1 {
   position: absolute;
-  width: 90px;
-  height: 90px;
   top: -45px;
   left: 10px;
+  width: 90px;
+  height: 90px;
   transition: all 0.3s linear;
   pointer-events: all;
 }
 .songImg {
   position: relative;
-  background-color: $theme-color9;
-  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
   width: 90px;
   height: 90px;
   border-radius: 50%;
+  background-color: $theme-color9;
+  box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
 }
 .songImg1::after {
-  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 10px;
   height: 10px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  border-radius: 50%;
   background-image: linear-gradient(45deg, #fff, #dabad1);
   box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
+  content: '';
+  transform: translate(-50%, -50%);
 }
 .songControl {
   position: absolute;
@@ -408,10 +408,10 @@ export default {
 .stop,
 .start {
   position: relative;
+  top: 50%;
   width: 30px;
   height: 30px;
   border-radius: 5px;
-  top: 50%;
   transform: translateY(-30%);
 }
 .pre,
@@ -421,101 +421,101 @@ export default {
   cursor: pointer;
 }
 .pre:hover {
-  color: white;
   background-color: #717070;
+  color: white;
 }
 .next:hover {
-  color: white;
   background-color: #717070;
+  color: white;
 }
 .stop:hover {
-  color: white;
   background-color: #717070;
+  color: white;
 }
 .start:hover {
-  color: white;
   background-color: #717070;
+  color: white;
 }
 .start::after:hover {
   border-color: transparent transparent transparent white;
 }
 
 .pre::before {
-  content: '';
-  width: 0;
-  height: 0;
   position: absolute;
-  transform: translate(-50%, -50%);
   top: 50%;
   left: 12px;
-  border-style: solid;
+  width: 0;
+  height: 0;
   border-width: 5px 5px 5px 0px;
+  border-style: solid;
   border-color: transparent #d9d9d9 transparent transparent;
+  content: '';
+  transform: translate(-50%, -50%);
 }
 .pre::after {
-  content: '';
-  width: 0;
-  height: 0;
   position: absolute;
-  transform: translate(-50%, -50%);
   top: 50%;
   left: 18px;
-  border-style: solid;
+  width: 0;
+  height: 0;
   border-width: 5px 5px 5px 0px;
+  border-style: solid;
   border-color: transparent #d9d9d9 transparent transparent;
+  content: '';
+  transform: translate(-50%, -50%);
 }
 .next::before {
-  content: '';
-  width: 0;
-  height: 0;
   position: absolute;
-  transform: translate(-50%, -50%);
   top: 50%;
   left: 12px;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-color: transparent transparent transparent #d9d9d9;
-}
-.next::after {
-  content: '';
   width: 0;
   height: 0;
-  position: absolute;
+  border-width: 5px 0 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent #d9d9d9;
+  content: '';
   transform: translate(-50%, -50%);
+}
+.next::after {
+  position: absolute;
   top: 50%;
   left: 18px;
-  border-style: solid;
+  width: 0;
+  height: 0;
   border-width: 5px 0 5px 5px;
+  border-style: solid;
   border-color: transparent transparent transparent #d9d9d9;
+  content: '';
+  transform: translate(-50%, -50%);
 }
 
 .stop::before {
-  content: '';
+  position: absolute;
+  top: 6px;
+  left: 10px;
   width: 4px;
   height: 18px;
-  left: 10px;
-  top: 6px;
   background-color: #d9d9d9;
-  position: absolute;
+  content: '';
 }
 .stop::after {
-  content: '';
+  position: absolute;
+  top: 6px;
+  left: 17px;
   width: 4px;
   height: 18px;
-  left: 17px;
-  top: 6px;
   background-color: #d9d9d9;
-  position: absolute;
+  content: '';
 }
 .start::after {
-  content: '';
+  position: absolute;
+  top: 5px;
+  left: 10px;
   width: 0;
   height: 0;
-  left: 10px;
-  top: 5px;
-  position: absolute;
-  border-style: solid;
   border-width: 10px 0 10px 15px;
+  border-style: solid;
   border-color: transparent transparent transparent #d9d9d9;
+  content: '';
 }
 </style>

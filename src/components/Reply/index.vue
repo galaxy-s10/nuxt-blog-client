@@ -64,25 +64,25 @@ export default {
 .mask-wrap {
   position: fixed;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   z-index: 100;
   background-color: $theme-color8;
   .reply-wrap {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    padding: 20px;
     width: 600px;
-    background: $theme-color6;
     border: 1px solid $theme-color4;
     border-radius: 12px;
-    padding: 20px;
+    background: $theme-color6;
+    transform: translate(-50%, -50%);
     .title {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       .username {
         font-weight: bold;
       }

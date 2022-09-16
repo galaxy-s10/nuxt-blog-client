@@ -49,8 +49,8 @@ export default {
     left: 0;
     padding: 6px 8px;
     color: $theme-color1;
-    font-size: 14px;
     font-weight: bold;
+    font-size: 14px;
   }
   .btn {
     margin-top: 20px;

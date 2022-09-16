@@ -48,8 +48,8 @@ export default {
     .item {
       list-style: none;
       img {
-        border-radius: 50%;
         border: 2px solid #fff;
+        border-radius: 50%;
       }
     }
   }

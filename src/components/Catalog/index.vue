@@ -59,11 +59,12 @@ export default {
 
 .catalog-cpt-wrap {
   position: relative;
+  overflow-y: scroll;
   margin: 0;
   padding: 0;
-  font-size: 16px;
   max-height: 80vh;
-  overflow-y: scroll;
+  font-size: 16px;
+
   @extend .hideScrollbar;
   &::before {
     position: absolute;

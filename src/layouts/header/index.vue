@@ -185,8 +185,8 @@ export default {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    height: 70px;
-    line-height: 70px;
+    height: 60px;
+    line-height: 60px;
     .logo {
       font-size: 20px;
       sup {
@@ -207,6 +207,7 @@ export default {
         padding: 0;
         .item {
           margin: 0 15px;
+
           user-select: none;
         }
         .item:hover:before {

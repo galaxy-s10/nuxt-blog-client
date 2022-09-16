@@ -45,7 +45,20 @@ const parseIpInfo = (ipInfo) => {
   return str;
 };
 
+const filterNum = (v) => {
+  let res = v;
+  if (v < 1000) {
+    res = v;
+  } else if (v >= 1000 && v < 10000) {
+    res = `${(v / 1000).toFixed(1)}k+`;
+  } else {
+    res = `${(v / 10000).toFixed(2)}w+`;
+  }
+  return res || 0;
+};
+
 Vue.filter('parseUa', parseUa);
 Vue.filter('formatDate', formatDate);
 Vue.filter('convertDate', convertDate);
 Vue.filter('parseIpInfo', parseIpInfo);
+Vue.filter('filterNum', filterNum);

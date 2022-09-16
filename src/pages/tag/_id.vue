@@ -228,8 +228,8 @@ export default {
     flex-wrap: wrap;
 
     .article-left {
-      width: 100%;
       flex: auto !important;
+      width: 100%;
     }
     .article-right {
       padding: 10px 20px !important;
@@ -238,9 +238,9 @@ export default {
 }
 .tag-wrap {
   .tag-info {
-    height: 180px;
     overflow-y: scroll;
     margin-bottom: 10px;
+    height: 180px;
     .tag-item {
       position: relative;
       display: inline-flex;
@@ -319,8 +319,9 @@ export default {
     box-sizing: border-box;
     padding: 30px;
     .article-right-txt {
-      @extend .singleEllipsis;
       cursor: pointer;
+
+      @extend .singleEllipsis;
     }
     .summary {
       display: flex;
@@ -344,7 +345,7 @@ export default {
 }
 
 .overwrite-el-tag {
-  color: white;
   margin-right: 10px;
+  color: white;
 }
 </style>

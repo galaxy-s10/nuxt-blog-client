@@ -6,12 +6,6 @@
     <div class="main-wrap">
       <LyMain class="left" />
       <LyAside class="right" />
-      <!-- <div class="right">
-        <LyAside />
-      </div> -->
-      <!-- <div class="left">
-        <LyMain />
-      </div> -->
     </div>
     <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
     <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
@@ -75,19 +69,31 @@ export default {
       return this.$store.state.article.catalogList;
     },
   },
+  watch: {
+    $route(to, from) {
+      if (to.name === 'article-id') {
+        this.handleResize();
+      } else {
+        this.showMinCatalogIco = false;
+        this.showMinCatalog = false;
+      }
+    },
+  },
   mounted() {
     this.init();
     if (this.CurrentNodeEnv !== 'development') {
       this.$myaxios.post('visitor_log/create'); // 新增访客记录
     }
-    this.handleResize();
+    if (this.$route.name === 'article-id') {
+      this.handleResize();
+    }
     window.addEventListener('message', this.messageFn);
-    window.addEventListener('scroll', this.headershow);
+    window.addEventListener('scroll', this.handleHiddenHeader);
     window.addEventListener('resize', this.handleResize);
   },
   destroyed() {
     window.removeEventListener('message', this.messageFn);
-    window.removeEventListener('scroll', this.headershow);
+    window.removeEventListener('scroll', this.handleHiddenHeader);
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
@@ -100,20 +106,15 @@ export default {
       setHiddenHeader: 'app/setHiddenHeader',
     }),
     handleResize() {
+      if (this.$route.name !== 'article-id') return;
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth;
-      if (offsetWidth <= 425) {
-        this.showMinCatalogIco = true;
-      } else {
-        this.showMinCatalogIco = false;
-      }
+      this.showMinCatalogIco = offsetWidth <= 425;
     },
-    headershow() {
-      // 向下滚动超过350px才显示
-      const height = 350;
+    handleHiddenHeader() {
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
-      this.setHiddenHeader(offsetTop > height);
+      this.setHiddenHeader(offsetTop > 350); // 向下滚动超过350px就隐藏header
     },
     init() {
       const token = localStorage.token;
@@ -167,18 +168,18 @@ export default {
 }
 
 .main-wrap {
-  margin: 0 auto;
-  margin-top: 130px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 130px;
   .left {
     box-sizing: border-box;
     width: calc(100% - 320px);
   }
   .right {
-    width: 300px;
     box-sizing: border-box;
+    width: 300px;
   }
 }
 .mini-catalog-ico {

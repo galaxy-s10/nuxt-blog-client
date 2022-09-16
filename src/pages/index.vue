@@ -196,30 +196,23 @@ export default {
   },
   created() {},
   mounted() {
-    this.$myaxios
-      .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
-      .then((res) => {
-        const { data } = res;
-        const obj = {};
-        data.rows.forEach((v) => {
-          obj[v.key] = v.value;
-        });
-        generaterStyle(obj);
-      });
-    window.addEventListener('resize', () => {
-      const d = window.pageXOffset || document.documentElement.offsetWidth;
-      if (d <= 425) {
-        this.waterfallParams.column = 2;
-      }
-      this.handlePage();
-    });
-
     window.scrollTo({ top: 0 });
+    // this.$myaxios
+    //   .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
+    //   .then((res) => {
+    //     const { data } = res;
+    //     const obj = {};
+    //     data.rows.forEach((v) => {
+    //       obj[v.key] = v.value;
+    //     });
+    //     generaterStyle(obj);
+    //   });
+    window.addEventListener('resize', this.handleResize);
     this.handlePage();
     this.touchBottom();
   },
   destroyed() {
-    window.removeEventListener('scroll', this.headershow);
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     ...mapActions({
@@ -231,6 +224,13 @@ export default {
       logout: 'user/logout',
       setIsWaterFall: 'app/setIsWaterFall',
     }),
+    handleResize() {
+      const width = window.pageXOffset || document.documentElement.offsetWidth;
+      if (width <= 425) {
+        this.waterfallParams.column = 2;
+      }
+      this.handlePage();
+    },
     switchShowMethod() {
       this.setIsWaterFall(!this.isWaterFall);
     },
@@ -267,10 +267,10 @@ export default {
       this.$nextTick(() => {
         const intersectionObserver = new IntersectionObserver((entries) => {
           entries.forEach((item) => {
-            if (!item.isIntersecting) {
-              this.isBottom = false;
-            } else {
+            if (item.isIntersecting) {
               this.isBottom = true;
+            } else {
+              this.isBottom = false;
             }
           });
         });
@@ -356,8 +356,8 @@ export default {
   .pages-wrap {
     .waterfall-wrap {
       .waterfall-item {
-        height: initial !important;
         display: block !important;
+        height: initial !important;
       }
     }
   }
@@ -386,8 +386,8 @@ export default {
     }
     .waterfall-wrap {
       .waterfall-item {
-        height: initial !important;
         display: block !important;
+        height: initial !important;
       }
     }
   }
@@ -417,16 +417,16 @@ export default {
   .waterfall-wrap {
     position: relative;
     .waterfall-item {
+      position: relative;
+      display: flex;
       overflow: hidden;
       box-sizing: border-box;
       margin-bottom: 20px;
+      height: 250px;
       border: 1px solid $theme-color4;
       border-radius: 6px;
       background-color: $theme-color6;
-      position: relative;
-      display: flex;
       cursor: pointer;
-      height: 250px;
 
       &:hover {
         transition: all 0.3s;
@@ -466,8 +466,8 @@ export default {
         }
         .head-img {
           display: inline-block;
-          height: 250px;
           width: 100%;
+          height: 250px;
           background-position: center;
           background-size: cover;
           background-repeat: no-repeat;
@@ -479,11 +479,11 @@ export default {
       }
 
       .detail {
-        flex: 1;
-        padding: 0 5px 10px;
         display: flex;
+        flex: 1;
         flex-direction: column;
         justify-content: flex-end;
+        padding: 0 5px 10px;
         p {
           margin: 6px 0;
         }

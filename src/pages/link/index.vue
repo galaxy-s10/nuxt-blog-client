@@ -229,16 +229,16 @@ export default {
 
     @extend .hideScrollbar;
     &::after {
-      content: '';
-      width: 30%;
       margin: 0 1%;
+      width: 30%;
+      content: '';
     }
     .li-item-wrap {
       position: relative;
       overflow: hidden;
-      width: 30%;
       margin: 0 1%;
       margin-bottom: 10px;
+      width: 30%;
       border-radius: 4px;
       list-style: none;
       .li-item-link {

@@ -252,17 +252,18 @@ export default {
   .main {
     position: relative;
     .content-list {
-      height: 400px;
       overflow-y: scroll;
+      height: 400px;
       background-color: $theme-color3;
+
       @extend .hideScrollbar;
       .item {
-        padding: 0 10px;
         margin-bottom: 10px;
+        padding: 0 10px;
       }
       .tip {
-        text-align: center;
         margin: 10px 0;
+        text-align: center;
       }
       .msg-item {
         display: flex;
@@ -272,9 +273,9 @@ export default {
             .msg {
               background-color: $theme-color11;
               .triangle {
-                left: auto;
-                right: -5px;
                 top: 12px;
+                right: -5px;
+                left: auto;
               }
             }
           }
@@ -291,20 +292,20 @@ export default {
           }
           .msg {
             position: relative;
+            margin-top: 4px;
+            padding: 10px;
             max-width: 200px;
             border-radius: 5px;
-            word-break: break-all;
-            margin-top: 4px;
             background-color: $theme-color6;
-            padding: 10px;
+            word-break: break-all;
             .triangle {
+              position: absolute;
+              top: 15px;
+              right: auto;
+              left: -5px;
               width: 10px;
               height: 10px;
               background-color: inherit;
-              position: absolute;
-              left: -5px;
-              right: auto;
-              top: 15px;
               transform: rotate(45deg);
             }
           }
@@ -316,17 +317,17 @@ export default {
     }
     .mask {
       position: absolute;
-      left: 0;
-      right: 0;
       top: 0;
+      right: 0;
       bottom: 0;
+      left: 0;
       background-color: $theme-color3;
     }
     .join {
       position: absolute;
-      width: 100%;
       top: 50%;
       left: 50%;
+      width: 100%;
       transform: translate(-50%, -50%);
 
       .item {
@@ -342,19 +343,19 @@ export default {
           margin-top: 20px;
           width: 60px;
           height: 60px;
-          color: $theme-color6;
-          line-height: 60px;
           border-radius: 50%;
-          text-align: center;
           background-color: $theme-color1;
+          color: $theme-color6;
+          text-align: center;
+          line-height: 60px;
           cursor: pointer;
         }
         .curr-avatar {
           position: relative;
           .bottom {
             position: absolute;
-            bottom: 0;
             right: 0;
+            bottom: 0;
           }
         }
         .avatar {
@@ -378,9 +379,9 @@ export default {
   }
 
   .avatar {
+    margin-bottom: 10px;
     width: 30%;
     border-radius: 50%;
-    margin-bottom: 10px;
     cursor: pointer;
   }
 }

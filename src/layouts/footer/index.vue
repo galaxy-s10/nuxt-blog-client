@@ -80,6 +80,7 @@ export default {
     width: 100%;
     border-radius: 10px;
     text-align: center;
+
     user-select: none;
     .txt {
     }

@@ -515,8 +515,8 @@ export default {
           top: 50%;
           left: 50%;
           font-size: 24px;
-          transform: translate(-50%, -50%);
           transition: all 1s;
+          transform: translate(-50%, -50%);
         }
         .badge {
           position: absolute;

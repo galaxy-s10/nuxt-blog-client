@@ -9,23 +9,23 @@
       <div class="badge">数据统计</div>
       <div class="list">
         <div class="item">
-          <div class="num">{{ filterNum(summary.article.total) }}</div>
+          <div class="num">{{ summary.article.total | filterNum }}</div>
           <div class="type">文章</div>
         </div>
         <div class="item">
-          <div class="num">{{ filterNum(summary.comment.total) }}</div>
+          <div class="num">{{ summary.comment.total | filterNum }}</div>
           <div class="type">评论</div>
         </div>
         <div class="item">
-          <div class="num">{{ filterNum(summary.article.read) }}</div>
+          <div class="num">{{ summary.article.read | filterNum }}</div>
           <div class="type">阅读</div>
         </div>
         <div class="item">
-          <div class="num">{{ filterNum(summary.user.total) }}</div>
+          <div class="num">{{ summary.user.total | filterNum }}</div>
           <div class="type">用户</div>
         </div>
         <div class="item">
-          <div class="num">{{ filterNum(summary.visit.total) }}</div>
+          <div class="num">{{ summary.visit.total | filterNum }}</div>
           <div class="type">访问量</div>
         </div>
       </div>
@@ -35,23 +35,6 @@
     <AsyncRenderMarkdownCpt
       :md="frontendData.frontend_about"
     ></AsyncRenderMarkdownCpt>
-
-    <h1>本站发展历史</h1>
-
-    <!-- 时间线 -->
-    <el-timeline :reverse="'reverse'">
-      <el-timeline-item
-        v-for="(activity, index) in activities"
-        :key="index"
-        :icon="activity.icon"
-        :type="activity.type"
-        :color="activity.color"
-        :size="activity.size"
-        :timestamp="activity.timestamp"
-      >
-        {{ activity.content }}
-      </el-timeline-item>
-    </el-timeline>
   </div>
 </template>
 
@@ -70,40 +53,7 @@ export default {
     };
   },
   data() {
-    return {
-      activities: [
-        {
-          content: '第一次尝试写博客并上线',
-          timestamp: '2019-09-10',
-          color: '#f9f5c7',
-        },
-        {
-          content: '重写前端ui,后台使用vue-element-template',
-          timestamp: '2019-10-12',
-          color: '#0bbd87',
-        },
-        {
-          content: '重写后端,使用sequelize',
-          timestamp: '2019-12-01',
-          color: 'pink',
-        },
-        {
-          content: '改成ssr利于seo,使用nuxt框架',
-          timestamp: '2020-01-20',
-          color: '#275cc7',
-        },
-        {
-          content: '修复若干bug,新增jwt验证权限',
-          timestamp: '2020-03-01',
-          color: 'skyblue',
-        },
-        {
-          content: '初步重构前后端',
-          timestamp: '2022-02-01',
-          color: '#8137a5',
-        },
-      ],
-    };
+    return {};
   },
   head() {
     return {
@@ -122,19 +72,7 @@ export default {
       return this.$store.state.app.frontendData;
     },
   },
-  methods: {
-    filterNum(v) {
-      let res = v;
-      if (v < 1000) {
-        res = v;
-      } else if (v >= 1000 && v < 10000) {
-        res = `${(v / 1000).toFixed(1)}k+`;
-      } else {
-        res = `${(v / 10000).toFixed(2)}w+`;
-      }
-      return res || 0;
-    },
-  },
+  methods: {},
 };
 </script>
 

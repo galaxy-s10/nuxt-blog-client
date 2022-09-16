@@ -61,7 +61,7 @@ export default {
 /* 响应式布局,大于540px */
 @media screen and (min-width: 540px) {
   .show {
-    transform: translateY(-70px);
+    transform: translateY(-60px);
   }
 }
 
@@ -73,42 +73,43 @@ export default {
 .active {
   position: relative;
   &::after {
-    content: '';
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(90%, -50%);
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background-color: rgba($color: #604bc3, $alpha: 0.6);
+    content: '';
+    transform: translate(90%, -50%);
   }
 }
 .fix-type-wrap {
   position: fixed;
-  top: 70px;
+  top: 60px;
   left: 0;
   z-index: 99;
   width: 100%;
   border-bottom: 1px solid $theme-color4;
   background-color: $theme-color6;
-  transform: translateZ(0);
   transition: all 0.3s;
+  transform: translateZ(0);
 
   &.show {
-    transform: translate3d(0, -70px, 0);
+    transform: translate3d(0, -60px, 0);
   }
   .type-wrap {
+    display: flex;
+    align-items: center;
     margin: 0 auto;
     padding: 0;
     height: 40px;
     color: $theme-color1;
-    display: flex;
-    align-items: center;
     li {
       display: block;
       margin-right: 10px;
       cursor: pointer;
+
       user-select: none;
     }
   }

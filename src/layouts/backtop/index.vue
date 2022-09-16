@@ -1,13 +1,11 @@
 <template>
   <div class="back-top-wrap">
     <div
-      v-if="toggle"
-      :class="{ 'back-top': true, 'show-back-top': visible }"
+      :class="{ 'back-top': true, show: showBigBackTop && visible }"
       @click="handleTo"
     ></div>
     <div
-      v-else
-      :class="{ 'mini-back-top': true, 'show-mini-back-top': visible }"
+      :class="{ 'mini-back-top': true, show: !showBigBackTop && visible }"
       @click="handleTo"
     >
       <span class="triangle" />
@@ -20,16 +18,17 @@ export default {
   data() {
     return {
       visible: false,
-      toggle: false,
+      showBigBackTop: false,
     };
   },
   mounted() {
     this.handleResize();
-    window.addEventListener('scroll', this.headershow);
+    this.handleBackTop();
+    window.addEventListener('scroll', this.handleBackTop);
     window.addEventListener('resize', this.handleResize);
   },
   destroyed() {
-    window.removeEventListener('scroll', this.headershow);
+    window.removeEventListener('scroll', this.handleBackTop);
     window.addEventListener('resize', this.handleResize);
   },
   methods: {
@@ -37,15 +36,14 @@ export default {
       scrollTo({ top: 0, behavior: 'smooth' });
     },
     handleResize() {
-      const { width } = document.documentElement.getBoundingClientRect();
-      this.toggle = width > 1200;
+      const offsetWidth =
+        window.pageXOffset || document.documentElement.offsetWidth;
+      this.showBigBackTop = offsetWidth >= 990;
     },
-    headershow() {
-      // 向下滚动超过1200px才显示
-      const height = 1200;
+    handleBackTop() {
       const offsetTop =
         window.pageYOffset || document.documentElement.scrollTop;
-      this.visible = offsetTop > height;
+      this.visible = offsetTop > 1200; // 向下滚动超过1200px才显示
     },
   },
 };
@@ -56,30 +54,33 @@ export default {
 
 @keyframes move {
   0% {
-    transform: translatey(0);
+    top: 0;
   }
   75% {
-    transform: translatey(-10px);
+    top: -30px;
   }
   100% {
-    transform: translatey(0);
+    top: 0;
   }
 }
+
 .back-top-wrap {
   .back-top {
     position: fixed;
     top: -100%;
-    right: 10px;
+    right: 30px;
     z-index: 100;
-    width: 100px;
-    height: 85%;
+    width: 70px;
+    height: 700px;
     background: url('@/assets/img/back_top.webp') no-repeat bottom;
     cursor: pointer;
     transition: all 0.5s;
+    transform: translateY(-100%);
     animation: move 3s infinite linear;
-    &.show-back-top {
-      top: -100px;
-      transition: all 0.5s;
+
+    &.show {
+      top: 0;
+      transform: translateY(0%);
     }
   }
 
@@ -107,7 +108,7 @@ export default {
       border-bottom-color: $theme-color1;
       transform: translate(-50%, -90%);
     }
-    &.show-mini-back-top {
+    &.show {
       z-index: 100;
       opacity: 1;
       pointer-events: auto;

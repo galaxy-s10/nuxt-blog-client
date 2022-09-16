@@ -76,8 +76,8 @@ export default {
     .ico-wrap {
       width: 20px;
       height: 20px;
-      transform: translateY(2px);
       cursor: pointer;
+      transform: translateY(2px);
       .ico {
         transition: all 0.3s;
         transform: rotate(0deg);
@@ -88,8 +88,8 @@ export default {
     }
   }
   .content {
-    transition: height 0.5s;
     height: 100%;
+    transition: height 0.5s;
     .item {
       margin-bottom: 4px;
     }

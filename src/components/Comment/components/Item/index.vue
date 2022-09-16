@@ -265,14 +265,14 @@ export default {
         }
       }
       .triangle {
-        width: 10px;
-        height: 10px;
-        background-color: white;
         position: absolute;
         bottom: -6px;
         left: 15%;
+        width: 10px;
+        height: 10px;
         border-right: 1px solid #ebebeb;
         border-bottom: 1px solid #ebebeb;
+        background-color: white;
         transform: rotate(45deg);
       }
     }
@@ -280,8 +280,8 @@ export default {
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      transition: all 0.5s;
       cursor: pointer;
+      transition: all 0.5s;
       &:hover {
         transform: rotate(1turn);
       }
@@ -326,15 +326,15 @@ export default {
         font-size: 16px;
         .parent-content {
           display: flex;
-          background: #f2f3f5;
-          border: 1px solid #e4e6eb;
           box-sizing: border-box;
-          border-radius: 4px;
-          padding: 0px 12px;
-          line-height: 36px;
-          font-size: 14px;
-          color: #8a919f;
           margin-top: 8px;
+          padding: 0px 12px;
+          border: 1px solid #e4e6eb;
+          border-radius: 4px;
+          background: #f2f3f5;
+          color: #8a919f;
+          font-size: 14px;
+          line-height: 36px;
           .padding {
             padding: 6px 0;
           }

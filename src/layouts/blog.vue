@@ -38,6 +38,8 @@ import LyMain from 'layouts/main/index.vue';
 import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
+import { preloadImg } from '@/utils';
+
 export default {
   components: {
     LyHeader,
@@ -81,6 +83,7 @@ export default {
   },
   mounted() {
     this.init();
+    this.handlePreloadImg();
     if (this.CurrentNodeEnv !== 'development') {
       this.$myaxios.post('visitor_log/create'); // 新增访客记录
     }
@@ -105,6 +108,27 @@ export default {
       logout: 'user/logout',
       setHiddenHeader: 'app/setHiddenHeader',
     }),
+    handlePreloadImg() {
+      const imgs = require.context(
+        '../assets/img/',
+        true,
+        /.webp|.jpg|.png|.jpeg|.gif$/i
+      );
+      const imgArr = [];
+      imgs.keys().forEach((path) => {
+        const newpath = path.replace('./', '');
+        try {
+          imgArr.push(require(`@/assets/img/${newpath}`));
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      try {
+        preloadImg(imgArr);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     handleResize() {
       if (this.$route.name !== 'article-id') return;
       const offsetWidth =

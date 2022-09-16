@@ -118,7 +118,7 @@
     </template>
 
     <template v-else>
-      <AsnycCollapseCpt class="visitor-info" title="访客信息">
+      <AsnycCollapseCpt class="visitor-info" title="访客信息" open>
         <template #ico>
           <i class="el-icon-position"></i>
         </template>
@@ -127,7 +127,7 @@
             <div class="item">ip: {{ ipInfo.ip }}</div>
             <div class="item">
               location:
-              {{ ipInfo | parseIpInfo }}
+              {{ ipInfo.gaode | parseIpInfo }}
             </div>
           </template>
         </div>

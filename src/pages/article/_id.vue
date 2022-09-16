@@ -1,7 +1,33 @@
 <template>
   <div class="article-detail-wrap">
+    <ModalCpt
+      v-if="rewardModal"
+      class="reward-modal-wrap"
+      :title="'打赏'"
+      :top="'30%'"
+      @closeModal="closeModal"
+    >
+      <template #content>
+        <div class="reward-content">
+          <div class="item">
+            <img src="@/assets/img/wechat_reward.webp" alt="" />
+            <p>微信</p>
+          </div>
+          <div class="item">
+            <img src="@/assets/img/zhifubao_reward.webp" alt="" />
+            <p>支付宝</p>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <p>谢谢，距离买房又近了一步~</p>
+      </template>
+    </ModalCpt>
     <div class="article-suspended-panel-wrap">
       <div class="article-suspended-panel">
+        <div class="panel-btn" @click="showRewardModal">
+          <span class="reward">赏</span>
+        </div>
         <div
           v-loading="starLoaing"
           element-loading-background="rgba(0, 0, 0, 0)"
@@ -144,6 +170,7 @@
 <script>
 import AvatarGroupCpt from 'components/AvatarGroup/index.vue';
 import CommentCpt from 'components/Comment/index.vue';
+import ModalCpt from 'components/Modal/index.vue';
 import RenderMarkdownCpt from 'components/RenderMarkdown/index.vue';
 
 import { init } from '@/mixin/init';
@@ -152,6 +179,7 @@ export default {
   components: {
     // CommentCpt: () => import('components/Comment'),
     CommentCpt,
+    ModalCpt,
     AsyncTextareaInputCpt: () => import('components/TextareaInput/index.vue'),
     RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
@@ -201,6 +229,7 @@ export default {
       nowPage: undefined,
       pageSize: undefined,
       isStar: false, // 是否已经点赞了
+      rewardModal: false,
     };
   },
   head() {
@@ -255,6 +284,13 @@ export default {
         return v.id === this.userInfo.id;
       });
       this.isStar = res;
+    },
+    showRewardModal() {
+      this.$newmessage('谢谢老板！', 'success');
+      this.rewardModal = true;
+    },
+    closeModal() {
+      this.rewardModal = false;
     },
     jumpToComment() {
       window.location.href = '#comment-anchor';
@@ -496,13 +532,16 @@ export default {
         background-repeat: no-repeat;
         box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
         text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
         @keyframes rotate {
           0% {
-            transform: translate(-50%, -50%) rotate(0deg);
+            transform: rotate(0deg);
           }
           100% {
-            transform: translate(-50%, -50%) rotate(360deg);
+            transform: rotate(360deg);
           }
         }
         &:hover {
@@ -510,13 +549,12 @@ export default {
             animation: rotate 2s infinite linear;
           }
         }
+        .reward {
+          font-size: 22px;
+          color: gold;
+        }
         .ico {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          font-size: 24px;
-          transition: all 1s;
-          transform: translate(-50%, -50%);
+          font-size: 22px;
         }
         .badge {
           position: absolute;
@@ -529,6 +567,25 @@ export default {
           font-size: 13px;
         }
       }
+    }
+  }
+
+  .reward-modal-wrap {
+    .reward-content {
+      display: flex;
+      justify-content: space-around;
+      .item {
+        text-align: center;
+        img {
+          width: 200px;
+          height: 200px;
+        }
+      }
+    }
+    :deep(.footer) {
+      margin: 0;
+      padding: 0;
+      text-align: center;
     }
   }
 

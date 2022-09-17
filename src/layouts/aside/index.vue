@@ -353,6 +353,7 @@ export default {
       }
     },
     showCatalog(newVal, oldVal) {
+      console.log('showCatalog', newVal);
       if (newVal) {
         this.catalogFixed = false;
         this.$nextTick(() => {
@@ -411,6 +412,7 @@ export default {
           entries.forEach((item) => {
             const height = window.innerHeight + rootMargin.top;
             if (height <= item.boundingClientRect.top) return;
+            if (!this.showCatalog) return;
             if (item.isIntersecting) {
               this.catalogFixed = false;
             } else {
@@ -436,6 +438,7 @@ export default {
             // 我们需要排除这种情况。不能使用IntersectionObserver的第二个option参数，添加root属性，因为root得为entries的祖先
             const height = window.innerHeight + rootMargin.top;
             if (height <= item.boundingClientRect.top) return;
+            if (this.showCatalog) return;
             if (item.isIntersecting) {
               // console.log('entries和屏幕有交叉，即出现在了屏幕');
               this.sidebarFixed = false;

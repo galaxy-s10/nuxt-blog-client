@@ -11,8 +11,8 @@
         custom
       >
         <article @click="navigate">
+          <div v-if="item.priority === 99" class="top">置顶</div>
           <div class="head-img-wrap">
-            <div v-if="item.priority === 99" class="top">置顶</div>
             <NoHeadImgCpt
               v-if="!item.head_img"
               :mock-img-height="item.mockImgHeight"
@@ -441,20 +441,6 @@ export default {
         overflow: hidden;
         flex: 0 0 45%;
 
-        .top {
-          position: absolute;
-          top: 8px;
-          right: -50px;
-          z-index: 1;
-          display: inline;
-          width: 140px;
-          height: 25px;
-          background: #c551af;
-          color: white;
-          text-align: center;
-          line-height: 25px;
-          transform: rotate(45deg);
-        }
         .no-head-img {
           width: 100%;
           height: 250px;
@@ -476,6 +462,20 @@ export default {
             transform: scale(1.1);
           }
         }
+      }
+      .top {
+        position: absolute;
+        top: 12px;
+        right: -45px;
+        z-index: 1;
+        display: inline;
+        width: 140px;
+        height: 25px;
+        background: #c551af;
+        color: white;
+        text-align: center;
+        line-height: 25px;
+        transform: rotate(45deg);
       }
 
       .detail {

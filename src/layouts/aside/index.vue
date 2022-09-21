@@ -353,7 +353,6 @@ export default {
       }
     },
     showCatalog(newVal, oldVal) {
-      console.log('showCatalog', newVal);
       if (newVal) {
         this.catalogFixed = false;
         this.$nextTick(() => {
@@ -415,6 +414,7 @@ export default {
             if (!this.showCatalog) return;
             if (item.isIntersecting) {
               this.catalogFixed = false;
+              this.sidebarFixed = false; // 文章目录出现的时候，直接去掉侧边栏目录
             } else {
               this.catalogFixed = true;
             }
@@ -442,9 +442,11 @@ export default {
             if (item.isIntersecting) {
               // console.log('entries和屏幕有交叉，即出现在了屏幕');
               this.sidebarFixed = false;
+              this.catalogFixed = false; // 侧边栏目录出现的时候，直接去掉文章目录
             } else {
               // console.log('entries和屏幕没有交叉，即没出现在屏幕');
               this.sidebarFixed = true;
+              this.catalogFixed = true;
             }
           });
         },
@@ -539,6 +541,7 @@ export default {
     }
   }
   .main-folat-wrap {
+    // background-color: red;
     .fix {
       position: fixed;
       top: 40px;
@@ -556,6 +559,8 @@ export default {
       border: 1px solid $theme-color4;
       border-radius: 5px;
       background: $theme-color6;
+      // background-color: red;
+
       .title {
         display: flex;
         justify-content: space-between;

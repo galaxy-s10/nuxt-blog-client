@@ -32,9 +32,7 @@ export default {
   props: [],
   async asyncData({ $myaxios, params, store }) {
     // 获取作品数据
-    const { data: worksData } = await $myaxios.get('/works/list', {
-      params: { nowPage: 1, pageSize: 100 },
-    });
+    const { data: worksData } = await $myaxios.get('/works/list');
     return { worksList: worksData.rows };
   },
   data() {

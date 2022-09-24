@@ -113,15 +113,9 @@ export default {
       nowPage: 1,
       pageSize: 3,
     };
-    const tagListParams = {
-      nowPage: 1,
-      pageSize: 100,
-    };
     const tagId = params.id;
     try {
-      const { data: tagData } = await $myaxios.get(`/tag/list`, {
-        params: tagListParams,
-      });
+      const { data: tagData } = await $myaxios.get(`/tag/list`);
       const { data: articleData } = await $myaxios.get(
         `/tag/article_list/${tagId}`,
         {

@@ -93,9 +93,7 @@ export default {
   layout: 'blog',
   async asyncData({ $myaxios, params, store }) {
     // 获取友链数据
-    const { data: linkData } = await $myaxios.get('/link/list', {
-      // params: { nowPage: 1, pageSize: 100 },
-    });
+    const { data: linkData } = await $myaxios.get('/link/list');
     return { linkList: linkData.rows };
   },
   data() {

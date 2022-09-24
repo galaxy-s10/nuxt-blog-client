@@ -18,20 +18,23 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt class="releation-info" title="联系">
+    <AsnycCollapseCpt class="releation-info" title="联系" open>
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
       <div class="releation-info">
         <div class="item">
           <div class="wechat_logo_wrap">
-            <img
-              src="@/assets/img/wechat_logo.webp"
-              class="wechat_logo"
-              alt=""
-            />
+            <img src="@/assets/img/wechat_logo.webp" class="logo" alt="" />
             <img src="@/assets/img/wechat_code.webp" class="code" alt="" />
           </div>
+          <a
+            class="github_logo_wrap"
+            href="https://github.com/galaxy-s10"
+            target="_blank"
+          >
+            <img src="@/assets/img/github_logo.webp" class="logo" alt="" />
+          </a>
         </div>
       </div>
     </AsnycCollapseCpt>
@@ -118,11 +121,11 @@
     </template>
 
     <template v-else>
-      <AsnycCollapseCpt class="visitor-info" title="访客信息" open>
+      <AsnycCollapseCpt class="log-info" title="流量信息">
         <template #ico>
-          <i class="el-icon-position"></i>
+          <i class="el-icon-data-analysis"></i>
         </template>
-        <div>
+        <div v-loading="logLoading">
           <template v-if="ipInfo">
             <div class="item">ip: {{ ipInfo.ip }}</div>
             <div class="item">
@@ -130,14 +133,6 @@
               {{ ipInfo.gaode | parseIpInfo }}
             </div>
           </template>
-        </div>
-      </AsnycCollapseCpt>
-
-      <AsnycCollapseCpt class="log-info" title="流量信息">
-        <template #ico>
-          <i class="el-icon-data-analysis"></i>
-        </template>
-        <div v-loading="logLoading">
           <template v-if="visitorHistoryData">
             <div class="item">
               历史总访问量: {{ visitorHistoryData.visit_total }}
@@ -300,10 +295,10 @@ export default {
         return state.app.ipInfo;
       },
       visitorDayData() {
-        return this.$store.state.log.dayData;
+        return this.$store.state.visitor.dayData;
       },
       visitorHistoryData() {
-        return this.$store.state.log.historyData;
+        return this.$store.state.visitor.historyData;
       },
       summary(state) {
         return state.user.summary;
@@ -365,8 +360,11 @@ export default {
   mounted() {
     this.handleSidebarObserver(this.$refs.mainFolatRef);
     this.$store.dispatch('app/getIpInfo');
-    this.$store.dispatch('log/getVisitorDayData', dateStartAndEnd(new Date()));
-    this.$store.dispatch('log/getVisitorHistoryData');
+    this.$store.dispatch(
+      'visitor/getVisitorDayData',
+      dateStartAndEnd(new Date())
+    );
+    this.$store.dispatch('visitor/getVisitorHistoryData');
   },
   methods: {
     ...mapActions('article', ['getSideBarArticleList']),
@@ -380,10 +378,10 @@ export default {
     async refreshLog() {
       this.logLoading = true;
       await this.$store.dispatch(
-        'log/getVisitorDayData',
+        'visitor/getVisitorDayData',
         dateStartAndEnd(new Date())
       );
-      await this.$store.dispatch('log/getVisitorHistoryData');
+      await this.$store.dispatch('visitor/getVisitorHistoryData');
       this.logLoading = false;
     },
     async ajaxArticleList(orderName) {
@@ -656,14 +654,21 @@ export default {
     }
   }
   .releation-info {
+    .item {
+      display: flex;
+    }
+    .logo {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+    .github_logo_wrap {
+      margin-left: 10px;
+    }
     .wechat_logo_wrap {
       position: relative;
       display: inline-block;
-      .wechat_logo {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-      }
+
       &:hover {
         .code {
           display: block;

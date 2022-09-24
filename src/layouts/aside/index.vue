@@ -18,23 +18,53 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt class="releation-info" title="联系" open>
+    <AsnycCollapseCpt class="releation-info" title="站点信息" open>
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
-      <div class="releation-info">
+      <div class="list">
         <div class="item">
           <div class="wechat_logo_wrap">
-            <img src="@/assets/img/wechat_logo.webp" class="logo" alt="" />
-            <img src="@/assets/img/wechat_code.webp" class="code" alt="" />
+            <img
+              src="@/assets/img/wechat_logo.webp"
+              class="logo"
+              alt="wechat_logo"
+            />
+            <img
+              src="@/assets/img/wechat_code.webp"
+              class="code"
+              alt="wechat_code"
+            />
           </div>
+          <div>微信</div>
+        </div>
+        <div class="item">
           <a
             class="github_logo_wrap"
             href="https://github.com/galaxy-s10"
             target="_blank"
           >
-            <img src="@/assets/img/github_logo.webp" class="logo" alt="" />
+            <img
+              src="@/assets/img/github_logo.webp"
+              class="logo"
+              alt="github_logo"
+            />
           </a>
+          <div>github</div>
+        </div>
+        <div class="item">
+          <a
+            class="admin_logo_wrap"
+            href="https://admin.hsslive.cn/"
+            target="_blank"
+          >
+            <img
+              src="@/assets/img/admin_logo.webp"
+              class="logo"
+              alt="admin_logo"
+            />
+          </a>
+          <div>后台</div>
         </div>
       </div>
     </AsnycCollapseCpt>
@@ -111,7 +141,11 @@
 
     <template v-if="showCatalog">
       <div ref="catalogRef" class="catalog-ref"></div>
-      <nav class="catalog-info" :class="{ fix: catalogFixed }">
+      <nav
+        ref="catalogInfoRef"
+        class="catalog-info"
+        :class="{ fix: catalogFixed }"
+      >
         <div class="title">
           <i class="el-icon-paperclip"></i>
           <b>文章目录</b>
@@ -155,7 +189,7 @@
         </div>
       </AsnycCollapseCpt>
 
-      <div class="main-folat-wrap">
+      <div ref="mainFolatWrapRef" class="main-folat-wrap">
         <div ref="mainFolatRef" class="main-folat-ref"></div>
         <div :class="{ fix: sidebarFixed }">
           <div class="article-info" title="文章排行">
@@ -410,6 +444,13 @@ export default {
             const height = window.innerHeight + rootMargin.top;
             if (height <= item.boundingClientRect.top) return;
             if (!this.showCatalog) return;
+            if (
+              this.$refs.catalogInfoRef.getBoundingClientRect().height >=
+              document.querySelector('.main-wrap .left').getBoundingClientRect()
+                .height
+            ) {
+              return;
+            }
             if (item.isIntersecting) {
               this.catalogFixed = false;
               this.sidebarFixed = false; // 文章目录出现的时候，直接去掉侧边栏目录
@@ -437,6 +478,14 @@ export default {
             const height = window.innerHeight + rootMargin.top;
             if (height <= item.boundingClientRect.top) return;
             if (this.showCatalog) return;
+            if (
+              this.$refs.mainFolatWrapRef.getBoundingClientRect().height >=
+              document.querySelector('.main-wrap .left').getBoundingClientRect()
+                .height
+            ) {
+              return;
+            }
+
             if (item.isIntersecting) {
               // console.log('entries和屏幕有交叉，即出现在了屏幕');
               this.sidebarFixed = false;
@@ -654,33 +703,36 @@ export default {
     }
   }
   .releation-info {
-    .item {
+    .list {
       display: flex;
-    }
-    .logo {
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-    }
-    .github_logo_wrap {
-      margin-left: 10px;
-    }
-    .wechat_logo_wrap {
-      position: relative;
-      display: inline-block;
-
-      &:hover {
-        .code {
-          display: block;
-        }
+      align-items: center;
+      .item {
+        margin-right: 20px;
+        width: 50px;
+        text-align: center;
       }
-      .code {
-        position: absolute;
-        top: 0;
-        display: none;
-        width: 100px;
-        height: 100px;
-        transform: translate(0, -100%);
+      .logo {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      .wechat_logo_wrap {
+        position: relative;
+        display: inline-block;
+        &:hover {
+          .code {
+            display: block;
+          }
+        }
+        .code {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          display: none;
+          width: 100px;
+          height: 100px;
+          transform: translate(-50%, -100%);
+        }
       }
     }
   }

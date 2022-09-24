@@ -188,6 +188,7 @@ export default {
     height: 60px;
     line-height: 60px;
     .logo {
+      cursor: pointer;
       font-size: 20px;
       sup {
         font-size: 13px;

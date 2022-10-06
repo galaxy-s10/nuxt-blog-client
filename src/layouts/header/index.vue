@@ -128,11 +128,9 @@ export default {
     async querySearchAsync(keyWord, cb) {
       if (keyWord) {
         const params = {
-          nowPage: 1,
-          pageSize: 20,
           keyWord,
         };
-        const { data } = await this.$myaxios.get(`/article/keyWord_list`, {
+        const { data } = await this.$myaxios.get(`/article/keyword_list`, {
           params,
         });
         cb(data.rows);

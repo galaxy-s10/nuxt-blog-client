@@ -82,7 +82,7 @@
         </span>
         <span>
           <i class="el-icon-star-on"></i>
-          {{ detail.star_total }}
+          {{ detail.star_info.count }}
         </span>
       </div>
       <div class="date">

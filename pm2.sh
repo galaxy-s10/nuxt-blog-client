@@ -7,7 +7,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-09-14 05:44:09
+# LastEditTime: 2022-10-16 10:23:34
 # LastEditors: shuisheng
 ###
 
@@ -20,11 +20,41 @@ PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
 
-if ! type pm2 >/dev/null 2>&1; then
-  echo pm2未安装,先全局安装pm2
-  npm i pm2 -g
+echo 查看node版本:
+node -v
+
+echo 查看npm版本:
+npm -v
+
+echo 设置npm淘宝镜像:
+npm config set registry https://registry.npm.taobao.org/
+
+echo 查看当前npm镜像:
+npm get registry
+
+if ! type pnpm >/dev/null 2>&1; then
+  echo 'pnpm未安装,先全局安装pnpm'
+  npm i pnpm -g
 else
-  echo pm2已安装
+  echo 'pnpm已安装'
+fi
+
+echo 查看pnpm版本:
+pnpm -v
+
+echo 设置pnpm淘宝镜像:
+pnpm config set registry https://registry.npm.taobao.org/
+pnpm config set @billd:registry http://registry.hsslive.cn/
+
+echo 查看当前pnpm镜像:
+pnpm config get registry
+pnpm config get @billd:registry
+
+if ! type pm2 >/dev/null 2>&1; then
+  echo 'pm2未安装,先全局安装pm2'
+  pnpm i pm2 -g
+else
+  echo 'pm2已安装'
 fi
 
 # 注意：要先进入项目所在的目录，然后再执行pm2命令!!!
@@ -46,3 +76,8 @@ echo 使用pm2维护:
 pm2 start npm --name $JOBNAME-$ENV-$PORT -- run start
 pm2 save
 # pm2 start npm --name $JOBNAME -- run dev
+
+echo 清除buff/cache:
+
+sync
+echo 3 >/proc/sys/vm/drop_caches

@@ -8,5 +8,6 @@
       "layouts/*": ["./src/layouts/*"]
     }
   },
+  "vueCompilerOptions": { "target": 2.7 },
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

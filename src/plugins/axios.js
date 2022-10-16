@@ -6,9 +6,10 @@ export default function ({ $axios, store }, inject) {
   // const axios = $axios
   let baseURL = '/';
   if (process.env.NODE_ENV === 'development') {
-    baseURL = !isBrowser() ? 'http://localhost:3300' : '/api/';
+    // baseURL = !isBrowser() ? `http://localhost:3300` : '/api/'; // 调用本地的测试接口
+    baseURL = !isBrowser() ? `http://42.193.157.44:3300` : '/betaapi/'; // 调用线上的测试接口
   } else {
-    baseURL = !isBrowser() ? 'http://localhost:3200' : '/prodapi/';
+    baseURL = !isBrowser() ? `http://42.193.157.44:3200` : '/prodapi/';
   }
   const service = axios.create({
     baseURL,

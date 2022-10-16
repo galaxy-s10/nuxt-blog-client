@@ -1,11 +1,10 @@
 <template>
   <div class="article-detail-wrap">
     <ModalCpt
-      v-if="rewardModal"
+      :visiable.sync="rewardModal"
       class="reward-modal-wrap"
       :title="'打赏'"
       :top="'30%'"
-      @closeModal="closeModal"
     >
       <template #content>
         <div class="reward-content">
@@ -288,9 +287,6 @@ export default {
     showRewardModal() {
       this.$newmessage('谢谢老板！', 'success');
       this.rewardModal = true;
-    },
-    closeModal() {
-      this.rewardModal = false;
     },
     jumpToComment() {
       window.location.href = '#comment-anchor';

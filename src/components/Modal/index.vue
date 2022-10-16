@@ -1,5 +1,5 @@
 <template>
-  <div class="mask-cpt-wrap" @click.self="closeModal($event)">
+  <div v-if="visiable" class="mask-cpt-wrap" @click.self="closeModal($event)">
     <div class="modal-wrap" :style="{ top: top }">
       <div class="title-wrap">
         <span class="title">{{ title }}</span>
@@ -23,6 +23,11 @@
 export default {
   components: {},
   props: {
+    visiable: {
+      type: Boolean,
+      require: true,
+      default: false,
+    },
     title: {
       type: String,
       require: true,
@@ -43,8 +48,9 @@ export default {
   mounted() {},
   methods: {
     closeModal() {
-      this.loading = false;
-      this.$emit('closeModal');
+      // this.loading = false;
+      // this.$emit('closeModal');
+      this.$emit('update:visiable', !this.visiable);
     },
   },
 };

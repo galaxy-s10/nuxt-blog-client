@@ -4,9 +4,9 @@
 # Date: 2022-04-26 01:54:48
 # Description: https://github.com/galaxy-s10/sh/blob/master/pm2.sh
 # Email: 2274751790@qq.com
-# FilePath: /nuxt-blog-client/pm2.sh
+# FilePath: /github/nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-10-16 10:57:55
+# LastEditTime: 2022-10-16 11:38:06
 # LastEditors: shuisheng
 ###
 
@@ -60,10 +60,14 @@ pnpm config get @billd:registry
 
 if ! type pm2 >/dev/null 2>&1; then
   echo 'pm2未安装,先全局安装pm2'
-  pnpm i pm2 -g
+  npm install pm2 -g
+  pm2 update
 else
   echo 'pm2已安装'
 fi
+
+echo 查看pm2版本:
+pm2 -v
 
 # 注意：要先进入项目所在的目录，然后再执行pm2命令!!!
 # 否则的话约等于在其他目录执行npm run dev,如果所在的目录没有package.json文件就会报错！

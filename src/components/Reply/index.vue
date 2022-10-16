@@ -1,5 +1,9 @@
 <template>
-  <ModalCpt :title="'回复@' + username" @closeModal="closeModal">
+  <ModalCpt
+    :visiable="visiable"
+    :title="'回复@' + username"
+    @update:visiable="closeModal"
+  >
     <template #content>
       <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
     </template>
@@ -26,6 +30,7 @@ export default {
   },
   data() {
     return {
+      visiable: true,
       loading: false,
       content: '',
     };
@@ -50,8 +55,9 @@ export default {
       this.loading = !this.loading;
       this.$emit('reply', this.content);
     },
-    closeModal() {
+    closeModal(v) {
       this.loading = false;
+      this.visiable = v;
       this.$emit('closeReply');
     },
   },

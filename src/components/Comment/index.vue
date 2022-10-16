@@ -31,10 +31,11 @@
 
     <ModalCpt
       v-if="currentComment"
+      :visiable="currentComment !== null"
       :title="currentComment.children_comment_total + '条回复'"
       top="20%"
       class="comment-modal-wrap"
-      @closeModal="closeModal"
+      @update:visiable="closeModal"
     >
       <template #content>
         <div class="parent">

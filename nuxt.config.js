@@ -42,14 +42,14 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 如果不是开发环境，则使用cdn加载这些库
-    script: !isDevelopment && [
-      { src: `https://unpkg.com/vue@${vueVersion}/dist/vue.runtime.min.js` },
-      { src: `https://unpkg.com/vuex@${vuex.version}/dist/vuex.min.js` },
-      {
-        src: `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.min.js`,
-      },
-      { src: `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js` },
-    ],
+    // script: !isDevelopment && [
+    //   { src: `https://unpkg.com/vue@${vueVersion}/dist/vue.runtime.min.js` },
+    //   { src: `https://unpkg.com/vuex@${vuex.version}/dist/vuex.min.js` },
+    //   {
+    //     src: `https://unpkg.com/vue-router@${vueRouterVersion}/dist/vue-router.min.js`,
+    //   },
+    //   { src: `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js` },
+    // ],
   },
   alias: {
     '@': path.resolve(__dirname, './src/'),
@@ -235,13 +235,14 @@ export default {
 
       if (!isDev && isClient) {
         // 如果不是开发环境且当前是客户端（服务端是不会用cdn加载的，也用不了cdn加载），则使用cdn加载这些库
+        // WARN 版本问题不可控，为了安全起见，还是别调用第三方的cdn了
         config.externals = config.externals || {};
-        Object.assign(config.externals, {
-          vue: 'Vue',
-          vuex: 'Vuex',
-          'vue-router': 'VueRouter',
-          axios: 'axios',
-        });
+        // Object.assign(config.externals, {
+        //   vue: 'Vue',
+        //   vuex: 'Vuex',
+        //   'vue-router': 'VueRouter',
+        //   axios: 'axios',
+        // });
       }
     },
   },

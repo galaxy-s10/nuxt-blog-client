@@ -25,19 +25,19 @@
 ## 安装依赖
 
 ```bash
-yarn install
+pnpm install
 ```
 
 ## 启动
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ## 部署
 
 ```bash
-yarn build && yarn start
+pnpm build && pnpm start
 ```
 
 # 注意

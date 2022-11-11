@@ -72,6 +72,10 @@ export default {
     '@/plugins/vue-lazyload',
     '@/plugins/filters',
     '@/plugins/router',
+    {
+      src: '@/plugins/baidutongji',
+      ssr: false,
+    },
     { src: '@/plugins/tip' },
   ],
   // router: {

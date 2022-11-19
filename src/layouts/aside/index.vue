@@ -234,14 +234,8 @@
                     </nuxt-link>
                   </div>
                   <div class="desc">
-                    <nuxt-link
-                      v-slot="{ navigate }"
-                      :to="'/article/' + item.id"
-                      custom
-                    >
-                      <b class="b-hover" @click="navigate">
-                        #{{ item.title }}
-                      </b>
+                    <nuxt-link :to="'/article/' + item.id" class="b-hover">
+                      <b> #{{ item.title }} </b>
                     </nuxt-link>
                     <div class="info">
                       <span class="view">
@@ -276,14 +270,16 @@
                   :content="'该标签下有' + item.article_total + '篇文章'"
                   placement="top"
                 >
-                  <el-tag
-                    class="tag-margin"
-                    :disable-transitions="false"
-                    :color="item.color"
-                    @click="tagClick(item.id)"
-                  >
-                    {{ item.name }}
-                  </el-tag>
+                  <nuxt-link :to="'/tag/' + item.id">
+                    <el-tag
+                      class="tag-margin"
+                      :disable-transitions="false"
+                      :color="item.color"
+                      @click="tagClick(item.id)"
+                    >
+                      {{ item.name }}
+                    </el-tag>
+                  </nuxt-link>
                 </el-tooltip>
               </div>
               <div v-else>暂无标签~</div>
@@ -665,7 +661,8 @@ export default {
             }
           }
           .b-hover {
-            cursor: pointer;
+            color: inherit;
+            text-decoration: none;
             &:hover {
               transform: translateX(4px);
             }

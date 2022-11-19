@@ -4,7 +4,6 @@ import UAParser from 'ua-parser-js';
 import Vue from 'vue';
 
 import 'dayjs/locale/zh-cn';
-
 dayjs.extend(relativeTime).locale('zh-cn');
 
 /**

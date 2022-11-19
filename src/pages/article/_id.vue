@@ -234,7 +234,16 @@ export default {
   head() {
     return {
       title: this.detail && `${this.detail.title} - 自然博客`,
-      meta: [{ hid: 'home', name: 'description', content: '自然 - 个人博客' }],
+      meta: [
+        {
+          name: 'description',
+          content: '自然博客 - 文章',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 文章',
+        },
+      ],
     };
   },
   computed: {

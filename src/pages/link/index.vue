@@ -158,9 +158,12 @@ export default {
       title: '友链 - 自然博客',
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - Link',
+          content: '自然博客 - 友链',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 友链',
         },
       ],
     };

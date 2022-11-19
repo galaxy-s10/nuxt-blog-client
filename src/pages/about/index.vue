@@ -60,9 +60,12 @@ export default {
       title: '关于 - 自然博客',
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - About',
+          content: '自然博客 - 关于',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 关于',
         },
       ],
     };

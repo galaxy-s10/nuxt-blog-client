@@ -98,9 +98,12 @@ export default {
       title: '留言 - 自然博客',
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - Msg',
+          content: '自然博客 - 留言',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 留言',
         },
       ],
     };

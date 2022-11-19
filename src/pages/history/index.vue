@@ -10,8 +10,8 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id" custom>
-            <span class="a-link" @click="navigate"> {{ item.title }} </span>
+          <nuxt-link :to="'/article/' + item.id" class="a-link">
+            <span> {{ item.title }} </span>
           </nuxt-link>
         </el-timeline-item>
       </template>
@@ -59,9 +59,12 @@ export default {
       title: '归档 - 自然博客',
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - History',
+          content: '自然博客 - 归档',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 归档',
         },
       ],
     };
@@ -94,7 +97,7 @@ export default {
     color: $theme-color5;
     // text-decoration: none;
     font-size: 18px;
-    cursor: pointer;
+    text-decoration: none;
     &:hover {
       color: $theme-color1;
     }

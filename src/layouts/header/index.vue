@@ -8,12 +8,12 @@
           </nuxt-link>
           <sup>Blog</sup>
         </div>
-        <div class="nav">
+        <nav class="nav">
           <ul class="nav-menu">
             <li v-for="(item, index) in navList" :key="index" class="item">
               <!-- https://router.vuejs.org/zh/api/#custom，默认用a标签包裹元素，可以添加custom改掉这个行为 -->
-              <nuxt-link v-slot="{ navigate }" :to="item.path" custom>
-                <span @click="navigate">{{ item.title }}</span>
+              <nuxt-link :to="item.path">
+                <span>{{ item.title }}</span>
               </nuxt-link>
             </li>
           </ul>
@@ -36,7 +36,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-        </div>
+        </nav>
         <div class="search">
           <el-autocomplete
             v-model="keyWord"
@@ -208,6 +208,10 @@ export default {
           margin: 0 15px;
 
           user-select: none;
+          a {
+            text-decoration: none;
+            color: $theme-color5;
+          }
         }
         .item:hover:before {
           left: 0;

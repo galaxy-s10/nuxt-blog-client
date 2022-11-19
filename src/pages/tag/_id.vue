@@ -9,6 +9,7 @@
           :class="{ 'active-tag': currentTagId === item.id }"
           @click="getTagArticle(item.id)"
         >
+          <a :href="'/tag/' + item.id" style="display: none"></a>
           <span>{{ item.name }}</span>
           <span class="article-total">({{ item.article_total }})</span>
         </div>
@@ -46,10 +47,8 @@
           </nuxt-link>
         </div>
         <div class="article-right">
-          <nuxt-link v-slot="{ navigate }" :to="'/article/' + item.id" custom>
-            <span class="article-right-txt" @click="navigate">
-              {{ item.title }}
-            </span>
+          <nuxt-link :to="'/article/' + item.id" class="article-right-txt">
+            {{ item.title }}
           </nuxt-link>
           <el-divider></el-divider>
           <el-tag
@@ -152,9 +151,12 @@ export default {
       title: `标签 - ${title} - 自然博客`,
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - Tag',
+          content: '自然博客 - 标签',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 标签',
         },
       ],
     };
@@ -313,7 +315,8 @@ export default {
     box-sizing: border-box;
     padding: 30px;
     .article-right-txt {
-      cursor: pointer;
+      color: $theme-color5;
+      text-decoration: none;
 
       @extend .singleEllipsis;
     }

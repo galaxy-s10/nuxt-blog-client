@@ -25,20 +25,14 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
-        hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || '',
+        content: '前端 | 开源 | 自然博客 | javascript | vue | react | node',
       },
-      { name: 'description', content: '前端 | 大前端 | 开源 | 自然博客' },
-      { name: 'keywords', content: '自然博客' },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: '前端 | 大前端 | 开源 | 自然博客' },
-      { property: 'og:url', content: 'https://www.hsslive.cn' },
-      { property: 'og:site_name', content: '前端 | 大前端 | 开源 | 自然博客' },
       {
-        property: 'og:description',
-        content: '前端 | 大前端 | 开源 | 自然博客',
+        name: 'keywords',
+        content: '前端 | 开源 | 自然博客 | javascript | vue | react | node',
       },
+      { property: 'og:url', content: 'https://www.hsslive.cn' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 如果不是开发环境，则使用cdn加载这些库
@@ -78,10 +72,13 @@ export default {
     },
     { src: '@/plugins/tip' },
   ],
-  // router: {
-  //   // Run the middleware/auth.js on every page
-  //   middleware: 'auth',
-  // },
+  router: {
+    // Run the middleware/auth.js on every page
+    // middleware: 'auth',
+    scrollBehavior(to, from, savedPosition) {
+      return { x: 0, y: 0 };
+    },
+  },
 
   loading: { color: '#0984e3' },
 
@@ -91,6 +88,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
+    // 太影响热更新了，开发的时候可以依靠编辑器的eslint，把项目的eslint关闭
     // '@nuxtjs/eslint-module',
   ],
 

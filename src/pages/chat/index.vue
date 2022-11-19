@@ -24,9 +24,12 @@ export default {
       title: '聊天 - 自然博客',
       meta: [
         {
-          hid: 'chat',
-          name: 'chat',
-          content: 'Natural Blog - Chat',
+          name: 'description',
+          content: '自然博客 - 聊天',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 聊天',
         },
       ],
     };

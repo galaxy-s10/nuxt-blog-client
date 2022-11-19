@@ -5,12 +5,10 @@
         v-for="(item, index) in articleList"
         :key="index"
         ref="waterfall-item"
-        v-slot="{ navigate }"
-        class="waterfall-item"
+        class="waterfall-item-a"
         :to="`/article/${item.id}`"
-        custom
       >
-        <article @click="navigate">
+        <article class="waterfall-item">
           <div v-if="item.priority === 99" class="top">置顶</div>
           <div class="head-img-wrap">
             <NoHeadImgCpt
@@ -136,9 +134,12 @@ export default {
       title: '首页 - 自然博客',
       meta: [
         {
-          hid: 'description',
           name: 'description',
-          content: 'Natural Blog - Home',
+          content: '自然博客 - 首页',
+        },
+        {
+          name: 'keywords',
+          content: '自然博客 - 首页',
         },
       ],
     };
@@ -416,109 +417,114 @@ export default {
 
   .waterfall-wrap {
     position: relative;
-    .waterfall-item {
-      position: relative;
-      display: flex;
-      overflow: hidden;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-      height: 250px;
-      border: 1px solid $theme-color4;
-      border-radius: 6px;
-      background-color: $theme-color6;
-      cursor: pointer;
-
-      &:hover {
-        transition: all 0.3s;
-        transform: scale(1.02);
-      }
-      // .a-link {
-      // position: relative;
-      // display: flex;
-      // cursor: pointer;
-      .head-img-wrap {
+    .waterfall-item-a {
+      color: inherit;
+      text-decoration: none;
+      .waterfall-item {
         position: relative;
-        overflow: hidden;
-        flex: 0 0 45%;
-
-        .no-head-img {
-          width: 100%;
-          height: 250px;
-          line-height: 250px;
-          &:hover {
-            transition: all 0.3s;
-            transform: scale(1.1);
-          }
-        }
-        .head-img {
-          display: inline-block;
-          width: 100%;
-          height: 250px;
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-          &:hover {
-            transition: all 0.3s;
-            transform: scale(1.1);
-          }
-        }
-      }
-      .top {
-        position: absolute;
-        top: 12px;
-        right: -45px;
-        z-index: 1;
-        display: inline;
-        width: 140px;
-        height: 25px;
-        background: #c551af;
-        color: white;
-        text-align: center;
-        line-height: 25px;
-        transform: rotate(45deg);
-      }
-
-      .detail {
         display: flex;
-        flex: 1;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 0 5px 10px;
-        p {
-          margin: 6px 0;
-        }
-        .title {
-          margin: 10px 0;
+        overflow: hidden;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        height: 250px;
+        border: 1px solid $theme-color4;
+        border-radius: 6px;
+        background-color: $theme-color6;
+        cursor: pointer;
 
-          @include multiEllipsis(2);
+        &:hover {
+          transition: all 0.3s;
+          transform: scale(1.02);
         }
-        .desc {
-          @include multiEllipsis(2);
-        }
-        .tag-list {
-          margin: 8px 0;
-        }
-        .info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 5px 0;
-          font-size: 12px;
-          .avatar {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        // .a-link {
+        // position: relative;
+        // display: flex;
+        // cursor: pointer;
+        .head-img-wrap {
+          position: relative;
+          overflow: hidden;
+          flex: 0 0 45%;
+
+          .no-head-img {
+            width: 100%;
+            height: 250px;
+            line-height: 250px;
+            &:hover {
+              transition: all 0.3s;
+              transform: scale(1.1);
+            }
           }
-          .relation {
+          .head-img {
+            display: inline-block;
+            width: 100%;
+            height: 250px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            &:hover {
+              transition: all 0.3s;
+              transform: scale(1.1);
+            }
+          }
+        }
+        .top {
+          position: absolute;
+          top: 12px;
+          right: -45px;
+          z-index: 1;
+          display: inline;
+          width: 140px;
+          height: 25px;
+          background: #c551af;
+          color: white;
+          text-align: center;
+          line-height: 25px;
+          transform: rotate(45deg);
+        }
+
+        .detail {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 0 5px 10px;
+          p {
+            margin: 6px 0;
+          }
+          .title {
+            margin: 10px 0;
+
+            @include multiEllipsis(2);
+          }
+          .desc {
+            @include multiEllipsis(2);
+          }
+          .tag-list {
+            margin: 8px 0;
+          }
+          .info {
             display: flex;
             align-items: center;
-            flex: 0.8;
-            justify-content: space-around;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 12px;
+            .avatar {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+            }
+            .relation {
+              display: flex;
+              align-items: center;
+              flex: 0.8;
+              justify-content: space-around;
+            }
           }
         }
+        // }
       }
-      // }
     }
+
     .load-more-ref {
       position: absolute;
       bottom: 300px;

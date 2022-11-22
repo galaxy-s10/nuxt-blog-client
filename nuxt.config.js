@@ -153,7 +153,7 @@ export default {
         },
       }),
       // 注入项目信息
-      new InjectProjectInfoPlugin({ isProduction: isDevelopment }),
+      new InjectProjectInfoPlugin({ isProduction: !isDevelopment }),
     ].filter(Boolean),
 
     babel: {

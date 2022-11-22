@@ -663,6 +663,7 @@ export default {
           .b-hover {
             color: inherit;
             text-decoration: none;
+            @include multiEllipsis(2);
             &:hover {
               transform: translateX(4px);
             }

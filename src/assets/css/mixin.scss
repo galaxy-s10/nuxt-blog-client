@@ -1,3 +1,18 @@
+%multiEllipsisMixin {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+// 多行省略号
+@mixin multiEllipsis($row: 2) {
+  @extend %multiEllipsisMixin;
+  -webkit-line-clamp: ($row);
+  line-clamp: ($row);
+}
 /* scss的mixin都不会单独输出 */
 
 // 设置背景

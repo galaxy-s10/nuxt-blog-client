@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 
-import { isBrowser } from '@/utils';
 export default function ({ $axios, store }, inject) {
   // const axios = $axios
   let baseURL = '/';
   if (process.env.NODE_ENV === 'development') {
-    // baseURL = !isBrowser() ? `http://localhost:3300` : '/api/'; // 调用本地的测试接口
-    baseURL = !isBrowser() ? `http://api.hsslive.cn/betaapi/` : '/betaapi/'; // 调用线上的测试接口
+    // baseURL = '/api/'; // 调用本地的接口
+    baseURL = `http://api.hsslive.cn/betaapi/`; // 调用线上的接口
   } else {
-    baseURL = !isBrowser() ? `http://api.hsslive.cn/prodapi/` : '/prodapi/';
+    baseURL = `http://api.hsslive.cn/prodapi/`; // 调用线上的接口
   }
   const service = axios.create({
     baseURL,

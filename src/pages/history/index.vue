@@ -10,7 +10,10 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <nuxt-link :to="'/article/' + item.id" class="a-link">
+          <nuxt-link
+            :to="'/article/' + item.id"
+            class="a-link"
+          >
             <span> {{ item.title }} </span>
           </nuxt-link>
         </el-timeline-item>

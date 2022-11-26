@@ -5,7 +5,10 @@
         <slot name="ico"></slot>
         <b>{{ title }}</b>
       </div>
-      <div class="ico-wrap" @click="isOpen = isOpen ? false : true">
+      <div
+        class="ico-wrap"
+        @click="isOpen = isOpen ? false : true"
+      >
         <i
           :class="{
             ico: true,

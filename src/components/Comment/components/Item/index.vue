@@ -5,10 +5,16 @@
         @mouseenter="loadingUserDetail(item.from_user)"
         @mouseleave="mouseleave()"
       >
-        <div v-if="currentUserDetail" class="detail">
+        <div
+          v-if="currentUserDetail"
+          class="detail"
+        >
           <div class="top">
             <div class="avatar">
-              <img :src="currentUserDetail.avatar" alt="" />
+              <img
+                :src="currentUserDetail.avatar"
+                alt=""
+              />
             </div>
             <div class="name">
               <div>
@@ -45,7 +51,10 @@
           </div>
           <div class="triangle"></div>
         </div>
-        <img v-lazy="item.from_user.avatar" class="user-avatar" />
+        <img
+          v-lazy="item.from_user.avatar"
+          class="user-avatar"
+        />
       </div>
     </div>
     <div class="comment">
@@ -88,7 +97,10 @@
             "
             class="parent-content"
           >
-            <div v-if="!item.reply_comment.deleted_at" class="padding">
+            <div
+              v-if="!item.reply_comment.deleted_at"
+              class="padding"
+            >
               <AsyncRenderMarkdownCpt
                 :md="item.reply_comment.content"
               ></AsyncRenderMarkdownCpt>
@@ -98,7 +110,10 @@
         </div>
         <div class="operation">
           <div class="left">
-            <div class="star" @click="handleStar(item)">
+            <div
+              class="star"
+              @click="handleStar(item)"
+            >
               <i
                 :class="{
                   'el-icon-star-on': item.is_star === true,
@@ -111,7 +126,10 @@
                 {{ item.is_star === true ? '取消点赞' : '点赞' }}
               </span>
             </div>
-            <div class="comment" @click="showReply(item)">
+            <div
+              class="comment"
+              @click="showReply(item)"
+            >
               <i class="el-icon-chat-round"></i>
               <span>回复</span>
             </div>
@@ -142,7 +160,10 @@
           v-bind="$attrs"
           v-on="$listeners"
         ></CItem>
-        <div class="load-more" @click="handleModal(item)">
+        <div
+          class="load-more"
+          @click="handleModal(item)"
+        >
           共{{ item.children_comment_total }}条回复
           <i class="el-icon-caret-bottom"></i>
         </div>

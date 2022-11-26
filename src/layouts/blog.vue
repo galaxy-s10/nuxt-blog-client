@@ -17,8 +17,14 @@
     >
       <i class="el-icon-notebook-2"></i>
     </div>
-    <div v-if="showMinCatalog" class="mini-catalog-wrap">
-      <div class="mask" @click.self="showMinCatalog = !showMinCatalog">
+    <div
+      v-if="showMinCatalog"
+      class="mini-catalog-wrap"
+    >
+      <div
+        class="mask"
+        @click.self="showMinCatalog = !showMinCatalog"
+      >
         <div class="content">
           <CatalogCpt :list="catalogList"></CatalogCpt>
         </div>

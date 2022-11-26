@@ -9,7 +9,10 @@
           :class="{ 'active-tag': currentTagId === item.id }"
           @click="getTagArticle(item.id)"
         >
-          <a :href="'/tag/' + item.id" style="display: none"></a>
+          <a
+            :href="'/tag/' + item.id"
+            style="display: none"
+          ></a>
           <span>{{ item.name }}</span>
           <span class="article-total">({{ item.article_total }})</span>
         </div>
@@ -41,13 +44,19 @@
             :to="`/article/${item.id}`"
             custom
           >
-            <div class="head-img" @click="navigate">
+            <div
+              class="head-img"
+              @click="navigate"
+            >
               <NoHeadImgCpt></NoHeadImgCpt>
             </div>
           </nuxt-link>
         </div>
         <div class="article-right">
-          <nuxt-link :to="'/article/' + item.id" class="article-right-txt">
+          <nuxt-link
+            :to="'/article/' + item.id"
+            class="article-right-txt"
+          >
             {{ item.title }}
           </nuxt-link>
           <el-divider></el-divider>
@@ -77,7 +86,10 @@
           </div>
         </div>
       </article>
-      <div v-if="total" class="page-btn">
+      <div
+        v-if="total"
+        class="page-btn"
+      >
         <div>
           <el-button
             v-show="articleListParams && articleListParams.nowPage !== 1"
@@ -87,14 +99,26 @@
           </el-button>
         </div>
         <div>
-          <el-button v-show="hasMore" @click="handlePage('next')"
+          <el-button
+            v-show="hasMore"
+            @click="handlePage('next')"
             >下一页</el-button
           >
         </div>
       </div>
-      <div v-else class="no-data">{{ currentTagName }}标签下暂无文章~</div>
+      <div
+        v-else
+        class="no-data"
+      >
+        {{ currentTagName }}标签下暂无文章~
+      </div>
     </div>
-    <div v-else class="no-data">暂无标签~</div>
+    <div
+      v-else
+      class="no-data"
+    >
+      暂无标签~
+    </div>
   </div>
 </template>
 

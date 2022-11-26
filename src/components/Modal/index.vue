@@ -1,6 +1,13 @@
 <template>
-  <div v-if="visiable" class="mask-cpt-wrap" @click.self="closeModal($event)">
-    <div class="modal-wrap" :style="{ top: top }">
+  <div
+    v-if="visiable"
+    class="mask-cpt-wrap"
+    @click.self="closeModal($event)"
+  >
+    <div
+      class="modal-wrap"
+      :style="{ top: top }"
+    >
       <div class="title-wrap">
         <span class="title">{{ title }}</span>
         <i

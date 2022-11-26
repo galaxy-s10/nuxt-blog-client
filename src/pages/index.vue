@@ -1,6 +1,10 @@
 <template>
   <div class="pages-wrap">
-    <div ref="waterfall-wrap" v-loading="isLoading" class="waterfall-wrap">
+    <div
+      ref="waterfall-wrap"
+      v-loading="isLoading"
+      class="waterfall-wrap"
+    >
       <nuxt-link
         v-for="(item, index) in articleList"
         :key="index"
@@ -9,7 +13,12 @@
         :to="`/article/${item.id}`"
       >
         <article class="waterfall-item">
-          <div v-if="item.priority === 99" class="top">置顶</div>
+          <div
+            v-if="item.priority === 99"
+            class="top"
+          >
+            置顶
+          </div>
           <div class="head-img-wrap">
             <NoHeadImgCpt
               v-if="!item.head_img"
@@ -24,8 +33,17 @@
           </div>
 
           <div class="detail">
-            <h3 class="title" :title="item.title">{{ item.title }}</h3>
-            <p v-if="item.desc" class="desc" :title="item.desc">
+            <h3
+              class="title"
+              :title="item.title"
+            >
+              {{ item.title }}
+            </h3>
+            <p
+              v-if="item.desc"
+              class="desc"
+              :title="item.desc"
+            >
               {{ item.desc }}
             </p>
             <p v-else>该文章暂无简介~</p>
@@ -74,9 +92,17 @@
           </div>
         </article>
       </nuxt-link>
-      <div ref="loadMoreRef" class="load-more-ref"></div>
+      <div
+        ref="loadMoreRef"
+        class="load-more-ref"
+      ></div>
     </div>
-    <p v-if="!hasMore" class="no-more">已加载所有文章~</p>
+    <p
+      v-if="!hasMore"
+      class="no-more"
+    >
+      已加载所有文章~
+    </p>
   </div>
 </template>
 

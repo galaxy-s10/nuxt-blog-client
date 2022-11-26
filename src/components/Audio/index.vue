@@ -15,7 +15,10 @@
           </div>
         </div>
         <div class="song-bar">
-          <div ref="bar" class="song-bar-item">
+          <div
+            ref="bar"
+            class="song-bar-item"
+          >
             <div
               :style="{ width: nowTime * (100 / duration1) + '%' }"
               class="currentTime"
@@ -25,7 +28,10 @@
             {{ duration2(nowTime) }}/{{ duration2(duration) }}
           </div>
         </div>
-        <div class="songImg1" :class="{ disk_play: start }">
+        <div
+          class="songImg1"
+          :class="{ disk_play: start }"
+        >
           <div class="songImg2">
             <img
               ref="disk"
@@ -44,9 +50,18 @@
           </div>
         </div>
         <div class="songControl">
-          <div class="pre" @click="preSong"></div>
-          <div :class="!start ? 'start' : 'stop'" @click="switchBtn()"></div>
-          <div class="next" @click="nextSong"></div>
+          <div
+            class="pre"
+            @click="preSong"
+          ></div>
+          <div
+            :class="!start ? 'start' : 'stop'"
+            @click="switchBtn()"
+          ></div>
+          <div
+            class="next"
+            @click="nextSong"
+          ></div>
         </div>
       </div>
     </div>

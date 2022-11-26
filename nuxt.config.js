@@ -116,21 +116,20 @@ export default {
         '^/api': '',
       },
     },
-    '/prodapi': {
-      target: 'http://42.193.157.44:3200',
+    '/prodapi/': {
+      target: 'http://api.hsslive.cn/prodapi/',
       secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
       changeOrigin: true,
       pathRewrite: {
-        '^/prodapi': '', // 效果：/api/link/list ==> http://42.193.157.44:3200/link/list
+        '^/prodapi': '',
       },
+      // 效果：/prodapi/link/list ==> http://api.hsslive.cn/prodapi/link/list
     },
-    '/betaapi': {
-      target: 'http://42.193.157.44:3300',
+    '/betaapi/': {
+      target: 'http://api.hsslive.cn/',
       secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
       changeOrigin: true,
-      pathRewrite: {
-        '^/betaapi': '', // 效果：/api/link/list ==> http://42.193.157.44:3300/link/list
-      },
+      // 效果：/betaapi/link/list ==> http://api.hsslive.cn/betaapi/link/list
     },
   },
 

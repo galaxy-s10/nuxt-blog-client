@@ -1,6 +1,10 @@
 <template>
   <div class="plum-cpt-wrap">
-    <canvas v-show="showPlum" ref="Plum" @click="refresh()" />
+    <canvas
+      v-show="showPlum"
+      ref="Plum"
+      @click="refresh()"
+    />
   </div>
 </template>
 

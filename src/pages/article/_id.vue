@@ -9,11 +9,17 @@
       <template #content>
         <div class="reward-content">
           <div class="item">
-            <img src="@/assets/img/wechat_reward.webp" alt="" />
+            <img
+              src="@/assets/img/wechat_reward.webp"
+              alt=""
+            />
             <p>微信</p>
           </div>
           <div class="item">
-            <img src="@/assets/img/zhifubao_reward.webp" alt="" />
+            <img
+              src="@/assets/img/zhifubao_reward.webp"
+              alt=""
+            />
             <p>支付宝</p>
           </div>
         </div>
@@ -24,7 +30,10 @@
     </ModalCpt>
     <div class="article-suspended-panel-wrap">
       <div class="article-suspended-panel">
-        <div class="panel-btn" @click="showRewardModal">
+        <div
+          class="panel-btn"
+          @click="showRewardModal"
+        >
           <span class="reward">赏</span>
         </div>
         <div
@@ -42,13 +51,22 @@
               rotate: true,
             }"
           ></i>
-          <span v-if="detail.star_info.count" class="badge">
+          <span
+            v-if="detail.star_info.count"
+            class="badge"
+          >
             {{ detail.star_info.count }}
           </span>
         </div>
-        <div class="panel-btn" @click="jumpToComment">
+        <div
+          class="panel-btn"
+          @click="jumpToComment"
+        >
           <i class="el-icon-chat-dot-round ico"></i>
-          <span v-if="detail.comment_total" class="badge">
+          <span
+            v-if="detail.comment_total"
+            class="badge"
+          >
             {{ detail.comment_total }}
           </span>
         </div>
@@ -67,7 +85,10 @@
           :src="detail.users[0].avatar"
           alt=""
         />
-        <span v-if="detail.types[0]" class="type">
+        <span
+          v-if="detail.types[0]"
+          class="type"
+        >
           <i class="el-icon-folder-opened"></i>
           {{ detail.types[0].name }}
         </span>
@@ -98,7 +119,10 @@
 
     <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
 
-    <RenderMarkdownCpt ref="hss-md" :md="detail.content"></RenderMarkdownCpt>
+    <RenderMarkdownCpt
+      ref="hss-md"
+      :md="detail.content"
+    ></RenderMarkdownCpt>
 
     <div class="tag-list">
       <span class="el-icon-collection-tag"></span>
@@ -116,7 +140,10 @@
       <span v-else>该文章没有关联标签~</span>
     </div>
 
-    <div v-if="detail.star_info.rows.length" class="star-wrap">
+    <div
+      v-if="detail.star_info.rows.length"
+      class="star-wrap"
+    >
       最近他们赞了该文章：
       <AvatarGroupCpt
         class="avatar-list"

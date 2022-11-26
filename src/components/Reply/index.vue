@@ -8,7 +8,12 @@
       <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
     </template>
     <template #footer>
-      <el-button type="primary" :loading="loading" round @click="reply">
+      <el-button
+        type="primary"
+        :loading="loading"
+        round
+        @click="reply"
+      >
         回复
       </el-button>
     </template>

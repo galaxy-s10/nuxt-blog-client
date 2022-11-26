@@ -3,11 +3,17 @@
     <div class="title">
       <div>
         <span>Comments | {{ total || 0 }} 条留言</span>
-        <i class="el-icon-refresh" @click="refresh()"></i>
+        <i
+          class="el-icon-refresh"
+          @click="refresh()"
+        ></i>
       </div>
       <LoginCpt />
     </div>
-    <SortTabCpt :sort="sort" @sortChange="sortChange"></SortTabCpt>
+    <SortTabCpt
+      :sort="sort"
+      @sortChange="sortChange"
+    ></SortTabCpt>
     <div v-if="list.length > 0">
       <div v-loading="listLoading">
         <ItemCpt
@@ -20,14 +26,28 @@
           @showReply="showReply"
           @deleteReply="deleteReply"
         ></ItemCpt>
-        <div v-if="hasMore" class="load-more" @click="handleParentPage">
+        <div
+          v-if="hasMore"
+          class="load-more"
+          @click="handleParentPage"
+        >
           加载更多留言
           <i class="el-icon-arrow-down"></i>
         </div>
-        <div v-else class="load-more">已加载所有留言~</div>
+        <div
+          v-else
+          class="load-more"
+        >
+          已加载所有留言~
+        </div>
       </div>
     </div>
-    <div v-else class="no-comment">目前还没有人留言~</div>
+    <div
+      v-else
+      class="no-comment"
+    >
+      目前还没有人留言~
+    </div>
 
     <ModalCpt
       v-if="currentComment"
@@ -47,12 +67,19 @@
           ></ItemCpt>
         </div>
 
-        <div v-loading="childListLoading" class="child-list-wrap">
+        <div
+          v-loading="childListLoading"
+          class="child-list-wrap"
+        >
           <SortTabCpt
             :sort="modalSort"
             @sortChange="changeModalSort"
           ></SortTabCpt>
-          <div v-if="childList" ref="childListRef" class="child-list">
+          <div
+            v-if="childList"
+            ref="childListRef"
+            class="child-list"
+          >
             <ItemCpt
               v-for="(item, index) in childList"
               :key="index"
@@ -63,7 +90,10 @@
               @showReply="showReply"
               @deleteReply="deleteReply"
             ></ItemCpt>
-            <div ref="childListHasMoreRef" class="has-more-observer"></div>
+            <div
+              ref="childListHasMoreRef"
+              class="has-more-observer"
+            ></div>
             <el-divider v-if="!childListHasMore">没有更多内容了</el-divider>
           </div>
         </div>

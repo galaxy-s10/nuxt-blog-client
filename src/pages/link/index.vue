@@ -4,12 +4,26 @@
     <hr class="hr-class" />
     <ul class="link-list-wrap">
       <template v-if="linkList.length">
-        <li v-for="(item, index) in linkList" :key="index" class="li-item-wrap">
-          <a :href="item.url" class="li-item-link" target="_blank">
-            <img v-lazy="item.avatar" class="user-avatar" />
+        <li
+          v-for="(item, index) in linkList"
+          :key="index"
+          class="li-item-wrap"
+        >
+          <a
+            :href="item.url"
+            class="li-item-link"
+            target="_blank"
+          >
+            <img
+              v-lazy="item.avatar"
+              class="user-avatar"
+            />
             <div class="desc">
               <span>{{ item.name }}</span>
-              <span class="txt" :title="item.desc">
+              <span
+                class="txt"
+                :title="item.desc"
+              >
                 {{ item.desc }}
               </span>
             </div>
@@ -28,31 +42,46 @@
         :rules="linkRules"
         label-width="100px"
       >
-        <el-form-item label="网站名称" prop="name">
+        <el-form-item
+          label="网站名称"
+          prop="name"
+        >
           <el-input
             v-model="linkForm.name"
             placeholder="输入您网站的名称"
           ></el-input>
         </el-form-item>
-        <el-form-item label="网站地址" prop="url">
+        <el-form-item
+          label="网站地址"
+          prop="url"
+        >
           <el-input
             v-model="linkForm.url"
             placeholder="输入您网站的链接"
           ></el-input>
         </el-form-item>
-        <el-form-item label="网站介绍" prop="desc">
+        <el-form-item
+          label="网站介绍"
+          prop="desc"
+        >
           <el-input
             v-model="linkForm.desc"
             placeholder="简单介绍一下您的网站"
           ></el-input>
         </el-form-item>
-        <el-form-item label="网站logo" prop="avatar">
+        <el-form-item
+          label="网站logo"
+          prop="avatar"
+        >
           <el-input
             v-model="linkForm.avatar"
             placeholder="输入您网站显示的logo"
           ></el-input>
         </el-form-item>
-        <el-form-item label="您的邮箱" prop="email">
+        <el-form-item
+          label="您的邮箱"
+          prop="email"
+        >
           <el-input
             v-model="linkForm.email"
             placeholder="审核结果会通过邮件通知您"

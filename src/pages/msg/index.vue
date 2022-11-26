@@ -7,7 +7,10 @@
     <!-- 发表留言 -->
     <div class="comment-wrap">
       <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
-      <div v-if="frontendData" class="btn">
+      <div
+        v-if="frontendData"
+        class="btn"
+      >
         <el-button
           type="primary"
           :loading="submitCommentLoading"

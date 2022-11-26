@@ -1,7 +1,13 @@
 <template>
-  <nav class="fix-type-wrap" :class="{ show: hiddenHeader }">
+  <nav
+    class="fix-type-wrap"
+    :class="{ show: hiddenHeader }"
+  >
     <ul class="type-wrap">
-      <li :class="{ active: typeId === '' ? true : false }" @click="all()">
+      <li
+        :class="{ active: typeId === '' ? true : false }"
+        @click="all()"
+      >
         全部
       </li>
       <li

@@ -6,9 +6,17 @@
     </p>
     <p class="fixed-powered">
       <span class="txt">Powered by</span>
-      <span class="author" @click="jumpToUrl">galaxy-s10</span>
+      <span
+        class="author"
+        @click="jumpToUrl"
+        >galaxy-s10</span
+      >
     </p>
-    <a href="http://beian.miit.gov.cn" target="__blank" class="beianhao">
+    <a
+      href="http://beian.miit.gov.cn"
+      target="__blank"
+      class="beianhao"
+    >
       粤ICP备19114467号-2
     </a>
   </div>

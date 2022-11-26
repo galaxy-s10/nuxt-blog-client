@@ -4,7 +4,11 @@
     <hr class="hr-class" />
     <h2 class="title-desc">"Less is more"</h2>
     <div class="list-wrap">
-      <div v-for="item in worksList" :key="item.id" class="item-wrap">
+      <div
+        v-for="item in worksList"
+        :key="item.id"
+        class="item-wrap"
+      >
         <div
           class="bg-url"
           :style="{ backgroundImage: `url(${item.bg_url})` }"
@@ -13,7 +17,12 @@
           <h2 class="name">{{ item.name }}</h2>
           <div class="other">
             <p class="desc">{{ item.desc }}</p>
-            <a class="btn" :href="item.url" target="_blank">预览</a>
+            <a
+              class="btn"
+              :href="item.url"
+              target="_blank"
+              >预览</a
+            >
           </div>
         </div>
       </div>

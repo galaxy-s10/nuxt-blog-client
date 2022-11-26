@@ -1,13 +1,20 @@
 <template>
   <div class="avatar-group-wrap">
-    <ul v-if="list" class="list">
+    <ul
+      v-if="list"
+      class="list"
+    >
       <li
         v-for="item in list"
         :key="item.id"
         class="item"
         :style="{ width: size - 4 + 'px' }"
       >
-        <img :width="size" :src="item.avatar" alt="" />
+        <img
+          :width="size"
+          :src="item.avatar"
+          alt=""
+        />
       </li>
     </ul>
   </div>

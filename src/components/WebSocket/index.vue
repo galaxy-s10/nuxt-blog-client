@@ -4,19 +4,39 @@
       当前连接状态: {{ connectStatus }}，当前在线人数: {{ onlineCount }}
     </div>
     <div class="main">
-      <div ref="content-list" class="content-list">
-        <div v-for="(item, index) in chatList" :key="index" class="item">
-          <div v-if="item.type === webSocketMsgType.userInRoom" class="tip">
+      <div
+        ref="content-list"
+        class="content-list"
+      >
+        <div
+          v-for="(item, index) in chatList"
+          :key="index"
+          class="item"
+        >
+          <div
+            v-if="item.type === webSocketMsgType.userInRoom"
+            class="tip"
+          >
             {{ item.nickname }}加入了聊天({{ item.time }})
           </div>
-          <div v-if="item.type === webSocketMsgType.userOutRoom" class="tip">
+          <div
+            v-if="item.type === webSocketMsgType.userOutRoom"
+            class="tip"
+          >
             {{ item.nickname }}退出了聊天({{ item.time }})
           </div>
           <div v-if="item.type === webSocketMsgType.userSendMsg">
             <div :class="{ 'msg-item': true, 'is-me': item.id === wsId }">
-              <img :src="item.avatar" class="avatar" alt="" />
+              <img
+                :src="item.avatar"
+                class="avatar"
+                alt=""
+              />
               <div class="info">
-                <div v-if="item.id !== wsId" class="nickname">
+                <div
+                  v-if="item.id !== wsId"
+                  class="nickname"
+                >
                   {{ item.nickname }}
                 </div>
                 <div class="msg">
@@ -28,9 +48,15 @@
           </div>
         </div>
       </div>
-      <div v-if="!isJoin" class="mask"></div>
+      <div
+        v-if="!isJoin"
+        class="mask"
+      ></div>
 
-      <div v-if="!isJoin" class="join">
+      <div
+        v-if="!isJoin"
+        class="join"
+      >
         <div class="item avatar">
           <el-popover
             popper-class="popover"
@@ -50,7 +76,12 @@
             </div>
             <div slot="reference">
               <div class="curr-avatar">
-                <img width="50" class="avatar" :src="avatar" alt="" />
+                <img
+                  width="50"
+                  class="avatar"
+                  :src="avatar"
+                  alt=""
+                />
                 <i class="el-icon-caret-bottom bottom"></i>
               </div>
             </div>
@@ -65,10 +96,20 @@
             ></el-input>
           </div>
         </div>
-        <div class="item btn" @click="join">加入</div>
+        <div
+          class="item btn"
+          @click="join"
+        >
+          加入
+        </div>
       </div>
-      <div v-else class="send-msg">
-        <el-input v-model="msg" placeholder="请输入内容"
+      <div
+        v-else
+        class="send-msg"
+      >
+        <el-input
+          v-model="msg"
+          placeholder="请输入内容"
           ><template slot="append">
             <el-button @click="userSendMsg">发送</el-button>
           </template>

@@ -1,6 +1,9 @@
 <template>
   <div class="login-cpt-wrap">
-    <el-dropdown v-if="isLogin" trigger="hover">
+    <el-dropdown
+      v-if="isLogin"
+      trigger="hover"
+    >
       <div class="el-dropdown-link">
         <a>登录</a>
         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -49,9 +52,17 @@
         <el-dropdown-item v-else>未开启</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-dropdown v-else trigger="hover">
+    <el-dropdown
+      v-else
+      trigger="hover"
+    >
       <div class="el-dropdown-link">
-        <img v-if="userInfo" :src="userInfo.avatar" class="avatar" alt="" />
+        <img
+          v-if="userInfo"
+          :src="userInfo.avatar"
+          class="avatar"
+          alt=""
+        />
         <a v-else>登录<i class="el-icon-arrow-down el-icon--right"></i></a>
       </div>
       <el-dropdown-menu slot="dropdown">

@@ -18,7 +18,11 @@
       </div>
     </div>
 
-    <AsnycCollapseCpt class="releation-info" title="站点信息" open>
+    <AsnycCollapseCpt
+      class="releation-info"
+      title="站点信息"
+      open
+    >
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
@@ -69,7 +73,11 @@
       </div>
     </AsnycCollapseCpt>
 
-    <AsnycCollapseCpt class="setting-info" title="设置" open>
+    <AsnycCollapseCpt
+      class="setting-info"
+      title="设置"
+      open
+    >
       <template #ico>
         <i class="el-icon-setting"></i>
       </template>
@@ -117,7 +125,10 @@
       </div>
     </AsnycCollapseCpt>
 
-    <AsnycCollapseCpt v-if="userInfo" title="用户信息">
+    <AsnycCollapseCpt
+      v-if="userInfo"
+      title="用户信息"
+    >
       <template #ico>
         <i class="el-icon-user"></i>
       </template>
@@ -140,7 +151,10 @@
     </AsnycCollapseCpt>
 
     <template v-if="showCatalog">
-      <div ref="catalogRef" class="catalog-ref"></div>
+      <div
+        ref="catalogRef"
+        class="catalog-ref"
+      ></div>
       <nav
         ref="catalogInfoRef"
         class="catalog-info"
@@ -155,7 +169,10 @@
     </template>
 
     <template v-else>
-      <AsnycCollapseCpt class="log-info" title="流量信息">
+      <AsnycCollapseCpt
+        class="log-info"
+        title="流量信息"
+      >
         <template #ico>
           <i class="el-icon-data-analysis"></i>
         </template>
@@ -183,16 +200,28 @@
               今天总访客数: {{ visitorDayData.visitor_total }}
             </div>
           </template>
-          <div class="refresh" @click="refreshLog">
+          <div
+            class="refresh"
+            @click="refreshLog"
+          >
             <i class="el-icon-refresh ico"></i>
           </div>
         </div>
       </AsnycCollapseCpt>
 
-      <div ref="mainFolatWrapRef" class="main-folat-wrap">
-        <div ref="mainFolatRef" class="main-folat-ref"></div>
+      <div
+        ref="mainFolatWrapRef"
+        class="main-folat-wrap"
+      >
+        <div
+          ref="mainFolatRef"
+          class="main-folat-ref"
+        ></div>
         <div :class="{ fix: sidebarFixed }">
-          <div class="article-info" title="文章排行">
+          <div
+            class="article-info"
+            title="文章排行"
+          >
             <div class="title">
               <div>
                 <i class="el-icon-medal"></i>
@@ -204,7 +233,10 @@
                   }}
                 </b>
               </div>
-              <span class="switch-btn" @click="switchSideBarArticleOrderName">
+              <span
+                class="switch-btn"
+                @click="switchSideBarArticleOrderName"
+              >
                 切换
               </span>
             </div>
@@ -222,7 +254,11 @@
                       :to="'/article/' + item.id"
                       custom
                     >
-                      <img v-lazy="item['head_img']" alt="" @click="navigate" />
+                      <img
+                        v-lazy="item['head_img']"
+                        alt=""
+                        @click="navigate"
+                      />
                     </nuxt-link>
                     <nuxt-link
                       v-else
@@ -234,7 +270,10 @@
                     </nuxt-link>
                   </div>
                   <div class="desc">
-                    <nuxt-link :to="'/article/' + item.id" class="b-hover">
+                    <nuxt-link
+                      :to="'/article/' + item.id"
+                      class="b-hover"
+                    >
                       <b> #{{ item.title }} </b>
                     </nuxt-link>
                     <div class="info">
@@ -257,7 +296,11 @@
             </div>
           </div>
 
-          <AsnycCollapseCpt class="tag-info" title="标签云" :open="true">
+          <AsnycCollapseCpt
+            class="tag-info"
+            title="标签云"
+            :open="true"
+          >
             <template #ico>
               <i class="el-icon-collection-tag"></i>
             </template>

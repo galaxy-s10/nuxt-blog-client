@@ -3,14 +3,22 @@
     <header :class="{ 'fix-header-wrap': true, hidden: hiddenHeader }">
       <div class="header-wrap">
         <div class="logo">
-          <nuxt-link v-slot="{ navigate }" to="/" custom>
+          <nuxt-link
+            v-slot="{ navigate }"
+            to="/"
+            custom
+          >
             <span @click="navigate">Natural</span>
           </nuxt-link>
           <sup>Blog</sup>
         </div>
         <nav class="nav">
           <ul class="nav-menu">
-            <li v-for="(item, index) in navList" :key="index" class="item">
+            <li
+              v-for="(item, index) in navList"
+              :key="index"
+              class="item"
+            >
               <!-- https://router.vuejs.org/zh/api/#custom，默认用a标签包裹元素，可以添加custom改掉这个行为 -->
               <nuxt-link :to="item.path">
                 <span>{{ item.title }}</span>
@@ -18,7 +26,10 @@
             </li>
           </ul>
           <div class="nav-menu-mini">
-            <el-dropdown trigger="click" @command="handleCommand">
+            <el-dropdown
+              trigger="click"
+              @command="handleCommand"
+            >
               <div class="el-dropdown-link">
                 {{ title }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -29,7 +40,11 @@
                   :key="index"
                   :command="item.title"
                 >
-                  <nuxt-link v-slot="{ navigate }" :to="item.path" custom>
+                  <nuxt-link
+                    v-slot="{ navigate }"
+                    :to="item.path"
+                    custom
+                  >
                     <span @click="navigate"> {{ item.title }}</span>
                   </nuxt-link>
                 </el-dropdown-item>

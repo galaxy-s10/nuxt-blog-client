@@ -6,9 +6,9 @@ export default function ({ $axios, store }, inject) {
   let baseURL = '/';
   if (process.env.NODE_ENV === 'development') {
     // baseURL = '/api/'; // 调用本地的接口
-    baseURL = `http://api.hsslive.cn/betaapi/`; // 调用线上的接口
+    baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
   } else {
-    baseURL = `http://api.hsslive.cn/prodapi/`; // 调用线上的接口
+    baseURL = `https://api.hsslive.cn/prodapi/`; // 调用线上的接口
   }
   const service = axios.create({
     baseURL,

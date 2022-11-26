@@ -1,5 +1,12 @@
 {
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // 指定行尾序列为LF(\n)、CRLF(\r\n)、auto
+  // "files.eol": "\n",
+  // 在保存时格式化
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    // 在保存时运行eslint
+    "source.fixAll.eslint": true
   }
+  // 废弃，使用editor.codeActionsOnSave替代
+  // "eslint.autoFixOnSave": true
 }

@@ -35,7 +35,6 @@
 </template>
 <script>
 import CatalogCpt from 'components/Catalog/index.vue';
-import Cookies from 'js-cookie';
 import LyAside from 'layouts/aside/index.vue';
 import LyBacktop from 'layouts/backtop/index.vue';
 import LyFooter from 'layouts/footer/index.vue';
@@ -158,8 +157,9 @@ export default {
       if (type === 'qq_login') {
         if (code) {
           try {
-            await this.$myaxios.post(`/qq_user/login`, { code });
-            const token = Cookies.get('token');
+            const { data: token } = await this.$myaxios.post(`/qq_user/login`, {
+              code,
+            });
             if (token) {
               this.setToken(token);
               this.getUserInfo();
@@ -172,8 +172,12 @@ export default {
       if (type === 'github_login') {
         if (code) {
           try {
-            await this.$myaxios.post(`/github_user/login`, { code });
-            const token = Cookies.get('token');
+            const { data: token } = await this.$myaxios.post(
+              `/github_user/login`,
+              {
+                code,
+              }
+            );
             if (token) {
               this.setToken(token);
               this.getUserInfo();

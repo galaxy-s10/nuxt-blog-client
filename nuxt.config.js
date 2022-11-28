@@ -1,14 +1,14 @@
 import path from 'path';
 
-import { VERSION as axiosVersion } from 'axios';
+// import { VERSION as axiosVersion } from 'axios';
+import BilldHtmlWebpackPlugin from 'billd-html-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
-import { version as vueVersion } from 'vue';
-import { version as vueRouterVersion } from 'vue-router';
-import vuex from 'vuex';
+// import { version as vueVersion } from 'vue';
+// import { version as vueRouterVersion } from 'vue-router';
+// import vuex from 'vuex';
 import webpack from 'webpack';
 
-import InjectProjectInfoPlugin from './InjectProjectInfoPlugin';
 import pkg from './package.json';
 import { QINIU_CDN_URL } from './src/constant';
 
@@ -152,7 +152,7 @@ export default {
         },
       }),
       // 注入项目信息
-      new InjectProjectInfoPlugin({ isProduction: !isDevelopment }),
+      new BilldHtmlWebpackPlugin({ nuxt2: true }),
     ].filter(Boolean),
 
     babel: {

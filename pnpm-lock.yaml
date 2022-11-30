@@ -10,7 +10,7 @@ specifiers:
   axios: ^0.27.2
   babel-eslint: ^10.1.0
   babel-plugin-component: ^1.1.1
-  billd-html-webpack-plugin: latest
+  billd-html-webpack-plugin: ^0.0.8
   chalk: ^4
   commitizen: ^4.2.5
   compression-webpack-plugin: 5.0.1
@@ -46,7 +46,7 @@ dependencies:
   '@kangc/v-md-editor': 1.7.11_rhqkolmkwunxzlyyxxsuwaiuri
   '@nuxtjs/proxy': 2.1.0
   axios: 0.27.2
-  billd-html-webpack-plugin: 0.0.4
+  billd-html-webpack-plugin: 0.0.8
   core-js: 3.26.1
   dayjs: 1.11.6
   element-ui: 2.15.12_vue@2.7.14
@@ -3317,8 +3317,8 @@ packages:
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  /billd-html-webpack-plugin/0.0.4:
-    resolution: {integrity: sha512-ovuEwREYfsKd5zhumy20K69poXpqAR+N7zOjmVCI/sN3T8DxIyvLKTVD24vaTcm8Dn7wzq2R04++n+oVbd0urg==}
+  /billd-html-webpack-plugin/0.0.8:
+    resolution: {integrity: sha512-tHm5VtifThMsnQo0yYzZbJ4N7XVw77qffIAZRWljHpSI24gF2hABlJZ3BU2YKBomVci8gvzhliRKI2Qu1jkdxg==}
     dependencies:
       '@babel/core': 7.20.2
       '@babel/plugin-transform-runtime': 7.19.6_@babel+core@7.20.2
@@ -10270,6 +10270,7 @@ packages:
 
   /rollup-plugin-terser/7.0.2_rollup@2.79.1:
     resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==}
+    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
     peerDependencies:
       rollup: ^2.0.0
     dependencies:

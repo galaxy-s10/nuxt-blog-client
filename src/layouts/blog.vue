@@ -122,7 +122,6 @@ export default {
         styleContent += `${item.key}:${styleVal};`;
       });
       styleContent += '}';
-      console.log(data.rows, styleContent, 'llllk');
       generatorCss(styleContent);
     },
     handlePreloadImg() {

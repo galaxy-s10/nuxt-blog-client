@@ -116,21 +116,21 @@ export default {
         '^/api': '',
       },
     },
-    '/prodapi/': {
-      target: 'https://api.hsslive.cn/prodapi/',
-      secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
-      changeOrigin: true,
-      pathRewrite: {
-        '^/prodapi': '',
-      },
-      // 效果：/prodapi/link/list ==> http://api.hsslive.cn/prodapi/link/list
-    },
-    '/betaapi/': {
-      target: 'https://api.hsslive.cn/',
-      secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
-      changeOrigin: true,
-      // 效果：/betaapi/link/list ==> http://api.hsslive.cn/betaapi/link/list
-    },
+    // '/prodapi/': {
+    //   target: 'https://api.hsslive.cn/prodapi/',
+    //   secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+    //   changeOrigin: true,
+    //   pathRewrite: {
+    //     '^/prodapi': '',
+    //   },
+    //   // 效果：/prodapi/link/list ==> http://api.hsslive.cn/prodapi/link/list
+    // },
+    // '/betaapi/': {
+    //   target: 'https://api.hsslive.cn/',
+    //   secure: false, // 默认情况下（secure: true），不接受在HTTPS上运行的带有无效证书的后端服务器。设置secure: false后，后端服务器的HTTPS有无效证书也可运行
+    //   changeOrigin: true,
+    //   // 效果：/betaapi/link/list ==> http://api.hsslive.cn/betaapi/link/list
+    // },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

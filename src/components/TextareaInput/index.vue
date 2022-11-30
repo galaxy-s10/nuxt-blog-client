@@ -31,18 +31,21 @@ export default {
 };
 </script>
 
-<style>
+<!-- <style>
 /* style在scoped环境下重写覆盖默认element样式不行，得去掉scoped */
 .textarea-cpt-wrap .el-textarea__inner {
   padding-bottom: 20px;
 }
-</style>
+</style> -->
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';
 
 .textarea-cpt-wrap {
   position: relative;
+  :deep(.el-textarea__inner) {
+    padding-bottom: 20px;
+  }
   .tip {
     position: absolute;
     bottom: 0;

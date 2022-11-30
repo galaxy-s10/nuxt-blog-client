@@ -276,7 +276,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import '@/assets/css/constant.scss';
 @keyframes rotate1 {
   from {
     transform: rotate(0);
@@ -285,11 +286,6 @@ export default {
     transform: rotate(360deg);
   }
 }
-</style>
-
-<style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .audio-wrap {
   .hiddenAudio {
     display: none;

@@ -44,6 +44,7 @@ import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
 import { preloadImg } from '@/utils';
+import generatorCss from '@/utils/themeSystem';
 
 export default {
   components: {
@@ -113,6 +114,17 @@ export default {
       logout: 'user/logout',
       setHiddenHeader: 'app/setHiddenHeader',
     }),
+    async setTheme() {
+      const { data } = await this.$myaxios.get(`/theme/list`);
+      let styleContent = ':root{';
+      data.rows.forEach((item) => {
+        const styleVal = item.value;
+        styleContent += `${item.key}:${styleVal};`;
+      });
+      styleContent += '}';
+      console.log(data.rows, styleContent, 'llllk');
+      generatorCss(styleContent);
+    },
     handlePreloadImg() {
       const imgs = require.context(
         '../assets/img/',
@@ -146,6 +158,7 @@ export default {
       this.setHiddenHeader(offsetTop > 350); // 向下滚动超过350px就隐藏header
     },
     init() {
+      this.setTheme();
       const token = localStorage.token;
       if (token) {
         this.setToken(token);
@@ -191,6 +204,12 @@ export default {
   },
 };
 </script>
+
+<style>
+html {
+  filter: var(--html-filter);
+}
+</style>
 
 <style lang="scss" scoped>
 @import '@/assets/css/constant.scss';

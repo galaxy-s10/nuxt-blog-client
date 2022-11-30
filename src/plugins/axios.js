@@ -13,6 +13,7 @@ export default function ({ $axios, store }, inject) {
   const service = axios.create({
     baseURL,
     timeout: 5000,
+    withCredentials: true, // 允许跨域携带cookie信息
   });
 
   // 请求拦截

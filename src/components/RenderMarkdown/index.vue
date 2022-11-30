@@ -60,7 +60,6 @@ export default {
 };
 </script>
 
-<style></style>
 <style lang="scss" scoped>
 .render-markdown-wrap {
   :deep(.github-markdown-body) {

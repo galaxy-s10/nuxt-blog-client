@@ -111,7 +111,7 @@ import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
 import { init } from '@/mixin/init';
-import { getRandomInt, generaterStyle } from '@/utils/index';
+import { getRandomInt } from '@/utils/index';
 export default {
   components: {
     NoHeadImgCpt,
@@ -157,7 +157,7 @@ export default {
   },
   head() {
     return {
-      title: '首页 - 自然博客',
+      title: '自然博客',
       meta: [
         {
           name: 'description',
@@ -224,16 +224,6 @@ export default {
   created() {},
   mounted() {
     window.scrollTo({ top: 0 });
-    // this.$myaxios
-    //   .get(`/theme/list`, { nowPage: 1, pageSize: 100 })
-    //   .then((res) => {
-    //     const { data } = res;
-    //     const obj = {};
-    //     data.rows.forEach((v) => {
-    //       obj[v.key] = v.value;
-    //     });
-    //     generaterStyle(obj);
-    //   });
     window.addEventListener('resize', this.handleResize);
     this.handlePage();
     this.touchBottom();

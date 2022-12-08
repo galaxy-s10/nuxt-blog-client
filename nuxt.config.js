@@ -14,6 +14,13 @@ import { QINIU_CDN_URL } from './src/constant';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
+const seo = {
+  title: '自然博客',
+  description: '自然博客 | 前端 | 大前端 | javascript | vue | react | node',
+  keywords:
+    '前端 | 大前端 | 开源 | 开源博客 | javascript | vue | react | node | nuxt | nuxt2 | next',
+};
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -26,13 +33,19 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         name: 'description',
-        content: '前端 | 开源 | 自然博客 | javascript | vue | react | node',
+        content: seo.description,
       },
       {
         name: 'keywords',
-        content: '前端 | 开源 | 自然博客 | javascript | vue | react | node',
+        content: seo.description,
       },
       { property: 'og:url', content: 'https://www.hsslive.cn' },
+      { property: 'og:title', content: seo.title },
+      { property: 'og:keywords', content: seo.keywords },
+      { property: 'og:description', content: seo.description },
+      { property: 'twitter:title', content: seo.title },
+      { property: 'twitter:keywords', content: seo.keywords },
+      { property: 'twitter:description', content: seo.description },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     // 如果不是开发环境，则使用cdn加载这些库
@@ -163,7 +176,12 @@ export default {
         ],
       ],
     },
-    extractCSS: false, // true:单独提取css为文件，省点cdn流量，不提取。
+    /**
+     * extractCSS，默认false
+     * 所有CSS将被提取到单独的文件中，通常每个组件一个。
+     * 这允许单独缓存CSS和JavaScript，如果您有大量全局或共享CSS，值得一试。
+     */
+    extractCSS: true,
     optimization: {
       // 拆分大文件
       splitChunks: {

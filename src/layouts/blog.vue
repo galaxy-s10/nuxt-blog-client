@@ -64,8 +64,11 @@ export default {
     return { showMinCatalogIco: false, showMinCatalog: false };
   },
   computed: {
-    CurrentNodeEnv() {
-      return this.$store.state.app.CurrentNodeEnv;
+    currentNodeEnv() {
+      return this.$store.state.app.currentNodeEnv;
+    },
+    nuxtServerInit() {
+      return this.$store.state.app.nuxtServerInit;
     },
     showMusicAudio() {
       return this.$store.state.app.showMusicAudio;
@@ -90,7 +93,12 @@ export default {
   mounted() {
     this.init();
     this.handlePreloadImg();
-    if (this.CurrentNodeEnv !== 'development') {
+    console.log(
+      `nuxtServerInit阶段耗时：${
+        this.nuxtServerInit.endTime - this.nuxtServerInit.startTime
+      }ms`
+    );
+    if (this.currentNodeEnv !== 'development') {
       this.$myaxios.post('visitor_log/create'); // 新增访客记录
     }
     if (this.$route.name === 'article-id') {

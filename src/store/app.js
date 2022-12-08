@@ -1,4 +1,9 @@
 export const state = () => ({
+  // nuxtServerInit数据
+  nuxtServerInit: {
+    startTime: 0,
+    endTime: 0,
+  },
   // ip信息
   ipInfo: null,
   // 前端数据
@@ -18,7 +23,7 @@ export const state = () => ({
   // 当前主题
   theme: 'light',
   // 当前node环境
-  CurrentNodeEnv: 'development',
+  currentNodeEnv: 'development',
 });
 
 export const mutations = {
@@ -27,8 +32,12 @@ export const mutations = {
     state.ipInfo = res;
   },
   // eslint-disable-next-line no-shadow
+  setNuxtServerInit(state, res) {
+    state.nuxtServerInit = res;
+  },
+  // eslint-disable-next-line no-shadow
   setCurrentNodeEnv(state, res) {
-    state.CurrentNodeEnv = res;
+    state.currentNodeEnv = res;
   },
   // eslint-disable-next-line no-shadow
   setFrontendData(state, res) {

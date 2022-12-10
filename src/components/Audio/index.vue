@@ -3,10 +3,9 @@
     <div
       v-if="songList.length"
       class="music-wrap"
-      :class="{ showMiniAudio: showMiniAudio, hiddenAudio: !showMusicAudio }"
     >
-      <div class="song-wrap">
-        <div class="song-text">
+      <div :class="{ 'song-wrap': true, bgnone: showMiniAudio }">
+        <div :class="{ 'song-text': true, none: showMiniAudio }">
           <div class="text-item">
             {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
           </div>
@@ -14,7 +13,7 @@
             {{ songList[currentIndex] ? songList[currentIndex].author : '-' }}
           </div>
         </div>
-        <div class="song-bar">
+        <div :class="{ 'song-bar': true, none: showMiniAudio }">
           <div
             ref="bar"
             class="song-bar-item"
@@ -30,9 +29,16 @@
         </div>
         <div
           class="songImg1"
-          :class="{ disk_play: start }"
+          :class="{
+            disk_play: start,
+            showMiniAudio: showMiniAudio,
+            // hiddenAudio: !showMusicAudio,
+          }"
         >
-          <div class="songImg2">
+          <div
+            class="songImg2"
+            @click="showMiniMusic"
+          >
             <img
               ref="disk"
               :src="
@@ -45,11 +51,10 @@
               height="90"
               class="songImg"
               :style="{ transform: matrix }"
-              @click="showMiniMusic"
             />
           </div>
         </div>
-        <div class="songControl">
+        <div :class="{ 'song-control': true, none: showMiniAudio }">
           <div
             class="pre"
             @click="preSong"
@@ -287,22 +292,19 @@ export default {
   }
 }
 .audio-wrap {
-  .hiddenAudio {
-    display: none;
-    pointer-events: none;
-  }
+  // .hiddenAudio {
+  //   display: none;
+  //   pointer-events: none;
+  // }
 }
-.music-wrap.showMiniAudio {
-  right: -140px;
-  pointer-events: none;
-}
+
 .showMiniAudio .song-wrap {
   background-color: transparent !important;
   box-shadow: none !important;
 }
 .showMiniAudio .song-text,
 .showMiniAudio .song-bar,
-.showMiniAudio .songControl {
+.showMiniAudio .song-control {
   display: none;
   background-color: transparent !important;
   box-shadow: none !important;
@@ -338,10 +340,21 @@ export default {
   animation: rotate1 6s infinite linear;
 }
 .music-wrap {
-  position: fixed;
-  right: 10px;
-  bottom: 50px;
+  position: relative;
   transition: all 0.2s linear;
+  .showMiniAudio {
+    left: calc(100% - 100px);
+  }
+  .hiddenAudio {
+    left: 10px;
+  }
+  .none {
+    display: none;
+  }
+  .bgnone {
+    background: none;
+    box-shadow: none;
+  }
 }
 .song-wrap {
   position: relative;
@@ -404,7 +417,7 @@ export default {
   content: '';
   transform: translate(-50%, -50%);
 }
-.songControl {
+.song-control {
   position: absolute;
   right: -8px;
   display: flex;

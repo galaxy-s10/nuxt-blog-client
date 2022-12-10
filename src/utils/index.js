@@ -1,14 +1,3 @@
-export const preloadImg = (urls) => {
-  return urls.map((url) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = url;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
-  });
-};
-
 /**
  * @description 判断是否是浏览器环境
  * @param {*} boolean

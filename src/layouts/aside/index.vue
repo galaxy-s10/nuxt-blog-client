@@ -114,7 +114,7 @@
         </div>
         <div class="item">
           <div class="switch">
-            <span class="txt">音乐播放器：</span>
+            <span class="txt">音乐播放器(支持拖动)：</span>
             <el-switch
               :value="showMusicAudio"
               :width="35"

@@ -2,7 +2,9 @@ const actions = {
   // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
   async nuxtServerInit({ state, commit, dispatch }, { app }) {
     const startTime = Date.now();
-    console.log(`${new Date().toLocaleString()} --- nuxtServerInit开始`);
+    console.log(
+      `=== nuxtServerInit开始: ${startTime}(${new Date().toLocaleString()}) ===`
+    );
     try {
       commit('app/setCurrentNodeEnv', process.env.NODE_ENV);
       await Promise.all([
@@ -18,16 +20,14 @@ const actions = {
       ]);
       const endTime = Date.now();
       console.log(
-        `${new Date().toLocaleString()} --- nuxtServerInit完成，耗时：${
+        `=== nuxtServerInit完成: ${endTime}(${new Date().toLocaleString()}) 耗时: ${
           endTime - startTime
-        }ms`
+        }ms ===`
       );
       commit('app/setNuxtServerInit', { startTime, endTime });
     } catch (error) {
-      console.log(
-        `${new Date().toLocaleString()} --- nuxtServerInit错误`,
-        error
-      );
+      console.log(`=== nuxtServerInit错误: ${new Date().toLocaleString()} ===`);
+      console.log(error);
     }
   },
 };

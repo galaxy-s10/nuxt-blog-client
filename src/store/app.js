@@ -15,7 +15,7 @@ export const state = () => ({
   // 是否显示梅花特效
   showPlum: false,
   // 是否显示音乐播放器
-  showMusicAudio: false,
+  showMusicAudio: true,
   // 是否使用瀑布流
   isWaterFall: false,
   // 是否隐藏header

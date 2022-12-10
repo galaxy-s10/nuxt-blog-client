@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-blog-wrap">
+  <div class="blog-wrap">
     <LyHeader />
     <LyTypeList />
     <LyBacktop />
@@ -7,9 +7,16 @@
       <LyMain class="left" />
       <LyAside class="right" />
     </div>
-    <AsnycAudioCpt v-if="showMusicAudio === true"></AsnycAudioCpt>
-    <AsnycPlumCpt v-if="showPlum === true"></AsnycPlumCpt>
-    <AsnycFeatureTipCpt></AsnycFeatureTipCpt>
+
+    <LazyDND
+      v-if="showMusicAudio === true"
+      class="dnd-wrap"
+    >
+      <AudioCpt></AudioCpt>
+    </LazyDND>
+
+    <LazyPlum v-if="showPlum === true"></LazyPlum>
+    <FeatureTipCpt></FeatureTipCpt>
     <div
       v-if="showMinCatalogIco"
       class="mini-catalog-ico"
@@ -34,7 +41,11 @@
   </div>
 </template>
 <script>
+import { imgPrereload } from 'billd-utils';
+import AudioCpt from 'components/Audio/index.vue';
 import CatalogCpt from 'components/Catalog/index.vue';
+import FeatureTipCpt from 'components/FeatureTip/index.vue';
+// import PlumCpt from 'components/Plum/index.vue';
 import LyAside from 'layouts/aside/index.vue';
 import LyBacktop from 'layouts/backtop/index.vue';
 import LyFooter from 'layouts/footer/index.vue';
@@ -43,7 +54,6 @@ import LyMain from 'layouts/main/index.vue';
 import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
-import { preloadImg } from '@/utils';
 import generatorCss from '@/utils/themeSystem';
 
 export default {
@@ -55,9 +65,10 @@ export default {
     LyMain,
     LyFooter,
     CatalogCpt,
-    AsnycAudioCpt: () => import('components/Audio/index.vue'),
-    AsnycPlumCpt: () => import('components/Plum/index.vue'),
-    AsnycFeatureTipCpt: () => import('components/FeatureTip/index.vue'),
+    AudioCpt,
+    // AsnycAudioCpt: () => import('components/Audio/index.vue'),
+    // PlumCpt,
+    FeatureTipCpt,
   },
   asyncData({ $myaxios, store }) {},
   data() {
@@ -94,8 +105,13 @@ export default {
     this.init();
     this.handlePreloadImg();
     console.log(
-      `nuxtServerInit阶段耗时：${
+      `nuxtServerInit阶段的耗时：${
         this.nuxtServerInit.endTime - this.nuxtServerInit.startTime
+      }ms`
+    );
+    console.log(
+      `nuxtServerInit开始至layout渲染之间的耗时：${
+        Date.now() - this.nuxtServerInit.startTime
       }ms`
     );
     if (this.currentNodeEnv !== 'development') {
@@ -148,7 +164,7 @@ export default {
         }
       });
       try {
-        preloadImg(imgArr);
+        imgPrereload(imgArr);
       } catch (error) {
         console.log(error);
       }
@@ -227,53 +243,62 @@ html {
   }
 }
 
-.main-wrap {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin: 0 auto;
-  margin-top: 130px;
-  .left {
-    box-sizing: border-box;
-    width: calc(100% - 320px);
-  }
-  .right {
-    box-sizing: border-box;
-    width: 300px;
-  }
-}
-.mini-catalog-ico {
-  position: fixed;
-  bottom: 20px;
-  left: 10px;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: wheat;
-  box-shadow: 0 0 5px $theme-color2;
-}
-.mini-catalog-wrap {
-  .mask {
+.blog-wrap {
+  .dnd-wrap {
+    width: 250px;
+    height: 100px;
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    right: 10px;
+    top: calc(100vh - 120px);
+  }
+  .main-wrap {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 130px;
+    .left {
+      box-sizing: border-box;
+      width: calc(100% - 320px);
+    }
+    .right {
+      box-sizing: border-box;
+      width: 300px;
+    }
+  }
+  .mini-catalog-ico {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
     z-index: 1;
-    .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: wheat;
+    box-shadow: 0 0 5px $theme-color2;
+  }
+  .mini-catalog-wrap {
+    .mask {
       position: fixed;
-      bottom: 70px;
-      left: 10px;
-      width: 250px;
-      border-radius: 10px;
-      background-color: wheat;
-      box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
-      :deep(.catalog-cpt-wrap) {
-        max-height: 50vh;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      .content {
+        position: fixed;
+        bottom: 70px;
+        left: 10px;
+        width: 250px;
+        border-radius: 10px;
+        background-color: wheat;
+        box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
+        :deep(.catalog-cpt-wrap) {
+          max-height: 50vh;
+        }
       }
     }
   }

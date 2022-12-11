@@ -2,3 +2,6 @@
 /public/
 /node_modules/
 .nuxt
+src/app.html
+CHANGELOG.md
+pnpm-lock.yaml

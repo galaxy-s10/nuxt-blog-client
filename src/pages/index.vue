@@ -365,9 +365,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 /* 响应式布局 - 小于 720px */
 @media screen and (max-width: 720px) {
   .pages-wrap {

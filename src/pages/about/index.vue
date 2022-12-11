@@ -80,7 +80,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
 .about-wrap {
   .title {
     display: block;

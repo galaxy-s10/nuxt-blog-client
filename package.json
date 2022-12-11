@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@kangc/v-md-editor": "^1.7.11",
-    "@nuxtjs/proxy": "^2.1.0",
     "axios": "^0.27.2",
     "billd-html-webpack-plugin": "latest",
     "billd-scss": "latest",
@@ -48,6 +47,8 @@
     "@commitlint/config-conventional": "^17.0.3",
     "@nuxtjs/eslint-config": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/proxy": "^2.1.0",
+    "@nuxtjs/style-resources": "^1.2.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-component": "^1.1.1",
     "chalk": "^4",

@@ -64,8 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .mask-cpt-wrap {
   position: fixed;
   top: 0;

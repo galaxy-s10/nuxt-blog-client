@@ -73,9 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 @media screen and (max-width: 720px) {
   .works-wrap {
     .list-wrap {

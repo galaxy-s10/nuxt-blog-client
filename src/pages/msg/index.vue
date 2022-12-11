@@ -233,9 +233,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 .msg-wrap {
   .title {
     display: block;

@@ -41,7 +41,7 @@
   </div>
 </template>
 <script>
-import { imgPrereload } from 'billd-utils';
+import { generateStyle, imgPrereload } from 'billd-utils';
 import AudioCpt from 'components/Audio/index.vue';
 import CatalogCpt from 'components/Catalog/index.vue';
 import FeatureTipCpt from 'components/FeatureTip/index.vue';
@@ -53,8 +53,6 @@ import LyHeader from 'layouts/header/index.vue';
 import LyMain from 'layouts/main/index.vue';
 import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
-
-import generatorCss from '@/utils/themeSystem';
 
 export default {
   components: {
@@ -140,13 +138,13 @@ export default {
     }),
     async setTheme() {
       const { data } = await this.$myaxios.get(`/theme/list`);
-      let styleContent = ':root{';
+      const obj = {};
       data.rows.forEach((item) => {
-        const styleVal = item.value;
-        styleContent += `${item.key}:${styleVal};`;
+        obj[item.key] = item.value;
       });
-      styleContent += '}';
-      generatorCss(styleContent);
+      generateStyle({
+        ':root': obj,
+      });
     },
     handlePreloadImg() {
       const imgs = require.context(
@@ -228,14 +226,7 @@ export default {
 };
 </script>
 
-<style>
-html {
-  filter: var(--html-filter);
-}
-</style>
-
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
 @media screen and (max-width: 540px) {
   .main-wrap {
     margin-top: 120px !important;

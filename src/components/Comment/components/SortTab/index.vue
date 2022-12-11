@@ -44,8 +44,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .sort-wrap {
   display: flex;
   align-items: center;

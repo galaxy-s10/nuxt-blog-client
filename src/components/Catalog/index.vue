@@ -58,8 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .catalog-cpt-wrap {
   position: relative;
   overflow-y: scroll;
@@ -68,7 +66,7 @@ export default {
   max-height: 80vh;
   font-size: 16px;
 
-  @extend .hideScrollbar;
+  @extend %hideScrollbar;
   &::before {
     position: absolute;
     top: 0;
@@ -97,7 +95,7 @@ export default {
       color: $theme-color5;
       text-decoration: none;
 
-      @extend .singleEllipsis;
+      @extend %singleEllipsis;
       &:hover {
         color: $theme-color1;
       }

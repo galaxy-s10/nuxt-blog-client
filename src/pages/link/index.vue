@@ -232,9 +232,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 @media screen and (max-width: 720px) {
   .li-item-wrap {
     flex-basis: 50% !important;
@@ -259,7 +256,7 @@ export default {
     padding: 0;
     max-height: 400px;
 
-    @extend .hideScrollbar;
+    @extend %hideScrollbar;
     &::after {
       margin: 0 1%;
       width: 30%;

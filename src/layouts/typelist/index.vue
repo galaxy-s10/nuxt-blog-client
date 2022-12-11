@@ -62,8 +62,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 /* 响应式布局,大于540px */
 @media screen and (min-width: 540px) {
   .show {

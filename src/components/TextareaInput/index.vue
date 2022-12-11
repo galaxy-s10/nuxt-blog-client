@@ -39,8 +39,6 @@ export default {
 </style> -->
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .textarea-cpt-wrap {
   position: relative;
   :deep(.el-textarea__inner) {

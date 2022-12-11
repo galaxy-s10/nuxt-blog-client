@@ -7,8 +7,8 @@ export default function ({ $axios, store }, inject) {
   let baseURL = '/';
   if (process.env.NODE_ENV === 'development') {
     if (isBrowser()) {
-      baseURL = '/api/'; // 调用本地的接口
-      // baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
+      // baseURL = '/api/'; // 调用本地的接口
+      baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
     } else {
       baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
     }

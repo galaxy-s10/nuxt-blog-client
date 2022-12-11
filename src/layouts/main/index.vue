@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .v-enter {
   // transform: translateX(-10px);
   margin-left: -15px;

@@ -43,7 +43,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
 .chat-wrap {
   .title {
     display: block;

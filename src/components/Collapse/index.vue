@@ -58,9 +58,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 .collapse-wrap {
   // overflow: hidden;
   margin-top: 20px;

@@ -241,8 +241,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .item-wrap {
   position: relative;
   display: flex;
@@ -281,7 +279,7 @@ export default {
             color: #8a919f;
             font-size: 14px;
 
-            @extend .singleEllipsis;
+            @extend %singleEllipsis;
           }
         }
       }

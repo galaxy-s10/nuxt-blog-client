@@ -159,8 +159,6 @@ export default {
 </script>
 
 <style lang="scss" scope>
-@import '@/assets/css/constant.scss';
-
 @media screen and (max-width: 540px) {
   .header {
     height: 50px;

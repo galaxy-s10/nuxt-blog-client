@@ -93,8 +93,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 .history-wrap {
   .a-link {
     color: $theme-color5;

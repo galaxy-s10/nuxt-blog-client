@@ -1,0 +1,65 @@
+/* 响应式布局 - 小于 1200px */
+@media screen and (max-width: 1200px) {
+}
+
+/* 响应式布局 - 小于 990px */
+@media screen and (max-width: 990px) {
+  .nav-menu {
+    display: none !important;
+  }
+  .nav-menu-mini {
+    display: block !important;
+  }
+}
+
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .fix-header-wrap,
+  .fix-type-wrap,
+  .main-wrap {
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+  .main-wrap {
+    .left {
+      width: 100% !important;
+    }
+    .right {
+      display: none !important;
+    }
+  }
+  .article-left {
+    margin: 0 !important;
+  }
+}
+
+/* 响应式布局 - 大于540px */
+@media screen and (min-width: 540px) {
+  .header-wrap,
+  .main-wrap,
+  .type-wrap {
+    width: 100%;
+  }
+}
+
+/* 响应式布局 - 大于 990px */
+@media screen and (min-width: 990px) {
+  .main-wrap,
+  .type-wrap {
+    width: 900px;
+  }
+  .header-wrap {
+    width: 960px;
+  }
+}
+
+/* 响应式布局 - 大于 1200px */
+@media screen and (min-width: 1200px) {
+  .main-wrap,
+  .type-wrap {
+    width: 1100px;
+  }
+  .header-wrap {
+    width: 1200px;
+  }
+}

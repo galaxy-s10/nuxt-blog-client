@@ -1,12 +1,12 @@
 <template>
   <div
     ref="dndRef"
-    @touchstart="touchstart"
-    @touchmove="touchmove"
-    @touchend="touchend"
-    @mousedown="touchstart"
-    @mousemove="touchmove"
-    @mouseup="touchend"
+    @touchstart="handleStart"
+    @touchmove="handleMove"
+    @touchend="handleEnd"
+    @mousedown="handleStart"
+    @mousemove="handleMove"
+    @mouseup="handleEnd"
   >
     <slot></slot>
   </div>
@@ -28,7 +28,7 @@ export default {
     return {
       dndRef: null,
       offset: { x: 0, y: 0 },
-      touchmove: throttle(this.move, 10, true),
+      handleMove: throttle(this.move, 10, true),
       isDown: false, // 是否按下
       top: '0',
       left: '0',
@@ -60,7 +60,7 @@ export default {
       this.dndRef.style.top = this.top;
       this.dndRef.style.left = this.left;
     },
-    touchstart(event) {
+    handleStart(event) {
       if (!this.dndRef) return;
       this.isDown = true;
       let x = 0;
@@ -77,13 +77,13 @@ export default {
       this.offset.x = x;
       this.offset.y = y;
     },
-    touchend() {
+    handleEnd() {
       if (!this.dndRef) return;
       this.isDown = false;
       const rect = this.dndRef.getBoundingClientRect();
       const width = window.document.documentElement.clientWidth;
       this.dndRef.style.transition = 'all .5s ease';
-      if (rect.x > width / 2) {
+      if (rect.x + rect.width / 2 > width / 2) {
         setTimeout(() => {
           this.dndRef.style.left = `${width - this.margin - rect.width}px`;
           this.left = `${width - this.margin - rect.width}px`;
@@ -102,7 +102,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.dnd-wrap {
-}
-</style>
+<style lang="scss" scoped></style>

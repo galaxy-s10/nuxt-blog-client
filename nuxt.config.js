@@ -69,7 +69,7 @@ export default {
   css: [
     // 'element-ui/lib/theme-chalk/index.css',
     '@/assets/css/main.scss',
-    'normalize.css/normalize.css',
+    // 'normalize.css/normalize.css',
   ],
   srcDir: 'src/',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -103,7 +103,36 @@ export default {
     // https://go.nuxtjs.dev/eslint
     // 太影响热更新了，开发的时候可以依靠编辑器的eslint，把项目的eslint关闭
     // '@nuxtjs/eslint-module',
+
+    // https://github.com/nuxt-community/style-resources-module
+    '@nuxtjs/style-resources',
   ],
+
+  styleResources: {
+    // 这样引无法实际引入billd-scss
+    // scss: ['~billd-scss/src/index.scss'],
+
+    // 做一层中转就可以引入billd-scss了
+    scss: ['@/assets/css/billd-scss.scss', '@/assets/css/constant.scss'],
+
+    // test1.scss和test2.scss都使用了@use 'sass:math';如果同时引入他们两个，就会报错：SassError: @use rules must be written before any other rules.可能是一个bug?
+    // scss: ['@/assets/css/test1.scss', '@/assets/css/test2.scss'],
+    /**
+     * hoistUseStatements属性本质上是：https://github.com/shakacode/sass-resources-loader#hoistusestatements
+     * StyleSheet的@USE规则必须在@forward以外的任何规则之前，包括样式规则。但是，您可以在配置模块时使用@USE规则之前声明变量。
+     * 具体的表现就是在vue文件的style标签里，如果我们使用了@use @/assets/css/test1.scss'，没有设置hoistUseStatements为true的话，
+     * 假设@/assets/css/billd-scss.scss'里面的内容是：.aaa {font-size: 12px;}，那么实际上的编译结果是
+     * .aaa {font-size: 12px;}
+     * @use @/assets/css/test1.scss'
+     * 那么就会报错：SassError: @use rules must be written before any other rules
+     * 如果我们设置hoistUseStatements为true的话，就会将所有的@use提升，，那么实际上的编译结果是
+     * @use @/assets/css/test1.scss'
+     * .aaa {font-size: 12px;}
+     * 这样就符合sass语法，即hoistUseStatements会帮我们将style标签里的@use都提升到@/assets/css/billd-scss.scss的前面，
+     * ps:如果我们@/assets/css/billd-scss.scss里面没有任何规则的话，不设置hoistUseStatements为true也没问题。
+     */
+    hoistUseStatements: true, // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -150,6 +179,9 @@ export default {
   build: {
     publicPath: `${QINIU_CDN_URL}${pkg.name}/v${pkg.version}`,
 
+    // styleResources此属性已弃用。请改用style-resources-module以提高性能和更好的 DX！
+    // styleResources: {},
+
     // analyze: true,
     plugins: [
       !isDevelopment &&
@@ -182,6 +214,7 @@ export default {
      * 这允许单独缓存CSS和JavaScript，如果您有大量全局或共享CSS，值得一试。
      */
     extractCSS: true,
+
     optimization: {
       // 拆分大文件
       splitChunks: {
@@ -242,7 +275,9 @@ export default {
           }),
       ].filter(Boolean),
     },
+
     // transpile: [/^element-ui/],
+
     extend(config, { isDev, isClient, isServer }) {
       // Extend only webpack config for client-bundle
       console.log('isDev, isClient, isServer', isDev, isClient, isServer);

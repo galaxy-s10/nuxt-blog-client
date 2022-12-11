@@ -396,9 +396,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
-
 .comment-wrap {
   .title {
     display: flex;
@@ -437,7 +434,7 @@ export default {
         min-height: 200px;
         max-height: 300px;
 
-        @extend .hideScrollbar;
+        @extend %hideScrollbar;
 
         .has-more-observer {
           width: 1px;

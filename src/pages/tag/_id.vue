@@ -234,8 +234,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-
 /* 响应式布局 - 小于 540px */
 @media screen and (max-width: 540px) {
   .tag-info {
@@ -342,7 +340,7 @@ export default {
       color: $theme-color5;
       text-decoration: none;
 
-      @extend .singleEllipsis;
+      @extend %singleEllipsis;
     }
     .summary {
       display: flex;

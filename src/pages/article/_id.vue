@@ -531,7 +531,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
 @media screen and (max-width: 540px) {
   .main {
     margin: 135px auto 0;

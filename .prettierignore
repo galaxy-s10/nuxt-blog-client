@@ -6,3 +6,5 @@
 .editorconfig
 .nuxt
 src/app.html
+CHANGELOG.md
+pnpm-lock.yaml

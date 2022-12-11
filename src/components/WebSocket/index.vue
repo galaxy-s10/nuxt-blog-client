@@ -287,8 +287,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/constant.scss';
-@import '@/assets/css/mixin.scss';
 .websocket-wrap {
   .main {
     position: relative;
@@ -297,7 +295,7 @@ export default {
       height: 400px;
       background-color: $theme-color3;
 
-      @extend .hideScrollbar;
+      @extend %hideScrollbar;
       .item {
         margin-bottom: 10px;
         padding: 0 10px;

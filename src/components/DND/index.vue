@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       dndRef: null,
-      offset: { x: 0, y: 0 },
+      offset: { x: 0, y: 0 }, // x:距离最左边多少px；y:距离最下边多少px
       handleMove: throttle(this.move, 10, true),
       isDown: false, // 是否按下
       top: '0',

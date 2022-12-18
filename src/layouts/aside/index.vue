@@ -1,22 +1,6 @@
 <template>
   <aside class="aside-wrap">
-    <div class="user-info">
-      <div class="bgc"></div>
-      <img
-        class="user-avatar"
-        :src="
-          userInfo
-            ? userInfo.avatar
-            : require('@/assets/img/default_avatar.webp')
-        "
-      />
-      <div class="info">
-        <div class="name">
-          {{ userInfo ? userInfo.username : '未登录' }}
-        </div>
-        <p class="title">{{ userInfo ? userInfo.desc : 'hello world！' }}</p>
-      </div>
-    </div>
+    <UserInfoCpt></UserInfoCpt>
 
     <AsnycCollapseCpt
       class="releation-info"
@@ -339,10 +323,13 @@ import CatalogCpt from 'components/Catalog/index.vue';
 import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
 
+import UserInfoCpt from './user-info/index.vue';
+
 import { dateStartAndEnd } from '@/utils/format';
 
 export default {
   components: {
+    UserInfoCpt,
     CatalogCpt,
     NoHeadImgCpt,
     AsnycCollapseCpt: () => import('components/Collapse/index.vue'),
@@ -564,67 +551,7 @@ export default {
 
 <style lang="scss" scoped>
 .aside-wrap {
-  // width: inherit;
-  .user-info {
-    overflow: hidden;
-    padding-bottom: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-    .bgc {
-      height: 80px;
-      background-image: -webkit-linear-gradient(
-        43deg,
-        #4158d0 0%,
-        #c850c0 46%,
-        #ffcc70 100%
-      );
-      background-image: -moz-linear-gradient(
-        43deg,
-        #4158d0 0%,
-        #c850c0 46%,
-        #ffcc70 100%
-      );
-      background-image: -o-linear-gradient(
-        43deg,
-        #4158d0 0%,
-        #c850c0 46%,
-        #ffcc70 100%
-      );
-      background-image: linear-gradient(
-        43deg,
-        #4158d0 0%,
-        #c850c0 46%,
-        #ffcc70 100%
-      );
-    }
-    .user-avatar {
-      position: relative;
-      left: 50%;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      transition: all 0.5s;
-      transform: rotate(0) translate(-50%, -50%);
-      transform-origin: 0 0;
-      &:hover {
-        transform: rotate(1turn) translate(-50%, -50%);
-      }
-    }
-    .info {
-      margin-top: -30px;
-      .name {
-        text-align: center;
-        font-weight: bold;
-      }
-      .title {
-        margin: 4px;
-        text-align: center;
-      }
-    }
-  }
   .main-folat-wrap {
-    // background-color: red;
     .fix {
       position: fixed;
       top: 40px;

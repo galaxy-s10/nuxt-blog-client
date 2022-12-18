@@ -1,30 +1,18 @@
 <template>
   <div class="pages-wrap">
     <div
-      ref="waterfall-wrap"
+      ref="article-list"
       v-loading="isLoading"
-      class="waterfall-wrap"
+      :class="{ 'article-list': true }"
     >
       <nuxt-link
         v-for="(item, index) in articleList"
         :key="index"
-        ref="waterfall-item"
-        class="waterfall-item-a"
+        ref="article-item"
+        class="article-item-a"
         :to="`/article/${item.id}`"
       >
-        <!-- <article
-          ref="waterfall-item-1"
-          class="waterfall-item"
-          @mousedown="handleStart"
-          @mousemove="handleMove"
-          @mouseleave="handleLeave"
-        ></article> -->
-        <article
-          class="waterfall-item"
-          @mousedown="handleStart"
-          @mousemove.prevent="handleMove"
-          @mouseleave="handleLeave"
-        >
+        <article :class="{ 'article-item': true }">
           <div
             v-if="item.priority === 99"
             class="top"
@@ -165,12 +153,7 @@ export default {
       isBottom: false, // 是否触底
       isFirst: true, // 是否初次加载
       doneNums: 0, // 已经定位了几个元素
-      left: 0,
-      top: 0,
-      offset: { x: 0, y: 0 }, // x:距离最左边多少px；y:距离最下边多少px
       dndRef: null,
-      len: 0,
-      requestAnimationFrameId: [],
     };
   },
   head() {
@@ -203,8 +186,8 @@ export default {
         this.offsetList = [];
         this.handleWaterfall();
       } else {
-        const waterfallItem = this.$refs['waterfall-item'];
-        const waterfallWrap = this.$refs['waterfall-wrap'];
+        const waterfallItem = this.$refs['article-item'];
+        const waterfallWrap = this.$refs['article-list'];
         waterfallWrap.style.height = 'initial';
 
         waterfallItem.forEach((v) => {
@@ -259,71 +242,6 @@ export default {
       logout: 'user/logout',
       setIsWaterFall: 'app/setIsWaterFall',
     }),
-    handleMove(event) {
-      // 禁用默认事件，让需要滑动的地方滑动，不需要滑动的地方禁止滑动。
-      // event.preventDefault();
-      const currentTarget = event.currentTarget;
-      const rect = currentTarget.getBoundingClientRect();
-      if (event.targetTouches) {
-        this.top = `${event.targetTouches[0].clientY - rect.top}px`;
-        this.left = `${event.targetTouches[0].clientX - rect.left}px`;
-      } else {
-        this.top = `${event.clientY - rect.top}px`;
-        this.left = `${event.clientX - rect.left}px`;
-      }
-      const myStep = () => {
-        console.log('myStepmyStep', this.len);
-        currentTarget.style.background = `radial-gradient(
-          circle at ${this.left} ${this.top},
-          rgba(0, 163, 255) 0,
-          rgba(0, 163, 255, 0) calc(0% + ${this.len}px)
-        )
-        no-repeat border-box border-box rgba(0, 0, 0, 0)`;
-        if (this.len < 160) {
-          this.len += 4;
-        } else {
-          this.requestAnimationFrameId.forEach((val) => {
-            window.cancelAnimationFrame(val);
-          });
-          this.requestAnimationFrameId = [];
-        }
-        this.requestAnimationFrameId.push(window.requestAnimationFrame(myStep));
-      };
-      if (this.len >= 160) {
-        currentTarget.style.background = `radial-gradient(
-          circle at ${this.left} ${this.top},
-          rgba(0, 163, 255) 0,
-          rgba(0, 163, 255, 0) calc(0% + ${this.len}px)
-        )
-        no-repeat border-box border-box rgba(0, 0, 0, 0)`;
-        return;
-      }
-      myStep();
-    },
-    handleStart(event) {
-      let x = 0;
-      let y = 0;
-      if (event.targetTouches) {
-        x =
-          event.targetTouches[0].pageX - this.dndRef.getBoundingClientRect().x;
-        y =
-          event.targetTouches[0].pageY - this.dndRef.getBoundingClientRect().y;
-      } else {
-        x = event.pageX - this.dndRef.getBoundingClientRect().x;
-        y = event.pageY - this.dndRef.getBoundingClientRect().y;
-      }
-      this.offset.x = x;
-      this.offset.y = y;
-    },
-    handleLeave(event) {
-      this.len = 0;
-      this.requestAnimationFrameId.forEach((val) => {
-        window.cancelAnimationFrame(val);
-      });
-      this.requestAnimationFrameId = [];
-      const currentTarget = event.currentTarget;
-      currentTarget.style.background = 'none';
-    },
     handleResize() {
       const width = window.pageXOffset || document.documentElement.offsetWidth;
       if (width <= 425) {
@@ -389,8 +307,8 @@ export default {
       }
       const column = this.waterfallParams.column; // 列数
       const gap = this.waterfallParams.gap; // 间隙
-      const waterfallWrap = this.$refs['waterfall-wrap'];
-      const waterfallItem = this.$refs['waterfall-item'];
+      const waterfallWrap = this.$refs['article-list'];
+      const waterfallItem = this.$refs['article-item'];
       // 瀑布流容器的宽度
       const waterfallWrapWidth = waterfallWrap.getBoundingClientRect().width;
       // 计算减去间隙后，每个item的平均宽度
@@ -407,6 +325,9 @@ export default {
         el.style.display = 'block';
         const headImg = el.querySelector('.head-img');
         const noHeadImg = el.querySelector('.no-head-img');
+        const waterFall = el.querySelector('.article-item');
+        waterFall.style.display = 'block';
+        waterFall.style.height = 'auto';
         if (headImg) {
           headImg.style.height = `${headImg.getAttribute('mock-img-height')}px`;
         }
@@ -451,8 +372,8 @@ export default {
 /* 响应式布局 - 小于 720px */
 @media screen and (max-width: 720px) {
   .pages-wrap {
-    .waterfall-wrap {
-      .waterfall-item {
+    .article-list {
+      .article-item {
         display: block !important;
         height: initial !important;
       }
@@ -481,8 +402,8 @@ export default {
         }
       }
     }
-    .waterfall-wrap {
-      .waterfall-item {
+    .article-list {
+      .article-item {
         display: block !important;
         height: initial !important;
       }
@@ -511,18 +432,13 @@ export default {
     }
   }
 
-  .waterfall-wrap {
+  .article-list {
     position: relative;
-    // background: radial-gradient(
-    //     circle at 647px 408px,
-    //     rgba(0, 163, 255) 0,
-    //     rgba(0, 163, 255, 0) calc(0% + 160px)
-    //   )
-    //   no-repeat border-box border-box rgba(0, 0, 0, 0);
-    .waterfall-item-a {
+    .article-item-a {
+      display: block;
       color: inherit;
       text-decoration: none;
-      .waterfall-item {
+      .article-item {
         position: relative;
         display: flex;
         overflow: hidden;
@@ -531,17 +447,7 @@ export default {
         height: 250px;
         border: 1px solid $theme-color4;
         border-radius: 6px;
-        // background-color: $theme-color6;
-        // cursor: pointer;
-
-        // &:hover {
-        //   transition: all 0.3s;
-        //   transform: scale(1.02);
-        // }
-        // .a-link {
-        // position: relative;
-        // display: flex;
-        // cursor: pointer;
+        background-color: white;
         .head-img-wrap {
           position: relative;
           overflow: hidden;
@@ -623,7 +529,6 @@ export default {
             }
           }
         }
-        // }
       }
     }
 
@@ -632,6 +537,7 @@ export default {
       bottom: 300px;
     }
   }
+
   .no-more {
     text-align: center;
   }

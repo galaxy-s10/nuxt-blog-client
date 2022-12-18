@@ -28,6 +28,7 @@
         <p>谢谢，距离买房又近了一步~</p>
       </template>
     </ModalCpt>
+
     <div class="article-suspended-panel-wrap">
       <div class="article-suspended-panel">
         <div
@@ -305,15 +306,18 @@ export default {
     if (this.detail.star_info.rows.includes((v) => v.id === this.userInfo.id)) {
       this.isStar = true;
     }
-    if (window.location.hash) {
-      window.location.href = window.location.hash;
-    }
   },
   destroyed() {
     this.$store.commit('app/setShowCatalog', false);
     this.$store.commit('article/changeCatalogList', []);
   },
   methods: {
+    jumpToComment() {
+      const el = document.querySelector('#comment-anchor');
+      window.scrollTo({
+        top: el.offsetTop,
+      });
+    },
     refreshStar() {
       const res = this.detail.star_info.rows.find((v) => {
         return v.id === this.userInfo.id;
@@ -323,9 +327,6 @@ export default {
     showRewardModal() {
       this.$newmessage('谢谢老板！', 'success');
       this.rewardModal = true;
-    },
-    jumpToComment() {
-      window.location.href = '#comment-anchor';
     },
     async getArticleDetail() {
       try {
@@ -553,6 +554,8 @@ export default {
       top: 250px;
       margin-left: -100px;
       .panel-btn {
+        text-decoration: none;
+        color: inherit;
         position: relative;
         margin-bottom: 30px;
         width: 48px;

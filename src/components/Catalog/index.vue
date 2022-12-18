@@ -8,8 +8,7 @@
       :key="index"
       :class="{ 'catalog-item': 1 }"
     >
-      <a
-        :href="'#' + item.id"
+      <span
         :class="{
           'a-link': true,
           left1: formatLeft(item, 1),
@@ -23,9 +22,10 @@
           paddingLeft: (item.type.slice(1) * 1 - 1) * 15 + 18 + 'px',
         }"
         :title="item.text"
+        @click="jumpTo('#' + item.id)"
       >
         {{ item.text }}
-      </a>
+      </span>
     </li>
   </ul>
   <div v-else>暂无目录~</div>
@@ -52,6 +52,12 @@ export default {
   methods: {
     formatLeft(v, num) {
       return v.type.slice(1) === num;
+    },
+    jumpTo(hash) {
+      const el = document.querySelector(`${hash}`);
+      window.scrollTo({
+        top: el.offsetTop,
+      });
     },
   },
 };
@@ -94,6 +100,7 @@ export default {
       width: inherit;
       color: $theme-color5;
       text-decoration: none;
+      cursor: pointer;
 
       @extend %singleEllipsis;
       &:hover {

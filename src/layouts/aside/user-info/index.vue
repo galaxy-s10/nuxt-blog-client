@@ -1,6 +1,7 @@
 <template>
   <div class="user-info">
     <div
+      ref="dndRef"
       class="container"
       @mousedown="handleStart"
       @mousemove.prevent="handleMove"
@@ -95,12 +96,14 @@ export default {
       let y = 0;
       if (event.targetTouches) {
         x =
-          event.targetTouches[0].pageX - this.dndRef.getBoundingClientRect().x;
+          event.targetTouches[0].pageX -
+          this.$refs.dndRef.getBoundingClientRect().x;
         y =
-          event.targetTouches[0].pageY - this.dndRef.getBoundingClientRect().y;
+          event.targetTouches[0].pageY -
+          this.$refs.dndRef.getBoundingClientRect().y;
       } else {
-        x = event.pageX - this.dndRef.getBoundingClientRect().x;
-        y = event.pageY - this.dndRef.getBoundingClientRect().y;
+        x = event.pageX - this.$refs.dndRef.getBoundingClientRect().x;
+        y = event.pageY - this.$refs.dndRef.getBoundingClientRect().y;
       }
       this.offset.x = x;
       this.offset.y = y;

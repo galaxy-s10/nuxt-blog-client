@@ -233,7 +233,15 @@ export default {
     width: 100%;
   }
 }
-
+.blur-img {
+  filter: blur(20px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: 1000px;
+}
 .blog-wrap {
   .dnd-wrap {
     width: 250px;

@@ -184,19 +184,19 @@ export default {
       this.changeBobyBg();
       setTimeout(() => {
         this.start = true;
-        const styles = [...document.styleSheets];
-        styles.forEach((style) => {
-          const rules = [...style.cssRules];
-          rules.forEach((rule) => {
-            if (rule.type === rule.KEYFRAMES_RULE && rule.name === 'rotate1') {
-              rule.cssRules[0].style.transform = `rotate(0deg)`;
-              rule.cssRules[1].style.transform = `rotate(360deg)`;
-              // rule.cssRules[0].style.transform = `rotate(${-this.nowDeg}deg)`;
-              // rule.cssRules[1].style.transform = `rotate(${360 -
-              //   this.nowDeg}deg)`;
-            }
-          });
-        });
+        // const styles = [...document.styleSheets];
+        // styles.forEach((style) => {
+        //   const rules = [...style.cssRules];
+        //   rules.forEach((rule) => {
+        //     if (rule.type === rule.KEYFRAMES_RULE && rule.name === 'rotate1') {
+        //       rule.cssRules[0].style.transform = `rotate(0deg)`;
+        //       rule.cssRules[1].style.transform = `rotate(360deg)`;
+        //       // rule.cssRules[0].style.transform = `rotate(${-this.nowDeg}deg)`;
+        //       // rule.cssRules[1].style.transform = `rotate(${360 -
+        //       //   this.nowDeg}deg)`;
+        //     }
+        //   });
+        // });
         this.audio.src = this.songList[index].audio_url;
         this.audio
           .play()

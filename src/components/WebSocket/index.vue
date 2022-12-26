@@ -71,7 +71,7 @@
                 :src="item"
                 class="avatar"
                 alt=""
-                @click="avatar = item"
+                @click="currUser.avatar = item"
               />
             </div>
             <div slot="reference">
@@ -79,7 +79,7 @@
                 <img
                   width="50"
                   class="avatar"
-                  :src="avatar"
+                  :src="currUser.avatar"
                   alt=""
                 />
                 <i class="el-icon-caret-bottom bottom"></i>
@@ -90,7 +90,7 @@
         <div class="item input">
           <div>
             <el-input
-              v-model="nickname"
+              v-model="currUser.nickname"
               maxlength="6"
               placeholder="请输入昵称"
             ></el-input>
@@ -121,50 +121,44 @@
 
 <script>
 import { io } from 'socket.io-client';
+
 const webSocketMsgType = {
   connect: 'connect', // 用户连接
   userInRoom: 'userInRoom', // 用户进入聊天
   userOutRoom: 'userOutRoom', // 用户退出聊天
   userSendMsg: 'userSendMsg', // 用户发送消息
-  heartbeatCheck: 'heartbeatCheck', // 心跳检测
   getOnlineUser: 'getOnlineUser', // 获取在线用户
 };
+
 const connectStatusEnum = {
   connecting: 'connecting', // 连接中
   connected: 'connected', // 已连接
   disconnect: 'disconnect', // 断开连接
   reconnect: 'reconnect', // 重新连接
 };
-const avatarList = [
-  'https://img.cdn.hsslive.cn/1613141138717Billd.webp',
-  'https://img.cdn.hsslive.cn/1610170474620Hololo.webp',
-  'https://img.cdn.hsslive.cn/1610170481257MoonTIT.webp',
-  'https://img.cdn.hsslive.cn/1610170481257CoCo.webp',
-  'https://img.cdn.hsslive.cn/1610170481257Nill.webp',
-  'https://img.cdn.hsslive.cn/1610170481257Ojin.webp',
-];
+
 export default {
   name: 'App',
   data() {
     return {
       webSocketMsgType,
       connectStatusEnum,
-      connectStatus: connectStatusEnum.disconnect, // 是否连接
-      // heartbeatPingTime: 1000, // 心跳检测时间（毫秒）
-      // heartbeatTimer: null, // 心跳定时器
+      connectStatus: connectStatusEnum.disconnect, // 连接状态
       wsInstance: null, // ws实例
-      chatList: [],
-      avatarList,
-      nickname: '',
+      chatList: [], // ws消息列表
+      avatarList: [], // 头像列表
       wsId: null,
-      avatar: avatarList[0],
+      currUser: {
+        nickname: '',
+        avatar: '',
+      }, // 当前用户信息
       isJoin: false, // 是否已加入聊天
       msg: '',
       onlineCount: 0, // 当前在线人数
-      // url: 'wss://www.zhengbeining.com/wss/',
-      url: 'wss://www.hsslive.cn/',
-      // url: 'ws://42.193.157.44:3200',
-      // url: 'ws://localhost:3300',
+      wsUrl:
+        process.NODE_ENV === 'production'
+          ? 'wss://www.hsslive.cn/'
+          : 'ws://localhost:3300',
     };
   },
   computed: {},
@@ -177,19 +171,33 @@ export default {
     },
   },
   mounted() {
-    this.createWebSocket(this.url);
+    this.createWebSocket(this.wsUrl);
+    const pathArr = require.context(
+      '../../assets/img/avatar/',
+      true,
+      /.webp|.jpg|.png|.jpeg|.gif$/i
+    );
+    pathArr.keys().forEach((path) => {
+      const newpath = path.replace('./', '');
+      try {
+        this.avatarList.push(require(`@/assets/img/avatar/${newpath}`));
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    this.currUser.avatar = this.avatarList[0];
   },
   destroyed() {
     this.closeWs();
   },
   methods: {
     join() {
-      if (this.nickname.length > 6) {
+      if (this.currUser.nickname.length > 6) {
         this.$newmessage('昵称最多6个字符！', 'info');
       }
       this.isJoin = true;
       this.wsInstance.emit(webSocketMsgType.userInRoom, {
-        nickname: this.nickname,
+        nickname: this.currUser.nickname,
         msg: this.msg,
       });
     },
@@ -276,8 +284,8 @@ export default {
         return;
       }
       this.wsInstance.emit(webSocketMsgType.userSendMsg, {
-        nickname: this.nickname,
-        avatar: this.avatar,
+        nickname: this.currUser.nickname,
+        avatar: this.currUser.avatar,
         msg: this.msg,
       });
       this.msg = '';

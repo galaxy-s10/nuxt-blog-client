@@ -238,8 +238,6 @@ export default {
       getUserInfo: 'user/getUserInfo',
     }),
     ...mapMutations({
-      setToken: 'user/setToken',
-      logout: 'user/logout',
       setIsWaterFall: 'app/setIsWaterFall',
     }),
     handleResize() {

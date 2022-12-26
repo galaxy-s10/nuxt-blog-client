@@ -24,9 +24,15 @@ export const state = () => ({
   theme: 'light',
   // 当前node环境
   currentNodeEnv: 'development',
+  // 音乐列表
+  musicList: [],
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
+  setMusicList(state, res) {
+    state.musicList = res;
+  },
   // eslint-disable-next-line no-shadow
   setIpInfo(state, res) {
     state.ipInfo = res;

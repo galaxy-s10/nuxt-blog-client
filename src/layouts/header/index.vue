@@ -108,8 +108,8 @@ export default {
           path: '/msg',
         },
         {
-          title: '聊天',
-          path: '/chat',
+          title: '互动',
+          path: '/interaction',
         },
         {
           title: '关于',

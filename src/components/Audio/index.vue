@@ -61,7 +61,7 @@
 
 <script>
 // import analyze from 'rgbaster';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -84,6 +84,7 @@ export default {
         return state.app.showMusicAudio;
       },
     }),
+
     duration2() {
       return (x) => this.formatTime(x);
     },
@@ -95,6 +96,7 @@ export default {
     }
     window.addEventListener('resize', this.resizeFn);
     const { data } = await this.$myaxios.get(`/music/list`);
+    this.setMusicList(data.rows);
     this.songList = data.rows;
     if (!this.songList.length) return;
     this.audio = new Audio();
@@ -128,6 +130,9 @@ export default {
     window.removeEventListener('resize', this.resizeFn);
   },
   methods: {
+    ...mapMutations({
+      setMusicList: 'app/setMusicList',
+    }),
     resizeFn() {
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth;

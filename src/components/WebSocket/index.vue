@@ -1,7 +1,9 @@
 <template>
   <div class="websocket-wrap">
     <div class="nav">
-      当前连接状态: {{ connectStatus }}，当前在线人数: {{ onlineCount }}
+      <div>当前连接状态: {{ connectStatus }}</div>
+      <div>当前在线游客: {{ onlineCount }}</div>
+      <div>当前在线用户: {{ onlineCount }}</div>
     </div>
     <div class="main">
       <div

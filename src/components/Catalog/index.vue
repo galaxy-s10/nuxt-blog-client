@@ -8,7 +8,7 @@
       :key="index"
       :class="{ 'catalog-item': 1 }"
     >
-      <span
+      <a
         :class="{
           'a-link': true,
           left1: formatLeft(item, 1),
@@ -22,10 +22,11 @@
           paddingLeft: (item.type.slice(1) * 1 - 1) * 15 + 18 + 'px',
         }"
         :title="item.text"
+        :href="'#' + item.id"
         @click="jumpTo('#' + item.id)"
       >
         {{ item.text }}
-      </span>
+      </a>
     </li>
   </ul>
   <div v-else>暂无目录~</div>
@@ -54,10 +55,10 @@ export default {
       return v.type.slice(1) === num;
     },
     jumpTo(hash) {
-      const el = document.querySelector(`${hash}`);
-      window.scrollTo({
-        top: el.offsetTop,
-      });
+      // const el = document.querySelector(`${hash}`);
+      // window.scrollTo({
+      //   top: el.offsetTop,
+      // });
     },
   },
 };

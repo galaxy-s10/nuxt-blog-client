@@ -59,17 +59,20 @@
             {{ detail.star_info.count }}
           </span>
         </div>
+
         <div
           class="panel-btn"
           @click="jumpToComment"
         >
-          <i class="el-icon-chat-dot-round ico"></i>
-          <span
-            v-if="detail.comment_total"
-            class="badge"
-          >
-            {{ detail.comment_total }}
-          </span>
+          <a href="#comment-anchor">
+            <i class="el-icon-chat-dot-round ico"></i>
+            <span
+              v-if="detail.comment_total"
+              class="badge"
+            >
+              {{ detail.comment_total }}
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -313,10 +316,10 @@ export default {
   },
   methods: {
     jumpToComment() {
-      const el = document.querySelector('#comment-anchor');
-      window.scrollTo({
-        top: el.offsetTop,
-      });
+      // const el = document.querySelector('#comment-anchor');
+      // window.scrollTo({
+      //   top: el.offsetTop,
+      // });
     },
     refreshStar() {
       const res = this.detail.star_info.rows.find((v) => {
@@ -522,7 +525,9 @@ export default {
           }
         }
         if (window.location.hash) {
-          window.location.href = window.location.hash;
+          setTimeout(() => {
+            window.location.href = window.location.hash;
+          }, 200);
         }
         this.$store.commit('article/changeCatalogList', arr);
       });

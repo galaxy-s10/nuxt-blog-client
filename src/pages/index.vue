@@ -9,7 +9,7 @@
         v-for="(item, index) in articleList"
         :key="index"
         ref="article-item"
-        class="article-item-a"
+        :class="{ 'article-item-a': true, 'water-fall': isWaterFall }"
         :to="`/article/${item.id}`"
       >
         <article :class="{ 'article-item': true }">
@@ -192,8 +192,13 @@ export default {
 
         waterfallItem.forEach((v) => {
           v.$el.setAttribute('style', 'width:100%');
+          const articleItem = v.$el.querySelector('.article-item');
           const headImg = v.$el.querySelector('.head-img');
           const noHeadImg = v.$el.querySelector('.no-head-img');
+          if (articleItem) {
+            articleItem.style.removeProperty('display');
+            articleItem.style.removeProperty('height');
+          }
           if (headImg) {
             headImg.style.removeProperty('height');
             headImg.style.removeProperty('line-height');
@@ -436,16 +441,23 @@ export default {
       display: block;
       color: inherit;
       text-decoration: none;
+      margin-bottom: 20px;
+      &.water-fall {
+        margin-bottom: 0px;
+      }
       .article-item {
         position: relative;
         display: flex;
         overflow: hidden;
         box-sizing: border-box;
-        margin-bottom: 20px;
         height: 250px;
         border: 1px solid $theme-color4;
         border-radius: 6px;
         background-color: white;
+        &:hover {
+          transition: all 0.2s;
+          transform: scale(1.02);
+        }
         .head-img-wrap {
           position: relative;
           overflow: hidden;
@@ -455,10 +467,6 @@ export default {
             width: 100%;
             height: 250px;
             line-height: 250px;
-            &:hover {
-              transition: all 0.3s;
-              transform: scale(1.1);
-            }
           }
           .head-img {
             display: inline-block;
@@ -467,10 +475,6 @@ export default {
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
-            &:hover {
-              transition: all 0.3s;
-              transform: scale(1.1);
-            }
           }
         }
         .top {

@@ -158,8 +158,8 @@ export default {
       msg: '',
       onlineCount: 0, // 当前在线人数
       wsUrl:
-        process.NODE_ENV === 'production'
-          ? 'wss://www.hsslive.cn/'
+        process.env.NODE_ENV === 'production'
+          ? 'ws://42.193.157.44:3200'
           : 'ws://localhost:3300',
     };
   },

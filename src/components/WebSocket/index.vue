@@ -159,7 +159,7 @@ export default {
       onlineCount: 0, // 当前在线人数
       wsUrl:
         process.env.NODE_ENV === 'production'
-          ? 'ws://42.193.157.44:3200'
+          ? 'wss://42.193.157.44:3200'
           : 'ws://localhost:3300',
     };
   },

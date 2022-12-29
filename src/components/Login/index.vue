@@ -32,7 +32,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend_qq_login === 2"
+                :disabled="frontendData.allow_qq_login === '2'"
                 @click="qqLogin"
               >
                 QQ登录
@@ -41,7 +41,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.frontend_github_login === 2"
+                :disabled="frontendData.allow_github_login === '2'"
                 @click="githubLogin"
               >
                 GitHub登录
@@ -77,15 +77,11 @@
 <script>
 import { mapActions, mapMutations } from 'vuex';
 
-import {
-  GITHUB_OAUTH_URL,
-  QQ_OAUTH_URL,
-  REDIRECT_URI,
-  QQ_CLIENT_ID,
-  GITHUB_CLIENT_ID,
-} from '@/constant';
+import { loginMixin } from '@/mixin/login';
+
 export default {
   components: {},
+  mixins: [loginMixin],
   data() {
     return {
       username: '',
@@ -124,26 +120,6 @@ export default {
     ...mapMutations({
       userLogout: 'user/logout',
     }),
-    qqLogin() {
-      const url =
-        `${QQ_OAUTH_URL}client_id=${QQ_CLIENT_ID}&redirect_uri=${REDIRECT_URI}qq_login` +
-        `&state=99&scope=get_user_info,get_vip_info,get_vip_rich_info`;
-      window.open(
-        url,
-        'qq_login_window',
-        'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
-      );
-    },
-    githubLogin() {
-      const url =
-        `${GITHUB_OAUTH_URL}client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}github_login` +
-        `&scope=user`;
-      window.open(
-        url,
-        'github_login_window',
-        'toolbar=yes,location=no,directories=no,status=no,menubar=no,scrollbars=no,titlebar=no,toolbar=no,resizable=no,copyhistory=yes, width=918, height=609,top=250,left=400'
-      );
-    },
     async register() {
       if (this.username === '' || this.password === '') {
         this.$newmessage('请输入完整！', 'error');

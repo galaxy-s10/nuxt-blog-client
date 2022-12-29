@@ -8,7 +8,7 @@
   >
     <AsyncRenderMarkdownCpt
       v-if="frontendData"
-      :md="frontendData.frontend_dialog_content"
+      :md="frontendData.home_modal_content"
     ></AsyncRenderMarkdownCpt>
     <span slot="footer">
       <el-button @click="dialogVisible = false">取消</el-button>
@@ -25,7 +25,8 @@
 <script>
 export default {
   components: {
-    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
+    AsyncRenderMarkdownCpt: () =>
+      import('@/components/RenderMarkdown/index.vue'),
   },
   props: {},
   data() {
@@ -47,7 +48,7 @@ export default {
     if (d <= 414) {
       this.dialogWidth = '80%';
     }
-    this.dialogVisible = this.frontendData.frontend_dialog === 1;
+    this.dialogVisible = this.frontendData.allow_home_modal === '1';
   },
   methods: {
     handleClose() {

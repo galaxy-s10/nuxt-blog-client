@@ -60,8 +60,8 @@ export default {
   },
   alias: {
     '@': path.resolve(__dirname, './src/'),
-    components: path.resolve(__dirname, './src/components'),
-    layouts: path.resolve(__dirname, './src/layouts'),
+    // components: path.resolve(__dirname, './src/components'),
+    // layouts: path.resolve(__dirname, './src/layouts'),
   },
   corejs: 3,
 

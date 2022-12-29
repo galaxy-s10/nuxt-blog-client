@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import LoginCpt from 'components/Login/index.vue';
+import LoginCpt from '@/components/Login/index.vue';
 
 export default {
   components: {

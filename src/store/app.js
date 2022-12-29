@@ -26,6 +26,7 @@ export const state = () => ({
   currentNodeEnv: 'development',
   // 音乐列表
   musicList: [],
+  showLoginModal: false,
 });
 
 export const mutations = {
@@ -72,6 +73,10 @@ export const mutations = {
   // eslint-disable-next-line no-shadow
   setShowMusicAudio(state, res) {
     state.showMusicAudio = res;
+  },
+  // eslint-disable-next-line no-shadow
+  setShowLoginModal(state, res) {
+    state.showLoginModal = res;
   },
   // eslint-disable-next-line no-shadow
   setTheme(state, res) {

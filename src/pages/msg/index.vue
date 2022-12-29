@@ -14,7 +14,7 @@
         <el-button
           type="primary"
           :loading="submitCommentLoading"
-          :disabled="frontendData.frontend_comment === -1"
+          :disabled="frontendData.allow_comment === '2'"
           @click="addComment"
         >
           发表留言
@@ -41,17 +41,16 @@
 </template>
 
 <script>
-import CommentCpt from 'components/Comment/index.vue';
-import TextareaInputCpt from 'components/TextareaInput/index.vue';
+import { mapMutations } from 'vuex';
 
-import { init } from '@/mixin/init';
+import CommentCpt from '@/components/Comment/index.vue';
+import TextareaInputCpt from '@/components/TextareaInput/index.vue';
 
 export default {
   components: {
     CommentCpt,
     TextareaInputCpt,
   },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, params, store }) {
     try {
@@ -129,6 +128,9 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapMutations({
+      setShowLoginModal: 'app/setShowLoginModal',
+    }),
     contentChange(newVal, oldVal) {
       this.commentContent = newVal;
     },
@@ -136,6 +138,7 @@ export default {
     // 新增回复
     async addComment() {
       if (!this.userInfo) {
+        this.setShowLoginModal(true);
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }

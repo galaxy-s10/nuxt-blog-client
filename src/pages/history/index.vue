@@ -30,15 +30,12 @@
 </template>
 
 <script>
-import pagingCpt from 'components/Paging/index.vue';
-
-import { init } from '@/mixin/init';
+import pagingCpt from '@/components/Paging/index.vue';
 
 export default {
   components: {
     pagingCpt,
   },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, store, params }) {
     const query = {

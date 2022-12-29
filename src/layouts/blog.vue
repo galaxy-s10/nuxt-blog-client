@@ -38,21 +38,24 @@
       </div>
     </div>
     <LyFooter />
+    <LoginModalCpt v-model="loginModalVisiable"></LoginModalCpt>
   </div>
 </template>
 <script>
+// import PlumCpt from '@/components/Plum/index.vue';
 import { generateStyle, imgPrereload } from 'billd-utils';
-import AudioCpt from 'components/Audio/index.vue';
-import CatalogCpt from 'components/Catalog/index.vue';
-import FeatureTipCpt from 'components/FeatureTip/index.vue';
-// import PlumCpt from 'components/Plum/index.vue';
-import LyAside from 'layouts/aside/index.vue';
-import LyBacktop from 'layouts/backtop/index.vue';
-import LyFooter from 'layouts/footer/index.vue';
-import LyHeader from 'layouts/header/index.vue';
-import LyMain from 'layouts/main/index.vue';
-import LyTypeList from 'layouts/typelist/index.vue';
 import { mapActions, mapMutations } from 'vuex';
+
+import AudioCpt from '@/components/Audio/index.vue';
+import CatalogCpt from '@/components/Catalog/index.vue';
+import FeatureTipCpt from '@/components/FeatureTip/index.vue';
+import LoginModalCpt from '@/components/LoginModal/index.vue';
+import LyAside from '@/layouts/aside/index.vue';
+import LyBacktop from '@/layouts/backtop/index.vue';
+import LyFooter from '@/layouts/footer/index.vue';
+import LyHeader from '@/layouts/header/index.vue';
+import LyMain from '@/layouts/main/index.vue';
+import LyTypeList from '@/layouts/typelist/index.vue';
 
 export default {
   components: {
@@ -64,13 +67,18 @@ export default {
     LyFooter,
     CatalogCpt,
     AudioCpt,
-    // AsnycAudioCpt: () => import('components/Audio/index.vue'),
+    // AsnycAudioCpt: () => import('@/components/Audio/index.vue'),
     // PlumCpt,
     FeatureTipCpt,
+    LoginModalCpt,
   },
   asyncData({ $myaxios, store }) {},
   data() {
-    return { showMinCatalogIco: false, showMinCatalog: false };
+    return {
+      loginModalVisiable: false,
+      showMinCatalogIco: false,
+      showMinCatalog: false,
+    };
   },
   computed: {
     currentNodeEnv() {
@@ -85,6 +93,9 @@ export default {
     showPlum() {
       return this.$store.state.app.showPlum;
     },
+    showLoginModal() {
+      return this.$store.state.app.showLoginModal;
+    },
     catalogList() {
       return this.$store.state.article.catalogList;
     },
@@ -97,6 +108,12 @@ export default {
         this.showMinCatalogIco = false;
         this.showMinCatalog = false;
       }
+    },
+    showLoginModal(newVal) {
+      this.loginModalVisiable = newVal;
+    },
+    loginModalVisiable(newVal) {
+      this.setShowLoginModal(newVal);
     },
   },
   mounted() {
@@ -135,6 +152,7 @@ export default {
       setToken: 'user/setToken',
       logout: 'user/logout',
       setHiddenHeader: 'app/setHiddenHeader',
+      setShowLoginModal: 'app/setShowLoginModal',
     }),
     async setTheme() {
       const { data } = await this.$myaxios.get(`/theme/list`);

@@ -60,11 +60,14 @@
           </span>
         </div>
 
-        <div
-          class="panel-btn"
-          @click="jumpToComment"
+        <a
+          href="#comment-anchor"
+          class="comment-anchor-a"
         >
-          <a href="#comment-anchor">
+          <div
+            class="panel-btn"
+            @click="jumpToComment"
+          >
             <i class="el-icon-chat-dot-round ico"></i>
             <span
               v-if="detail.comment_total"
@@ -72,8 +75,8 @@
             >
               {{ detail.comment_total }}
             </span>
-          </a>
-        </div>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -198,23 +201,22 @@
 </template>
 
 <script>
-import AvatarGroupCpt from 'components/AvatarGroup/index.vue';
-import CommentCpt from 'components/Comment/index.vue';
-import ModalCpt from 'components/Modal/index.vue';
-import RenderMarkdownCpt from 'components/RenderMarkdown/index.vue';
+import { mapMutations } from 'vuex';
 
-import { init } from '@/mixin/init';
+import AvatarGroupCpt from '@/components/AvatarGroup/index.vue';
+import CommentCpt from '@/components/Comment/index.vue';
+import ModalCpt from '@/components/Modal/index.vue';
+import RenderMarkdownCpt from '@/components/RenderMarkdown/index.vue';
 
 export default {
   components: {
-    // CommentCpt: () => import('components/Comment'),
+    // CommentCpt: () => import('@/components/Comment'),
     CommentCpt,
     ModalCpt,
-    AsyncTextareaInputCpt: () => import('components/TextareaInput/index.vue'),
+    AsyncTextareaInputCpt: () => import('@/components/TextareaInput/index.vue'),
     RenderMarkdownCpt, // 这个组件不能写成异步组件，否则下面的mounted钩子里面的renderCatalog方法获取的ref就是undefined
     AvatarGroupCpt,
   },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, params, store }) {
     try {
@@ -315,6 +317,9 @@ export default {
     this.$store.commit('article/changeCatalogList', []);
   },
   methods: {
+    ...mapMutations({
+      setShowLoginModal: 'app/setShowLoginModal',
+    }),
     jumpToComment() {
       // const el = document.querySelector('#comment-anchor');
       // window.scrollTo({
@@ -433,6 +438,7 @@ export default {
     // 新增回复
     async addComment() {
       if (!this.$store.state.user.userInfo) {
+        this.setShowLoginModal(true);
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }
@@ -486,6 +492,7 @@ export default {
             this.starLoaing = false;
           }
         } else {
+          this.setShowLoginModal(true);
           this.$newmessage('暂未登录，请登录！', 'warning');
         }
       } catch (error) {
@@ -558,10 +565,15 @@ export default {
       position: fixed;
       top: 250px;
       margin-left: -100px;
-      .panel-btn {
-        text-decoration: none;
+      .comment-anchor-a {
         color: inherit;
+        text-decoration: none;
+      }
+      .panel-btn {
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 30px;
         width: 48px;
         height: 48px;
@@ -570,10 +582,9 @@ export default {
         background-position: 50%;
         background-repeat: no-repeat;
         box-shadow: 0 2px 4px 0 rgb(0 0 0 / 4%);
+        color: inherit;
         text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        text-decoration: none;
         cursor: pointer;
         @keyframes rotate {
           0% {
@@ -589,8 +600,8 @@ export default {
           }
         }
         .reward {
-          font-size: 22px;
           color: gold;
+          font-size: 22px;
         }
         .ico {
           font-size: 22px;

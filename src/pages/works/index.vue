@@ -32,11 +32,8 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init';
-
 export default {
   components: {},
-  mixins: [init],
   layout: 'blog',
   props: [],
   async asyncData({ $myaxios, params, store }) {

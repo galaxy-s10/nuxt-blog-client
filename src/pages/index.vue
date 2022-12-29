@@ -107,16 +107,14 @@
 </template>
 
 <script>
-import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
 import { mapActions, mapMutations } from 'vuex';
 
-import { init } from '@/mixin/init';
+import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 import { getRandomInt } from '@/utils/index';
 export default {
   components: {
     NoHeadImgCpt,
   },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, store }) {
     const params = {

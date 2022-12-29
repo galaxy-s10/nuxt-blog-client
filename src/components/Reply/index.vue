@@ -21,8 +21,10 @@
 </template>
 
 <script>
-import ModalCpt from 'components/Modal/index.vue';
-import TextareaInputCpt from 'components/TextareaInput/index.vue';
+import { mapMutations } from 'vuex';
+
+import ModalCpt from '@/components/Modal/index.vue';
+import TextareaInputCpt from '@/components/TextareaInput/index.vue';
 
 export default {
   components: { TextareaInputCpt, ModalCpt },
@@ -45,11 +47,15 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapMutations({
+      setShowLoginModal: 'app/setShowLoginModal',
+    }),
     contentChange(newVal, oldVal) {
       this.content = newVal;
     },
     reply() {
       if (!this.$store.state.user.userInfo) {
+        this.setShowLoginModal(true);
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }

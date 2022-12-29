@@ -123,13 +123,10 @@
 </template>
 
 <script>
-import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
-
-import { init } from '@/mixin/init';
+import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 
 export default {
   components: { NoHeadImgCpt },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, store, params }) {
     const articleListParams = {

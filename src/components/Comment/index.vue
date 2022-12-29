@@ -112,14 +112,15 @@
 </template>
 
 <script>
-import LoginCpt from 'components/Login/index.vue';
-import ModalCpt from 'components/Modal/index.vue';
-import ReplyCpt from 'components/Reply/index.vue';
 import { MessageBox } from 'element-ui';
+import { mapMutations } from 'vuex';
 
 import ItemCpt from './components/Item/index.vue';
 import SortTabCpt from './components/SortTab/index.vue';
 
+import LoginCpt from '@/components/Login/index.vue';
+import ModalCpt from '@/components/Modal/index.vue';
+import ReplyCpt from '@/components/Reply/index.vue';
 import { deepCloneByJson } from '@/utils/index';
 export default {
   components: {
@@ -200,6 +201,9 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapMutations({
+      setShowLoginModal: 'app/setShowLoginModal',
+    }),
     async refresh() {
       if (this.currentComment !== null) {
         this.childListParams.nowPage = 1;
@@ -307,6 +311,7 @@ export default {
     async handleStar(item) {
       const type = item.is_star === false;
       if (!this.$store.state.user.userInfo) {
+        this.setShowLoginModal(true);
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }

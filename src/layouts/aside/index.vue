@@ -319,8 +319,8 @@
 </template>
 
 <script>
-import CatalogCpt from 'components/Catalog/index.vue';
-import NoHeadImgCpt from 'components/NoHeadImg/index.vue';
+import CatalogCpt from '@/components/Catalog/index.vue';
+import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
 
 import UserInfoCpt from './user-info/index.vue';
@@ -332,7 +332,7 @@ export default {
     UserInfoCpt,
     CatalogCpt,
     NoHeadImgCpt,
-    AsnycCollapseCpt: () => import('components/Collapse/index.vue'),
+    AsnycCollapseCpt: () => import('@/components/Collapse/index.vue'),
   },
   // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
   asyncData({ $myaxios, store }) {},

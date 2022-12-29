@@ -33,18 +33,17 @@
 
     <!-- about富文本 -->
     <AsyncRenderMarkdownCpt
-      :md="frontendData.frontend_about"
+      :md="frontendData.about_me"
     ></AsyncRenderMarkdownCpt>
   </div>
 </template>
 
 <script>
-import { init } from '@/mixin/init';
 export default {
   components: {
-    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
+    AsyncRenderMarkdownCpt: () =>
+      import('@/components/RenderMarkdown/index.vue'),
   },
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios }) {
     const { data } = await $myaxios.get('/statis/detail');

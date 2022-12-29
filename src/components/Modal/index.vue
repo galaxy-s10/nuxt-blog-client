@@ -6,7 +6,7 @@
   >
     <div
       class="modal-wrap"
-      :style="{ top: top }"
+      :style="{ top, width }"
     >
       <div class="title-wrap">
         <span class="title">{{ title }}</span>
@@ -19,7 +19,10 @@
       <div class="content">
         <slot name="content"></slot>
       </div>
-      <div class="footer">
+      <div
+        v-if="!hiddenFooter"
+        class="footer"
+      >
         <slot name="footer"></slot>
       </div>
     </div>
@@ -44,6 +47,16 @@ export default {
       type: String,
       require: true,
       default: '20%',
+    },
+    width: {
+      type: String,
+      require: true,
+      default: '50%',
+    },
+    hiddenFooter: {
+      type: Boolean,
+      require: false,
+      default: false,
     },
   },
   data() {
@@ -74,9 +87,8 @@ export default {
   background-color: $theme-color8;
   .modal-wrap {
     position: absolute;
-    top: 30%;
     left: 50%;
-    width: 600px;
+    max-width: 600px;
     border: 1px solid $theme-color4;
     border-radius: 12px;
     background: $theme-color6;

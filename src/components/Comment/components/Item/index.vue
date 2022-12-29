@@ -173,10 +173,13 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'CItem',
   components: {
-    AsyncRenderMarkdownCpt: () => import('components/RenderMarkdown/index.vue'),
+    AsyncRenderMarkdownCpt: () =>
+      import('@/components/RenderMarkdown/index.vue'),
   },
   props: {
     item: {
@@ -189,6 +192,7 @@ export default {
   },
   data() {
     return {
+      loginModalVisiable: false,
       currentComment: null,
       sort: 'hot',
       currentUserDetail: null,
@@ -203,6 +207,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapMutations({
+      setShowLoginModal: 'app/setShowLoginModal',
+    }),
     async loadingUserDetail(v) {
       const { data } = await this.$myaxios.get(`/user/find/${v.id}`, {});
       this.currentUserDetail = data;
@@ -230,6 +237,11 @@ export default {
     },
     // 显示回复框
     showReply(item) {
+      if (!this.$store.state.user.userInfo) {
+        this.setShowLoginModal(true);
+        this.$newmessage('暂未登录，请登录！', 'warning');
+        return;
+      }
       this.$emit('showReply', item);
     },
     // 删除回复

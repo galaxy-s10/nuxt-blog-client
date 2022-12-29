@@ -90,7 +90,7 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.frontend_link === -1"
+            :disabled="frontendData.allow_link === '2'"
             @click="addLink()"
           >
             提交申请
@@ -102,8 +102,6 @@
 </template>
 
 <script>
-import { init } from '@/mixin/init';
-
 const validateEmail = (rule, value, callback) => {
   const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
   if (value) {
@@ -118,7 +116,6 @@ const validateEmail = (rule, value, callback) => {
 
 export default {
   components: {},
-  mixins: [init],
   layout: 'blog',
   async asyncData({ $myaxios, params, store }) {
     // 获取友链数据

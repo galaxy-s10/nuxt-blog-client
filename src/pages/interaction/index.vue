@@ -1,6 +1,6 @@
 <template>
   <div class="interaction-wrap">
-    <h1 class="title">在线互动</h1>
+    <h1 class="title">在线互动(Beta)</h1>
     <hr class="hr-class" />
     当前音乐列表：
     <div class="music-list">

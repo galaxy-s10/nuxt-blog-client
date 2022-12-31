@@ -2,23 +2,42 @@ import axios from 'axios';
 import { isBrowser } from 'billd-utils';
 import { Message } from 'element-ui';
 
+import { Api } from '@/api/index';
+
 export default function ({ $axios, store }, inject) {
-  // const axios = $axios
   let baseURL = '/';
+
+  let env = 'prod'; // prod,beta,dev
   if (process.env.NODE_ENV === 'development') {
-    if (isBrowser()) {
-      baseURL = '/api/'; // 客户端运行的时候，调用本地的/api，让其代理到实际的url
-      // baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
-    } else {
-      baseURL = 'http://localhost:3300'; // 服务端运行的时候直接代理到实际的url
-      // baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
-    }
+    env = 'beta';
+  } else if (process.env.NODE_ENV === 'production') {
+    env = 'prod';
   } else {
-    baseURL = `https://api.hsslive.cn/prodapi/`; // 调用线上的接口
+    env = 'beta';
+  }
+  switch (env) {
+    case 'prod':
+      baseURL = `https://api.hsslive.cn/prodapi/`; // 调用线上的接口
+      break;
+    case 'dev':
+      if (isBrowser()) {
+        baseURL = '/api/'; // 客户端运行的时候，调用本地的/api，让其代理到实际的url
+      } else {
+        baseURL = 'http://localhost:3300'; // 服务端运行的时候直接代理到实际的url
+      }
+      break;
+    case 'beta':
+      baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
+      break;
   }
 
   const service = axios.create({
     baseURL,
+    timeout: 5000,
+    withCredentials: true, // 允许跨域携带cookie信息
+  });
+  const service1 = axios.create({
+    baseURL: '/',
     timeout: 5000,
     withCredentials: true, // 允许跨域携带cookie信息
   });
@@ -94,4 +113,5 @@ export default function ({ $axios, store }, inject) {
     }
   );
   inject('myaxios', service);
+  inject('myaxios1', new Api(service1));
 }

@@ -3,10 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "components/*": ["./src/components/*"],
-      "layouts/*": ["./src/layouts/*"]
-    }
+      "@/*": ["./src/*"]
+      // "components/*": ["./src/components/*"],
+      // "layouts/*": ["./src/layouts/*"]
+    },
+    "checkJs": true
+    // "allowJs": true
   },
   "vueCompilerOptions": { "target": 2.7 },
   "exclude": ["node_modules", ".nuxt", "dist"]

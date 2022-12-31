@@ -158,7 +158,7 @@ export default {
       msg: '',
       onlineCount: 0, // 当前在线人数
       wsUrl:
-        process.env.NODE_ENV !== 'production'
+        process.env.NODE_ENV === 'production'
           ? 'wss://www.hsslive.cn' // wss需要配置域名，不能配置ip地址+端口号
           : 'ws://localhost:3300',
       // wsUrl:

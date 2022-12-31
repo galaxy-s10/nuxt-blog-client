@@ -123,25 +123,34 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+import { Api } from '@/api';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 
 export default {
   components: { NoHeadImgCpt },
   layout: 'blog',
-  async asyncData({ $myaxios, store, params }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     const articleListParams = {
       nowPage: 1,
       pageSize: 3,
     };
     const tagId = params.id;
     try {
-      const { data: tagData } = await $myaxios.get(`/tag/list`);
-      const { data: articleData } = await $myaxios.get(
-        `/tag/article_list/${tagId}`,
-        {
-          params: articleListParams,
-        }
-      );
+      const { data: tagData } = await $myaxios.tag.list();
+      const { data: articleData } = await $myaxios.tag.articleList({
+        tagId,
+        params: articleListParams,
+      });
 
       return {
         articleListParams,
@@ -192,7 +201,8 @@ export default {
       const tagId = this.$route.params.id;
       this.currentTagId = +tagId;
       try {
-        const { data } = await this.$myaxios.get(`/tag/article_list/${tagId}`, {
+        const { data } = await this.$myaxios.tag.articleList({
+          tagId,
           params: this.articleListParams,
         });
         this.articleList = data.rows;
@@ -209,12 +219,10 @@ export default {
         this.articleListParams.nowPage += 1;
       }
       try {
-        const { data } = await this.$myaxios.get(
-          `/tag/article_list/${this.currentTagId}`,
-          {
-            params: this.articleListParams,
-          }
-        );
+        const { data } = await this.$myaxios.tag.articleList({
+          tagId: this.currentTagId,
+          params: this.articleListParams,
+        });
         this.articleList = data.rows;
         this.total = data.total;
         this.hasMore = data.hasMore;

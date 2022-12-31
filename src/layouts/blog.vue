@@ -46,6 +46,9 @@
 import { generateStyle, imgPrereload } from 'billd-utils';
 import { mapActions, mapMutations } from 'vuex';
 
+// eslint-disable-next-line
+import { Api } from '@/api';
+
 import AudioCpt from '@/components/Audio/index.vue';
 import CatalogCpt from '@/components/Catalog/index.vue';
 import FeatureTipCpt from '@/components/FeatureTip/index.vue';
@@ -72,7 +75,17 @@ export default {
     FeatureTipCpt,
     LoginModalCpt,
   },
-  asyncData({ $myaxios, store }) {},
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   * nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
+   */
+  async asyncData({ $myaxios, store, params, req }) {},
   data() {
     return {
       loginModalVisiable: false,
@@ -130,7 +143,7 @@ export default {
       }ms`
     );
     if (this.currentNodeEnv !== 'development') {
-      this.$myaxios.post('visitor_log/create'); // 新增访客记录
+      this.$myaxios.visitorLog.create(); // 新增访客记录
     }
     if (this.$route.name === 'article-id') {
       this.handleResize();
@@ -155,7 +168,7 @@ export default {
       setShowLoginModal: 'app/setShowLoginModal',
     }),
     async setTheme() {
-      const { data } = await this.$myaxios.get(`/theme/list`);
+      const { data } = await this.$myaxios.theme.list();
       const obj = {};
       data.rows.forEach((item) => {
         obj[item.key] = item.value;
@@ -209,9 +222,7 @@ export default {
       if (type === 'qq_login') {
         if (code) {
           try {
-            const { data: token } = await this.$myaxios.post(`/qq_user/login`, {
-              code,
-            });
+            const { data: token } = await this.$myaxios.qqUser.login(code);
             if (token) {
               this.setToken(token);
               this.getUserInfo();
@@ -224,12 +235,7 @@ export default {
       if (type === 'github_login') {
         if (code) {
           try {
-            const { data: token } = await this.$myaxios.post(
-              `/github_user/login`,
-              {
-                code,
-              }
-            );
+            const { data: token } = await this.$myaxios.githubUser.login(code);
             if (token) {
               this.setToken(token);
               this.getUserInfo();

@@ -104,7 +104,7 @@ export const mutations = {
 export const actions = {
   async getIpInfo({ commit }) {
     try {
-      const { data } = await this.$myaxios.get('/position/get');
+      const { data } = await this.$myaxios.position.get();
       commit('setIpInfo', data);
     } catch (error) {
       console.log(error);
@@ -112,7 +112,7 @@ export const actions = {
   },
   async getStatisData({ commit }) {
     try {
-      const { data } = await this.$myaxios.get('/statis/detail');
+      const { data } = await this.$myaxios.statis.detail();
       commit('setStatisData', data);
     } catch (error) {
       console.log(error);
@@ -120,7 +120,7 @@ export const actions = {
   },
   async getFrontendData({ commit }) {
     try {
-      const { data } = await this.$myaxios.get('/frontend/detail');
+      const { data } = await this.$myaxios.frontend.detail();
       commit('setFrontendData', data);
     } catch (error) {
       console.log(error);

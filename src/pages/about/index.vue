@@ -33,20 +33,36 @@
 
     <!-- about富文本 -->
     <AsyncRenderMarkdownCpt
-      :md="frontendData.about_me"
+      :md="frontendData.about_me.value"
     ></AsyncRenderMarkdownCpt>
+
+    <div class="update-time">
+      最后更新：{{ frontendData.about_me.updated_at }}
+    </div>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line
+import { Api } from '@/api';
+
 export default {
   components: {
     AsyncRenderMarkdownCpt: () =>
       import('@/components/RenderMarkdown/index.vue'),
   },
   layout: 'blog',
-  async asyncData({ $myaxios }) {
-    const { data } = await $myaxios.get('/statis/detail');
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
+    const { data } = await $myaxios.statis.detail();
     return {
       summary: data,
     };
@@ -115,6 +131,9 @@ export default {
         font-size: 12px;
       }
     }
+  }
+  .update-time {
+    text-align: right;
   }
 }
 </style>

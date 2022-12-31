@@ -32,7 +32,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.allow_qq_login === '2'"
+                :disabled="frontendData.allow_qq_login.value === '2'"
                 @click="qqLogin"
               >
                 QQ登录
@@ -41,7 +41,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.allow_github_login === '2'"
+                :disabled="frontendData.allow_github_login.value === '2'"
                 @click="githubLogin"
               >
                 GitHub登录
@@ -157,21 +157,6 @@ export default {
           })
           .catch((error) => {
             this.$newmessage(error.message, 'error');
-          });
-      }
-    },
-    login() {
-      if (this.username === '' || this.password === '') {
-        this.$newmessage('请输入完整！', 'error');
-      } else {
-        this.userLogin({ username: this.username, password: this.password })
-          .then((res) => {
-            this.$newmessage(res.message, 'success');
-            this.dialogVisible = false;
-            this.getUserInfo();
-          })
-          .catch((error) => {
-            console.log(error);
           });
       }
     },

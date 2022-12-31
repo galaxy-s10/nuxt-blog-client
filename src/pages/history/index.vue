@@ -30,6 +30,8 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+import { Api } from '@/api';
 import pagingCpt from '@/components/Paging/index.vue';
 
 export default {
@@ -37,12 +39,21 @@ export default {
     pagingCpt,
   },
   layout: 'blog',
-  async asyncData({ $myaxios, store, params }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     const query = {
       nowPage: 1,
       pageSize: 20,
     };
-    const { data } = await $myaxios.get(`/article/list`, {
+    const { data } = await $myaxios.article.list({
       params: {
         orderName: 'created_at',
         orderBy: 'desc',
@@ -74,13 +85,11 @@ export default {
   mounted() {},
   methods: {
     async currentChange(nowPage) {
-      const { data } = await this.$myaxios.get(`/article/list`, {
-        params: {
-          orderName: 'created_at',
-          orderBy: 'desc',
-          pageSize: this.pageSize,
-          nowPage,
-        },
+      const { data } = await this.$myaxios.article.list({
+        orderName: 'created_at',
+        orderBy: 'desc',
+        pageSize: this.pageSize,
+        nowPage,
       });
       this.historyArticleList = data.rows;
       this.total = data.total;

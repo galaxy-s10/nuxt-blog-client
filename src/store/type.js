@@ -21,7 +21,7 @@ export const actions = {
       pageSize: 10,
     };
     try {
-      const { data } = await this.$myaxios.get(`/type/list`, { params });
+      const { data } = await this.$myaxios.type.list(params);
       commit('changeTypeList', data.rows);
     } catch (error) {
       console.log(error);

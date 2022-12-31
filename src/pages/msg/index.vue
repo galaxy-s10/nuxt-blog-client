@@ -14,7 +14,7 @@
         <el-button
           type="primary"
           :loading="submitCommentLoading"
-          :disabled="frontendData.allow_comment === '2'"
+          :disabled="frontendData.allow_comment.value === '2'"
           @click="addComment"
         >
           发表留言
@@ -43,6 +43,8 @@
 <script>
 import { mapMutations } from 'vuex';
 
+// eslint-disable-next-line
+import { Api } from '@/api';
 import CommentCpt from '@/components/Comment/index.vue';
 import TextareaInputCpt from '@/components/TextareaInput/index.vue';
 
@@ -52,7 +54,16 @@ export default {
     TextareaInputCpt,
   },
   layout: 'blog',
-  async asyncData({ $myaxios, params, store }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     try {
       const orderName = 'created_at';
       const commentParams = {
@@ -63,9 +74,9 @@ export default {
         orderName,
         orderBy: 'desc',
       };
-      const { data: commentData } = await $myaxios.get(`/comment/comment`, {
-        params: commentParams,
-      });
+      const { data: commentData } = await $myaxios.comment.comment(
+        commentParams
+      );
       return {
         sort: orderName === 'created_at' ? 'date' : 'hot',
         commentList: commentData.rows,
@@ -148,7 +159,7 @@ export default {
       }
       try {
         this.submitCommentLoading = true;
-        await this.$myaxios.post('/comment/create', {
+        await this.$myaxios.comment.create({
           article_id: -1,
           content: this.commentContent,
           parent_comment_id: -1,
@@ -179,9 +190,7 @@ export default {
       };
       try {
         this.isLoading = true;
-        const { data } = await this.$myaxios.get(`/comment/comment`, {
-          params: { ...query },
-        });
+        const { data } = await this.$myaxios.comment.comment(query);
         this.isLoading = false;
         this.commentList = data.rows;
         this.total = data.total;
@@ -195,13 +204,11 @@ export default {
     // 获取子评论分页
     async handleChildrenPage(query) {
       try {
-        const { data } = await this.$myaxios.get(`/comment/comment_children`, {
-          params: {
-            parent_comment_id: query.parent_comment_id,
-            article_id: query.article_id,
-            pageSize: query.childrenPageSize,
-            childrenPageSize: this.childrenPageSize,
-          },
+        const { data } = await this.$myaxios.comment.commentChildren({
+          parent_comment_id: query.parent_comment_id,
+          article_id: query.article_id,
+          pageSize: query.childrenPageSize,
+          childrenPageSize: this.childrenPageSize,
         });
         this.commentList.forEach((item) => {
           if (item.id === query.parent_comment_id) {
@@ -215,15 +222,13 @@ export default {
     // 获取父评论分页
     async handleParentPage(query) {
       try {
-        const { data } = await this.$myaxios.get(`/comment/comment`, {
-          params: {
-            article_id: -1,
-            nowPage: query.nowPage + 1,
-            pageSize: this.pageSize,
-            childrenPageSize: this.childrenPageSize,
-            orderName: query.orderName,
-            orderBy: query.orderBy,
-          },
+        const { data } = await this.$myaxios.comment.comment({
+          article_id: -1,
+          nowPage: query.nowPage + 1,
+          pageSize: this.pageSize,
+          childrenPageSize: this.childrenPageSize,
+          orderName: query.orderName,
+          orderBy: query.orderBy,
         });
         this.commentList.push(...data.rows);
         this.hasMore = data.hasMore;

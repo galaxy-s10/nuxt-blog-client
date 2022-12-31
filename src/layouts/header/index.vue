@@ -145,9 +145,7 @@ export default {
         const params = {
           keyWord,
         };
-        const { data } = await this.$myaxios.get(`/article/keyword_list`, {
-          params,
-        });
+        const { data } = await this.$myaxios.article.keywordList(params);
         cb(data.rows);
       } else {
         // eslint-disable-next-line node/no-callback-literal

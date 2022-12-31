@@ -2,19 +2,20 @@ import axios from 'axios';
 import { isBrowser } from 'billd-utils';
 import { Message } from 'element-ui';
 
-import { Api } from '@/api/index';
+import { Api } from '@/api';
 
 export default function ({ $axios, store }, inject) {
   let baseURL = '/';
-
   let env = 'prod'; // prod,beta,dev
+
   if (process.env.NODE_ENV === 'development') {
-    env = 'beta';
+    env = 'dev';
   } else if (process.env.NODE_ENV === 'production') {
     env = 'prod';
   } else {
     env = 'beta';
   }
+
   switch (env) {
     case 'prod':
       baseURL = `https://api.hsslive.cn/prodapi/`; // 调用线上的接口
@@ -33,11 +34,6 @@ export default function ({ $axios, store }, inject) {
 
   const service = axios.create({
     baseURL,
-    timeout: 5000,
-    withCredentials: true, // 允许跨域携带cookie信息
-  });
-  const service1 = axios.create({
-    baseURL: '/',
     timeout: 5000,
     withCredentials: true, // 允许跨域携带cookie信息
   });
@@ -112,6 +108,6 @@ export default function ({ $axios, store }, inject) {
       }
     }
   );
-  inject('myaxios', service);
-  inject('myaxios1', new Api(service1));
+  // inject('myaxios', axios);
+  inject('myaxios', new Api(service));
 }

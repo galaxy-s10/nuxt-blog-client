@@ -1,12 +1,14 @@
-// @ts-ignore
-/** @typedef {import("axios/index.cjs")} Axios */
+/** @typedef {import("axios").AxiosInstance} AxiosInstance */
 
 /**
- * @param  {Axios} service
+ * @param  {AxiosInstance} request
  */
-export const visitorLogApi = (service) => {
+export const visitorLogApi = (request) => {
   return {
-    list: service.get('/visitor_log/list'),
-    list2: service.get('/visitor_log/list2'),
+    create: () => request.post('/visitor_log/create'),
+    day: (params) => request.get('/visitor_log/day', { params }),
+    history: () => request.get('/visitor_log/history'),
+    list: () => request.get('/visitor_log/list'),
+    // list2: request.get('/visitor_log/list2'),
   };
 };

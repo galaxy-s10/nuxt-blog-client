@@ -211,7 +211,7 @@ export default {
       setShowLoginModal: 'app/setShowLoginModal',
     }),
     async loadingUserDetail(v) {
-      const { data } = await this.$myaxios.get(`/user/find/${v.id}`, {});
+      const { data } = await this.$myaxios.user.find(v.id);
       this.currentUserDetail = data;
     },
     mouseleave() {

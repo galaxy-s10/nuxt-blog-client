@@ -17,11 +17,9 @@ export const mutations = {
 export const actions = {
   async getVisitorDayData({ commit }, paylod) {
     try {
-      const { data } = await this.$myaxios.get('/visitor_log/day', {
-        params: {
-          startTime: paylod.startTime,
-          endTime: paylod.endTime,
-        },
+      const { data } = await this.$myaxios.visitorLog.day({
+        startTime: paylod.startTime,
+        endTime: paylod.endTime,
       });
       commit('setDayData', data);
     } catch (error) {
@@ -30,7 +28,7 @@ export const actions = {
   },
   async getVisitorHistoryData({ commit }) {
     try {
-      const { data } = await this.$myaxios.get('/visitor_log/history');
+      const { data } = await this.$myaxios.visitorLog.history();
       commit('setHistoryData', data);
     } catch (error) {
       console.log(error);

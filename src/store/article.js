@@ -27,13 +27,11 @@ export const actions = {
   async getSideBarArticleList({ commit }, params) {
     const { nowPage, pageSize, orderName, orderBy } = params;
     try {
-      const { data } = await this.$myaxios.get(`/article/list`, {
-        params: {
-          orderName,
-          orderBy,
-          nowPage,
-          pageSize,
-        },
+      const { data } = await this.$myaxios.article.list({
+        orderName,
+        orderBy,
+        nowPage,
+        pageSize,
       });
       commit('changeSideBarArticleOrderName', orderName);
       commit('changeSidebarArticleList', data.rows);

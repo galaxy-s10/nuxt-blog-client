@@ -20,12 +20,23 @@
 <script>
 import { mapState } from 'vuex';
 
+// eslint-disable-next-line
+import { Api } from '@/api';
 import WebSocketCpt from '@/components/WebSocket/index.vue';
 
 export default {
   components: { WebSocketCpt },
   layout: 'blog',
-  async asyncData({ $myaxios, store, params }) {},
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {},
   data() {
     return {
       currentTagId: 1,

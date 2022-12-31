@@ -32,14 +32,27 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+import { Api } from '@/api';
+
 export default {
   components: {},
   layout: 'blog',
   props: [],
-  async asyncData({ $myaxios, params, store }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     // 获取作品数据
-    const { data: worksData } = await $myaxios.get('/works/list', {
-      params: { orderName: 'created_at', orderBy: 'desc' },
+    const { data: worksData } = await $myaxios.works.list({
+      orderName: 'created_at',
+      orderBy: 'desc',
     });
     return { worksList: worksData.rows };
   },

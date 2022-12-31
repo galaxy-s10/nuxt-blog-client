@@ -1,12 +1,10 @@
-// eslint-disable-next-line
-import { Axios } from 'axios';
+/** @typedef {import("axios").AxiosInstance} AxiosInstance */
 
 /**
- * @param  {Axios} service
+ * @param  {AxiosInstance} service
  */
-
 export const frontendApi = (service) => {
   return {
-    detail: service.get('/frontend/detail'),
+    detail: () => service.get('/frontend/detail'),
   };
 };

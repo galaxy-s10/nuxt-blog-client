@@ -109,6 +109,8 @@
 <script>
 import { mapActions, mapMutations } from 'vuex';
 
+// eslint-disable-next-line
+import { Api } from '@/api';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 import { getRandomInt } from '@/utils/index';
 export default {
@@ -116,8 +118,17 @@ export default {
     NoHeadImgCpt,
   },
   layout: 'blog',
-  async asyncData({ $myaxios, store }) {
-    const params = {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
+    const params1 = {
       orderName: 'created_at',
       orderBy: 'desc',
       types: store.state.type.typeId,
@@ -125,13 +136,13 @@ export default {
       pageSize: 20,
     };
     try {
-      const { data } = await $myaxios.get(`/article/list`, { params });
+      const { data } = await $myaxios.article.list(params1);
       data.rows.forEach((v) => {
         v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
       });
       const articleList = data.rows;
       const hasMore = data.hasMore;
-      return { articleList, hasMore, articleParams: params };
+      return { articleList, hasMore, articleParams: params1 };
     } catch (error) {
       console.log(error);
     }
@@ -263,7 +274,7 @@ export default {
     async ajaxArticleList(params) {
       try {
         this.isLoading = true;
-        const { data } = await this.$myaxios.get(`/article/list`, { params });
+        const { data } = await this.$myaxios.article.list(params);
         data.rows.forEach((v) => {
           v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
         });

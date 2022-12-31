@@ -319,12 +319,14 @@
 </template>
 
 <script>
-import CatalogCpt from '@/components/Catalog/index.vue';
-import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 import { mapState, mapActions, mapMutations } from 'vuex';
 
-import UserInfoCpt from './user-info/index.vue';
+import UserInfoCpt from './userInfo/index.vue';
 
+// eslint-disable-next-line
+import { Api } from '@/api';
+import CatalogCpt from '@/components/Catalog/index.vue';
+import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 import { dateStartAndEnd } from '@/utils/format';
 
 export default {
@@ -334,8 +336,17 @@ export default {
     NoHeadImgCpt,
     AsnycCollapseCpt: () => import('@/components/Collapse/index.vue'),
   },
-  // nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
-  asyncData({ $myaxios, store }) {},
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   * nuxt2不支持在layout使用asyncData:https://github.com/nuxt/nuxt.js/issues/3510
+   */
+  async asyncData({ $myaxios, store, params, req }) {},
   data() {
     return {
       switchLoading: false,
@@ -452,9 +463,7 @@ export default {
           orderName,
           orderBy: 'desc',
         };
-        const { data } = await this.$myaxios.get(`/article/list`, {
-          params,
-        });
+        const { data } = await this.$myaxios.article.list(params);
         return data;
       } catch (error) {
         console.log(error);

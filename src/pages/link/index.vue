@@ -90,7 +90,7 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.allow_link === '2'"
+            :disabled="frontendData.allow_link.value === '2'"
             @click="addLink()"
           >
             提交申请
@@ -102,6 +102,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+import { Api } from '@/api';
+
 const validateEmail = (rule, value, callback) => {
   const reg = /^[A-Za-z0-9\u4E00-\u9FA5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
   if (value) {
@@ -117,10 +120,20 @@ const validateEmail = (rule, value, callback) => {
 export default {
   components: {},
   layout: 'blog',
-  async asyncData({ $myaxios, params, store }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     // 获取友链数据
-    const { data: linkData } = await $myaxios.get('/link/list', {
-      params: { orderName: 'created_at', orderBy: 'desc' },
+    const { data: linkData } = await $myaxios.link.list({
+      orderName: 'created_at',
+      orderBy: 'desc',
     });
     return { linkList: linkData.rows };
   },
@@ -207,7 +220,7 @@ export default {
       this.$refs.linkForm.validate(async (valid) => {
         if (valid) {
           try {
-            await this.$myaxios.post('/link/create', {
+            await this.$myaxios.link.create({
               ...this.linkForm,
               email:
                 this.linkForm.email === '' ? undefined : this.linkForm.email,

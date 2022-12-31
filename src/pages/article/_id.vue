@@ -203,6 +203,7 @@
 <script>
 import { mapMutations } from 'vuex';
 
+import { Api } from '@/api';
 import AvatarGroupCpt from '@/components/AvatarGroup/index.vue';
 import CommentCpt from '@/components/Comment/index.vue';
 import ModalCpt from '@/components/Modal/index.vue';
@@ -218,10 +219,19 @@ export default {
     AvatarGroupCpt,
   },
   layout: 'blog',
-  async asyncData({ $myaxios, params, store }) {
+  /**
+   * @typedef {Object} asyncDataType
+   * @property {Api} $myaxios
+   * @property {Object} store
+   * @property {Object} params
+   * @property {Object} req
+   * @param {asyncDataType} value
+   * https://nuxtjs.org/docs/concepts/context-helpers
+   */
+  async asyncData({ $myaxios, store, params, req }) {
     try {
       const articleId = params.id;
-      const { data } = await $myaxios.get(`/article/find/${articleId}`);
+      const { data } = await $myaxios.article.find(articleId);
       let commentData = {};
       let commentParams = {};
       const orderName = 'created_at';
@@ -234,9 +244,7 @@ export default {
           orderName,
           orderBy: 'desc',
         };
-        const result = await $myaxios.get(`/comment/comment`, {
-          params: commentParams,
-        });
+        const result = await $myaxios.comment.comment(commentParams);
         commentData = result.data;
       }
       return {
@@ -338,9 +346,7 @@ export default {
     },
     async getArticleDetail() {
       try {
-        const { data } = await this.$myaxios.get(
-          `/article/find/${this.articleId}`
-        );
+        const { data } = await this.$myaxios.article.find(this.articleId);
         this.detail = data;
       } catch (error) {
         console.log(error);
@@ -382,9 +388,7 @@ export default {
       };
       try {
         this.isLoading = true;
-        const { data } = await this.$myaxios.get(`/comment/comment`, {
-          params: { ...query },
-        });
+        const { data } = await this.$myaxios.comment.comment(query);
         this.isLoading = false;
         this.commentList = data.rows;
         this.total = data.total;
@@ -398,13 +402,11 @@ export default {
     // 获取子评论分页
     async handleChildrenPage(query) {
       try {
-        const { data } = await this.$myaxios.get(`/comment/comment_children`, {
-          params: {
-            parent_comment_id: query.parent_comment_id,
-            article_id: query.article_id,
-            pageSize: query.childrenPageSize,
-            childrenPageSize: this.childrenPageSize,
-          },
+        const { data } = await this.$myaxios.comment.commentChildren({
+          parent_comment_id: query.parent_comment_id,
+          article_id: query.article_id,
+          pageSize: query.childrenPageSize,
+          childrenPageSize: this.childrenPageSize,
         });
         this.commentList.forEach((item) => {
           if (item.id === query.parent_comment_id) {
@@ -418,15 +420,13 @@ export default {
     // 获取父评论分页
     async handleParentPage(query) {
       try {
-        const { data } = await this.$myaxios.get(`/comment/comment`, {
-          params: {
-            article_id: this.articleId,
-            nowPage: query.nowPage + 1,
-            pageSize: this.pageSize,
-            childrenPageSize: this.childrenPageSize,
-            orderName: query.orderName,
-            orderBy: query.orderBy,
-          },
+        const { data } = await this.$myaxios.comment.comment({
+          article_id: this.articleId,
+          nowPage: query.nowPage + 1,
+          pageSize: this.pageSize,
+          childrenPageSize: this.childrenPageSize,
+          orderName: query.orderName,
+          orderBy: query.orderBy,
         });
         this.commentList.push(...data.rows);
         this.hasMore = data.hasMore;
@@ -448,7 +448,7 @@ export default {
       }
       try {
         this.submitCommentLoading = true;
-        await this.$myaxios.post('/comment/create', {
+        await this.$myaxios.comment.create({
           article_id: this.detail.id,
           content: this.commentContent,
           parent_comment_id: -1,
@@ -473,7 +473,7 @@ export default {
         if (this.userInfo) {
           this.starLoaing = true;
           if (type === 1) {
-            await this.$myaxios.post(`/star/create`, {
+            await this.$myaxios.star.create({
               article_id: articleDetail.id,
               from_user_id: this.userInfo.id,
               comment_id: -1,
@@ -483,8 +483,8 @@ export default {
             await this.getArticleDetail();
             this.starLoaing = false;
           } else {
-            await this.$myaxios.delete(
-              `/star/delete/${articleDetail.is_star_id || this.isStar.star_id}`
+            await this.$myaxios.star.delete(
+              articleDetail.is_star_id || this.isStar.star_id
             );
             this.isStar = false;
             await this.getArticleDetail();

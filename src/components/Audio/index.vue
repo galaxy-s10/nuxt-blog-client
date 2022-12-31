@@ -15,7 +15,7 @@
           class="song-progress-item"
         >
           <div
-            :style="{ width: nowTime * (100 / duration1) + '%' }"
+            :style="{ width: nowTime * (100 / duration) + '%' }"
             class="currentTime"
           ></div>
         </div>
@@ -72,7 +72,6 @@ export default {
       audio: null,
       start: false,
       duration: 0,
-      duration1: 0,
       nowTime: 0,
       currentIndex: 0,
       songList: [],
@@ -95,7 +94,7 @@ export default {
       this.showMiniAudio = true;
     }
     window.addEventListener('resize', this.resizeFn);
-    const { data } = await this.$myaxios.get(`/music/list`);
+    const { data } = await this.$myaxios.music.list();
     this.setMusicList(data.rows);
     this.songList = data.rows;
     if (!this.songList.length) return;
@@ -104,7 +103,6 @@ export default {
     const timer = setInterval(() => {
       if (!isNaN(this.audio.duration)) {
         this.duration = this.audio.duration;
-        this.duration1 = this.audio.duration;
         clearInterval(timer);
       }
     }, 100);
@@ -112,14 +110,14 @@ export default {
     const timer1 = setTimeout(() => {
       this.audio.addEventListener('timeupdate', () => {
         this.nowTime = this.audio.currentTime;
-        if (this.nowTime === this.duration1) {
+        if (this.nowTime === this.duration) {
           this.nextSong();
         }
       });
 
       this.$refs.bar.addEventListener('click', (e) => {
         setTimeout(() => {
-          this.nowTime = (e.offsetX / 170) * this.duration1;
+          this.nowTime = (e.offsetX / 170) * this.duration;
           this.audio.currentTime = this.nowTime;
         }, 100);
       });
@@ -165,7 +163,6 @@ export default {
       this.start = !this.start;
       if (this.start === true) {
         this.duration = this.audio.duration;
-        this.duration1 = this.audio.duration;
         if (this.nowTime !== 0) {
           this.audio.currentTime = this.nowTime;
         }
@@ -189,23 +186,12 @@ export default {
       this.changeBobyBg();
       setTimeout(() => {
         this.start = true;
-        // const styles = [...document.styleSheets];
-        // styles.forEach((style) => {
-        //   const rules = [...style.cssRules];
-        //   rules.forEach((rule) => {
-        //     if (rule.type === rule.KEYFRAMES_RULE && rule.name === 'rotate1') {
-        //       rule.cssRules[0].style.transform = `rotate(0deg)`;
-        //       rule.cssRules[1].style.transform = `rotate(360deg)`;
-        //       // rule.cssRules[0].style.transform = `rotate(${-this.nowDeg}deg)`;
-        //       // rule.cssRules[1].style.transform = `rotate(${360 -
-        //       //   this.nowDeg}deg)`;
-        //     }
-        //   });
-        // });
         this.audio.src = this.songList[index].audio_url;
         this.audio
           .play()
-          .then((res) => {})
+          .then(() => {
+            this.duration = this.audio.duration;
+          })
           .catch((error) => {
             console.log(error);
           });

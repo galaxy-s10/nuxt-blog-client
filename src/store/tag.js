@@ -16,9 +16,7 @@ export const actions = {
       pageSize: payload.pageSize,
     };
     try {
-      const { data } = await this.$myaxios.get(`/tag/list`, {
-        params,
-      });
+      const { data } = await this.$myaxios.tag.list(params);
       commit('setSideBarTagList', data.rows);
     } catch (error) {
       console.log(error);

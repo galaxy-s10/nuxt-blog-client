@@ -1,6 +1,8 @@
 const actions = {
   // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
-  async nuxtServerInit({ state, commit, dispatch }, { app }) {
+  // https://nuxtjs.org/docs/concepts/context-helpers
+  async nuxtServerInit({ state, commit, dispatch }, { app, req }) {
+    // console.log('客户端语言:', req.headers['accept-language']);
     const startTime = Date.now();
     console.log(
       `=== nuxtServerInit开始: ${startTime}(${new Date().toLocaleString()}) ===`

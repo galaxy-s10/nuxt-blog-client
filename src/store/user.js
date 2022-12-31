@@ -30,21 +30,9 @@ export const mutations = {
 };
 
 export const actions = {
-  async login({ commit }, payload) {
-    try {
-      const { data } = await this.$myaxios.post('/user/login', {
-        ...payload,
-        exp: 24,
-      });
-      commit('setToken', data);
-      return Promise.resolve(data);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  },
   async getUserInfo({ commit }) {
     try {
-      const { data } = await this.$myaxios.get('/user/get_user_info');
+      const { data } = await this.$myaxios.user.getUserInfo();
       commit('setUserInfo', data);
       commit('setSummary', {
         articlesTotal: data.articles_total,

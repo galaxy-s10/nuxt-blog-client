@@ -1,9 +1,14 @@
 <template>
   <div class="websocket-wrap">
-    <div class="nav">
-      <div>当前连接状态: {{ connectStatus }}</div>
-      <div>当前在线游客: {{ onlineCount }}</div>
-      <div>当前在线用户: {{ onlineCount }}</div>
+    <div>
+      <div>当前连接状态: {{ wsStatus }}</div>
+      <div>
+        <span> 历史最高同时在线: {{ historyHightOnlineNum }} </span>
+        <span> | </span>
+        <span> 当前在线游客: {{ onlineVisitorNum }}</span>
+        <span> | </span>
+        <span> 当前在线用户: {{ onlineUserNum }}</span>
+      </div>
     </div>
     <div class="main">
       <div
@@ -11,23 +16,31 @@
         class="content-list"
       >
         <div
-          v-for="(item, index) in chatList"
+          v-for="(item, index) in wsChatList"
           :key="index"
           class="item"
         >
           <div
-            v-if="item.type === webSocketMsgType.userInRoom"
+            v-if="item.type === wsMsgType.userInRoom"
             class="tip"
           >
-            {{ item.nickname }}加入了聊天({{ item.time }})
+            <span class="username">
+              {{ item.userType === wsUserType.visitor ? '游客' : '用户' }}:
+              {{ item.username }}
+            </span>
+            加入了聊天({{ item.time }})
           </div>
           <div
-            v-if="item.type === webSocketMsgType.userOutRoom"
+            v-if="item.type === wsMsgType.userOutRoom"
             class="tip"
           >
-            {{ item.nickname }}退出了聊天({{ item.time }})
+            <span class="username">
+              {{ item.userType === wsUserType.visitor ? '游客' : '用户' }}:
+              {{ item.username }}
+            </span>
+            退出了聊天({{ item.time }})
           </div>
-          <div v-if="item.type === webSocketMsgType.userSendMsg">
+          <div v-if="item.type === wsMsgType.userSendMsg">
             <div :class="{ 'msg-item': true, 'is-me': item.id === wsId }">
               <img
                 :src="item.avatar"
@@ -39,7 +52,7 @@
                   v-if="item.id !== wsId"
                   class="nickname"
                 >
-                  {{ item.nickname }}
+                  {{ item.id }}
                 </div>
                 <div class="msg">
                   {{ item.msg }}
@@ -60,7 +73,15 @@
         class="join"
       >
         <div class="item avatar">
+          <img
+            v-if="userInfo"
+            width="50"
+            class="avatar"
+            :src="wsCurrUser.avatar"
+            alt=""
+          />
           <el-popover
+            v-else
             popper-class="popover"
             placement="bottom"
             width="200"
@@ -68,12 +89,12 @@
           >
             <div class="avatar-list">
               <img
-                v-for="(item, index) in avatarList"
+                v-for="(item, index) in wsAvatarList"
                 :key="index"
                 :src="item"
                 class="avatar"
                 alt=""
-                @click="currUser.avatar = item"
+                @click="visitorSwitchAvatar(item)"
               />
             </div>
             <div slot="reference">
@@ -81,7 +102,7 @@
                 <img
                   width="50"
                   class="avatar"
-                  :src="currUser.avatar"
+                  :src="wsCurrUser.avatar"
                   alt=""
                 />
                 <i class="el-icon-caret-bottom bottom"></i>
@@ -92,15 +113,15 @@
         <div class="item input">
           <div>
             <el-input
-              v-model="currUser.nickname"
-              maxlength="6"
+              v-model="wsCurrUser.username"
+              :disabled="true"
               placeholder="请输入昵称"
             ></el-input>
           </div>
         </div>
         <div
           class="item btn"
-          @click="join"
+          @click="setIsJoin(true)"
         >
           加入
         </div>
@@ -122,161 +143,45 @@
 </template>
 
 <script>
-import { io } from 'socket.io-client';
+import { mapMutations, mapState } from 'vuex';
 
-const webSocketMsgType = {
-  connect: 'connect', // 用户连接
-  userInRoom: 'userInRoom', // 用户进入聊天
-  userOutRoom: 'userOutRoom', // 用户退出聊天
-  userSendMsg: 'userSendMsg', // 用户发送消息
-  getOnlineUser: 'getOnlineUser', // 获取在线用户
-};
-
-const connectStatusEnum = {
-  connecting: 'connecting', // 连接中
-  connected: 'connected', // 已连接
-  disconnect: 'disconnect', // 断开连接
-  reconnect: 'reconnect', // 重新连接
-};
-
+import { wsMsgType, wsConnectStatusEnum, wsUserType } from '@/constant';
+import { websocketMixin } from '@/mixin/websocket';
+import { wsInstance2 } from '@/mixin/ws';
 export default {
-  name: 'App',
+  mixins: [websocketMixin],
   data() {
     return {
-      webSocketMsgType,
-      connectStatusEnum,
-      connectStatus: connectStatusEnum.disconnect, // 连接状态
-      wsInstance: null, // ws实例
-      chatList: [], // ws消息列表
-      avatarList: [], // 头像列表
-      wsId: null,
-      currUser: {
-        nickname: '',
-        avatar: '',
-      }, // 当前用户信息
-      isJoin: false, // 是否已加入聊天
+      wsMsgType,
+      wsConnectStatusEnum,
+      wsUserType,
       msg: '',
-      onlineCount: 0, // 当前在线人数
-      wsUrl:
-        process.env.NODE_ENV === 'production'
-          ? 'wss://www.hsslive.cn' // wss需要配置域名，不能配置ip地址+端口号
-          : 'ws://localhost:3300',
-      // wsUrl:
-      //   process.env.NODE_ENV === 'production'
-      //     ? 'ws://42.193.157.44:3200' // ws不能运行在https上面
-      //     : 'ws://localhost:3300',
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      userInfo(state) {
+        return state.user.userInfo;
+      },
+    }),
+  },
   watch: {
-    chatList() {
+    wsChatList() {
       this.$nextTick(() => {
         this.$refs['content-list'].scrollTop =
           this.$refs['content-list'].scrollHeight;
       });
     },
   },
-  mounted() {
-    this.createWebSocket(this.wsUrl);
-    const pathArr = require.context(
-      '../../assets/img/avatar/',
-      true,
-      /.webp|.jpg|.png|.jpeg|.gif$/i
-    );
-    pathArr.keys().forEach((path) => {
-      const newpath = path.replace('./', '');
-      try {
-        this.avatarList.push(require(`@/assets/img/avatar/${newpath}`));
-      } catch (error) {
-        console.log(error);
-      }
-    });
-    this.currUser.avatar = this.avatarList[0];
-  },
-  destroyed() {
-    this.closeWs();
-  },
+  mounted() {},
+  destroyed() {},
   methods: {
-    join() {
-      if (this.currUser.nickname.length > 6) {
-        this.$newmessage('昵称最多6个字符！', 'info');
-      }
-      this.isJoin = true;
-      this.wsInstance.emit(webSocketMsgType.userInRoom, {
-        nickname: this.currUser.nickname,
-        msg: this.msg,
-      });
-    },
-    // 关闭websocket连接
-    closeWs() {
-      this.connectStatus = this.connectStatusEnum.disconnect;
-      this.wsInstance.close();
-    },
-    // 处理收到的消息
-    handleReceiveMessage() {
-      this.wsInstance.on(webSocketMsgType.getOnlineUser, (data) => {
-        this.onlineCount = data.count;
-      });
-      this.wsInstance.on(webSocketMsgType.userInRoom, (data) => {
-        const { nickname, msg, time } = data;
-        this.chatList.push({
-          type: webSocketMsgType.userInRoom,
-          nickname,
-          msg,
-          time,
-        });
-      });
-      this.wsInstance.on(webSocketMsgType.userOutRoom, (data) => {
-        const { nickname, time } = data;
-        this.chatList.push({
-          type: webSocketMsgType.userOutRoom,
-          nickname,
-          time,
-        });
-      });
-      this.wsInstance.on(webSocketMsgType.userSendMsg, (data) => {
-        const { id, nickname, avatar, msg, time } = data;
-        this.chatList.push({
-          type: webSocketMsgType.userSendMsg,
-          id,
-          nickname,
-          avatar,
-          msg,
-          time,
-        });
-      });
-    },
-    // 新建WebSocket
-    createWebSocket(url) {
-      try {
-        if ('WebSocket' in window) {
-          this.wsInstance = io(url, { transports: ['websocket'] });
-          this.initWebSocket();
-        } else {
-          console.log('你的浏览器不支持WebSocket！');
-        }
-      } catch (error) {
-        console.log('新建WebSocket出错', error);
-      }
-    },
-    // 初始化
-    initWebSocket() {
-      this.wsInstance.on('connect', () => {
-        this.wsId = this.wsInstance.id;
-        this.connectStatus = this.connectStatusEnum.connected;
-        this.wsInstance.emit(webSocketMsgType.getOnlineUser, {});
-        this.handleReceiveMessage();
-      });
-      this.wsInstance.on('disconnect', (reason) => {
-        if (reason === 'io server disconnect') {
-          // the disconnection was initiated by the server, you need to reconnect manually
-          this.wsInstance.connect();
-        }
-        console.log('断开websocket连接！');
-      });
-      this.wsInstance.on('connect_error', () => {
-        console.log('连接websocket错误，开始重连！');
-        this.wsInstance.connect();
+    ...mapMutations({
+      setIsJoin: 'ws/setIsJoin',
+    }),
+    visitorSwitchAvatar(avatar) {
+      wsInstance2.instance.emit(wsMsgType.visitorSwitchAvatar, {
+        avatar,
       });
     },
     // 用户发送消息
@@ -289,10 +194,10 @@ export default {
         this.$newmessage('最多输入100个字符', 'info');
         return;
       }
-      this.wsInstance.emit(webSocketMsgType.userSendMsg, {
-        nickname: this.currUser.nickname,
-        avatar: this.currUser.avatar,
+      wsInstance2.instance.emit(wsMsgType.userSendMsg, {
+        avatar: this.wsCurrUser.avatar,
         msg: this.msg,
+        id: this.wsId,
       });
       this.msg = '';
     },
@@ -317,6 +222,10 @@ export default {
       .tip {
         margin: 10px 0;
         text-align: center;
+        font-size: 14px;
+        .username {
+          font-weight: bold;
+        }
       }
       .msg-item {
         display: flex;
@@ -397,7 +306,8 @@ export default {
           width: 60px;
           height: 60px;
           border-radius: 50%;
-          background-color: $theme-color1;
+          background-color: #0093e9;
+          background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
           color: $theme-color6;
           text-align: center;
           line-height: 60px;

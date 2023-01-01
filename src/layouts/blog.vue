@@ -10,9 +10,10 @@
 
     <LazyDND
       v-if="showMusicAudio === true"
+      ref="dndRef"
       class="dnd-wrap"
     >
-      <AudioCpt></AudioCpt>
+      <AudioCpt @changeRect="changeRect"></AudioCpt>
     </LazyDND>
 
     <LazyPlum v-if="showPlum === true"></LazyPlum>
@@ -167,6 +168,10 @@ export default {
       setHiddenHeader: 'app/setHiddenHeader',
       setShowLoginModal: 'app/setShowLoginModal',
     }),
+    changeRect() {
+      const dndRef = this.$refs.dndRef;
+      dndRef.changeRect();
+    },
     async setTheme() {
       const { data } = await this.$myaxios.theme.list();
       const obj = {};
@@ -268,11 +273,9 @@ export default {
 }
 .blog-wrap {
   .dnd-wrap {
-    width: 250px;
-    height: 100px;
     position: fixed;
-    right: 10px;
-    top: calc(100vh - 120px);
+    right: 20px;
+    bottom: 20px;
   }
   .main-wrap {
     display: flex;

@@ -22,6 +22,12 @@
               <!-- https://router.vuejs.org/zh/api/#custom，默认用a标签包裹元素，可以添加custom改掉这个行为 -->
               <nuxt-link :to="item.path">
                 <span>{{ item.title }}</span>
+                <div
+                  v-if="item.badge"
+                  class="badge"
+                >
+                  {{ item.badge > 99 ? '99+' : item.badge }}
+                </div>
               </nuxt-link>
             </li>
           </ul>
@@ -71,6 +77,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import LoginCpt from '@/components/Login/index.vue';
 
 export default {
@@ -110,6 +118,7 @@ export default {
         {
           title: '互动',
           path: '/interaction',
+          badge: 0,
         },
         {
           title: '关于',
@@ -119,8 +128,28 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      onlineUserNum(state) {
+        return state.ws.onlineUserNum;
+      },
+      onlineVisitorNum(state) {
+        return state.ws.onlineVisitorNum;
+      },
+      allOnline(state) {
+        return state.ws.onlineVisitorNum + state.ws.onlineUserNum;
+      },
+    }),
     hiddenHeader() {
       return this.$store.state.app.hiddenHeader;
+    },
+  },
+  watch: {
+    allOnline(newVal) {
+      this.navList.forEach((item) => {
+        if (item.path === '/interaction') {
+          item.badge = newVal;
+        }
+      });
     },
   },
   mounted() {},
@@ -216,12 +245,27 @@ export default {
         margin: 0;
         padding: 0;
         .item {
-          margin: 0 15px;
+          margin: 0 16px;
 
           user-select: none;
           a {
+            position: relative;
             text-decoration: none;
             color: $theme-color5;
+            .badge {
+              position: absolute;
+              top: -6px;
+              right: 0px;
+              transform: translateX(100%);
+              background-color: #da3231;
+              font-size: 12px;
+              height: 16px;
+              line-height: 16px;
+              color: white;
+              font-weight: bold;
+              border-radius: 6px;
+              padding: 0 3px;
+            }
           }
         }
         .item:hover:before {

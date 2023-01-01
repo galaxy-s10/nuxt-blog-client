@@ -8,17 +8,30 @@
       @mouseleave="handleLeave"
     >
       <div class="bgc"></div>
-      <img
-        class="user-avatar"
-        :src="
-          userInfo
-            ? userInfo.avatar
-            : require('@/assets/img/default_avatar.webp')
-        "
-      />
+      <div class="user-avatar">
+        <img
+          v-if="userInfo"
+          :src="
+            userInfo
+              ? userInfo.avatar
+              : require('@/assets/img/default_avatar.webp')
+          "
+        />
+        <img
+          v-else
+          :src="wsCurrUser.avatar"
+        />
+        <div
+          :class="{
+            status: true,
+            connect: wsStatus === wsConnectStatusEnum.connect,
+          }"
+        ></div>
+      </div>
+
       <div class="info">
         <div class="name">
-          {{ userInfo ? userInfo.username : '未登录' }}
+          {{ userInfo ? userInfo.username : `游客id：${wsCurrUser.id}` }}
         </div>
         <p class="title">{{ userInfo ? userInfo.desc : 'hello world！' }}</p>
       </div>
@@ -29,11 +42,17 @@
 <script>
 import { mapState } from 'vuex';
 
+import { wsConnectStatusEnum } from '@/constant';
+import { websocketMixin } from '@/mixin/websocket';
+
 export default {
+  name: 'UserInfoCpt',
   components: {},
+  mixins: [websocketMixin],
   props: [],
   data() {
     return {
+      wsConnectStatusEnum,
       offset: { x: 0, y: 0 }, // x:距离最左边多少px；y:距离最下边多少px
       len: 0,
       position: { top: 0, left: 0 },
@@ -49,9 +68,21 @@ export default {
       },
     }),
   },
-  watch: {},
+  watch: {
+    userInfo() {
+      setTimeout(() => {
+        this.outRoom();
+        this.closeWs();
+      });
+      setTimeout(() => {
+        this.createWebSocket();
+      }, 500);
+    },
+  },
   created() {},
-  mounted() {},
+  mounted() {
+    this.createWebSocket();
+  },
   methods: {
     handleMove(event) {
       const currentTarget = event.currentTarget;
@@ -162,12 +193,29 @@ export default {
       left: 50%;
       width: 80px;
       height: 80px;
-      border-radius: 50%;
-      transition: all 0.5s;
-      transform: rotate(0) translate(-50%, -50%);
-      transform-origin: 0 0;
-      &:hover {
-        transform: rotate(1turn) translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        transition: all 0.5s;
+        transform: rotate(0);
+        &:hover {
+          transform: rotate(1turn);
+        }
+      }
+      .status {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: #b4b8ba;
+        cursor: pointer;
+        &.connect {
+          background-color: #73d84d;
+        }
       }
     }
     .info {

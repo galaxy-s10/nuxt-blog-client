@@ -2,6 +2,7 @@
 
 /**
  * @param  {AxiosInstance} request
+ * @param  {aaa} bbb
  */
 export const articleApi = (request) => {
   return {

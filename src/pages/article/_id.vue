@@ -502,42 +502,41 @@ export default {
 
     // 渲染文章目录
     renderCatalog() {
-      this.$nextTick(() => {
-        // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
-        // https://blog.lichter.io/posts/vue-hydration-error/
-        // https://github.com/nuxt/nuxt.js/issues/5612
-        const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
-        const md =
-          this.$refs['hss-md']?.$el.childNodes[0].childNodes[0].children || [];
-        const arr = [];
-        for (let i = 0; i < md.length; i += 1) {
-          const item = md[i];
-          if (item.nodeType === 1 && list.includes(item.nodeName)) {
-            const obj = {};
-            obj.id = `heading-${i}`;
-            obj.type = item.nodeName;
-            obj.text = item.innerText;
-            try {
-              // 创建一个a元素
-              const el = document.createElement('a');
-              el.style.position = 'relative';
-              el.style.top = '-50px';
-              el.setAttribute('id', obj.id);
-              item.appendChild(el);
-            } catch (err) {
-              console.log(err);
-            }
-
-            arr.push(obj);
+      // this.$nextTick(() => {
+      // vue.runtime.min.js:6 DOMException: Failed to execute 'appendChild' on 'Node': This node type does not support this method.
+      // https://blog.lichter.io/posts/vue-hydration-error/
+      // https://github.com/nuxt/nuxt.js/issues/5612
+      const list = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+      const md =
+        this.$refs['hss-md'].$el.childNodes[0].childNodes[0].children || [];
+      const arr = [];
+      for (let i = 0; i < md.length; i += 1) {
+        const item = md[i];
+        if (item.nodeType === 1 && list.includes(item.nodeName)) {
+          const obj = {};
+          obj.id = `heading-${i}`;
+          obj.type = item.nodeName;
+          obj.text = item.innerText;
+          try {
+            // 创建一个a元素
+            const el = document.createElement('a');
+            el.style.position = 'relative';
+            el.style.top = '-50px';
+            el.setAttribute('id', obj.id);
+            item.appendChild(el);
+          } catch (err) {
+            console.log(err);
           }
+          arr.push(obj);
         }
-        if (window.location.hash) {
-          setTimeout(() => {
-            window.location.href = window.location.hash;
-          }, 200);
-        }
-        this.$store.commit('article/changeCatalogList', arr);
-      });
+      }
+      if (window.location.hash) {
+        setTimeout(() => {
+          window.location.href = window.location.hash;
+        }, 0);
+      }
+      this.$store.commit('article/changeCatalogList', arr);
+      // });
     },
   },
 };

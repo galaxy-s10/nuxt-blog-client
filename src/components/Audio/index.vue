@@ -1,11 +1,23 @@
 <template>
-  <div class="audio-wrap">
+  <div :class="{ 'audio-wrap': true, mini: showMiniAudio }">
     <template v-if="songList.length">
+      <span
+        class="mini-ico"
+        :title="!showMiniAudio ? '最小化' : '最大化'"
+        :style="{ background: showMiniAudio ? '#62c755' : '#f5c04f' }"
+        @click="changeShowMiniAudio"
+      >
+        <template v-if="showMiniAudio">
+          <i></i>
+          <i></i>
+        </template>
+        <b v-else></b>
+      </span>
       <div :class="{ 'song-desc': true }">
-        <div class="text-item">
+        <div class="text">
           {{ songList[currentIndex] ? songList[currentIndex].name : '-' }}
         </div>
-        <div class="text-item">
+        <div class="text">
           {{ songList[currentIndex] ? songList[currentIndex].author : '-' }}
         </div>
       </div>
@@ -16,12 +28,10 @@
         >
           <div
             :style="{ width: nowTime * (100 / duration) + '%' }"
-            class="currentTime"
+            class="current-time"
           ></div>
         </div>
-        <div class="text">
-          {{ duration2(nowTime) }}/{{ duration2(duration) }}
-        </div>
+        <div>{{ duration2(nowTime) }}/{{ duration2(duration) }}</div>
       </div>
       <div :class="{ 'song-control': true }">
         <div
@@ -51,7 +61,6 @@
           :style="{
             animationPlayState: start ? 'running' : 'paused',
           }"
-          @click="showMiniMusic"
         />
       </div>
     </template>
@@ -89,11 +98,8 @@ export default {
     },
   },
   async mounted() {
-    const width = window.pageXOffset || document.documentElement.offsetWidth;
-    if (width <= 414) {
-      this.showMiniAudio = true;
-    }
-    window.addEventListener('resize', this.resizeFn);
+    this.handleResize(true);
+    window.addEventListener('resize', this.handleResize);
     const { data } = await this.$myaxios.music.list();
     this.setMusicList(data.rows);
     this.songList = data.rows;
@@ -125,13 +131,13 @@ export default {
     }, 0);
   },
   destroyed() {
-    window.removeEventListener('resize', this.resizeFn);
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     ...mapMutations({
       setMusicList: 'app/setMusicList',
     }),
-    resizeFn() {
+    handleResize() {
       const offsetWidth =
         window.pageXOffset || document.documentElement.offsetWidth;
       if (offsetWidth <= 414) {
@@ -139,8 +145,10 @@ export default {
       } else {
         this.showMiniAudio = false;
       }
+      this.$emit('changeRect');
     },
-    showMiniMusic() {
+    changeShowMiniAudio() {
+      this.$emit('changeRect');
       this.showMiniAudio = !this.showMiniAudio;
     },
     formatTime(t) {
@@ -285,208 +293,274 @@ export default {
   border-radius: 10px;
   background-color: white;
   box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
-  transition: all 0.2s linear;
-  // .blur-img {
-  //   filter: blur(20px);
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100vw;
-  //   height: 100vh;
-  //   background-size: 1000px;
-  // }
-}
-
-.currentTime {
-  height: 10px;
-  border-radius: 10px;
-  background-color: rgba(205, 225, 247, 1);
-  transition: all 0.2s linear;
-}
-.song-progress {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  height: 15px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-.song-progress-item {
-  display: block;
-  width: 170px;
-  height: 10px;
-  border-radius: 10px;
-  background-color: rgba(236, 245, 255, 1);
-}
-.song-progress-item:hover {
-  cursor: pointer;
-}
-.song-desc {
-  position: absolute;
-  top: -42%;
-  left: 50%;
-  padding-top: 4px;
-  width: 230px;
-  height: 50px;
-  border-radius: 5px;
-  background-color: rgb(255, 255, 255, 0.6);
-  font-size: 12px;
-  transform: translateX(-50%);
-}
-.text-item {
-  padding-left: 45%;
-  &:nth-child(1) {
-    font-weight: 700;
-  }
-}
-
-.song-disk {
-  position: absolute;
-  top: -45px;
-  left: 10px;
-  width: 90px;
-  height: 90px;
-  transition: all 0.3s linear;
-  pointer-events: all;
-  &::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-image: linear-gradient(45deg, #fff, #dabad1);
-    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+  .triangle {
+    display: inline-block;
+    border: 4px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.5);
     content: '';
-    transform: translate(-50%, -50%);
   }
-  img {
-    position: relative;
+  .mini-ico {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    & i:nth-child(1) {
+      position: absolute;
+      top: 22%;
+      left: 80%;
+      content: '';
+      transform: translate(-50%, -50%) rotate(45deg);
+
+      &::after {
+        content: '';
+
+        @extend .triangle;
+      }
+    }
+    & i:nth-child(2) {
+      position: absolute;
+      top: 78%;
+      left: 19%;
+      content: '';
+      transform: translate(-50%, -50%) rotate(-134deg);
+
+      &::after {
+        @extend .triangle;
+      }
+    }
+    b {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 40%;
+      height: 2px;
+      background-color: rgba(0, 0, 0, 0.5);
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+  }
+  &.mini {
+    & {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: inherit;
+      box-shadow: none;
+    }
+    .song-desc,
+    .song-progress,
+    .song-control {
+      display: none;
+    }
+    .song-disk {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .song-desc {
+    position: absolute;
+    top: -42%;
+    left: 50%;
+    padding-top: 4px;
+    width: 230px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.6);
+    font-size: 12px;
+    transform: translateX(-50%);
+    .text {
+      padding-left: 45%;
+      &:nth-child(1) {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .song-progress {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 15px;
+    border-radius: 10px;
+    font-size: 12px;
+    .song-progress-item {
+      display: block;
+      width: 170px;
+      height: 10px;
+      border-radius: 10px;
+      background-color: rgba(236, 245, 255, 1);
+      &:hover {
+        cursor: pointer;
+      }
+      .current-time {
+        height: 10px;
+        border-radius: 10px;
+        background-color: rgba(205, 225, 247, 1);
+        transition: all 0.2s linear;
+      }
+    }
+  }
+
+  .song-control {
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 150px;
+    height: 60px;
+
+    .pre,
+    .next,
+    .stop,
+    .start {
+      position: relative;
+      top: 50%;
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      transform: translateY(-30%);
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .pre,
+    .next,
+    .stop,
+    .start {
+      &:hover {
+        background-color: #717070;
+        color: white;
+      }
+    }
+    .start::after:hover {
+      border-color: transparent transparent transparent white;
+    }
+
+    .pre::before {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      width: 0;
+      height: 0;
+      border-width: 5px 5px 5px 0px;
+      border-style: solid;
+      border-color: transparent #d9d9d9 transparent transparent;
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+    .pre::after {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      width: 0;
+      height: 0;
+      border-width: 5px 5px 5px 0px;
+      border-style: solid;
+      border-color: transparent #d9d9d9 transparent transparent;
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+    .next::before {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      width: 0;
+      height: 0;
+      border-width: 5px 0 5px 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent #d9d9d9;
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+    .next::after {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      width: 0;
+      height: 0;
+      border-width: 5px 0 5px 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent #d9d9d9;
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+
+    .stop::before {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      width: 4px;
+      height: 18px;
+      background-color: #d9d9d9;
+      content: '';
+    }
+    .stop::after {
+      position: absolute;
+      top: 6px;
+      left: 17px;
+      width: 4px;
+      height: 18px;
+      background-color: #d9d9d9;
+      content: '';
+    }
+    .start::after {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      width: 0;
+      height: 0;
+      border-width: 10px 0 10px 15px;
+      border-style: solid;
+      border-color: transparent transparent transparent #d9d9d9;
+      content: '';
+    }
+  }
+  .song-disk {
+    position: absolute;
+    top: -45px;
+    left: 10px;
     width: 90px;
     height: 90px;
-    border-radius: 50%;
-    background-color: $theme-color9;
-    box-shadow: 0 20px 20px rgb(0 0 0 / 10%), 0 20px 20px rgb(236 245 255 / 20%);
-    animation: rotate1 6s infinite linear;
-    animation-play-state: paused;
+    transition: all 0.1s ease;
+    pointer-events: all;
+
+    user-select: none;
+    &::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-image: linear-gradient(45deg, #fff, #dabad1);
+      box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.2);
+      content: '';
+      transform: translate(-50%, -50%);
+    }
+    img {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: $theme-color9;
+      box-shadow: 0 20px 20px rgb(0 0 0 / 10%),
+        0 20px 20px rgb(236 245 255 / 20%);
+      animation: rotate1 6s infinite linear;
+      animation-play-state: paused;
+    }
   }
-}
-
-.song-control {
-  position: absolute;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-  width: 150px;
-  height: 60px;
-}
-.pre,
-.next,
-.stop,
-.start {
-  position: relative;
-  top: 50%;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  transform: translateY(-30%);
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.pre,
-.next,
-.stop,
-.start {
-  &:hover {
-    background-color: #717070;
-    color: white;
-  }
-}
-.start::after:hover {
-  border-color: transparent transparent transparent white;
-}
-
-.pre::before {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  width: 0;
-  height: 0;
-  border-width: 5px 5px 5px 0px;
-  border-style: solid;
-  border-color: transparent #d9d9d9 transparent transparent;
-  content: '';
-  transform: translate(-50%, -50%);
-}
-.pre::after {
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  width: 0;
-  height: 0;
-  border-width: 5px 5px 5px 0px;
-  border-style: solid;
-  border-color: transparent #d9d9d9 transparent transparent;
-  content: '';
-  transform: translate(-50%, -50%);
-}
-.next::before {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  width: 0;
-  height: 0;
-  border-width: 5px 0 5px 5px;
-  border-style: solid;
-  border-color: transparent transparent transparent #d9d9d9;
-  content: '';
-  transform: translate(-50%, -50%);
-}
-.next::after {
-  position: absolute;
-  top: 50%;
-  left: 18px;
-  width: 0;
-  height: 0;
-  border-width: 5px 0 5px 5px;
-  border-style: solid;
-  border-color: transparent transparent transparent #d9d9d9;
-  content: '';
-  transform: translate(-50%, -50%);
-}
-
-.stop::before {
-  position: absolute;
-  top: 6px;
-  left: 10px;
-  width: 4px;
-  height: 18px;
-  background-color: #d9d9d9;
-  content: '';
-}
-.stop::after {
-  position: absolute;
-  top: 6px;
-  left: 17px;
-  width: 4px;
-  height: 18px;
-  background-color: #d9d9d9;
-  content: '';
-}
-.start::after {
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  width: 0;
-  height: 0;
-  border-width: 10px 0 10px 15px;
-  border-style: solid;
-  border-color: transparent transparent transparent #d9d9d9;
-  content: '';
 }
 </style>

@@ -14,7 +14,7 @@
         <el-button
           type="primary"
           :loading="submitCommentLoading"
-          :disabled="frontendData.allow_comment.value === '2'"
+          :disabled="frontendData.allow_comment.value !== '1'"
           @click="addComment"
         >
           发表留言

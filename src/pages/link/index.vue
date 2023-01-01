@@ -90,7 +90,7 @@
         <el-form-item v-if="frontendData">
           <el-button
             type="primary"
-            :disabled="frontendData.allow_link.value === '2'"
+            :disabled="frontendData.allow_link.value !== '1'"
             @click="addLink()"
           >
             提交申请

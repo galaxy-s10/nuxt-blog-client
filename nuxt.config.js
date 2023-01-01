@@ -88,8 +88,11 @@ export default {
   router: {
     // Run the middleware/auth.js on every page
     // middleware: 'auth',
-    scrollBehavior(to, from, savedPosition) {
-      return { x: 0, y: 0 };
+    scrollBehavior(to, from) {
+      // 文章详情也的地址栏如果有hash，会跳转到hash，因此这里判断只有地址栏没有hash才滚动到顶部
+      if (!to.hash) {
+        return { x: 0, y: 0 };
+      }
     },
   },
 

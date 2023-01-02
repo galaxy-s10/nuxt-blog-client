@@ -2,6 +2,7 @@ import { articleApi } from '@/api/article';
 import { commentApi } from '@/api/comment';
 import { frontendApi } from '@/api/frontend';
 import { githubUserApi } from '@/api/githubUser';
+import { interactionApi } from '@/api/interaction';
 import { linkApi } from '@/api/link';
 import { musicApi } from '@/api/music';
 import { positionApi } from '@/api/position';
@@ -33,6 +34,7 @@ export class Api {
   position;
   qqUser;
   githubUser;
+  interaction;
   constructor(service) {
     this.service = service;
     this.visitorLog = visitorLogApi(service);
@@ -51,5 +53,6 @@ export class Api {
     this.position = positionApi(service);
     this.qqUser = qqUserApi(service);
     this.githubUser = githubUserApi(service);
+    this.interaction = interactionApi(service);
   }
 }

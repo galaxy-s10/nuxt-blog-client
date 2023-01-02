@@ -1,9 +1,10 @@
 <template>
   <div class="websocket-wrap">
     <div>
-      <div>当前连接状态: {{ wsStatus }}</div>
+      <!-- <div>当前连接状态: {{ wsStatus }}</div> -->
       <div>
-        <span> 历史最高同时在线: {{ historyHightOnlineNum }} </span>
+        <!-- <span> 历史最高同时在线: {{ historyHightOnlineNum }} </span> -->
+        <span> 历史最高同时在线: - </span>
         <span> | </span>
         <span> 当前在线游客: {{ onlineVisitorNum }}</span>
         <span> | </span>
@@ -25,37 +26,42 @@
             class="tip"
           >
             <span class="username">
-              {{ item.userType === wsUserType.visitor ? '游客' : '用户' }}:
-              {{ item.username }}
+              {{ item.data.userType === wsUserType.visitor ? '游客' : '用户' }}:
+              {{ item.data.userInfo.username }}
             </span>
-            加入了聊天({{ item.time }})
+            加入了聊天({{ item.data.time }})
           </div>
           <div
             v-if="item.type === wsMsgType.userOutRoom"
             class="tip"
           >
             <span class="username">
-              {{ item.userType === wsUserType.visitor ? '游客' : '用户' }}:
-              {{ item.username }}
+              {{ item.data.userType === wsUserType.visitor ? '游客' : '用户' }}:
+              {{ item.data.userInfo.username }}
             </span>
-            退出了聊天({{ item.time }})
+            退出了聊天({{ item.data.time }})
           </div>
           <div v-if="item.type === wsMsgType.userSendMsg">
-            <div :class="{ 'msg-item': true, 'is-me': item.id === wsId }">
+            <div
+              :class="{
+                'msg-item': true,
+                'is-me': item.data.userInfo.id === wsId,
+              }"
+            >
               <img
-                :src="item.avatar"
+                :src="item.data.userInfo.avatar"
                 class="avatar"
                 alt=""
               />
               <div class="info">
                 <div
-                  v-if="item.id !== wsId"
+                  v-if="item.data.userInfo.id !== wsId"
                   class="nickname"
                 >
-                  {{ item.id }}
+                  {{ item.data.userInfo.username }}
                 </div>
                 <div class="msg">
-                  {{ item.msg }}
+                  {{ item.data.value.msg }}
                   <i class="triangle"></i>
                 </div>
               </div>
@@ -195,9 +201,10 @@ export default {
         return;
       }
       wsInstance2.instance.emit(wsMsgType.userSendMsg, {
-        avatar: this.wsCurrUser.avatar,
-        msg: this.msg,
-        id: this.wsId,
+        id: this.wsCurrUser.id,
+        userInfo: this.wsCurrUser,
+        userType: this.wsCurrUser.userType,
+        value: { msg: this.msg },
       });
       this.msg = '';
     },

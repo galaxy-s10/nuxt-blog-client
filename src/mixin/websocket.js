@@ -89,10 +89,8 @@ export const websocketMixin = {
     outRoom() {
       console.log('用户退出房间', this.wsCurrUser.id);
       this.wsInstance.emit(wsMsgType.userOutRoom, {
-        id: this.wsCurrUser.id,
-        username: this.wsCurrUser.username,
+        userInfo: this.wsCurrUser,
         userType: this.wsCurrUser.userType,
-        avatar: this.wsCurrUser.avatar,
       });
     },
     // 用户加入房间
@@ -100,9 +98,10 @@ export const websocketMixin = {
       console.log('用户加入房间', this.wsCurrUser.username);
       this.wsInstance.emit(wsMsgType.userInRoom, {
         id: this.wsCurrUser.id,
-        username: this.wsCurrUser.username,
+        userInfo: this.wsCurrUser,
         userType: this.wsCurrUser.userType,
-        avatar: this.wsCurrUser.avatar,
+        value: {},
+        time: new Date().toLocaleString(),
       });
     },
     // 创建WebSocket
@@ -126,7 +125,7 @@ export const websocketMixin = {
     // 初始化
     initWebSocket() {
       this.wsInstance.on(wsConnectStatusEnum.connect, () => {
-        console.log('连接websocket成功');
+        console.log('连接websocket成功！');
         this.setWsStatus(wsConnectStatusEnum.connect);
         this.setWsId(this.wsInstance.id);
         this.setCurrUser({
@@ -171,8 +170,10 @@ export const websocketMixin = {
       });
       this.wsInstance.on(wsMsgType.visitorSwitchAvatar, (data) => {
         this.setCurrUser({
-          avatar: data.avatar,
           id: this.wsInstance.id,
+          username: data.username,
+          avatar: data.avatar,
+          userType: data.userType,
         });
       });
       this.wsInstance.on(wsMsgType.userInRoom, (data) => {
@@ -180,31 +181,25 @@ export const websocketMixin = {
           ...this.wsChatList,
           {
             type: wsMsgType.userInRoom,
-            ...data,
+            data,
           },
         ]);
       });
       this.wsInstance.on(wsMsgType.userOutRoom, (data) => {
-        const { id, time } = data;
         this.setWsChatList([
           ...this.wsChatList,
           {
             type: wsMsgType.userOutRoom,
-            id,
-            time,
+            data,
           },
         ]);
       });
       this.wsInstance.on(wsMsgType.userSendMsg, (data) => {
-        const { id, avatar, msg, time } = data;
         this.setWsChatList([
           ...this.wsChatList,
           {
             type: wsMsgType.userSendMsg,
-            id,
-            avatar,
-            msg,
-            time,
+            data,
           },
         ]);
       });

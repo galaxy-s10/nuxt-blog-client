@@ -12,6 +12,8 @@ export const state = () => ({
   wsStatus: wsConnectStatusEnum.disconnect, // 当前连接状态
   currUser: {
     id: '',
+    username: '',
+    userType: -1,
     avatar: '',
   }, // 当前用户信息
 });

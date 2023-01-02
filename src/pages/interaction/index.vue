@@ -2,7 +2,35 @@
   <div class="interaction-wrap">
     <h1 class="title">在线互动(Beta)</h1>
     <hr class="hr-class" />
-    当前音乐列表：
+
+    <div class="interaction-list">
+      历史记录（最近100条）
+      <div
+        v-for="(interaction, index) in interactionList"
+        :key="'interaction-' + index"
+        class="slider"
+      >
+        <div class="container">
+          <div
+            v-for="(item, indey) in interaction"
+            :key="'item-' + indey"
+            class="item"
+          >
+            <img
+              :src="JSON.parse(item.user_info).avatar"
+              alt=""
+              class="avatar"
+            />
+            <span class="txt">
+              {{ JSON.parse(item.user_info).username }}：{{
+                JSON.parse(item.value).msg
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 当前音乐列表：
     <div class="music-list">
       <span
         v-for="item in musicList"
@@ -12,7 +40,7 @@
         {{ item.id }}:{{ item.name }}
       </span>
     </div>
-    <p>在线点歌：</p>
+    <p>在线点歌：</p> -->
     <WebSocketCpt></WebSocketCpt>
   </div>
 </template>
@@ -23,6 +51,7 @@ import { mapState } from 'vuex';
 // eslint-disable-next-line
 import { Api } from '@/api';
 import WebSocketCpt from '@/components/WebSocket/index.vue';
+import { wsUserType } from '@/constant';
 
 export default {
   components: { WebSocketCpt },
@@ -38,10 +67,7 @@ export default {
    */
   async asyncData({ $myaxios, store, params, req }) {},
   data() {
-    return {
-      currentTagId: 1,
-      currentTagName: '',
-    };
+    return { wsUserType, rowsLen: 0, interactionList: [] };
   },
   head() {
     return {
@@ -67,16 +93,99 @@ export default {
   },
   watch: {},
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.getInteractionList();
+  },
+  methods: {
+    async getInteractionList() {
+      const { code, data } = await this.$myaxios.interaction.list({
+        nowPage: 1,
+        pageSize: 100,
+        orderName: 'created_at',
+        orderBy: 'desc',
+      });
+      if (code === 200) {
+        const res = [];
+        const count = Math.ceil(data.rows.length / 3);
+        for (let i = 0, len = data.rows.length; i < len; i += count) {
+          const item = data.rows.slice(i, i + count);
+          res.push([...item, ...item]);
+        }
+        this.rowsLen = data.rows.length;
+        this.interactionList = res;
+      } else {
+        console.log('getInteractionList出错');
+      }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+@keyframes left-right {
+  0% {
+    transform: translateX(-1000px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes right-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1000px);
+  }
+}
 .interaction-wrap {
   .title {
     display: block;
     text-align: center;
+  }
+  .interaction-list {
+    overflow: hidden;
+    .slider {
+      overflow-x: scroll;
+      @extend %hideScrollbar;
+
+      &:nth-child(2n) {
+        .container {
+          animation: left-right 10s linear infinite;
+        }
+      }
+      &:nth-child(2n-1) {
+        .container {
+          animation: right-left 10s linear infinite;
+        }
+      }
+
+      .container {
+        display: flex;
+
+        .item {
+          flex-shrink: 0;
+          height: 40px;
+          // line-height: 40px;
+          // display: inline-block;
+          display: flex;
+          align-items: center;
+          padding-right: 20px;
+          width: 200px;
+          box-sizing: border-box;
+          .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 4px;
+          }
+          .txt {
+            font-size: 14px;
+            @extend %singleEllipsis;
+          }
+        }
+      }
+    }
   }
   .music-list {
     .music-item {

@@ -5,30 +5,11 @@
 
     <div class="interaction-list">
       历史记录（最近100条）
-      <div
-        v-for="(interaction, index) in interactionList"
-        :key="'interaction-' + index"
-        class="slider"
-      >
-        <div class="container">
-          <div
-            v-for="(item, indey) in interaction"
-            :key="'item-' + indey"
-            class="item"
-          >
-            <img
-              :src="JSON.parse(item.user_info).avatar"
-              alt=""
-              class="avatar"
-            />
-            <span class="txt">
-              {{ JSON.parse(item.user_info).username }}：{{
-                JSON.parse(item.value).msg
-              }}
-            </span>
-          </div>
-        </div>
-      </div>
+      <SliderCpt
+        v-if="interactionList.length"
+        :list="interactionList"
+        :row="3"
+      ></SliderCpt>
     </div>
     <!-- 当前音乐列表：
     <div class="music-list">
@@ -50,11 +31,12 @@ import { mapState } from 'vuex';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
+import SliderCpt from '@/components/Slider/index.vue';
 import WebSocketCpt from '@/components/WebSocket/index.vue';
 import { wsUserType } from '@/constant';
 
 export default {
-  components: { WebSocketCpt },
+  components: { WebSocketCpt, SliderCpt },
   layout: 'blog',
   /**
    * @typedef {Object} asyncDataType
@@ -106,13 +88,15 @@ export default {
       });
       if (code === 200) {
         const res = [];
+        // 不管多少条数据，都平均分成3份
         const count = Math.ceil(data.rows.length / 3);
         for (let i = 0, len = data.rows.length; i < len; i += count) {
           const item = data.rows.slice(i, i + count);
           res.push([...item, ...item]);
         }
         this.rowsLen = data.rows.length;
-        this.interactionList = res;
+        // this.interactionList = res;
+        this.interactionList = data.rows;
       } else {
         console.log('getInteractionList出错');
       }
@@ -144,48 +128,6 @@ export default {
     text-align: center;
   }
   .interaction-list {
-    overflow: hidden;
-    .slider {
-      overflow-x: scroll;
-      @extend %hideScrollbar;
-
-      &:nth-child(2n) {
-        .container {
-          animation: left-right 10s linear infinite;
-        }
-      }
-      &:nth-child(2n-1) {
-        .container {
-          animation: right-left 10s linear infinite;
-        }
-      }
-
-      .container {
-        display: flex;
-
-        .item {
-          flex-shrink: 0;
-          height: 40px;
-          // line-height: 40px;
-          // display: inline-block;
-          display: flex;
-          align-items: center;
-          padding-right: 20px;
-          width: 200px;
-          box-sizing: border-box;
-          .avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 4px;
-          }
-          .txt {
-            font-size: 14px;
-            @extend %singleEllipsis;
-          }
-        }
-      }
-    }
   }
   .music-list {
     .music-item {

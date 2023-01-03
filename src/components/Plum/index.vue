@@ -13,7 +13,7 @@ import { mapState } from 'vuex';
 
 export default {
   components: {},
-  props: [],
+  props: {},
   data() {
     return {
       width: 600,

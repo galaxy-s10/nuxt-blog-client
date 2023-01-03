@@ -38,7 +38,7 @@ import { Api } from '@/api';
 export default {
   components: {},
   layout: 'blog',
-  props: [],
+  props: {},
   /**
    * @typedef {Object} asyncDataType
    * @property {Api} $myaxios

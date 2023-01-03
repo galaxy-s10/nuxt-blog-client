@@ -49,7 +49,7 @@ export default {
   name: 'UserInfoCpt',
   components: {},
   mixins: [websocketMixin],
-  props: [],
+  props: {},
   data() {
     return {
       wsConnectStatusEnum,

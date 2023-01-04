@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import { deepCloneByJson } from 'billd-utils';
 import { MessageBox } from 'element-ui';
 import { mapMutations } from 'vuex';
 
@@ -121,7 +122,7 @@ import SortTabCpt from './components/SortTab/index.vue';
 import LoginCpt from '@/components/Login/index.vue';
 import ModalCpt from '@/components/Modal/index.vue';
 import ReplyCpt from '@/components/Reply/index.vue';
-import { deepCloneByJson } from '@/utils/index';
+
 export default {
   components: {
     LoginCpt,

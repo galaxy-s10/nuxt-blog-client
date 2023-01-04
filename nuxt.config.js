@@ -197,6 +197,7 @@ export default {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          NUXT_BLOG_VERSION: JSON.stringify(pkg.version),
         },
       }),
       // 注入项目信息

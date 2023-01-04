@@ -107,12 +107,13 @@
 </template>
 
 <script>
+import { getRangeRandom } from 'billd-utils';
 import { mapActions, mapMutations } from 'vuex';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
-import { getRandomInt } from '@/utils/index';
+
 export default {
   components: {
     NoHeadImgCpt,
@@ -138,7 +139,7 @@ export default {
     try {
       const { data } = await $myaxios.article.list(params1);
       data.rows.forEach((v) => {
-        v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
+        v.mockImgHeight = getRangeRandom(200, 250) + getRangeRandom(0, 50);
       });
       const articleList = data.rows;
       const hasMore = data.hasMore;
@@ -276,7 +277,7 @@ export default {
         this.isLoading = true;
         const { data } = await this.$myaxios.article.list(params);
         data.rows.forEach((v) => {
-          v.mockImgHeight = getRandomInt(200, 250) + getRandomInt(0, 50);
+          v.mockImgHeight = getRangeRandom(200, 250) + getRangeRandom(0, 50);
         });
         if (params.nowPage === 1) {
           this.articleList = data.rows;

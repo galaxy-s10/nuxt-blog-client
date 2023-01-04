@@ -1,197 +1,17 @@
 <template>
   <aside class="aside-wrap">
+    <HeadInfoCpt></HeadInfoCpt>
+
+    <SiteInfoCpt></SiteInfoCpt>
+
+    <SettingInfoCpt></SettingInfoCpt>
+
     <UserInfoCpt></UserInfoCpt>
 
-    <AsnycCollapseCpt
-      class="releation-info"
-      title="站点信息"
-      open
-    >
-      <template #ico>
-        <i class="el-icon-setting"></i>
-      </template>
-      <div class="list">
-        <div class="item">
-          <div class="wechat_logo_wrap">
-            <img
-              src="@/assets/img/wechat_logo.webp"
-              class="logo"
-              alt="wechat_logo"
-            />
-            <img
-              src="@/assets/img/wechat_code.webp"
-              class="code"
-              alt="wechat_code"
-            />
-          </div>
-          <div>微信</div>
-        </div>
-        <div class="item">
-          <a
-            class="github_logo_wrap"
-            href="https://github.com/galaxy-s10"
-            target="_blank"
-          >
-            <img
-              src="@/assets/img/github_logo.webp"
-              class="logo"
-              alt="github_logo"
-            />
-          </a>
-          <div>github</div>
-        </div>
-        <div class="item">
-          <a
-            class="admin_logo_wrap"
-            href="https://admin.hsslive.cn/"
-            target="_blank"
-          >
-            <img
-              src="@/assets/img/admin_logo.webp"
-              class="logo"
-              alt="admin_logo"
-            />
-          </a>
-          <div>后台</div>
-        </div>
-      </div>
-    </AsnycCollapseCpt>
+    <CatalogInfoCpt></CatalogInfoCpt>
 
-    <AsnycCollapseCpt
-      class="setting-info"
-      title="设置"
-      open
-    >
-      <template #ico>
-        <i class="el-icon-setting"></i>
-      </template>
-      <div>
-        <div class="item">
-          <div class="switch">
-            <span class="txt">黑白主题：</span>
-            <el-switch
-              :value="theme === 'dark'"
-              :width="35"
-              @change="setTheme(theme === 'dark' ? 'light' : 'dark')"
-            ></el-switch>
-          </div>
-        </div>
-        <div class="item">
-          <div class="switch">
-            <span class="txt">梅花特效：</span>
-            <el-switch
-              :value="showPlum"
-              :width="35"
-              @change="setShowPlum(!showPlum)"
-            ></el-switch>
-          </div>
-        </div>
-        <div class="item">
-          <div class="switch">
-            <span class="txt">瀑布流展示：</span>
-            <el-switch
-              :value="isWaterFall"
-              :width="35"
-              @change="setIsWaterFall(!isWaterFall)"
-            ></el-switch>
-          </div>
-        </div>
-        <div class="item">
-          <div class="switch">
-            <span class="txt">音乐播放器(支持拖动)：</span>
-            <el-switch
-              :value="showMusicAudio"
-              :width="35"
-              @change="setShowMusicAudio(!showMusicAudio)"
-            ></el-switch>
-          </div>
-        </div>
-      </div>
-    </AsnycCollapseCpt>
-
-    <AsnycCollapseCpt
-      v-if="userInfo"
-      title="用户信息"
-    >
-      <template #ico>
-        <i class="el-icon-user"></i>
-      </template>
-      <div>
-        <div class="item">
-          角色: {{ summary.roles.map((v) => v.role_name).join() }}
-        </div>
-        <div class="item">文章数: {{ summary.articlesTotal }}</div>
-        <div class="item">累计发出点赞: {{ summary.sendStarsTotal }}</div>
-        <div class="item">累计收到点赞: {{ summary.receiveStarsTotal }}</div>
-        <div class="item">累计发出评论: {{ summary.sendCommentsTotal }}</div>
-        <div class="item">累计收到回复: {{ summary.receiveCommentsTotal }}</div>
-        <div class="item">
-          qq绑定: {{ summary.qq_users.length ? '已绑定' : '未绑定' }}
-        </div>
-        <div class="item">
-          github绑定: {{ summary.github_users.length ? '已绑定' : '未绑定' }}
-        </div>
-      </div>
-    </AsnycCollapseCpt>
-
-    <template v-if="showCatalog">
-      <div
-        ref="catalogRef"
-        class="catalog-ref"
-      ></div>
-      <nav
-        ref="catalogInfoRef"
-        class="catalog-info"
-        :class="{ fix: catalogFixed }"
-      >
-        <div class="title">
-          <i class="el-icon-paperclip"></i>
-          <b>文章目录</b>
-        </div>
-        <CatalogCpt :list="catalogList"></CatalogCpt>
-      </nav>
-    </template>
-
-    <template v-else>
-      <AsnycCollapseCpt
-        class="log-info"
-        title="流量信息"
-      >
-        <template #ico>
-          <i class="el-icon-data-analysis"></i>
-        </template>
-        <div v-loading="logLoading">
-          <template v-if="ipInfo">
-            <div class="item">ip: {{ ipInfo.ip }}</div>
-            <div class="item">
-              location:
-              {{ ipInfo.gaode | parseIpInfo }}
-            </div>
-          </template>
-          <template v-if="visitorHistoryData">
-            <div class="item">
-              历史总访问量: {{ visitorHistoryData.visit_total }}
-            </div>
-            <div class="item">
-              历史总访客量: {{ visitorHistoryData.visitor_total }}
-            </div>
-          </template>
-          <template v-if="visitorDayData">
-            <div class="item">
-              今天总访问数: {{ visitorDayData.visit_total }}
-            </div>
-            <div class="item">
-              今天总访客数: {{ visitorDayData.visitor_total }}
-            </div>
-          </template>
-          <div
-            class="refresh"
-            @click="refreshLog"
-          >
-            <i class="el-icon-refresh ico"></i>
-          </div>
-        </div>
-      </AsnycCollapseCpt>
+    <template v-if="!showCatalog">
+      <LogInfoCpt></LogInfoCpt>
 
       <div
         ref="mainFolatWrapRef"
@@ -280,38 +100,7 @@
             </div>
           </div>
 
-          <AsnycCollapseCpt
-            class="tag-info"
-            title="标签云"
-            :open="true"
-          >
-            <template #ico>
-              <i class="el-icon-collection-tag"></i>
-            </template>
-            <div>
-              <div v-if="sideBarTagList && sideBarTagList.length">
-                <el-tooltip
-                  v-for="item in sideBarTagList"
-                  :key="item.id"
-                  effect="dark"
-                  :content="'该标签下有' + item.article_total + '篇文章'"
-                  placement="top"
-                >
-                  <nuxt-link :to="'/tag/' + item.id">
-                    <el-tag
-                      class="tag-margin"
-                      :disable-transitions="false"
-                      :color="item.color"
-                      @click="tagClick(item.id)"
-                    >
-                      {{ item.name }}
-                    </el-tag>
-                  </nuxt-link>
-                </el-tooltip>
-              </div>
-              <div v-else>暂无标签~</div>
-            </div>
-          </AsnycCollapseCpt>
+          <TagInfoCpt></TagInfoCpt>
         </div>
       </div>
     </template>
@@ -321,20 +110,28 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
 
-import UserInfoCpt from './userInfo/index.vue';
+import CatalogInfoCpt from './catalog-info/index.vue';
+import HeadInfoCpt from './head-info/index.vue';
+import LogInfoCpt from './log-info/index.vue';
+import SettingInfoCpt from './setting-info/index.vue';
+import SiteInfoCpt from './site-info/index.vue';
+import TagInfoCpt from './tag-info/index.vue';
+import UserInfoCpt from './user-info/index.vue';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
-import CatalogCpt from '@/components/Catalog/index.vue';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
-import { dateStartAndEnd } from '@/utils/format';
 
 export default {
   components: {
+    HeadInfoCpt,
+    SiteInfoCpt,
+    SettingInfoCpt,
+    TagInfoCpt,
     UserInfoCpt,
-    CatalogCpt,
+    CatalogInfoCpt,
+    LogInfoCpt,
     NoHeadImgCpt,
-    AsnycCollapseCpt: () => import('@/components/Collapse/index.vue'),
   },
   /**
    * @typedef {Object} asyncDataType
@@ -352,7 +149,6 @@ export default {
       switchLoading: false,
       catalogFixed: false,
       sidebarFixed: false,
-      logLoading: false,
       catalogObserver: null,
       sidebarObserver: null,
     };
@@ -362,42 +158,12 @@ export default {
       sideBarArticleOrderName(state) {
         return state.article.sideBarArticleOrderName;
       },
-      ipInfo(state) {
-        return state.app.ipInfo;
-      },
-      visitorDayData() {
-        return this.$store.state.visitor.dayData;
-      },
-      visitorHistoryData() {
-        return this.$store.state.visitor.historyData;
-      },
-      summary(state) {
-        return state.user.summary;
-      },
-      userInfo(state) {
-        return state.user.userInfo;
-      },
-      theme(state) {
-        return state.app.theme;
-      },
-      showPlum(state) {
-        return state.app.showPlum;
-      },
-      showMusicAudio(state) {
-        return state.app.showMusicAudio;
-      },
-      isWaterFall(state) {
-        return state.app.isWaterFall;
-      },
     }),
     sideBarTagList() {
       return this.$store.state.tag.sideBarTagList;
     },
     sideBarArticleList() {
       return this.$store.state.article.sideBarArticleList;
-    },
-    catalogList() {
-      return this.$store.state.article.catalogList;
     },
     showCatalog() {
       return this.$store.state.app.showCatalog;
@@ -413,8 +179,6 @@ export default {
         this.$nextTick(() => {
           this.$refs.mainFolatRef &&
             this.handleSidebarObserver(this.$refs.mainFolatRef);
-          this.$refs.catalogRef &&
-            this.catalogObserver.unobserve(this.$refs.catalogRef);
         });
       }
     },
@@ -430,31 +194,12 @@ export default {
   },
   mounted() {
     this.handleSidebarObserver(this.$refs.mainFolatRef);
-    this.$store.dispatch('app/getIpInfo');
-    this.$store.dispatch(
-      'visitor/getVisitorDayData',
-      dateStartAndEnd(new Date())
-    );
-    this.$store.dispatch('visitor/getVisitorHistoryData');
   },
   methods: {
     ...mapActions('article', ['getSideBarArticleList']),
     ...mapMutations({
       changeSideBarArticleOrderName: 'article/changeSideBarArticleOrderName',
-      setTheme: 'app/setTheme',
-      setIsWaterFall: 'app/setIsWaterFall',
-      setShowPlum: 'app/setShowPlum',
-      setShowMusicAudio: 'app/setShowMusicAudio',
     }),
-    async refreshLog() {
-      this.logLoading = true;
-      await this.$store.dispatch(
-        'visitor/getVisitorDayData',
-        dateStartAndEnd(new Date())
-      );
-      await this.$store.dispatch('visitor/getVisitorHistoryData');
-      this.logLoading = false;
-    },
     async ajaxArticleList(orderName) {
       try {
         const params = {
@@ -471,35 +216,35 @@ export default {
     },
 
     // 文章目录监听
-    handleCataLogObserver(ref) {
-      const rootMargin = { top: -40, right: 0, bottom: 0, left: 0 };
-      this.catalogObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((item) => {
-            const height = window.innerHeight + rootMargin.top;
-            if (height <= item.boundingClientRect.top) return;
-            if (!this.showCatalog) return;
-            if (
-              this.$refs.catalogInfoRef.getBoundingClientRect().height >=
-              document.querySelector('.main-wrap .left').getBoundingClientRect()
-                .height
-            ) {
-              return;
-            }
-            if (item.isIntersecting) {
-              this.catalogFixed = false;
-              this.sidebarFixed = false; // 文章目录出现的时候，直接去掉侧边栏目录
-            } else {
-              this.catalogFixed = true;
-            }
-          });
-        },
-        {
-          rootMargin: `${rootMargin.top}px ${rootMargin.right}px ${rootMargin.bottom}px ${rootMargin.left}px`,
-        }
-      );
-      this.catalogObserver.observe(ref);
-    },
+    // handleCataLogObserver(ref) {
+    //   const rootMargin = { top: -40, right: 0, bottom: 0, left: 0 };
+    //   this.catalogObserver = new IntersectionObserver(
+    //     (entries) => {
+    //       entries.forEach((item) => {
+    //         const height = window.innerHeight + rootMargin.top;
+    //         if (height <= item.boundingClientRect.top) return;
+    //         // if (!this.showCatalog) return;
+    //         if (
+    //           this.$refs.catalogInfoRef.getBoundingClientRect().height >=
+    //           document.querySelector('.main-wrap .left').getBoundingClientRect()
+    //             .height
+    //         ) {
+    //           return;
+    //         }
+    //         if (item.isIntersecting) {
+    //           this.catalogFixed = false;
+    //           this.sidebarFixed = false; // 文章目录出现的时候，直接去掉侧边栏目录
+    //         } else {
+    //           this.catalogFixed = true;
+    //         }
+    //       });
+    //     },
+    //     {
+    //       rootMargin: `${rootMargin.top}px ${rootMargin.right}px ${rootMargin.bottom}px ${rootMargin.left}px`,
+    //     }
+    //   );
+    //   this.catalogObserver.observe(ref);
+    // },
     // 侧边栏监听
     handleSidebarObserver(ref) {
       const rootMargin = { top: -40, right: 0, bottom: 0, left: 0 };
@@ -537,9 +282,6 @@ export default {
         }
       );
       this.sidebarObserver.observe(ref);
-    },
-    tagClick(id) {
-      this.$router.push({ path: `/tag/${id}` });
     },
     async switchSideBarArticleOrderName() {
       const orderName =
@@ -646,85 +388,6 @@ export default {
           }
         }
       }
-    }
-    .tag-info {
-      /* 覆盖默认样式，加了/deep/或者>>>反而覆盖不了？ */
-      .el-tag {
-        border: none;
-        color: $theme-color6;
-      }
-      .title {
-        margin: 8px 0;
-      }
-      .tag-margin {
-        margin-right: 5px;
-        margin-bottom: 5px;
-        color: $theme-color6;
-      }
-    }
-  }
-
-  .catalog-ref {
-    width: 1px;
-    height: 1px;
-  }
-  .log-info {
-    .refresh {
-      text-align: right;
-      .ico {
-        cursor: pointer;
-      }
-    }
-  }
-  .releation-info {
-    .list {
-      display: flex;
-      align-items: center;
-      .item {
-        margin-right: 20px;
-        width: 50px;
-        text-align: center;
-      }
-      .logo {
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-      }
-      .wechat_logo_wrap {
-        position: relative;
-        display: inline-block;
-        &:hover {
-          .code {
-            display: block;
-          }
-        }
-        .code {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          display: none;
-          width: 100px;
-          height: 100px;
-          transform: translate(-50%, -100%);
-        }
-      }
-    }
-  }
-  .catalog-info {
-    overflow: hidden;
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid $theme-color4;
-    border-radius: 5px;
-    background: $theme-color6;
-    &.fix {
-      position: fixed;
-      top: 40px;
-      box-sizing: border-box;
-      width: inherit;
-    }
-    .title {
-      margin: 8px 0;
     }
   }
 }

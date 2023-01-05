@@ -4,7 +4,10 @@
       v-for="(slider, index) in sliderList"
       :key="'slider-' + index"
       class="slider"
-      :style="{ '--width': widthMap[index] / 2 }"
+      :style="{
+        '--width': widthMap[index] / 2,
+        '--speed': widthMap[index] / 2 / speed + 's',
+      }"
     >
       <div
         ref="containerRef"
@@ -44,9 +47,15 @@ export default {
         return [];
       },
     },
+    // 多少行
     row: {
       type: Number,
       default: 3,
+    },
+    // 滚动速率 (px/s)
+    speed: {
+      type: Number,
+      default: 100,
     },
   },
   data() {
@@ -120,12 +129,18 @@ export default {
 
     &:nth-child(2n) {
       .container {
-        animation: left-right 10s linear infinite;
+        animation: left-right var(--speed) linear infinite;
+        &:hover {
+          animation-play-state: paused;
+        }
       }
     }
     &:nth-child(2n-1) {
       .container {
-        animation: right-left 10s linear infinite;
+        animation: right-left var(--speed) linear infinite;
+        &:hover {
+          animation-play-state: paused;
+        }
       }
     }
 

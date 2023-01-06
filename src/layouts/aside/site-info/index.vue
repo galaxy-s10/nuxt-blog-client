@@ -71,6 +71,7 @@ export default {
   watch: {},
   created() {},
   mounted() {
+    console.log('---', process.env, process.env.NUXT_BLOG_VERSION);
     this.version = process.env.NUXT_BLOG_VERSION;
   },
   methods: {},

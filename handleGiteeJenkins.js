@@ -1,6 +1,9 @@
 // WARN 该文件只是方便我将当前项目复制一份到我电脑的另一个位置（gitee私有仓库的位置)，其他人不需要管这个文件~
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+
+const semver = require('semver');
 
 const allFile = [];
 const ignore = ['.DS_Store', '.git', 'node_modules'];
@@ -60,5 +63,26 @@ function putFile() {
   }
 }
 
+const oldPkgStr = fs.readFileSync(
+  path.resolve(giteeDir, 'package.json'),
+  'utf-8'
+);
+const oldPkg = JSON.parse(oldPkgStr);
+const newVersion = semver.inc(oldPkg.version, 'patch');
+
 findFile(dir);
 putFile();
+fs.writeFileSync(
+  path.resolve(giteeDir, 'package.json'),
+  JSON.stringify({ ...oldPkg, version: newVersion }, {}, 2)
+);
+execSync(`pnpm i`, { cwd: giteeDir });
+execSync(`git add .`, { cwd: giteeDir });
+execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
+  cwd: giteeDir,
+});
+execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
+  cwd: giteeDir,
+});
+execSync(`git push`, { cwd: giteeDir });
+execSync(`git push origin v${newVersion}`, { cwd: giteeDir });

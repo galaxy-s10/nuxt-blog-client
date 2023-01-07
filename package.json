@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "nuxt build",
-    "copy": "node ./copyToGiteeDir.js",
+    "copy": "node ./handleGiteeJenkins.js",
     "cz": "cz",
     "dev": "nuxt",
     "generate": "nuxt generate",

@@ -24,7 +24,7 @@
         <div
           :class="{
             status: true,
-            connect: wsStatus === wsConnectStatusEnum.connect,
+            connect: wsStatus === wsConnectStatus.connect,
           }"
         ></div>
       </div>
@@ -42,7 +42,7 @@
 <script>
 import { mapState } from 'vuex';
 
-import { wsConnectStatusEnum } from '@/constant';
+import { wsConnectStatus } from '@/constant';
 import { websocketMixin } from '@/mixin/websocket';
 
 export default {
@@ -52,7 +52,7 @@ export default {
   props: {},
   data() {
     return {
-      wsConnectStatusEnum,
+      wsConnectStatus,
       offset: { x: 0, y: 0 }, // x:距离最左边多少px；y:距离最下边多少px
       len: 0,
       position: { top: 0, left: 0 },

@@ -26,10 +26,20 @@ export const state = () => ({
   currentNodeEnv: 'development',
   // 音乐列表
   musicList: [],
+  // 显示登录弹窗
   showLoginModal: false,
+  // errorCode
+  apiError: {
+    errorCode: -1,
+    message: '',
+  },
 });
 
 export const mutations = {
+  // eslint-disable-next-line no-shadow
+  setApiError(state, res) {
+    state.apiError = res;
+  },
   // eslint-disable-next-line no-shadow
   setMusicList(state, res) {
     state.musicList = res;

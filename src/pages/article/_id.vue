@@ -203,6 +203,7 @@
 <script>
 import { mapMutations } from 'vuex';
 
+// eslint-disable-next-line
 import { Api } from '@/api';
 import AvatarGroupCpt from '@/components/AvatarGroup/index.vue';
 import CommentCpt from '@/components/Comment/index.vue';

@@ -3,9 +3,13 @@ const fs = require('fs');
 const path = require('path');
 
 const allFile = [];
-const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
+const ignore = ['.DS_Store', '.git', 'node_modules'];
 const localDir = path.resolve(__filename, '../');
-const giteeDir = path.resolve(__filename, '../../../jenkins/nuxt-blog-client');
+const giteeDir = path.resolve(
+  __filename,
+  '../',
+  './../../jenkins/nuxt-blog-client'
+);
 
 const dir = fs.readdirSync(localDir).filter((item) => {
   if (ignore.includes(item)) {
@@ -45,6 +49,7 @@ function putFile() {
       // 数组的最后一个一定是文件，因此不需要判断它是不是目录
       if (index !== arr.length - 1) {
         const flag = fs.existsSync(item);
+        // eslint-disable-next-line
         !flag && fs.mkdirSync(item);
       }
     });

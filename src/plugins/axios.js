@@ -3,6 +3,7 @@ import { isBrowser } from 'billd-utils';
 import { Message } from 'element-ui';
 
 import { Api } from '@/api';
+import { ERROR_HTTP_CODE } from '@/constant';
 
 export default function ({ $axios, store }, inject) {
   let baseURL = '/';
@@ -60,6 +61,7 @@ export default function ({ $axios, store }, inject) {
     },
     (error) => {
       if (error.response && error.response.status) {
+        const errdata = error.response.data;
         const whiteList = ['400', '401', '403']; // 这三个状态码是后端会返回的
         if (!whiteList.includes(`${error.response.status}`)) {
           // 网关超时504
@@ -72,26 +74,30 @@ export default function ({ $axios, store }, inject) {
         if (error.response.status === 400) {
           // 400错误不返回data
           Message({
-            message: error.response.data.message,
+            message: errdata.message,
             type: 'error',
           });
-          return Promise.reject(error.response.data);
         }
         if (error.response.status === 401) {
           Message({
-            message: error.response.data.message,
+            message: errdata.message,
             type: 'error',
           });
           store.commit('user/logout');
-          return Promise.reject(error.response.data);
         }
         if (error.response.status === 403) {
           Message({
-            message: error.response.data.message,
+            message: errdata.message,
             type: 'error',
           });
-          return Promise.reject(error.response.data);
         }
+        if (
+          errdata.errorCode === ERROR_HTTP_CODE.banIp ||
+          errdata.errorCode === ERROR_HTTP_CODE.adminDisableUser
+        ) {
+          store.commit('app/setApiError', errdata);
+        }
+        return Promise.reject(errdata);
       } else {
         if (error.response) {
           Message({

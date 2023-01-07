@@ -10,6 +10,15 @@ export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';
 export const GITHUB_REPO = 'https://github.com/galaxy-s10/nuxt-blog-client';
 
+export const ERROR_HTTP_CODE = {
+  serverError: 10000, // 服务器错误
+  banIp: 1000,
+  adminDisableUser: 1001,
+  notFound: 1002, // 返回了404的http状态码
+  errStatusCode: 1003, // 返回了即不是200也不是404的http状态码
+  shutdown: 1004, // 停机维护
+};
+
 // websocket消息类型
 export const wsMsgType = {
   /** 用户连接 */
@@ -22,12 +31,28 @@ export const wsMsgType = {
   userOutRoom: 'userOutRoom',
   /** 用户发送消息 */
   userSendMsg: 'userSendMsg',
-  /** 获取在线游客数 */
-  getOnlineVisitorNum: 'getOnlineVisitorNum',
-  /** 获取在线用户数 */
-  getOnlineUserNum: 'getOnlineUserNum',
-  /** 获取历史最高同时在线数（游客+用户） */
-  getHistoryHightOnlineNum: 'getHistoryHightOnlineNum',
+  /** 获取在线数据 */
+  getOnlineData: 'getOnlineData',
+  /** 用户存活 */
+  live: 'live',
+};
+
+// websocket连接状态
+export const wsConnectStatus = {
+  /** 已连接 */
+  connection: 'connection',
+  /** 连接中 */
+  connecting: 'connecting',
+  /** 已连接 */
+  connected: 'connected',
+  /** 断开连接中 */
+  disconnecting: 'disconnecting',
+  /** 已断开连接 */
+  disconnect: 'disconnect',
+  /** 重新连接 */
+  reconnect: 'reconnect',
+  /** 客户端的已连接 */
+  connect: 'connect',
 };
 
 // websocket用户类型
@@ -36,16 +61,4 @@ export const wsUserType = {
   user: 2, // 用户
 };
 
-// websocket连接状态
-export const wsConnectStatusEnum = {
-  /** 连接中 */
-  connecting: 'connecting',
-  /** 已连接 */
-  connect: 'connect',
-  /** 断开连接 */
-  disconnect: 'disconnect',
-  /** 连接错误 */
-  connect_error: 'connect_error',
-  /** 重新连接 */
-  reconnect: 'reconnect',
-};
+export const liveExp = 60 * 5; // 5分钟过期

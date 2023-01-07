@@ -129,14 +129,17 @@ export default {
   },
   computed: {
     ...mapState({
-      onlineUserNum(state) {
-        return state.ws.onlineUserNum;
-      },
-      onlineVisitorNum(state) {
-        return state.ws.onlineVisitorNum;
-      },
-      allOnline(state) {
-        return state.ws.onlineVisitorNum + state.ws.onlineUserNum;
+      // onlineUserNum(state) {
+      //   return state.ws.onlineUserNum;
+      // },
+      // onlineVisitorNum(state) {
+      //   return state.ws.onlineVisitorNum;
+      // },
+      // allOnline(state) {
+      //   return state.ws.onlineVisitorNum + state.ws.onlineUserNum;
+      // },
+      onlineData(state) {
+        return state.ws.onlineData.visitor + state.ws.onlineData.user;
       },
     }),
     hiddenHeader() {
@@ -144,7 +147,7 @@ export default {
     },
   },
   watch: {
-    allOnline(newVal) {
+    onlineData(newVal) {
       this.navList.forEach((item) => {
         if (item.path === '/interaction') {
           item.badge = newVal;

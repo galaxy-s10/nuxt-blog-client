@@ -4,7 +4,7 @@ import { mapMutations, mapState } from 'vuex';
 
 import { wsInstance2, WsInstanceClass } from './ws';
 
-import { wsConnectStatusEnum, wsMsgType, wsUserType } from '@/constant';
+import { wsConnectStatus, wsMsgType, wsUserType, liveExp } from '@/constant';
 
 export const websocketMixin = {
   data() {
@@ -32,15 +32,21 @@ export const websocketMixin = {
       wsId(state) {
         return state.ws.wsId;
       },
-      onlineUserNum(state) {
-        return state.ws.onlineUserNum;
+      onlineData(state) {
+        return state.ws.onlineData;
       },
-      onlineVisitorNum(state) {
-        return state.ws.onlineVisitorNum;
-      },
-      historyHightOnlineNum(state) {
-        return state.ws.historyHightOnlineNum;
-      },
+      // onlineUserNum(state) {
+      //   return state.ws.onlineUserNum;
+      // },
+      // onlineVisitorNum(state) {
+      //   return state.ws.onlineVisitorNum;
+      // },
+      // historyHightOnlineNum(state) {
+      //   return state.ws.historyHightOnlineNum;
+      // },
+      // currDayHightOnlineNum(state) {
+      //   return state.ws.currDayHightOnlineNum;
+      // },
       wsAvatarList(state) {
         return state.ws.wsAvatarList;
       },
@@ -57,9 +63,11 @@ export const websocketMixin = {
       setWsId: 'ws/setWsId',
       setWsStatus: 'ws/setWsStatus',
       setCurrUser: 'ws/setCurrUser',
-      setOnlineUserNum: 'ws/setOnlineUserNum',
-      setOnlineVisitorNum: 'ws/setOnlineVisitorNum',
-      setHistoryHightOnlineNum: 'ws/setHistoryHightOnlineNum',
+      // setOnlineUserNum: 'ws/setOnlineUserNum',
+      // setOnlineVisitorNum: 'ws/setOnlineVisitorNum',
+      // setHistoryHightOnlineNum: 'ws/setHistoryHightOnlineNum',
+      // setCurrDayHightOnlineNum: 'ws/setCurrDayHightOnlineNum',
+      setOnlineData: 'ws/setOnlineData',
       setWsChatList: 'ws/setWsChatList',
       setWsAvatarList: 'ws/setWsAvatarList',
     }),
@@ -85,12 +93,16 @@ export const websocketMixin = {
       this.wsInstance.emit(wsMsgType.getOnlineVisitorNum, {});
       this.wsInstance.emit(wsMsgType.getOnlineUserNum, {});
     },
+    // 用户在线事件
+    onlive() {
+      console.log('用户在线事件', this.wsCurrUser.id);
+      this.wsInstance.emit(wsMsgType.live);
+    },
     // 用户退出房间
     outRoom() {
       console.log('用户退出房间', this.wsCurrUser.id);
       this.wsInstance.emit(wsMsgType.userOutRoom, {
         userInfo: this.wsCurrUser,
-        userType: this.wsCurrUser.userType,
       });
     },
     // 用户加入房间
@@ -99,7 +111,6 @@ export const websocketMixin = {
       this.wsInstance.emit(wsMsgType.userInRoom, {
         id: this.wsCurrUser.id,
         userInfo: this.wsCurrUser,
-        userType: this.wsCurrUser.userType,
         value: {},
         time: new Date().toLocaleString(),
       });
@@ -124,9 +135,9 @@ export const websocketMixin = {
     },
     // 初始化
     initWebSocket() {
-      this.wsInstance.on(wsConnectStatusEnum.connect, () => {
+      this.wsInstance.on(wsConnectStatus.connect, () => {
         console.log('连接websocket成功！');
-        this.setWsStatus(wsConnectStatusEnum.connect);
+        this.setWsStatus(wsConnectStatus.connect);
         this.setWsId(this.wsInstance.id);
         this.setCurrUser({
           id: this.wsInstance.id,
@@ -138,42 +149,49 @@ export const websocketMixin = {
         });
         this.handleReceiveMessage();
         this.joinRoom();
-        this.getOlineData();
+        setInterval(() => {
+          this.onlive();
+        }, liveExp * 1000 * 0.8);
+        // this.getOlineData();
       });
-      this.wsInstance.on(wsConnectStatusEnum.disconnect, (reason) => {
+      this.wsInstance.on(wsConnectStatus.disconnect, (reason) => {
         if (reason === 'io server disconnect') {
           // the disconnection was initiated by the server, you need to reconnect manually
           this.wsInstance.connect();
         }
         console.log('断开websocket连接！');
       });
-      this.wsInstance.on(wsConnectStatusEnum.connect_error, () => {
+      this.wsInstance.on(wsConnectStatus.connect_error, () => {
         console.log('连接websocket错误，开始重连！');
         this.wsInstance.connect();
       });
     },
     // 关闭websocket连接
     closeWs() {
-      this.setWsStatus(this.wsConnectStatusEnum.disconnect);
+      this.setWsStatus(this.wsConnectStatus.disconnect);
       this.wsInstance.close();
     },
     // 处理收到的消息
     handleReceiveMessage() {
-      this.wsInstance.on(wsMsgType.getOnlineUserNum, (data) => {
-        this.setOnlineUserNum(data.count);
+      this.wsInstance.on(wsMsgType.getOnlineData, (data) => {
+        this.setOnlineData(data);
       });
-      this.wsInstance.on(wsMsgType.getOnlineVisitorNum, (data) => {
-        this.setOnlineVisitorNum(data.count);
-      });
-      this.wsInstance.on(wsMsgType.getHistoryHightOnlineNum, (data) => {
-        this.setHistoryHightOnlineNum(data.count);
-      });
+      // this.wsInstance.on(wsMsgType.getOnlineVisitorNum, (data) => {
+      //   this.setOnlineVisitorNum(data.count);
+      // });
+      // this.wsInstance.on(wsMsgType.getHistoryHightOnlineNum, (data) => {
+      //   this.setHistoryHightOnlineNum(data.count);
+      // });
+      // this.wsInstance.on(wsMsgType.getCurrDayHightOnlineNum, (data) => {
+      //   this.setCurrDayHightOnlineNum(data.count);
+      // });
+      // this.wsInstance.on(wsMsgType.setOnlineData, (data) => {
+      //   this.setOnlineData(data);
+      // });
       this.wsInstance.on(wsMsgType.visitorSwitchAvatar, (data) => {
         this.setCurrUser({
-          id: this.wsInstance.id,
-          username: data.username,
+          ...this.wsCurrUser,
           avatar: data.avatar,
-          userType: data.userType,
         });
       });
       this.wsInstance.on(wsMsgType.userInRoom, (data) => {

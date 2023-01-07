@@ -1,4 +1,4 @@
-import { wsConnectStatusEnum } from '@/constant';
+import { wsConnectStatus } from '@/constant';
 
 export const state = () => ({
   isJoin: false, // 是否已加入聊天
@@ -6,10 +6,8 @@ export const state = () => ({
   wsInstance: null,
   wsAvatarList: [], // 头像列表
   wsChatList: [], // 聊天列表
-  onlineVisitorNum: 0, // 在线游客数
-  onlineUserNum: 0, // 在线用户数
-  historyHightOnlineNum: 0, // 历史最高同时在线数（游客+用户）
-  wsStatus: wsConnectStatusEnum.disconnect, // 当前连接状态
+  onlineData: {},
+  wsStatus: wsConnectStatus.disconnect, // 当前连接状态
   currUser: {
     id: '',
     username: '',
@@ -44,16 +42,8 @@ export const mutations = {
     state.currUser = res;
   },
   // eslint-disable-next-line no-shadow
-  setOnlineVisitorNum(state, res) {
-    state.onlineVisitorNum = res;
-  },
-  // eslint-disable-next-line no-shadow
-  setOnlineUserNum(state, res) {
-    state.onlineUserNum = res;
-  },
-  // eslint-disable-next-line no-shadow
-  setHistoryHightOnlineNum(state, res) {
-    state.historyHightOnlineNum = res;
+  setOnlineData(state, res) {
+    state.onlineData = res;
   },
 };
 

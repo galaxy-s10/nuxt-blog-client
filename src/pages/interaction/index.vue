@@ -95,7 +95,6 @@ export default {
           res.push([...item, ...item]);
         }
         this.rowsLen = data.rows.length;
-        // this.interactionList = res;
         this.interactionList = data.rows;
       } else {
         console.log('getInteractionList出错');

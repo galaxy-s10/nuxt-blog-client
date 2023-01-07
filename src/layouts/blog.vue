@@ -76,6 +76,7 @@ export default {
     FeatureTipCpt,
     LoginModalCpt,
   },
+  middleware: ['auth'],
   /**
    * @typedef {Object} asyncDataType
    * @property {Api} $myaxios
@@ -95,6 +96,9 @@ export default {
     };
   },
   computed: {
+    apiError() {
+      return this.$store.state.app.apiError;
+    },
     currentNodeEnv() {
       return this.$store.state.app.currentNodeEnv;
     },

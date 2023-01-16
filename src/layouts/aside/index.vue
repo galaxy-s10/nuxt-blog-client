@@ -46,6 +46,19 @@
             </div>
             <div v-loading="switchLoading">
               <div v-if="sideBarArticleList && sideBarArticleList.length">
+                <div class="item ad">
+                  <client-only>
+                    <!-- 信息流广告---侧边文章广告 -->
+                    <ins
+                      class="adsbygoogle"
+                      style="display: block"
+                      data-ad-format="fluid"
+                      data-ad-layout-key="-fr+4t+7h-41-gv"
+                      data-ad-client="ca-pub-6064454674933772"
+                      data-ad-slot="6936609719"
+                    ></ins>
+                  </client-only>
+                </div>
                 <div
                   v-for="(item, index) in sideBarArticleList"
                   :key="index"
@@ -101,6 +114,7 @@
           </div>
 
           <TagInfoCpt></TagInfoCpt>
+          <AdInfoCpt></AdInfoCpt>
         </div>
       </div>
     </template>
@@ -110,6 +124,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
 
+import AdInfoCpt from './ad-info/index.vue';
 import CatalogInfoCpt from './catalog-info/index.vue';
 import HeadInfoCpt from './head-info/index.vue';
 import LogInfoCpt from './log-info/index.vue';
@@ -124,6 +139,7 @@ import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 
 export default {
   components: {
+    AdInfoCpt,
     HeadInfoCpt,
     SiteInfoCpt,
     SettingInfoCpt,
@@ -151,6 +167,17 @@ export default {
       sidebarFixed: false,
       catalogObserver: null,
       sidebarObserver: null,
+    };
+  },
+  head() {
+    return {
+      script: [
+        {
+          crossorigin: true,
+          async: true,
+          src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+        },
+      ],
     };
   },
   computed: {
@@ -387,6 +414,10 @@ export default {
             }
           }
         }
+      }
+      .ad {
+        width: 250px;
+        height: 80px;
       }
     }
   }

@@ -5,7 +5,7 @@ const actions = {
     // console.log('客户端语言:', req.headers['accept-language']);
     const startTime = Date.now();
     console.log(
-      `=== nuxtServerInit开始: ${startTime}(${new Date().toLocaleString()}) ===`
+      `nuxtServerInit开始: ${startTime}(${new Date().toLocaleString()})`
     );
     try {
       commit('app/setCurrentNodeEnv', process.env.NODE_ENV);
@@ -22,13 +22,13 @@ const actions = {
       ]);
       const endTime = Date.now();
       console.log(
-        `=== nuxtServerInit完成: ${endTime}(${new Date().toLocaleString()}) 耗时: ${
+        `nuxtServerInit完成: ${endTime}(${new Date().toLocaleString()}) 耗时: ${
           endTime - startTime
-        }ms ===`
+        }ms`
       );
       commit('app/setNuxtServerInit', { startTime, endTime });
     } catch (error) {
-      console.log(`=== nuxtServerInit错误: ${new Date().toLocaleString()} ===`);
+      console.log(`nuxtServerInit错误: ${new Date().toLocaleString()}`);
       console.log(error);
     }
   },

@@ -1,4 +1,5 @@
 import { getRandomOne } from 'billd-utils';
+import { Message } from 'element-ui';
 import { io } from 'socket.io-client';
 import { mapMutations, mapState } from 'vuex';
 
@@ -70,6 +71,7 @@ export const websocketMixin = {
       setOnlineData: 'ws/setOnlineData',
       setWsChatList: 'ws/setWsChatList',
       setWsAvatarList: 'ws/setWsAvatarList',
+      setCurrMusic: 'app/setCurrMusic',
     }),
     handleAvatar() {
       const pathArr = require.context(
@@ -109,10 +111,9 @@ export const websocketMixin = {
     joinRoom() {
       console.log('用户加入房间', this.wsCurrUser.username);
       this.wsInstance.emit(wsMsgType.userInRoom, {
-        id: this.wsCurrUser.id,
         userInfo: this.wsCurrUser,
         value: {},
-        time: new Date().toLocaleString(),
+        created_at: new Date().toLocaleString(),
       });
     },
     // 创建WebSocket
@@ -160,6 +161,14 @@ export const websocketMixin = {
           this.wsInstance.connect();
         }
         console.log('断开websocket连接！');
+      });
+      this.wsInstance.on(wsMsgType.chooseSong, (data) => {
+        this.setCurrMusic(data);
+        Message.success(
+          `${new Date().toLocaleString()}，${
+            data.data.userInfo.username
+          }点了一首《${data.data.music.name}》~`
+        );
       });
       this.wsInstance.on(wsConnectStatus.connect_error, () => {
         console.log('连接websocket错误，开始重连！');

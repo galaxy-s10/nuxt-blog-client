@@ -95,6 +95,17 @@ export default {
       showMinCatalog: false,
     };
   },
+  head() {
+    return {
+      // script: [
+      //   {
+      //     crossorigin: true,
+      //     async: true,
+      //     src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+      //   },
+      // ],
+    };
+  },
   computed: {
     apiError() {
       return this.$store.state.app.apiError;
@@ -135,6 +146,12 @@ export default {
     },
   },
   mounted() {
+    // try {
+    //   // eslint-disable-next-line
+    //   (adsbygoogle = window.adsbygoogle || []).push({});
+    // } catch (error) {
+    //   console.log(error);
+    // }
     this.init();
     this.handlePreloadImg();
     console.log(
@@ -279,7 +296,7 @@ export default {
   .dnd-wrap {
     position: fixed;
     right: 20px;
-    bottom: 20px;
+    top: 250px;
   }
   .main-wrap {
     display: flex;

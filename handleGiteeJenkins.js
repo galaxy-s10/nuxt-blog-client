@@ -6,7 +6,7 @@ const path = require('path');
 const semver = require('semver');
 
 const allFile = [];
-const ignore = ['.DS_Store', '.git', 'node_modules'];
+const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
 const localDir = path.resolve(__filename, '../');
 const giteeDir = path.resolve(
   __filename,
@@ -70,6 +70,10 @@ const oldPkgStr = fs.readFileSync(
 const oldPkg = JSON.parse(oldPkgStr);
 const newVersion = semver.inc(oldPkg.version, 'patch');
 
+if (path.resolve(__dirname) === giteeDir) {
+  // eslint-disable-next-line
+  console.log('当前在gitee文件目录，直接退出！');
+}
 findFile(dir);
 putFile();
 fs.writeFileSync(

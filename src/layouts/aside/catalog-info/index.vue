@@ -17,6 +17,19 @@
         <b>文章目录</b>
       </div>
       <CatalogCpt :list="catalogList"></CatalogCpt>
+      <client-only>
+        <div class="ad">
+          <!-- 文章插入广告 -->
+          <ins
+            class="adsbygoogle"
+            style="display: block; text-align: center"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-6064454674933772"
+            data-ad-slot="3717357923"
+          ></ins>
+        </div>
+      </client-only>
     </nav>
   </div>
 </template>
@@ -34,6 +47,17 @@ export default {
       width: '',
       catalogFixed: false,
       catalogObserver: null,
+    };
+  },
+  head() {
+    return {
+      // script: [
+      //   {
+      //     crossorigin: true,
+      //     async: true,
+      //     src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+      //   },
+      // ],
     };
   },
   computed: {
@@ -64,6 +88,7 @@ export default {
       }
     },
   },
+
   created() {},
   mounted() {},
   methods: {
@@ -105,6 +130,7 @@ export default {
 
 <style lang="scss" scoped>
 .catalog-info {
+  position: relative;
   .catalog-ref {
     width: 1px;
     height: 1px;
@@ -126,6 +152,9 @@ export default {
     .title {
       margin: 8px 0;
     }
+  }
+  .ad {
+    height: 120px;
   }
 }
 </style>

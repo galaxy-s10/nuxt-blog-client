@@ -35,6 +35,8 @@ export const wsMsgType = {
   getOnlineData: 'getOnlineData',
   /** 用户存活 */
   live: 'live',
+  /** 用户点歌 */
+  chooseSong: 'chooseSong',
 };
 
 // websocket连接状态

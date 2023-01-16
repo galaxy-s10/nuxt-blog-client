@@ -149,7 +149,8 @@
         <el-input
           v-model="msg"
           placeholder="请输入内容"
-          ><template slot="append">
+        >
+          <template slot="append">
             <el-button @click="userSendMsg">发送</el-button>
           </template>
         </el-input>

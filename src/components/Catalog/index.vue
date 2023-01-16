@@ -70,7 +70,7 @@ export default {
   overflow-y: scroll;
   margin: 0;
   padding: 0;
-  max-height: 80vh;
+  max-height: 60vh;
   font-size: 16px;
 
   @extend %hideScrollbar;

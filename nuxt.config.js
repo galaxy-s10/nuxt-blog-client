@@ -83,6 +83,10 @@ export default {
       src: '@/plugins/baidutongji',
       ssr: false,
     },
+    {
+      src: '@/plugins/google-ad.js',
+      ssr: false,
+    },
     { src: '@/plugins/tip' },
   ],
   router: {

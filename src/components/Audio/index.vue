@@ -75,7 +75,7 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      showMiniAudio: false,
+      showMiniAudio: true,
       matrix: '',
       nowDeg: 0,
       audio: null,
@@ -91,10 +91,22 @@ export default {
       showMusicAudio(state) {
         return state.app.showMusicAudio;
       },
+      currMusic(state) {
+        return state.app.currMusic;
+      },
     }),
 
     duration2() {
       return (x) => this.formatTime(x);
+    },
+  },
+  watch: {
+    currMusic(newVal) {
+      const index = this.songList.findIndex(
+        (item) => item.id === newVal.data.music.id
+      );
+      this.currentIndex = index;
+      this.changeSong(index);
     },
   },
   async mounted() {
@@ -138,13 +150,13 @@ export default {
       setMusicList: 'app/setMusicList',
     }),
     handleResize() {
-      const offsetWidth =
-        window.pageXOffset || document.documentElement.offsetWidth;
-      if (offsetWidth <= 414) {
-        this.showMiniAudio = true;
-      } else {
-        this.showMiniAudio = false;
-      }
+      // const offsetWidth =
+      //   window.pageXOffset || document.documentElement.offsetWidth;
+      // if (offsetWidth <= 414) {
+      //   this.showMiniAudio = true;
+      // } else {
+      //   this.showMiniAudio = false;
+      // }
       this.$emit('changeRect');
     },
     changeShowMiniAudio() {

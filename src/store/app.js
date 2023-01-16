@@ -33,6 +33,8 @@ export const state = () => ({
     errorCode: -1,
     message: '',
   },
+  // 当前音乐
+  currMusic: {},
 });
 
 export const mutations = {
@@ -43,6 +45,10 @@ export const mutations = {
   // eslint-disable-next-line no-shadow
   setMusicList(state, res) {
     state.musicList = res;
+  },
+  // eslint-disable-next-line no-shadow
+  setCurrMusic(state, res) {
+    state.currMusic = res;
   },
   // eslint-disable-next-line no-shadow
   setIpInfo(state, res) {

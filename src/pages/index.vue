@@ -5,6 +5,22 @@
       v-loading="isLoading"
       :class="{ 'article-list': true }"
     >
+      <div
+        ref="article-item"
+        :class="{ 'article-item-a': true, 'water-fall': isWaterFall }"
+      >
+        <!-- 信息流广告---pc端文章块广告 -->
+        <ins
+          class="adsbygoogle"
+          style="display: block"
+          data-ad-format="fluid"
+          data-ad-layout-key="-dn-7y+bp+gh-ya"
+          data-ad-client="ca-pub-6064454674933772"
+          data-ad-slot="6879117008"
+        >
+        </ins>
+      </div>
+
       <nuxt-link
         v-for="(item, index) in articleList"
         :key="index"
@@ -92,6 +108,7 @@
           </div>
         </article>
       </nuxt-link>
+
       <div
         ref="loadMoreRef"
         class="load-more-ref"
@@ -179,6 +196,13 @@ export default {
           content: '自然博客 - 首页',
         },
       ],
+      script: [
+        {
+          crossorigin: true,
+          async: true,
+          src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+        },
+      ],
     };
   },
   computed: {
@@ -239,6 +263,12 @@ export default {
   },
   created() {},
   mounted() {
+    try {
+      // eslint-disable-next-line
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.log(error);
+    }
     window.scrollTo({ top: 0 });
     window.addEventListener('resize', this.handleResize);
     this.handlePage();

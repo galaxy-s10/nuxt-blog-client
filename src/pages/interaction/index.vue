@@ -11,17 +11,21 @@
         :row="3"
       ></SliderCpt>
     </div>
-    <!-- 当前音乐列表：
-    <div class="music-list">
-      <span
-        v-for="item in musicList"
-        :key="item.id"
-        class="music-item"
-      >
-        {{ item.id }}:{{ item.name }}
-      </span>
-    </div>
-    <p>在线点歌：</p> -->
+    <template v-if="userInfo">
+      <p>点歌：</p>
+      <div class="music-list">
+        <span
+          v-for="item in musicList"
+          :key="item.id"
+          class="music-item"
+          @click="handleChooseSong(item)"
+        >
+          {{ item.id }}:{{ item.name }}
+        </span>
+      </div>
+    </template>
+    <template v-else>Tips: 登录后可以点歌~</template>
+
     <WebSocketCpt></WebSocketCpt>
   </div>
 </template>
@@ -33,7 +37,8 @@ import { mapState } from 'vuex';
 import { Api } from '@/api';
 import SliderCpt from '@/components/Slider/index.vue';
 import WebSocketCpt from '@/components/WebSocket/index.vue';
-import { wsUserType } from '@/constant';
+import { wsMsgType, wsUserType } from '@/constant';
+import { wsInstance2 } from '@/mixin/ws';
 
 export default {
   components: { WebSocketCpt, SliderCpt },
@@ -53,15 +58,15 @@ export default {
   },
   head() {
     return {
-      title: '聊天 - 自然博客',
+      title: '互动 - 自然博客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 聊天',
+          content: '自然博客 - 互动',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 聊天',
+          content: '自然博客 - 互动',
         },
       ],
     };
@@ -71,6 +76,9 @@ export default {
       musicList(state) {
         return state.app.musicList;
       },
+      userInfo(state) {
+        return state.user.userInfo;
+      },
     }),
   },
   watch: {},
@@ -79,6 +87,12 @@ export default {
     this.getInteractionList();
   },
   methods: {
+    handleChooseSong(item) {
+      wsInstance2.instance.emit(wsMsgType.chooseSong, {
+        userInfo: this.userInfo,
+        music: item,
+      });
+    },
     async getInteractionList() {
       const { code, data } = await this.$myaxios.interaction.list({
         nowPage: 1,
@@ -139,6 +153,7 @@ export default {
       background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
       color: white;
       font-size: 14px;
+      cursor: pointer;
     }
   }
 }

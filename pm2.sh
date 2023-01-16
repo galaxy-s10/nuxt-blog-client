@@ -4,9 +4,9 @@
 # Date: 2022-04-26 01:54:48
 # Description: https://github.com/galaxy-s10/sh/blob/master/pm2.sh
 # Email: 2274751790@qq.com
-# FilePath: /github/nuxt-blog-client/pm2.sh
+# FilePath: /nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-10-16 11:38:06
+# LastEditTime: 2023-01-15 02:19:04
 # LastEditors: shuisheng
 ###
 
@@ -85,6 +85,22 @@ pm2 del $JOBNAME-$ENV-$PORT
 qshell qupload2 --src-dir=$PUBLICDIR/$JOBNAME/.nuxt/dist/client --bucket=hssblog --overwrite=true --key-prefix=$JOBNAME/$TAG/ --rescan-local=true
 
 echo 使用pm2维护:
-pm2 start npm --name $JOBNAME-$ENV-$PORT -- run start
+
+# 错误，没设置参数，nuxt当做开发模式
+# pm2 start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-3000 -i max
+
+# 错误，参数方式不对，--start会被当做是pm2的选项
+pm2 start './node_modules/nuxt/bin/nuxt.js' --start --name nuxt-blog-client-3000 -i max
+
+# 错误，参数方式不对
+# pm2 start './node_modules/nuxt/bin/nuxt.js start' --name nuxt-blog-client-3000 -i max
+
+# 错误，参数方式不对
+# pm2 start './node_modules/nuxt/bin/nuxt.js' -- start --name nuxt-blog-client-3000 -i max
+
+# 正确，参数一定要放到最后
+# pm2 start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-3000 -i max -- start
+
+pm2 start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start
 pm2 save
 # pm2 start npm --name $JOBNAME -- run dev

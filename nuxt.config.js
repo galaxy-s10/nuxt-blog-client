@@ -153,6 +153,7 @@ export default {
   server: {
     // 注意，因为是服务端渲染，因此这个port不仅仅是开发时启动的端口，也是部署上线后生产模式的端口
     port: 3000, // default: 3000
+    host: '0.0.0.0',
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -205,7 +206,7 @@ export default {
         },
       }),
       // 注入项目信息
-      new BilldHtmlWebpackPlugin({ nuxt2: true }),
+      new BilldHtmlWebpackPlugin({ env: 'nuxt2' }),
     ].filter(Boolean),
 
     babel: {

@@ -29,9 +29,9 @@
   "dependencies": {
     "@kangc/v-md-editor": "^1.7.11",
     "axios": "^0.27.2",
-    "billd-html-webpack-plugin": "latest",
-    "billd-scss": "latest",
-    "billd-utils": "latest",
+    "billd-html-webpack-plugin": "^0.0.15",
+    "billd-scss": "^0.0.6",
+    "billd-utils": "^0.0.6",
     "core-js": "^3.19.3",
     "dayjs": "^1.10.8",
     "element-ui": "^2.15.1",

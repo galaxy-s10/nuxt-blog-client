@@ -11,9 +11,9 @@ specifiers:
   axios: ^0.27.2
   babel-eslint: ^10.1.0
   babel-plugin-component: ^1.1.1
-  billd-html-webpack-plugin: latest
-  billd-scss: latest
-  billd-utils: latest
+  billd-html-webpack-plugin: ^0.0.15
+  billd-scss: ^0.0.6
+  billd-utils: ^0.0.6
   chalk: ^4
   commitizen: ^4.2.5
   compression-webpack-plugin: 5.0.1
@@ -49,9 +49,9 @@ specifiers:
 dependencies:
   '@kangc/v-md-editor': 1.7.11_rhqkolmkwunxzlyyxxsuwaiuri
   axios: 0.27.2
-  billd-html-webpack-plugin: 0.0.12
+  billd-html-webpack-plugin: 0.0.15
   billd-scss: 0.0.6
-  billd-utils: 0.0.3
+  billd-utils: 0.0.6
   core-js: 3.26.1
   dayjs: 1.11.6
   element-ui: 2.15.12_vue@2.7.14
@@ -3364,8 +3364,8 @@ packages:
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  /billd-html-webpack-plugin/0.0.12:
-    resolution: {integrity: sha512-Yy7IYtaLYZvHW0eA1sjkyhM+1phW3pjtP+fd5b3W1oXUd2W9eZviR5t9u9GpLl1KptcNWA2j30qABKybh6Y8rw==}
+  /billd-html-webpack-plugin/0.0.15:
+    resolution: {integrity: sha512-0czytkX/P5HuihFgVZ3+EYkL5ODbKOw/o/vQbmXj1pnArz1C+mHpOFC/atqsHbs6fqnSYi9FgwpyG0ekUD8EVw==}
     requiresBuild: true
     dependencies:
       webpack: 5.75.0
@@ -3381,8 +3381,8 @@ packages:
     requiresBuild: true
     dev: false
 
-  /billd-utils/0.0.3:
-    resolution: {integrity: sha512-sC4p/377mgXHKBe9iB6237Wd0BA06UdQebO2kjBrIO2pLP7bMUwR3Q6CHJCuQ+7VzRnODc+P5VQ2tLHlJqAU/A==}
+  /billd-utils/0.0.6:
+    resolution: {integrity: sha512-RngXvZ5drEDSmYnbKiyUrUSAG86yw2y/4g3EMaWa//X2n+x7KHn/JSOtFFLVfevrewsWQFsYLmNaSQSfV581cA==}
     requiresBuild: true
     dependencies:
       '@babel/core': 7.20.2

@@ -1,2 +1,20 @@
-// vuex4.x的TypeScript 支持：https://vuex.vuejs.org/zh/guide/typescript-support.html
-// 很遗憾，nuxt2用的vuex版本是3.x，没有TypeScript 支持
+// https://github.com/vuejs/vuex/blob/3.x/types/vue.d.ts
+
+/**
+ * Extends interfaces in Vue.js
+ */
+
+import Vue, { ComponentOptions } from 'vue';
+import { Store } from 'vuex';
+
+declare module 'vue/types/options' {
+  interface ComponentOptions<V extends Vue> {
+    store?: Store<any>;
+  }
+}
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $store: Store<any>;
+  }
+}

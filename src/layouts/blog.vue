@@ -170,6 +170,20 @@ export default {
     if (this.$route.name === 'article-id') {
       this.handleResize();
     }
+    const envList = ['qqMobile', 'qqPc', 'githubMobile', 'githubPc'];
+    const { code: authCode, env } = this.$route.query;
+    try {
+      if (!envList.includes(env)) return;
+      if (env === 'qqMobile') {
+        this.messageFn({ type: 'qq_login', data: authCode });
+      } else if (env === 'githubMobile') {
+        this.messageFn({ type: 'github_login', data: authCode });
+      }
+    } catch (error) {
+      console.error('解密state失败');
+      console.error(error);
+    }
+
     window.addEventListener('message', this.messageFn);
     window.addEventListener('scroll', this.handleHiddenHeader);
     window.addEventListener('resize', this.handleResize);

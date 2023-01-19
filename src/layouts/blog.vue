@@ -170,23 +170,28 @@ export default {
     if (this.$route.name === 'article-id') {
       this.handleResize();
     }
+
+    window.addEventListener('message', this.messageFn);
+    window.addEventListener('scroll', this.handleHiddenHeader);
+    window.addEventListener('resize', this.handleResize);
+
     const envList = ['qqMobile', 'qqPc', 'githubMobile', 'githubPc'];
-    const { code: authCode, env } = this.$route.query;
+    const { code: authCode, loginEnv } = this.$route.query;
+    const oldQuery = { ...this.$router.query };
+    delete oldQuery.code;
+    delete oldQuery.loginEnv;
+    this.$router.push({ query: oldQuery });
     try {
-      if (!envList.includes(env)) return;
-      if (env === 'qqMobile') {
-        this.messageFn({ type: 'qq_login', data: authCode });
-      } else if (env === 'githubMobile') {
-        this.messageFn({ type: 'github_login', data: authCode });
+      if (!envList.includes(loginEnv)) return;
+      if (loginEnv === 'qqMobile') {
+        this.messageFn({ data: { type: 'qq_login', data: authCode } });
+      } else if (loginEnv === 'githubMobile') {
+        this.messageFn({ data: { type: 'github_login', data: authCode } });
       }
     } catch (error) {
       console.error('解密state失败');
       console.error(error);
     }
-
-    window.addEventListener('message', this.messageFn);
-    window.addEventListener('scroll', this.handleHiddenHeader);
-    window.addEventListener('resize', this.handleResize);
   },
   destroyed() {
     window.removeEventListener('message', this.messageFn);
@@ -257,33 +262,24 @@ export default {
         this.getUserInfo();
       }
     },
-    async messageFn(e) {
-      const { type, data: code } = e.data;
-      if (type === 'qq_login') {
-        if (code) {
-          try {
-            const { data: token } = await this.$myaxios.qqUser.login(code);
-            if (token) {
-              this.setToken(token);
-              this.getUserInfo();
-            }
-          } catch (error) {
-            console.log(error);
-          }
+    async messageFn(event) {
+      const { type, data: code } = event.data;
+      let token;
+      try {
+        if (type === 'qq_login') {
+          const { data } = await this.$myaxios.qqUser.login(code);
+          token = data;
+        } else if (type === 'github_login') {
+          const { data } = await this.$myaxios.githubUser.login(code);
+          token = data;
         }
+      } catch (error) {
+        console.error(`${type}失败`);
+        console.log(error);
       }
-      if (type === 'github_login') {
-        if (code) {
-          try {
-            const { data: token } = await this.$myaxios.githubUser.login(code);
-            if (token) {
-              this.setToken(token);
-              this.getUserInfo();
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        }
+      if (token) {
+        this.setToken(token);
+        this.getUserInfo();
       }
     },
   },

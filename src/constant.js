@@ -19,6 +19,14 @@ export const ERROR_HTTP_CODE = {
   shutdown: 1004, // 停机维护
 };
 
+// 全局的localStorage的key
+export const lsKey = {};
+
+// 全局的cookie的key
+export const cookieKey = {
+  loginEnv: 'loginEnv',
+};
+
 // websocket消息类型
 export const wsMsgType = {
   /** 用户连接 */

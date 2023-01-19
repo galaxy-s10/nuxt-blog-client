@@ -63,11 +63,16 @@ function putFile() {
   }
 }
 
+const newPkgStr = fs.readFileSync(
+  path.resolve(__dirname, 'package.json'),
+  'utf-8'
+);
 const oldPkgStr = fs.readFileSync(
   path.resolve(giteeDir, 'package.json'),
   'utf-8'
 );
 const oldPkg = JSON.parse(oldPkgStr);
+const newPkg = JSON.parse(newPkgStr);
 const newVersion = semver.inc(oldPkg.version, 'patch');
 
 if (path.resolve(__dirname) === giteeDir) {
@@ -78,7 +83,7 @@ findFile(dir);
 putFile();
 fs.writeFileSync(
   path.resolve(giteeDir, 'package.json'),
-  JSON.stringify({ ...oldPkg, version: newVersion }, {}, 2)
+  JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
 );
 execSync(`pnpm i`, { cwd: giteeDir });
 execSync(`git add .`, { cwd: giteeDir });

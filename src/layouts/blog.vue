@@ -175,17 +175,17 @@ export default {
     window.addEventListener('scroll', this.handleHiddenHeader);
     window.addEventListener('resize', this.handleResize);
 
-    const envList = ['qqMobile', 'qqPc', 'githubMobile', 'githubPc'];
     const { code: authCode, loginEnv } = this.$route.query;
     const oldQuery = { ...this.$router.query };
     delete oldQuery.code;
     delete oldQuery.loginEnv;
     this.$router.push({ query: oldQuery });
+    if (!loginEnv) return;
     try {
-      if (!envList.includes(loginEnv)) return;
-      if (loginEnv === 'qqMobile') {
+      const { env } = JSON.parse(loginEnv);
+      if (env === 'qq') {
         this.messageFn({ data: { type: 'qq_login', data: authCode } });
-      } else if (loginEnv === 'githubMobile') {
+      } else if (env === 'github') {
         this.messageFn({ data: { type: 'github_login', data: authCode } });
       }
     } catch (error) {

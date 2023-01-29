@@ -7,12 +7,8 @@ const semver = require('semver');
 
 const allFile = [];
 const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
-const localDir = path.resolve(__filename, '../');
-const giteeDir = path.resolve(
-  __filename,
-  '../',
-  './../../jenkins/nuxt-blog-client'
-);
+const localDir = path.resolve(__dirname);
+const giteeDir = path.resolve(__dirname, '../../jenkins/nuxt-blog-client');
 
 const dir = fs.readdirSync(localDir).filter((item) => {
   if (ignore.includes(item)) {
@@ -80,6 +76,7 @@ if (path.resolve(__dirname) === giteeDir) {
   console.log('当前在gitee文件目录，直接退出！');
 }
 findFile(dir);
+execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
 putFile();
 fs.writeFileSync(
   path.resolve(giteeDir, 'package.json'),

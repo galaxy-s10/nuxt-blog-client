@@ -54,11 +54,9 @@ export default {
       pageSize: 20,
     };
     const { data } = await $myaxios.article.list({
-      params: {
-        orderName: 'created_at',
-        orderBy: 'desc',
-        ...query,
-      },
+      orderName: 'created_at',
+      orderBy: 'desc',
+      ...query,
     });
     return { ...query, historyArticleList: data.rows, total: data.total };
   },

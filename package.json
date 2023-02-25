@@ -7,8 +7,12 @@
   },
   "scripts": {
     "build": "nuxt build",
+    "build:beta": "nuxt build",
+    "build:prod": "nuxt build",
     "copy": "node ./handleGiteeJenkins.js",
     "cz": "cz",
+    "deploy:beta": "node ./deploy/index.js --beta",
+    "deploy:prod": "node ./deploy/index.js --prod",
     "dev": "nuxt",
     "generate": "nuxt generate",
     "lint": "eslint --config ./.eslintrc.js . --ext .js,.jsx,.ts,.tsx,.vue",
@@ -17,7 +21,8 @@
     "nuxt-lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
     "prettier": "prettier --write .",
-    "release": "standard-version",
+    "release": "",
+    "release2": "standard-version",
     "release:first": "standard-version --first-release",
     "start": "nuxt start"
   },
@@ -29,6 +34,7 @@
   "dependencies": {
     "@kangc/v-md-editor": "^1.7.11",
     "axios": "^0.27.2",
+    "billd-deploy": "^1.0.6",
     "billd-html-webpack-plugin": "^0.0.28",
     "billd-scss": "^0.0.6",
     "billd-utils": "^0.0.6",
@@ -39,6 +45,7 @@
     "js-cookie": "^3.0.1",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.15.8",
+    "qiniu": "^7.8.0",
     "rgbaster": "^2.1.1",
     "socket.io-client": "^4.4.1",
     "ua-parser-js": "^1.0.2",

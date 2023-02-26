@@ -6,7 +6,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2022-10-16 10:57:33
+# LastEditTime: 2023-02-26 00:00:06
 # LastEditors: shuisheng
 ###
 
@@ -65,4 +65,4 @@ echo 开始安装依赖:
 pnpm install
 
 echo 开始构建:
-npx cross-env JENKINS_WORKSPACE=$3 nuxt build
+npx nuxt build

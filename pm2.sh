@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
 ###
 # Author: shuisheng
-# Date: 2022-04-26 01:54:48
-# Description: https://github.com/galaxy-s10/sh/blob/master/pm2.sh
+# Date: 2022-08-09 12:55:48
+# Description: https://github.com/galaxy-s10/sh/
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2023-03-01 22:57:11
 # LastEditors: shuisheng
+# LastEditTime: 2023-03-04 03:11:21
 ###
 
 # 生成头部文件快捷键：ctrl+cmd+i
@@ -115,7 +115,6 @@ echo 使用pm2维护:
 
 # npm run dev
 
-# pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-null-3000 -i 1 -- start
-pm2 start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start
-
-# docker build -t nuxt-blog-client-null-3000 . --build-arg BILLD_JOBNAME="$JOBNAME" BILLD_ENV="$ENV" BILLD_PROT="$PROT"
+pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name aaaa -i 1 -- start
+# pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start
+# pm2 start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start

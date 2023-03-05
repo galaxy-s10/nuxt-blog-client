@@ -2,12 +2,12 @@
 ###
 # Author: shuisheng
 # Date: 2023-03-01 22:42:02
-# Description:docker构建
+# Description: https://github.com/galaxy-s10/sh/
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/docker.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-01 22:46:49
+# LastEditTime: 2023-03-04 03:06:43
 ###
 
 # 生成头部文件快捷键：ctrl+cmd+i
@@ -27,4 +27,5 @@ PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
 
-docker build -t nuxt-blog-client-null-3000 . --build-arg BILLD_JOBNAME="$JOBNAME" BILLD_ENV="$ENV" BILLD_PROT="$PROT"
+docker run -d -p $PORT:$PORT $JOBNAME-$ENV-$PORT
+# sh pm2.sh $JOBNAME $ENV $WORKSPACE $PORT $TAG

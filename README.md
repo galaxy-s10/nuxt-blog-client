@@ -34,7 +34,7 @@
 更新：
 
 ```sh
-pnpm i billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
+pnpm i billd-deploy@latest billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
 ```
 
 ## 安装依赖

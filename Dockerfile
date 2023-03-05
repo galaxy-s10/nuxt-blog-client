@@ -3,7 +3,7 @@ EXPOSE 3000
 
 ARG BILLD_JOBNAME
 ARG BILLD_ENV
-ARG BILLD_PROT
+ARG BILLD_PORT
 
 
 # https://github.com/pnpm/pnpm/issues/4495
@@ -33,12 +33,18 @@ RUN echo pm2版本:     $(pm2 -v)
 RUN echo 当前路径:     $(pwd)
 RUN echo 当前文件:     $(ls -l)
 
+RUN echo JOBNAME:     ${BILLD_JOBNAME}
+RUN echo ENV:         ${BILLD_ENV}
+RUN echo PORT:        ${BILLD_PORT}
+
+RUN echo 开始build:
 RUN npm run build
+
 
 # CMD ["npm", "run","start"]
 
 # CMD一个文件中只能有一条指令Dockerfile。如果您列出多个，CMD 则只有最后一个CMD会生效。
-# CMD ["sh","./pm2.sh"]
-CMD ["pm2","start","'./node_modules/nuxt/bin/nuxt.js'",'--name']
-
-
+CMD ["sh","./pm2.sh"]
+# CMD pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT}  -i max -- start
+# CMD pm2-runtime start '/Users/huangshuisheng/Desktop/hss/galaxy-s10/nuxt-blog-client/node_modules/nuxt/bin/nuxt.js' --name aaaaa -i max -- start
+# CMD pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start

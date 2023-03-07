@@ -22,6 +22,8 @@ const seo = {
 };
 
 export default {
+  // rootDir: process.cwd(),
+  // buildDir: ``,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'nuxt-blog-client',
@@ -58,6 +60,7 @@ export default {
     //   { src: `https://unpkg.com/axios@${axiosVersion}/dist/axios.min.js` },
     // ],
   },
+
   alias: {
     '@': path.resolve(__dirname, './src/'),
     // components: path.resolve(__dirname, './src/components'),
@@ -71,6 +74,7 @@ export default {
     '@/assets/css/main.scss',
     // 'normalize.css/normalize.css',
   ],
+
   srcDir: 'src/',
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -89,6 +93,7 @@ export default {
     },
     { src: '@/plugins/tip' },
   ],
+
   router: {
     // Run the middleware/auth.js on every page
     // middleware: 'auth',

@@ -7,7 +7,7 @@
 # FilePath: /nuxt-blog-client/build.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-04 03:13:07
+# LastEditTime: 2023-03-05 23:53:44
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i
@@ -31,8 +31,5 @@ WORKSPACE=$3    #约定$3为Jenkins工作区
 PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
-
-echo $JOBNAME
-echo docker build --build-arg BILLD_JOBNAME="$JOBNAME" BILLD_ENV="$ENV" -t $JOBNAME-$ENV-$PORT .
 
 DOCKER_BUILDKIT=0 docker build -t $JOBNAME-$ENV-$PORT . --build-arg BILLD_JOBNAME=$JOBNAME --build-arg BILLD_ENV=$ENV --build-arg BILLD_PORT=$PORT

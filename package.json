@@ -21,8 +21,7 @@
     "nuxt-lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "prepare": "husky install",
     "prettier": "prettier --write .",
-    "release": "",
-    "release2": "standard-version",
+    "release": "standard-version",
     "release:first": "standard-version --first-release",
     "start": "nuxt start"
   },

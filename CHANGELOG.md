@@ -2,6 +2,78 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.97](https://github.com/galaxy-s10/nuxt-blog-client/compare/v0.0.1...v0.0.97) (2023-03-15)
+
+
+### Features
+
+* .vscode ([3942174](https://github.com/galaxy-s10/nuxt-blog-client/commit/3942174ec74e5e2a305790a11bdc6153bb170f0f))
+* 1.修复前台登录;2.使用billd插件 ([32a7a37](https://github.com/galaxy-s10/nuxt-blog-client/commit/32a7a3771313d858d33d9bdcc54693c1d1a6bd84))
+* 测试 ([21a0869](https://github.com/galaxy-s10/nuxt-blog-client/commit/21a0869cfee972124a5ab9bbcc2a777291458444))
+* 点歌 ([69087ac](https://github.com/galaxy-s10/nuxt-blog-client/commit/69087ac70a7ef17a312ec1d1520a0246a72e8fbe))
+* 更新依赖 ([e52551c](https://github.com/galaxy-s10/nuxt-blog-client/commit/e52551cec3b6b04772bb1ab25a96413c90b3123f))
+* 恢复websocket ([5331532](https://github.com/galaxy-s10/nuxt-blog-client/commit/53315324214c5b2a9b6f3ae392babe5812af6c4f))
+* 接口获取主题 ([ff26b0c](https://github.com/galaxy-s10/nuxt-blog-client/commit/ff26b0c3e4d9301d6de174572ca87e5941d23b7e))
+* 升级依赖 ([96aa3fe](https://github.com/galaxy-s10/nuxt-blog-client/commit/96aa3fe3ab23a27ad1553a964502ccaae1201473))
+* 使用billd-deploy ([27c4229](https://github.com/galaxy-s10/nuxt-blog-client/commit/27c4229d19e0a6a6b785df6face5191d505fb294))
+* 替换接口 ([7f29723](https://github.com/galaxy-s10/nuxt-blog-client/commit/7f29723c5dcc97efc5ba9c99d4bb4cad9dbefd3f))
+* 替换接口 ([0847290](https://github.com/galaxy-s10/nuxt-blog-client/commit/0847290e0c394ff917acd7aa0fe7fe6cc6e78e22))
+* 添加复制脚本 ([631d046](https://github.com/galaxy-s10/nuxt-blog-client/commit/631d046a5aa2c4dceecd964a0d7fddba61ea5509))
+* 添加特效 ([de903dd](https://github.com/galaxy-s10/nuxt-blog-client/commit/de903ddd1433d20509f1499354fdf9f4e039ee7a))
+* 拖动组件 ([2b6075b](https://github.com/galaxy-s10/nuxt-blog-client/commit/2b6075b36cc028f774b58a23e29b75b9b47bd2f0))
+* 完善互动 ([a7fee88](https://github.com/galaxy-s10/nuxt-blog-client/commit/a7fee88524444822399210fce78fba44da520766))
+* 优化.vscode ([2c8e4b5](https://github.com/galaxy-s10/nuxt-blog-client/commit/2c8e4b5fef2a8126739f3698e23e3e1ed148099c))
+* 优化抽取slider组件 ([79786fa](https://github.com/galaxy-s10/nuxt-blog-client/commit/79786fa228a6b877c3b90f690b2ca85a14c7eb5f))
+* 优化代码 ([64bc9ff](https://github.com/galaxy-s10/nuxt-blog-client/commit/64bc9ff036b7b0f3b7d54774244f2fb1c4305e20))
+* 优化代码 ([c3b0b84](https://github.com/galaxy-s10/nuxt-blog-client/commit/c3b0b84342febdfcf42d4a5a904fdbb3ba071c51))
+* 优化代码 ([97fcc96](https://github.com/galaxy-s10/nuxt-blog-client/commit/97fcc9677430322bbe5f2517ee13c364fdfc6c7f))
+* 优化代码 ([f84ddb5](https://github.com/galaxy-s10/nuxt-blog-client/commit/f84ddb5f4c81993b62ce9238d100069cdf6e99dd))
+* 优化代码 ([20a921f](https://github.com/galaxy-s10/nuxt-blog-client/commit/20a921ffec018627902c347ab693bc751afc46ef))
+* 优化代码以及用户体验 ([6fcaa17](https://github.com/galaxy-s10/nuxt-blog-client/commit/6fcaa1765540a4208f023f267e5ba1381ffda1c6))
+* 优化登录 ([34b87cf](https://github.com/galaxy-s10/nuxt-blog-client/commit/34b87cf7e21fef04eaeaba60e44ae740eb9d2a77))
+* 优化互动 ([373eb5d](https://github.com/galaxy-s10/nuxt-blog-client/commit/373eb5d9f0e96296017783c1f926e33fefb334e7))
+* 优化开发体验 ([a4ea2d8](https://github.com/galaxy-s10/nuxt-blog-client/commit/a4ea2d898ca2695058e792dccea648351731f230))
+* 优化seo ([c7948ae](https://github.com/galaxy-s10/nuxt-blog-client/commit/c7948aec81d5726894f77afc953aecb8acaaa668))
+* 优化slider ([e155c44](https://github.com/galaxy-s10/nuxt-blog-client/commit/e155c4453639a8dd38bb5e8e1f093852095e1c0f))
+* docker ([81954d8](https://github.com/galaxy-s10/nuxt-blog-client/commit/81954d8f40bbca53a0807a4ce42a1b4d93cd354c))
+* docker ([d872ac0](https://github.com/galaxy-s10/nuxt-blog-client/commit/d872ac0d0e4e7ea3a54d1dc9963291a4977d1984))
+* docker ([b541590](https://github.com/galaxy-s10/nuxt-blog-client/commit/b541590eb323d5f319c403c8f47b08ac5951bdfb))
+* gitattributes ([813e698](https://github.com/galaxy-s10/nuxt-blog-client/commit/813e69897a96972f3b035e27a8244d82f89b3b30))
+* https ([6f81553](https://github.com/galaxy-s10/nuxt-blog-client/commit/6f81553cfb650414cb5fb0c423c1b6567ef73706))
+
+
+### Bug Fixes
+
+* 1.优化样式;2.使用billd-scss ([6554390](https://github.com/galaxy-s10/nuxt-blog-client/commit/6554390230e6aead1bb8479073c5858a8f47f7ba))
+* 脚本 ([64ee255](https://github.com/galaxy-s10/nuxt-blog-client/commit/64ee25566323ad8375bfa952cc35a398697825f6))
+* 判断axios是否浏览器环境 ([1b12592](https://github.com/galaxy-s10/nuxt-blog-client/commit/1b125922b70cb479925b948d622a7345a3416bf9))
+* 去除代理 ([f834f0a](https://github.com/galaxy-s10/nuxt-blog-client/commit/f834f0a1369a0236b207c29262dc8240d62f2c8b))
+* 去除yarn ([e21a300](https://github.com/galaxy-s10/nuxt-blog-client/commit/e21a300237d9bdb9d590ef6eb729612502aed327))
+* 首页弹窗 ([8eb4f41](https://github.com/galaxy-s10/nuxt-blog-client/commit/8eb4f41e42e0c0772b4250bc7cf0306118db09e2))
+* 添加nuxtServerInit信息 ([5b55642](https://github.com/galaxy-s10/nuxt-blog-client/commit/5b556425a162ef3ef8e1637a919e28a99bac3062))
+* 修复归档列表参数 ([36e2e1b](https://github.com/galaxy-s10/nuxt-blog-client/commit/36e2e1bfaaaf6bcff6040bc5df4ed26401cbfc8b))
+* 修复瀑布流 ([89bb236](https://github.com/galaxy-s10/nuxt-blog-client/commit/89bb2365a1504f4067f1c3d762ef3bca066cb108))
+* 修复文章目录 ([a24ee7a](https://github.com/galaxy-s10/nuxt-blog-client/commit/a24ee7a4f1e0a339a8ceabe044c26373b1d7fb9f))
+* 修复axios地址 ([434ab31](https://github.com/galaxy-s10/nuxt-blog-client/commit/434ab31e55180b96380971e324204e708699aa97))
+* 修改audio组件 ([599e8d9](https://github.com/galaxy-s10/nuxt-blog-client/commit/599e8d9fb732a08eb07ac00beeeb2bd802a6398d))
+* 优化 ([8d697cd](https://github.com/galaxy-s10/nuxt-blog-client/commit/8d697cd76610c4bfdd74a5a1a671fbb470c13206))
+* 优化 ([ad6d2d2](https://github.com/galaxy-s10/nuxt-blog-client/commit/ad6d2d27ac1b4f3284e45393a897a6e62fde26fe))
+* 优化 ([a255698](https://github.com/galaxy-s10/nuxt-blog-client/commit/a255698673ee26c673edb6adc3c81f2d503a4c5f))
+* 优化侧边栏标题/控制台打印 ([0dfe910](https://github.com/galaxy-s10/nuxt-blog-client/commit/0dfe9101b204678f703969e44fc3a63875ae627b))
+* 优化脚本 ([14170b1](https://github.com/galaxy-s10/nuxt-blog-client/commit/14170b199d850643e6ff97821bbbe2169d809f0b))
+* 优化移动端登录 ([af7e016](https://github.com/galaxy-s10/nuxt-blog-client/commit/af7e0168356f4fefdb4c79167d528fc33c623c8a))
+* 优化qq移动端登录 ([b86f390](https://github.com/galaxy-s10/nuxt-blog-client/commit/b86f39042279ac5940a9f067a49451eaf944bb3b))
+* 预备docker部署 ([c3595cc](https://github.com/galaxy-s10/nuxt-blog-client/commit/c3595cc6a22a36494179b9495c66fefc5da6b5b4))
+* qq登录判断来源 ([a8b9b17](https://github.com/galaxy-s10/nuxt-blog-client/commit/a8b9b17ac6627b27a5c060ef37568bc81ec0f0b4))
+* ws链接 ([b461795](https://github.com/galaxy-s10/nuxt-blog-client/commit/b461795eea88b9ff125ed2e1178db60427a93b5e))
+* wss ([7c2f750](https://github.com/galaxy-s10/nuxt-blog-client/commit/7c2f750e0de575c98d9cfb75c6841b9a8b63dc32))
+* wss ([247537d](https://github.com/galaxy-s10/nuxt-blog-client/commit/247537df39bfefb147f0d373b307ea976462c5d6))
+
+
+### Styling
+
+* 修改顺序 ([77635bc](https://github.com/galaxy-s10/nuxt-blog-client/commit/77635bc1c2bbd855030c3cad6448b2450f77d356))
+
 ### [0.0.1](https://github.com/galaxy-s10/nuxt-blog-client/compare/v0.0.0...v0.0.1) (2022-11-11)
 
 ### Features

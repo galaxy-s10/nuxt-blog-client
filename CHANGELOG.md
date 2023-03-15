@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.98](https://github.com/galaxy-s10/nuxt-blog-client/compare/v0.0.97...v0.0.98) (2023-03-15)
+
 ### [0.0.97](https://github.com/galaxy-s10/nuxt-blog-client/compare/v0.0.1...v0.0.97) (2023-03-15)
 
 

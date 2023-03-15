@@ -51,6 +51,7 @@ RUN echo 开始build:
 RUN npm run build
 
 # WARN 再执行pm2-runtime时，先执行一下pm2 list或者pm2 save或者pm2 -v，否则的话直接执行pm2-runtime可能会导致报错，原因未知！！！
+CMD pm2 -v && pm2 list && pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT} -i max -- start
 
 # CMD一个文件中只能有一条指令Dockerfile。如果您列出多个，CMD 则只有最后一个CMD会生效。
 
@@ -66,7 +67,7 @@ RUN npm run build
 # 没问题，OK
 # CMD pm2-runtime start ecosystem.config.js
 
-# CMD pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT} -- start
+
 
 
 

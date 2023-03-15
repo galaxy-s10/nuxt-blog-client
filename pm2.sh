@@ -7,7 +7,7 @@
 # FilePath: /nuxt-blog-client/pm2.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-07 10:08:14
+# LastEditTime: 2023-03-15 13:39:00
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i
@@ -33,5 +33,5 @@ TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
 
 echo 使用pm2维护:
-pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-null-3000 -- start
-# pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start
+# pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-null-3000 -- start
+pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i max -- start

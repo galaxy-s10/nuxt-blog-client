@@ -6,7 +6,7 @@ const path = require('path');
 const semver = require('semver');
 
 const allFile = [];
-const ignore = ['.DS_Store', '.git', '.gitignore', '.nuxt', 'node_modules'];
+const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
 const localDir = path.resolve(__dirname);
 const giteeDir = path.resolve(__dirname, '../../jenkins/nuxt-blog-client');
 

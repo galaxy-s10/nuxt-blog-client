@@ -190,7 +190,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // publicPath: `${QINIU_CDN_URL}${pkg.name}/v${pkg.version}`,
+    publicPath: `${QINIU_CDN_URL}${pkg.name}/dist`,
 
     // styleResources此属性已弃用。请改用style-resources-module以提高性能和更好的 DX！
     // styleResources: {},

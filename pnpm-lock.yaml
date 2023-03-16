@@ -12,7 +12,7 @@ specifiers:
   axios: ^0.27.2
   babel-eslint: ^10.1.0
   babel-plugin-component: ^1.1.1
-  billd-deploy: ^1.0.9
+  billd-deploy: ^1.0.13
   billd-html-webpack-plugin: ^1.0.0
   billd-scss: ^0.0.6
   billd-utils: ^0.0.7
@@ -54,7 +54,7 @@ specifiers:
 dependencies:
   '@kangc/v-md-editor': 1.7.11_rhqkolmkwunxzlyyxxsuwaiuri
   axios: 0.27.2
-  billd-deploy: 1.0.9_sass@1.58.3
+  billd-deploy: 1.0.13_sass@1.58.3
   billd-html-webpack-plugin: 1.0.0_sass@1.58.3
   billd-scss: 0.0.6
   billd-utils: 0.0.7
@@ -4124,8 +4124,8 @@ packages:
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  /billd-deploy/1.0.9_sass@1.58.3:
-    resolution: {integrity: sha512-pjWAL8IYLJfOJCZ7vW6egxlpE6OTRlcXWpJN0A52S+wAG1vq4iK3DqenK25pO4yi+1JDXRBlikUUIsnZB/0VXg==}
+  /billd-deploy/1.0.13_sass@1.58.3:
+    resolution: {integrity: sha512-XD6dqhvkiZ41QPgZBHbmWBqWB16dtk/jo3jOMASW+81qsgrhtOWWqC2fKVbaDNWH7NQtFoiH4THOyTdRCqUTgA==}
     requiresBuild: true
     dependencies:
       ali-oss: 6.17.1

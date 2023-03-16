@@ -38,6 +38,7 @@ RUN echo node版本:    $(node -v)
 RUN echo npm版本:     $(npm -v)
 RUN echo pnpm版本:    $(pnpm -v)
 RUN echo pm2版本:     $(pm2 -v)
+RUN echo git版本:     $(git --version)
 
 RUN echo 当前路径:     $(pwd)
 RUN echo 当前文件:     $(ls -l)

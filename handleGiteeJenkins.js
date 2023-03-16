@@ -6,7 +6,7 @@ const path = require('path');
 const semver = require('semver');
 
 const allFile = [];
-const ignore = ['.DS_Store', '.git', '.nuxt', '.dockerignore', 'node_modules'];
+const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
 const localDir = path.resolve(__dirname);
 const giteeDir = path.resolve(__dirname, '../../jenkins/nuxt-blog-client');
 
@@ -78,6 +78,26 @@ if (path.resolve(__dirname) === giteeDir) {
 findFile(dir);
 execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
 putFile();
+fs.writeFileSync(
+  path.resolve(giteeDir, '.gitignore'),
+  `
+node_modules
+dist
+.DS_Store
+.eslintcache
+.nuxt
+`
+);
+fs.writeFileSync(
+  path.resolve(giteeDir, '.dockerignore'),
+  `
+Dockerfile
+node_modules
+.DS_Store
+.eslintcache
+.nuxt
+`
+);
 fs.writeFileSync(
   path.resolve(giteeDir, 'package.json'),
   JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)

@@ -11,7 +11,6 @@ ENV BILLD_JOBNAME ${BILLD_JOBNAME}
 ENV BILLD_ENV ${BILLD_ENV}
 ENV BILLD_PORT ${BILLD_PORT}
 
-
 # https://github.com/pnpm/pnpm/issues/4495
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
@@ -35,7 +34,7 @@ RUN pnpm i pm2 -g
 
 COPY . .
 
-RUN echo node版本:     $(node -v)
+RUN echo node版本:    $(node -v)
 RUN echo npm版本:     $(npm -v)
 RUN echo pnpm版本:    $(pnpm -v)
 RUN echo pm2版本:     $(pm2 -v)

@@ -227,7 +227,7 @@ export default {
      * 所有CSS将被提取到单独的文件中，通常每个组件一个。
      * 这允许单独缓存CSS和JavaScript，如果您有大量全局或共享CSS，值得一试。
      */
-    extractCSS: true,
+    // extractCSS: true,
 
     optimization: {
       // 拆分大文件

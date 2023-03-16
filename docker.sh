@@ -7,7 +7,7 @@
 # FilePath: /nuxt-blog-client/docker.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-16 23:09:04
+# LastEditTime: 2023-03-16 23:12:39
 ###
 
 # 生成头部文件快捷键：ctrl+cmd+i
@@ -32,5 +32,5 @@ docker stop $JOBNAME-$ENV-$PORT-$TAG
 # 删掉旧的容器
 docker rm $JOBNAME-$ENV-$PORT-$TAG
 # 启动新的容器
-docker run -d -p $PORT:$PORT $JOBNAME-$ENV-$PORT --name $JOBNAME-$ENV-$PORT-$TAG
+docker run --name $JOBNAME-$ENV-$PORT-$TAG -d -p $PORT:$PORT $JOBNAME-$ENV-$PORT
 # sh pm2.sh $JOBNAME $ENV $WORKSPACE $PORT $TAG

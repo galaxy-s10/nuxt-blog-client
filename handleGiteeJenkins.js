@@ -74,39 +74,40 @@ const newVersion = semver.inc(oldPkg.version, 'patch');
 if (path.resolve(__dirname) === giteeDir) {
   // eslint-disable-next-line
   console.log('当前在gitee文件目录，直接退出！');
+} else {
+  findFile(dir);
+  execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
+  putFile();
+  fs.writeFileSync(
+    path.resolve(giteeDir, '.gitignore'),
+    `node_modules
+  dist
+  .DS_Store
+  .eslintcache
+  .nuxt
+  `
+  );
+  fs.writeFileSync(
+    path.resolve(giteeDir, '.dockerignore'),
+    `Dockerfile
+  node_modules
+  .DS_Store
+  .eslintcache
+  .nuxt
+  `
+  );
+  fs.writeFileSync(
+    path.resolve(giteeDir, 'package.json'),
+    JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
+  );
+  execSync(`pnpm i`, { cwd: giteeDir });
+  execSync(`git add .`, { cwd: giteeDir });
+  execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
+    cwd: giteeDir,
+  });
+  execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
+    cwd: giteeDir,
+  });
+  execSync(`git push`, { cwd: giteeDir });
+  execSync(`git push origin v${newVersion}`, { cwd: giteeDir });
 }
-findFile(dir);
-execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
-putFile();
-fs.writeFileSync(
-  path.resolve(giteeDir, '.gitignore'),
-  `node_modules
-dist
-.DS_Store
-.eslintcache
-.nuxt
-`
-);
-fs.writeFileSync(
-  path.resolve(giteeDir, '.dockerignore'),
-  `Dockerfile
-node_modules
-.DS_Store
-.eslintcache
-.nuxt
-`
-);
-fs.writeFileSync(
-  path.resolve(giteeDir, 'package.json'),
-  JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
-);
-execSync(`pnpm i`, { cwd: giteeDir });
-execSync(`git add .`, { cwd: giteeDir });
-execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
-  cwd: giteeDir,
-});
-execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
-  cwd: giteeDir,
-});
-execSync(`git push`, { cwd: giteeDir });
-execSync(`git push origin v${newVersion}`, { cwd: giteeDir });

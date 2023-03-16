@@ -6,8 +6,8 @@
       "@/*": ["./src/*"]
       // "components/*": ["./src/components/*"],
       // "layouts/*": ["./src/layouts/*"]
-    }
-    // "checkJs": true
+    },
+    "checkJs": true
     // "allowJs": true
   },
   "vueCompilerOptions": { "target": 2.7 },

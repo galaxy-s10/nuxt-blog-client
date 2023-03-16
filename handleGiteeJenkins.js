@@ -80,8 +80,7 @@ execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
 putFile();
 fs.writeFileSync(
   path.resolve(giteeDir, '.gitignore'),
-  `
-node_modules
+  `node_modules
 dist
 .DS_Store
 .eslintcache
@@ -90,8 +89,7 @@ dist
 );
 fs.writeFileSync(
   path.resolve(giteeDir, '.dockerignore'),
-  `
-Dockerfile
+  `Dockerfile
 node_modules
 .DS_Store
 .eslintcache

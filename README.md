@@ -43,26 +43,46 @@ pnpm i billd-deploy@latest billd-html-webpack-plugin@latest billd-scss@latest bi
 pnpm install
 ```
 
-## 启动
+## 开发
 
 ```sh
-pnpm dev
+pnpm run dev
 ```
 
-## 部署
+## 构建
 
 ```sh
-pnpm build && pnpm start
+pnpm run build
+```
+
+## 运行
+
+```sh
+pnpm run start
+```
+
+# 部署
+
+## docker
+
+```sh
+sh build.sh nuxt-blog-client null workspace 3000 v0.0.1
+```
+
+```sh
+sh docker.sh nuxt-blog-client null workspace 3000 v0.0.1
 ```
 
 # 服务器环境
 
-- 操作系统：CentOS Linux release 8.2.2004
-- nginx 版本：1.21.4
-- node 版本：14.19.0
-- redis 版本：5.0.3
-- mysql 版本：8.0.26
-- pm2 版本：5.1.2
+> 使用 docker
+
+- ~~操作系统：CentOS Linux release 8.2.2004~~
+- ~~nginx 版本：1.21.4~~
+- ~~node 版本：14.19.0~~
+- ~~redis 版本：5.0.3~~
+- ~~mysql 版本：8.0.26~~
+- ~~pm2 版本：5.1.2~~
 
 # 注意
 

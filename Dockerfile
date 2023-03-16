@@ -48,7 +48,7 @@ RUN echo ENV:         ${BILLD_ENV}
 RUN echo PORT:        ${BILLD_PORT}
 
 RUN echo 开始deploy:
-RUN npm run deploy:prod
+RUN npm run deploy:beta
 
 # WARN 再执行pm2-runtime时，先执行一下pm2 list或者pm2 save或者pm2 -v，否则的话直接执行pm2-runtime可能会导致报错，原因未知！！！
 CMD pm2 -v && pm2 list && pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT} -i max -- start
@@ -66,10 +66,3 @@ CMD pm2 -v && pm2 list && pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --
 
 # 没问题，OK
 # CMD pm2-runtime start ecosystem.config.js
-
-
-
-
-
-
-

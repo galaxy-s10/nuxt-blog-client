@@ -75,7 +75,7 @@ sh docker.sh nuxt-blog-client null workspace 3000 v0.0.1
 
 # 服务器环境
 
-> 使用 docker
+> 使用 docker 部署。
 
 - ~~操作系统：CentOS Linux release 8.2.2004~~
 - ~~nginx 版本：1.21.4~~

@@ -7,7 +7,7 @@
 # FilePath: /nuxt-blog-client/docker.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-16 23:12:39
+# LastEditTime: 2023-03-21 01:04:30
 ###
 
 # 生成头部文件快捷键：ctrl+cmd+i
@@ -26,6 +26,12 @@ WORKSPACE=$3    #约定$3为Jenkins工作区
 PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
+
+echo JOBNAME: $JOBNAME
+echo ENV: $ENV
+echo WORKSPACE: $WORKSPACE
+echo PORT: $PORT
+echo TAG: $TAG
 
 # 停掉旧的容器
 docker stop $JOBNAME-$ENV-$PORT-$TAG

@@ -12,7 +12,7 @@ ENV BILLD_ENV ${BILLD_ENV}
 ENV BILLD_PORT ${BILLD_PORT}
 
 # https://github.com/pnpm/pnpm/issues/4495
-ENV PNPM_HOME="/billd/.local/share/pnpm"
+ENV PNPM_HOME="/pnpm/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
 WORKDIR /billd/nuxt-blog-client
@@ -45,7 +45,7 @@ RUN echo ENV:         ${BILLD_ENV}
 RUN echo PORT:        ${BILLD_PORT}
 
 # WARN 再执行pm2-runtime时，先执行一下pm2 list或者pm2 save或者pm2 -v，否则的话直接执行pm2-runtime可能会导致报错，原因未知！！！
-CMD pnpm i && npm run deploy:prod &&  pm2 -v && pm2 list && pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT} -i max -- start
+CMD pnpm i && npm run deploy:prod &&  pm2 -v && pm2 list && pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name ${BILLD_JOBNAME}-${BILLD_ENV}-${BILLD_PORT} -i 2 -- start
 
 # CMD一个文件中只能有一条指令Dockerfile。如果您列出多个，CMD 则只有最后一个CMD会生效。
 

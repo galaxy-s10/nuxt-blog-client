@@ -26,10 +26,11 @@ specifiers:
   element-ui: ^2.15.1
   eslint: ^8.4.1
   eslint-config-prettier: ^8.1.0
-  eslint-plugin-import: ^2.26.0
+  eslint-plugin-import: ^2.27.5
   eslint-plugin-nuxt: ^3.1.0
   eslint-plugin-prettier: ^3.3.1
   eslint-plugin-vue: ^8.2.0
+  flv.js: ^1.6.2
   highlight.js: ^11.4.0
   husky: ^8.0.0
   js-cookie: ^3.0.1
@@ -61,6 +62,7 @@ dependencies:
   core-js: 3.29.0
   dayjs: 1.11.7
   element-ui: 2.15.13_vue@2.7.14
+  flv.js: 1.6.2
   highlight.js: 11.7.0
   js-cookie: 3.0.1
   normalize.css: 8.0.1
@@ -6724,6 +6726,10 @@ packages:
       is-date-object: 1.0.5
       is-symbol: 1.0.4
 
+  /es6-promise/4.2.8:
+    resolution: {integrity: sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==}
+    dev: false
+
   /esbuild-android-64/0.15.18:
     resolution: {integrity: sha512-wnpt3OXRhcjfIDSZu9bnzT4/TNTDsOUvip0foZOUBG7QbSt//w3QV4FInVJxNhKc/ErhUxc5z4QjHtMi7/TbgA==}
     engines: {node: '>=12'}
@@ -7746,6 +7752,13 @@ packages:
     dependencies:
       inherits: 2.0.4
       readable-stream: 2.3.8
+
+  /flv.js/1.6.2:
+    resolution: {integrity: sha512-xre4gUbX1MPtgQRKj2pxJENp/RnaHaxYvy3YToVVCrSmAWUu85b9mug6pTXF6zakUjNP2lFWZ1rkSX7gxhB/2A==}
+    dependencies:
+      es6-promise: 4.2.8
+      webworkify-webpack: 2.1.5
+    dev: false
 
   /follow-redirects/1.15.2_debug@4.3.4:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
@@ -14108,6 +14121,10 @@ packages:
       pretty-time: 1.1.0
       std-env: 3.3.2
       webpack: 4.46.0
+    dev: false
+
+  /webworkify-webpack/2.1.5:
+    resolution: {integrity: sha512-2akF8FIyUvbiBBdD+RoHpoTbHMQF2HwjcxfDvgztAX5YwbZNyrtfUMgvfgFVsgDhDPVTlkbb5vyasqDHfIDPQw==}
     dev: false
 
   /whatwg-url/5.0.0:

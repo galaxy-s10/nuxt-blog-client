@@ -3,6 +3,14 @@
     <h1 class="title">在线互动(Beta)</h1>
     <hr class="hr-class" />
 
+    <video
+      ref="videoRef"
+      class="video"
+      :muted="muted"
+      autoplay
+      controls
+    ></video>
+
     <div class="interaction-list">
       历史记录（最近100条）
       <SliderCpt
@@ -31,6 +39,7 @@
 </template>
 
 <script>
+// import flvJs from 'flv.js';
 import { mapState } from 'vuex';
 
 // eslint-disable-next-line
@@ -54,7 +63,7 @@ export default {
    */
   async asyncData({ $myaxios, store, params, req }) {},
   data() {
-    return { wsUserType, rowsLen: 0, interactionList: [] };
+    return { wsUserType, rowsLen: 0, interactionList: [], muted: true };
   },
   head() {
     return {
@@ -85,8 +94,33 @@ export default {
   created() {},
   mounted() {
     this.getInteractionList();
+    this.handleLive();
   },
   methods: {
+    handleLive() {
+      import('flv.js')
+        .then((flvJsDefaule) => {
+          const flvJs = flvJsDefaule.default;
+          if (flvJs.isSupported()) {
+            const flvPlayer = flvJs.createPlayer({
+              type: 'flv',
+              url: 'http://42.193.157.44:9000/live/fddm_2.flv',
+              // url: 'http://localhost:9000/live/fddm_2.flv',
+            });
+            // @ts-ignore
+            flvPlayer.attachMediaElement(this.$refs.videoRef);
+            flvPlayer.load();
+            try {
+              flvPlayer.play();
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     handleChooseSong(item) {
       wsInstance2.instance.emit(wsMsgType.chooseSong, {
         userInfo: this.userInfo,
@@ -139,6 +173,9 @@ export default {
   .title {
     display: block;
     text-align: center;
+  }
+  .video {
+    width: 100%;
   }
   .interaction-list {
   }

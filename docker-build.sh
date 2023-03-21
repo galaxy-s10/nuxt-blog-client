@@ -4,25 +4,29 @@
 # Date: 2022-08-09 12:55:47
 # Description: https://github.com/galaxy-s10/sh/
 # Email: 2274751790@qq.com
-# FilePath: /nuxt-blog-client/build.sh
+# FilePath: /nuxt-blog-client/docker-build.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2023-03-05 23:53:44
+# LastEditTime: 2023-03-21 09:38:23
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i
 
 # 静态部署的项目, 一般流程是在jenkins里面执行build.sh进行构建,
 # 构建完成后会连接ssh, 执行/node/sh/frontend.sh, frontend.sh会将构建的完成资源复制到/node/xxx
-# 复制完成后, frontend.sh会执行清除buff/cache操作
+# 最后, 服务器的/node/sh/frontend.sh会执行清除buff/cache操作
 
 # node项目, 一般流程是在jenkins里面执行build.sh进行构建,
-# 构建完成后会连接ssh, 执行/node/sh/node.sh, node.sh会将构建的完成资源复制到/node/xxx, 并且执行/node/xxx/pm2.sh
-# 最后, node.sh会执行清除buff/cache操作
+# 构建完成后会连接ssh, 执行/node/sh/node.sh, node.sh会将构建的完成资源复制到/node/xxx, 并且执行/node/xxx/node-pm2.sh
+# 最后, 服务器的/node/sh/node.sh会执行清除buff/cache操作
 
-# docker项目, 一般流程是在jenkins里面执行build.sh进行构建,
-# 构建完成后会连接ssh, 执行/node/sh/docker.sh, 并且执行/node/xxx/docker.sh
-# 最后, docker.sh会执行清除buff/cache操作
+# nuxt项目, 一般流程是在jenkins里面执行nuxt-build.sh进行构建,
+# 构建完成后会连接ssh, 执行/node/sh/nuxt.sh, nuxt.sh会将构建的完成资源复制到/node/xxx, 并且执行/node/xxx/nuxt-pm2.sh
+# 最后, 服务器的/node/sh/nuxt.sh会执行清除buff/cache操作
+
+# docker项目, 一般流程是在jenkins里面执行docker-build.sh进行构建,
+# 构建完成后会连接ssh, 执行/node/sh/docker.sh, 并且执行/node/xxx/docker-run.sh
+# 最后, 服务器的/node/sh/docker.sh会执行清除buff/cache操作
 
 # 注意: JOBNAME=$1, 这个等号左右不能有空格!
 JOBNAME=$1      #约定$1为任务名

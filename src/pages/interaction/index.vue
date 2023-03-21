@@ -3,12 +3,16 @@
     <h1 class="title">在线互动(Beta)</h1>
     <hr class="hr-class" />
 
+    <div class="muted-wrap">
+      <span>静音：</span>
+      <el-switch v-model="muted"> </el-switch>
+    </div>
+
     <video
       ref="videoRef"
-      class="video"
+      class="video-wrap"
       :muted="muted"
       autoplay
-      controls
     ></video>
 
     <div class="interaction-list">
@@ -104,7 +108,8 @@ export default {
           if (flvJs.isSupported()) {
             const flvPlayer = flvJs.createPlayer({
               type: 'flv',
-              url: 'http://42.193.157.44:9000/live/fddm_2.flv',
+              // url: 'http://42.193.157.44:9000/live/fddm_2.flv',
+              url: 'https://www.hsslive.cn/stream/live/fddm_2.flv',
               // url: 'http://localhost:9000/live/fddm_2.flv',
             });
             // @ts-ignore
@@ -174,7 +179,12 @@ export default {
     display: block;
     text-align: center;
   }
-  .video {
+  .muted-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .video-wrap {
     width: 100%;
   }
   .interaction-list {

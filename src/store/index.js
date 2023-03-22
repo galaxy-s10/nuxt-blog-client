@@ -4,6 +4,7 @@ const actions = {
   async nuxtServerInit({ state, commit, dispatch }, { app, req }) {
     // console.log('客户端语言:', req.headers['accept-language']);
     const startTime = Date.now();
+    console.log(`NODE_ENV: ${process.env.NODE_ENV})`);
     console.log(
       `nuxtServerInit开始: ${startTime}(${new Date().toLocaleString()})`
     );

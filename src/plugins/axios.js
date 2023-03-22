@@ -10,7 +10,7 @@ export default function ({ $axios, store }, inject) {
   let env = 'prod'; // prod,beta,dev
 
   if (process.env.NODE_ENV === 'development') {
-    env = 'beta';
+    env = 'dev';
   } else if (process.env.NODE_ENV === 'production') {
     env = 'prod';
   } else {

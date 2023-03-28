@@ -3,9 +3,9 @@ import { Message } from 'element-ui';
 import { io } from 'socket.io-client';
 import { mapMutations, mapState } from 'vuex';
 
-import { wsInstance2, WsInstanceClass } from './ws';
+import { liveExp, wsConnectStatus, wsMsgType, wsUserType } from '@/constant';
 
-import { wsConnectStatus, wsMsgType, wsUserType, liveExp } from '@/constant';
+import { wsInstance2, WsInstanceClass } from './ws';
 
 export const websocketMixin = {
   data() {
@@ -74,20 +74,29 @@ export const websocketMixin = {
       setCurrMusic: 'app/setCurrMusic',
     }),
     handleAvatar() {
-      const pathArr = require.context(
-        '@/assets/img/avatar/',
-        true,
-        /.webp|.jpg|.png|.jpeg|.gif$/i
-      );
-      const res = [];
-      pathArr.keys().forEach((path) => {
-        try {
-          const newpath = path.replace('./', '');
-          res.push(require(`@/assets/img/avatar/${newpath}`));
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      const res = [
+        'https://resource.hsslive.cn/image/959fdd1938b53cbb92108039f7b835e2.webp',
+        'https://resource.hsslive.cn/image/d664a7e785e26dd5bd6d34559c2623d1.webp',
+        'https://resource.hsslive.cn/image/15a116a978cadb34e9fbf0061a4145bc.webp',
+        'https://resource.hsslive.cn/image/def9f85caeb1bf7602ae1bc37f00b03d.webp',
+        'https://resource.hsslive.cn/image/2b045c7f02febd23893244e923115535.webp',
+        'https://resource.hsslive.cn/image/2142b19fe33e1fd7ed848104f64c4fd4.webp',
+        'https://resource.hsslive.cn/image/7e048083bb5dccde76018625b644c84b.webp',
+      ];
+      // const res = [];
+      // const pathArr = require.context(
+      //   '@/assets/img/avatar/',
+      //   true,
+      //   /.webp|.jpg|.png|.jpeg|.gif$/i
+      // );
+      // pathArr.keys().forEach((path) => {
+      //   try {
+      //     const newpath = path.replace('./', '');
+      //     res.push(require(`@/assets/img/avatar/${newpath}`));
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
+      // });
       this.setWsAvatarList(res);
     },
     // 获取在线游客和用户

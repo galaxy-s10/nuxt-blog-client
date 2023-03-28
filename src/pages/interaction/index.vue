@@ -14,6 +14,7 @@
       :muted="muted"
       autoplay
     ></video>
+    <div v-if="flvJsNoSupported">不支持播放</div>
 
     <div class="interaction-list">
       历史记录（最近100条）
@@ -67,7 +68,13 @@ export default {
    */
   async asyncData({ $myaxios, store, params, req }) {},
   data() {
-    return { wsUserType, rowsLen: 0, interactionList: [], muted: true };
+    return {
+      wsUserType,
+      rowsLen: 0,
+      interactionList: [],
+      muted: true,
+      flvJsNoSupported: false,
+    };
   },
   head() {
     return {
@@ -120,10 +127,12 @@ export default {
             } catch (error) {
               console.log(error);
             }
+          } else {
+            this.flvJsNoSupported = true;
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log('flv失败', err);
         });
     },
     handleChooseSong(item) {

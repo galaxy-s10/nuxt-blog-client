@@ -24,7 +24,8 @@ export const commentApi = (request) => {
       }),
     commentChildren: (params) =>
       request({
-        url: '/comment/comment_children',
+        // url: '/comment/comment_children',
+        url: '/comment/child_comment',
         method: 'get',
         params,
       }),

@@ -46,6 +46,7 @@
 // import PlumCpt from '@/components/Plum/index.vue';
 import { generateStyle, imgPrereload } from 'billd-utils';
 import { mapActions, mapMutations } from 'vuex';
+import adapter from 'webrtc-adapter';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
@@ -146,6 +147,8 @@ export default {
     },
   },
   mounted() {
+    console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
+
     // try {
     //   // eslint-disable-next-line
     //   (adsbygoogle = window.adsbygoogle || []).push({});

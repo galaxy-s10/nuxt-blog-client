@@ -51,6 +51,7 @@ specifiers:
   vue-server-renderer: ^2.6.14
   vue-template-compiler: ^2.6.14
   webpack: ^4.46.0
+  webrtc-adapter: ^8.2.2
 
 dependencies:
   '@kangc/v-md-editor': 1.7.11_rhqkolmkwunxzlyyxxsuwaiuri
@@ -74,6 +75,7 @@ dependencies:
   ua-parser-js: 1.0.34
   vue: 2.7.14
   vue-lazyload: 1.3.4
+  webrtc-adapter: 8.2.2
 
 devDependencies:
   '@commitlint/cli': 17.4.4
@@ -12371,6 +12373,10 @@ packages:
       get-ready: 1.0.0
     dev: false
 
+  /sdp/3.2.0:
+    resolution: {integrity: sha512-d7wDPgDV3DDiqulJjKiV2865wKsJ34YI+NDREbm+FySq6WuKOikwyNQcm+doLAZ1O6ltdO0SeKle2xMpN3Brgw==}
+    dev: false
+
   /section-matter/1.0.0:
     resolution: {integrity: sha512-vfD3pmTzGpufjScBh50YHKzEu2lxBWhVEHsNGoEXmCmn2hKGfeNLYMzCJpe8cD7gqX7TJluOVpBkAequ6dgMmA==}
     engines: {node: '>=4'}
@@ -14121,6 +14127,13 @@ packages:
       pretty-time: 1.1.0
       std-env: 3.3.2
       webpack: 4.46.0
+    dev: false
+
+  /webrtc-adapter/8.2.2:
+    resolution: {integrity: sha512-jQWwqiAEAFZamWliJo0Q+dIC6ZMJ8BgCFvW/oXWVFby1Nw14dOUfPwZ3lVe4nafDXdTyCUT7xfLt5xXiioXUCQ==}
+    engines: {node: '>=6.0.0', npm: '>=3.10.0'}
+    dependencies:
+      sdp: 3.2.0
     dev: false
 
   /webworkify-webpack/2.1.5:

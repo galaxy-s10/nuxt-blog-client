@@ -6,7 +6,8 @@
       :class="{ 'article-list': true }"
     >
       <!-- 信息流广告---pc端文章块广告 -->
-      <!-- <div
+      <div
+        v-if="GOOGLE_AD"
         ref="article-item"
         :class="{ 'article-item-a': true, 'water-fall': isWaterFall }"
       >
@@ -19,7 +20,7 @@
           data-ad-slot="6879117008"
         >
         </ins>
-      </div> -->
+      </div>
 
       <nuxt-link
         v-for="(item, index) in articleList"
@@ -130,6 +131,7 @@ import { mapActions, mapMutations } from 'vuex';
 // eslint-disable-next-line
 import { Api } from '@/api';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
+import { GOOGLE_AD } from '@/constant';
 
 export default {
   components: {
@@ -181,6 +183,7 @@ export default {
       isFirst: true, // 是否初次加载
       doneNums: 0, // 已经定位了几个元素
       dndRef: null,
+      GOOGLE_AD,
     };
   },
   head() {
@@ -197,12 +200,12 @@ export default {
         },
       ],
       script: [
-        {
+        GOOGLE_AD && {
           crossorigin: true,
           async: true,
           src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
         },
-      ],
+      ].filter(Boolean),
     };
   },
   computed: {
@@ -263,12 +266,16 @@ export default {
   },
   created() {},
   mounted() {
-    try {
-      // eslint-disable-next-line
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (error) {
-      console.log(error);
+    if (GOOGLE_AD) {
+      try {
+        // @ts-ignore
+        // eslint-disable-next-line
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (error) {
+        console.log(error);
+      }
     }
+
     window.scrollTo({ top: 0 });
     window.addEventListener('resize', this.handleResize);
     this.handlePage();

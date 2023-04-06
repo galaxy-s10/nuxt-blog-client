@@ -55,6 +55,7 @@ import AudioCpt from '@/components/Audio/index.vue';
 import CatalogCpt from '@/components/Catalog/index.vue';
 import FeatureTipCpt from '@/components/FeatureTip/index.vue';
 import LoginModalCpt from '@/components/LoginModal/index.vue';
+import { GOOGLE_AD } from '@/constant';
 import LyAside from '@/layouts/aside/index.vue';
 import LyBacktop from '@/layouts/backtop/index.vue';
 import LyFooter from '@/layouts/footer/index.vue';
@@ -98,13 +99,13 @@ export default {
   },
   head() {
     return {
-      // script: [
-      //   {
-      //     crossorigin: true,
-      //     async: true,
-      //     src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
-      //   },
-      // ],
+      script: [
+        GOOGLE_AD && {
+          crossorigin: true,
+          async: true,
+          src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+        },
+      ].filter(Boolean),
     };
   },
   computed: {

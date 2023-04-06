@@ -10,6 +10,8 @@ export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';
 export const GITHUB_REPO = 'https://github.com/galaxy-s10/nuxt-blog-client';
 
+export const GOOGLE_AD = false;
+
 export const ERROR_HTTP_CODE = {
   serverError: 10000, // 服务器错误
   banIp: 1000,

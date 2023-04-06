@@ -47,7 +47,10 @@
             <div v-loading="switchLoading">
               <div v-if="sideBarArticleList && sideBarArticleList.length">
                 <!-- 信息流广告---侧边文章广告 -->
-                <!-- <div class="item ad">
+                <div
+                  v-if="GOOGLE_AD"
+                  class="item ad"
+                >
                   <client-only>
                     <ins
                       class="adsbygoogle"
@@ -58,7 +61,7 @@
                       data-ad-slot="6936609719"
                     ></ins>
                   </client-only>
-                </div> -->
+                </div>
                 <div
                   v-for="(item, index) in sideBarArticleList"
                   :key="index"
@@ -125,6 +128,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
+import { GOOGLE_AD } from '@/constant';
 
 import AdInfoCpt from './ad-info/index.vue';
 import CatalogInfoCpt from './catalog-info/index.vue';
@@ -168,17 +172,18 @@ export default {
       sidebarFixed: false,
       catalogObserver: null,
       sidebarObserver: null,
+      GOOGLE_AD,
     };
   },
   head() {
     return {
       script: [
-        {
+        GOOGLE_AD && {
           crossorigin: true,
           async: true,
           src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
         },
-      ],
+      ].filter(Boolean),
     };
   },
   computed: {

@@ -18,8 +18,11 @@
       </div>
       <CatalogCpt :list="catalogList"></CatalogCpt>
       <!-- 文章插入广告 -->
-      <!-- <client-only>
-        <div class="ad">
+      <client-only>
+        <div
+          v-if="GOOGLE_AD"
+          class="ad"
+        >
           <ins
             class="adsbygoogle"
             style="display: block; text-align: center"
@@ -29,7 +32,7 @@
             data-ad-slot="3717357923"
           ></ins>
         </div>
-      </client-only> -->
+      </client-only>
     </nav>
   </div>
 </template>
@@ -38,6 +41,7 @@
 import { mapState } from 'vuex';
 
 import CatalogCpt from '@/components/Catalog/index.vue';
+import { GOOGLE_AD } from '@/constant';
 
 export default {
   components: { CatalogCpt },
@@ -51,13 +55,13 @@ export default {
   },
   head() {
     return {
-      // script: [
-      //   {
-      //     crossorigin: true,
-      //     async: true,
-      //     src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
-      //   },
-      // ],
+      script: [
+        GOOGLE_AD && {
+          crossorigin: true,
+          async: true,
+          src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+        },
+      ].filter(Boolean),
     };
   },
   computed: {

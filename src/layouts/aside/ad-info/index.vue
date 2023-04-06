@@ -1,23 +1,23 @@
 <template>
   <div class="ad-info">
     <!-- 展示-展示广告1 -->
-    <ins
+    <!-- <ins
       class="adsbygoogle"
       style="display: block"
       data-ad-client="ca-pub-6064454674933772"
       data-ad-slot="4061381975"
       data-ad-format="auto"
       data-full-width-responsive="true"
-    ></ins>
+    ></ins> -->
     <!-- 展示广告2 -->
-    <ins
+    <!-- <ins
       class="adsbygoogle"
       style="display: block"
       data-ad-client="ca-pub-6064454674933772"
       data-ad-slot="7203099379"
       data-ad-format="auto"
       data-full-width-responsive="true"
-    ></ins>
+    ></ins> -->
   </div>
 </template>
 
@@ -31,11 +31,11 @@ export default {
   head() {
     return {
       script: [
-        {
-          crossorigin: true,
-          async: true,
-          src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
-        },
+        // {
+        //   crossorigin: true,
+        //   async: true,
+        //   src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6064454674933772`,
+        // },
       ],
     };
   },

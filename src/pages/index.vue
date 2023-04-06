@@ -5,11 +5,11 @@
       v-loading="isLoading"
       :class="{ 'article-list': true }"
     >
-      <div
+      <!-- 信息流广告---pc端文章块广告 -->
+      <!-- <div
         ref="article-item"
         :class="{ 'article-item-a': true, 'water-fall': isWaterFall }"
       >
-        <!-- 信息流广告---pc端文章块广告 -->
         <ins
           class="adsbygoogle"
           style="display: block"
@@ -19,7 +19,7 @@
           data-ad-slot="6879117008"
         >
         </ins>
-      </div>
+      </div> -->
 
       <nuxt-link
         v-for="(item, index) in articleList"

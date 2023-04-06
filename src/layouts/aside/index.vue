@@ -46,9 +46,9 @@
             </div>
             <div v-loading="switchLoading">
               <div v-if="sideBarArticleList && sideBarArticleList.length">
-                <div class="item ad">
+                <!-- 信息流广告---侧边文章广告 -->
+                <!-- <div class="item ad">
                   <client-only>
-                    <!-- 信息流广告---侧边文章广告 -->
                     <ins
                       class="adsbygoogle"
                       style="display: block"
@@ -58,7 +58,7 @@
                       data-ad-slot="6936609719"
                     ></ins>
                   </client-only>
-                </div>
+                </div> -->
                 <div
                   v-for="(item, index) in sideBarArticleList"
                   :key="index"
@@ -122,7 +122,9 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
+
+import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 
 import AdInfoCpt from './ad-info/index.vue';
 import CatalogInfoCpt from './catalog-info/index.vue';
@@ -135,7 +137,6 @@ import UserInfoCpt from './user-info/index.vue';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
-import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 
 export default {
   components: {

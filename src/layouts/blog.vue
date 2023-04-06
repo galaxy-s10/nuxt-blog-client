@@ -148,7 +148,6 @@ export default {
   },
   mounted() {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-
     // try {
     //   // eslint-disable-next-line
     //   (adsbygoogle = window.adsbygoogle || []).push({});

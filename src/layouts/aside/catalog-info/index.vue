@@ -17,9 +17,9 @@
         <b>文章目录</b>
       </div>
       <CatalogCpt :list="catalogList"></CatalogCpt>
-      <client-only>
+      <!-- 文章插入广告 -->
+      <!-- <client-only>
         <div class="ad">
-          <!-- 文章插入广告 -->
           <ins
             class="adsbygoogle"
             style="display: block; text-align: center"
@@ -29,7 +29,7 @@
             data-ad-slot="3717357923"
           ></ins>
         </div>
-      </client-only>
+      </client-only> -->
     </nav>
   </div>
 </template>

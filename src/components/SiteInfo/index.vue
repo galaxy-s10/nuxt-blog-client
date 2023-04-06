@@ -14,7 +14,21 @@
             alt="wechat_code"
           />
         </div>
-        <div>微信</div>
+        <div>wechat</div>
+      </div>
+      <div class="item">
+        <a
+          class="bilibili_logo"
+          href="https://live.bilibili.com/26191492"
+          target="_blank"
+        >
+          <img
+            src="@/assets/img/bilibili_logo.webp"
+            class="logo"
+            alt="bilibili_logo"
+          />
+        </a>
+        <div>bilibili</div>
       </div>
       <div class="item">
         <a
@@ -70,6 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 .site-info {
+  margin-top: 10px;
   .list {
     display: flex;
     align-items: center;
@@ -82,6 +97,24 @@ export default {
       width: 30px;
       height: 30px;
       cursor: pointer;
+    }
+    .bilibili_logo_wrap {
+      position: relative;
+      display: inline-block;
+      &:hover {
+        .code {
+          display: block;
+        }
+      }
+      .code {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        display: none;
+        width: 100px;
+        height: 100px;
+        transform: translate(-50%, -100%);
+      }
     }
     .wechat_logo_wrap {
       position: relative;
@@ -103,8 +136,8 @@ export default {
     }
   }
   .ver {
-    font-size: 15px;
     text-align: right;
+    font-size: 15px;
   }
 }
 </style>

@@ -117,6 +117,7 @@ export default {
               type: 'flv',
               // url: 'http://42.193.157.44:9000/live/fddm_2.flv',
               url: 'https://www.hsslive.cn/stream/live/fddm_2.flv',
+              // url: 'https://www.hsslive.cn/live-bvc/?streamname=live_381307133_59434826&key=a879ebac1a154112ae836addc4ca5f75&schedule=rtmp&pflag=1',
               // url: 'http://localhost:9000/live/fddm_2.flv',
             });
             // @ts-ignore

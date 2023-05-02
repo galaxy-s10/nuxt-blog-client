@@ -23,19 +23,17 @@
 
 > 注意：需要在本地启动一个 3300 端口的接口服务：[vue3-blog-server](https://github.com/galaxy-s10/vue3-blog-server)
 
-## 自用包
+## billd 依赖
+
+```sh
+pnpm i billd-deploy@latest billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
+```
 
 | 包名                                                                                 | 版本                                                                                                                      |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
 | [billd-html-webpack-plugin](https://github.com/galaxy-s10/billd-html-webpack-plugin) | [![npm](https://img.shields.io/npm/v/billd-html-webpack-plugin)](https://www.npmjs.com/package/billd-html-webpack-plugin) |
 | [billd-utils](https://github.com/galaxy-s10/billd-utils)                             | [![npm](https://img.shields.io/npm/v/billd-utils)](https://www.npmjs.com/package/billd-utils)                             |
 | [billd-scss](https://github.com/galaxy-s10/billd-scss)                               | [![npm](https://img.shields.io/npm/v/billd-scss)](https://www.npmjs.com/package/billd-scss)                               |
-
-更新：
-
-```sh
-pnpm i billd-deploy@latest billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
-```
 
 ## 安装依赖
 

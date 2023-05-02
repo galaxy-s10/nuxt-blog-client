@@ -12,10 +12,10 @@ specifiers:
   axios: ^0.27.2
   babel-eslint: ^10.1.0
   babel-plugin-component: ^1.1.1
-  billd-deploy: ^1.0.13
-  billd-html-webpack-plugin: ^1.0.0
+  billd-deploy: ^1.0.16
+  billd-html-webpack-plugin: ^1.0.1
   billd-scss: ^0.0.6
-  billd-utils: ^0.0.7
+  billd-utils: ^0.0.9
   chalk: ^4
   commitizen: ^4.2.5
   compression-webpack-plugin: 5.0.1
@@ -56,10 +56,10 @@ specifiers:
 dependencies:
   '@kangc/v-md-editor': 1.7.11_rhqkolmkwunxzlyyxxsuwaiuri
   axios: 0.27.2
-  billd-deploy: 1.0.13_sass@1.58.3
-  billd-html-webpack-plugin: 1.0.0_sass@1.58.3
+  billd-deploy: 1.0.16_sass@1.58.3
+  billd-html-webpack-plugin: 1.0.1_sass@1.58.3
   billd-scss: 0.0.6
-  billd-utils: 0.0.7
+  billd-utils: 0.0.9
   core-js: 3.29.0
   dayjs: 1.11.7
   element-ui: 2.15.13_vue@2.7.14
@@ -2916,7 +2916,7 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.21.1
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/7.29.0:
@@ -2929,7 +2929,7 @@ packages:
   /@types/eslint/8.21.1:
     resolution: {integrity: sha512-rc9K8ZpVjNcLs8Fp0dkozd5Pt2Apk1glO4Vgz8ix1u6yFByxfqo5Yavpy65o+93TAe24jr7v+eSBtFLvOQtCRQ==}
     dependencies:
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
       '@types/json-schema': 7.0.11
     dev: false
 
@@ -4128,12 +4128,12 @@ packages:
   /big.js/5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  /billd-deploy/1.0.13_sass@1.58.3:
-    resolution: {integrity: sha512-XD6dqhvkiZ41QPgZBHbmWBqWB16dtk/jo3jOMASW+81qsgrhtOWWqC2fKVbaDNWH7NQtFoiH4THOyTdRCqUTgA==}
+  /billd-deploy/1.0.16_sass@1.58.3:
+    resolution: {integrity: sha512-T1ZejJOdNUuY6bMjGz6hZl2okoivEVuv1qOaRW45CInypUdWj8LDx21AITcykT0XR/32fJPXhO/eVWhfratQAQ==}
     requiresBuild: true
     dependencies:
       ali-oss: 6.17.1
-      billd-html-webpack-plugin: 1.0.0_sass@1.58.3
+      billd-html-webpack-plugin: 1.0.1_sass@1.58.3
       esdk-obs-nodejs: 3.21.6
       inquirer: 8.2.5
       node-ssh: 13.0.1
@@ -4153,8 +4153,8 @@ packages:
       - webpack-cli
     dev: false
 
-  /billd-html-webpack-plugin/1.0.0_sass@1.58.3:
-    resolution: {integrity: sha512-JbYQ5qKtZlXPSQKxmjhvB668aVGKo7QINfvUeN9m5e57PrtKX/fcuRpYyIPExwymVEMOOLWKEk3OQ1R8tQzE8Q==}
+  /billd-html-webpack-plugin/1.0.1_sass@1.58.3:
+    resolution: {integrity: sha512-ktyHU31TP6VUvCYjy/HdzA6PlYs72VGTHx6Zd8p+cQba7M+pdR5y8lZKQe1JDYf/h1R7TnxrmmiU/tSsC6nLOg==}
     requiresBuild: true
     dependencies:
       vite: 4.1.4_sass@1.58.3
@@ -4177,8 +4177,8 @@ packages:
     requiresBuild: true
     dev: false
 
-  /billd-utils/0.0.7:
-    resolution: {integrity: sha512-UgXqNeqhTtVugHBopSZlIzEUtsT91OS5aeZifoeoZe1qDnMdiFsoTSpMhMtRzFFsR7XfWSfTyIu96Db558CIYw==}
+  /billd-utils/0.0.9:
+    resolution: {integrity: sha512-vPGUOtKG725KKK7laSI0oXsfIuZpQsh2z3JSLMW/+V/eKXjQnj99n4ks4Jhh4/u+ub2g4h87+idrN2wmw9D5Cw==}
     requiresBuild: true
     dependencies:
       '@babel/core': 7.21.0
@@ -7895,7 +7895,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0

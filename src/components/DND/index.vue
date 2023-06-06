@@ -4,7 +4,6 @@
     ref="dndRef"
     :style="{ zIndex: zIndex }"
     @touchstart="handleStart"
-    @touchmove="handleMove"
     @touchend="handleEnd"
   >
     <slot></slot>
@@ -14,7 +13,6 @@
     ref="dndRef"
     :style="{ zIndex: zIndex }"
     @mousedown="handleStart"
-    @mousemove="handleMove"
     @mouseup="handleEnd"
   >
     <slot></slot>
@@ -59,6 +57,9 @@ export default {
     this.changeRect();
     window.addEventListener('resize', this.handleResize);
   },
+  beforeDestroy(){
+    window.document.removeEventListener('mousemove', this.handleMove);
+  },
   methods: {
     throttle,
     changeRect() {
@@ -100,6 +101,7 @@ export default {
     },
     handleStart(event) {
       if (!this.dndRef) return;
+      window.document.addEventListener('mousemove', this.handleMove);
       this.isDown = true;
       let x = 0;
       let y = 0;
@@ -117,6 +119,7 @@ export default {
     },
     handleEnd() {
       if (!this.dndRef) return;
+      window.document.removeEventListener('mousemove', this.handleMove);
       this.isMobile = isMobile();
       this.isDown = false;
       const rect = this.dndRef.getBoundingClientRect();

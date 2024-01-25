@@ -3,6 +3,7 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+
 import semver from 'semver';
 import trash from 'trash';
 
@@ -98,6 +99,9 @@ clearOld().then(() => {
   execSync(`pnpm i`, { cwd: giteeDir });
   execSync(`git add .`, { cwd: giteeDir });
   execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
+    cwd: giteeDir,
+  });
+  execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
     cwd: giteeDir,
   });
   execSync(`git push`, { cwd: giteeDir });

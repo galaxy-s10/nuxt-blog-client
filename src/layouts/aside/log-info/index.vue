@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 import { dateStartAndEnd } from '@/utils/format';
 

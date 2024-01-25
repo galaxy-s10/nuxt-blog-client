@@ -1,6 +1,15 @@
-node_modules
-dist
+# mac相关资源
 .DS_Store
+
+# eslint相关资源
 .eslintcache
+
+# 依赖相关资源
+pnpm-lock.yaml
+node_modules
+
+# nuxt相关资源
 .nuxt
-deploy
+
+# 部署相关资源
+deploy/index.js

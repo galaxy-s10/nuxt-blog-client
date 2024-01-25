@@ -35,7 +35,7 @@ export default function ({ $axios, store }, inject) {
 
   const service = axios.create({
     baseURL,
-    timeout: 5000,
+    timeout: 10000,
     withCredentials: true, // 允许跨域携带cookie信息
   });
 

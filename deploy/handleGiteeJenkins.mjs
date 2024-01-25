@@ -1,14 +1,16 @@
 // WARN 该文件只是方便我将当前项目复制一份到我电脑的另一个位置（gitee私有仓库的位置)，其他人不需要管这个文件~
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
 
-const semver = require('semver');
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import semver from 'semver';
+import trash from 'trash';
 
 const allFile = [];
 const ignore = ['.DS_Store', '.git', '.nuxt', 'node_modules'];
-const localDir = path.resolve(__dirname);
-const giteeDir = path.resolve(__dirname, '../../jenkins/nuxt-blog-client');
+const localDir =
+  '/Users/huangshuisheng/Desktop/hss/galaxy-s10/nuxt-blog-client';
+const giteeDir = '/Users/huangshuisheng/Desktop/hss/jenkins/nuxt-blog-client';
 
 const dir = fs.readdirSync(localDir).filter((item) => {
   if (ignore.includes(item)) {
@@ -59,8 +61,20 @@ function putFile() {
   }
 }
 
+async function clearOld() {
+  const giteeDirAllFile = fs.readdirSync(giteeDir);
+  const queue = [];
+  giteeDirAllFile.forEach((url) => {
+    const fullurl = `${giteeDir}/${url}`;
+    if (!['node_modules', '.git'].includes(url)) {
+      queue.push(trash(fullurl));
+    }
+  });
+  await Promise.all(queue);
+}
+
 const newPkgStr = fs.readFileSync(
-  path.resolve(__dirname, 'package.json'),
+  path.resolve(giteeDir, 'package.json'),
   'utf-8'
 );
 const oldPkgStr = fs.readFileSync(
@@ -71,33 +85,14 @@ const oldPkg = JSON.parse(oldPkgStr);
 const newPkg = JSON.parse(newPkgStr);
 const newVersion = semver.inc(oldPkg.version, 'patch');
 
-if (path.resolve(__dirname) === giteeDir) {
-  // eslint-disable-next-line
-  console.log('当前在gitee文件目录，直接退出！');
-} else {
+clearOld().then(() => {
+  const gitignoreTxt = 'node_modules\n.DS_Store\ndist\n.nuxt\n.eslintcache\n';
+  fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
   findFile(dir);
-  execSync(`rm -rf $(ls -A | grep -wv .git | xargs)`, { cwd: giteeDir });
   putFile();
   fs.writeFileSync(
-    path.resolve(giteeDir, '.gitignore'),
-    `node_modules
-  dist
-  .DS_Store
-  .eslintcache
-  .nuxt
-  `
-  );
-  fs.writeFileSync(
-    path.resolve(giteeDir, '.dockerignore'),
-    `Dockerfile
-  node_modules
-  .DS_Store
-  .eslintcache
-  .nuxt
-  `
-  );
-  fs.writeFileSync(
     path.resolve(giteeDir, 'package.json'),
+    // @ts-ignore
     JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
   );
   execSync(`pnpm i`, { cwd: giteeDir });
@@ -105,9 +100,5 @@ if (path.resolve(__dirname) === giteeDir) {
   execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
     cwd: giteeDir,
   });
-  execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
-    cwd: giteeDir,
-  });
   execSync(`git push`, { cwd: giteeDir });
-  execSync(`git push origin v${newVersion}`, { cwd: giteeDir });
-}
+});

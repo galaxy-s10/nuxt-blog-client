@@ -8,7 +8,7 @@ export function dateStartAndEnd(date) {
   const startTime = `${y}-${m}-${d} 00:00:00`;
   const endTime = `${y}-${m}-${d} 23:59:59`;
   return {
-    startTime,
-    endTime,
+    startTime: +new Date(startTime),
+    endTime: +new Date(endTime),
   };
 }

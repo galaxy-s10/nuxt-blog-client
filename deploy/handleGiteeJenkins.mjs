@@ -105,4 +105,5 @@ clearOld().then(() => {
     cwd: giteeDir,
   });
   execSync(`git push`, { cwd: giteeDir });
+  execSync(`git push origin v${newVersion}`, { cwd: giteeDir });
 });

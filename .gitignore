@@ -5,7 +5,6 @@
 .eslintcache
 
 # 依赖相关资源
-pnpm-lock.yaml
 node_modules
 
 # nuxt相关资源

@@ -26,7 +26,7 @@
 ## billd 依赖
 
 ```sh
-pnpm i billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
+pnpm i billd-utils@latest billd-scss@latest billd-deploy@latest billd-html-webpack-plugin@latest
 ```
 
 | 包名                                                                                 | 版本                                                                                                                      |
@@ -34,6 +34,7 @@ pnpm i billd-html-webpack-plugin@latest billd-scss@latest billd-utils@latest
 | [billd-html-webpack-plugin](https://github.com/galaxy-s10/billd-html-webpack-plugin) | [![npm](https://img.shields.io/npm/v/billd-html-webpack-plugin)](https://www.npmjs.com/package/billd-html-webpack-plugin) |
 | [billd-utils](https://github.com/galaxy-s10/billd-utils)                             | [![npm](https://img.shields.io/npm/v/billd-utils)](https://www.npmjs.com/package/billd-utils)                             |
 | [billd-scss](https://github.com/galaxy-s10/billd-scss)                               | [![npm](https://img.shields.io/npm/v/billd-scss)](https://www.npmjs.com/package/billd-scss)                               |
+| [billd-deploy](https://github.com/galaxy-s10/billd-deploy)                           | [![npm](https://img.shields.io/npm/v/billd-deploy)](https://www.npmjs.com/package/billd-deploy)                           |
 
 ## 安装依赖
 
@@ -61,7 +62,7 @@ pnpm run start
 
 # 部署
 
-## docker
+## ~~docker~~
 
 ```sh
 sh build.sh nuxt-blog-client null workspace 3000 v0.0.1

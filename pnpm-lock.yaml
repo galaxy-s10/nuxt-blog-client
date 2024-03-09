@@ -15,14 +15,14 @@ dependencies:
     specifier: ^1.0.25
     version: 1.0.25(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
   billd-html-webpack-plugin:
-    specifier: ^1.0.1
-    version: 1.0.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
+    specifier: ^1.0.6
+    version: 1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
   billd-scss:
-    specifier: ^0.0.6
-    version: 0.0.6
+    specifier: ^0.0.8
+    version: 0.0.8
   billd-utils:
-    specifier: ^0.0.9
-    version: 0.0.9(typescript@4.9.5)
+    specifier: ^0.0.22
+    version: 0.0.22(typescript@4.9.5)
   core-js:
     specifier: ^3.19.3
     version: 3.29.0
@@ -4264,7 +4264,7 @@ packages:
     requiresBuild: true
     dependencies:
       ali-oss: 6.17.1
-      billd-html-webpack-plugin: 1.0.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
+      billd-html-webpack-plugin: 1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
       cos-nodejs-sdk-v5: 2.13.3
       esdk-obs-nodejs: 3.21.6
       inquirer: 8.2.5
@@ -4285,8 +4285,8 @@ packages:
       - webpack-cli
     dev: false
 
-  /billd-html-webpack-plugin@1.0.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3):
-    resolution: {integrity: sha512-ktyHU31TP6VUvCYjy/HdzA6PlYs72VGTHx6Zd8p+cQba7M+pdR5y8lZKQe1JDYf/h1R7TnxrmmiU/tSsC6nLOg==}
+  /billd-html-webpack-plugin@1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3):
+    resolution: {integrity: sha512-zM294oAMqRD1rlqoyC1E9QbFsBgMPYStODmQKwUjI+xd02Rwo+3iZhmlQ8q0EuF2KnyhwDwhxyZfDGSo6Ow8Tw==}
     requiresBuild: true
     dependencies:
       vite: 4.1.4(@types/node@18.14.6)(sass@1.58.3)
@@ -4304,13 +4304,13 @@ packages:
       - webpack-cli
     dev: false
 
-  /billd-scss@0.0.6:
-    resolution: {integrity: sha512-pnoWXjq5/Iq5lB4hHEWeFebFbuPO7akPMz9HblcY7TKZZ7PuYgu1G2+2ZQtl7SvibBsT/iWHjKPKGDjVFb3FDA==}
+  /billd-scss@0.0.8:
+    resolution: {integrity: sha512-42gyDYnmRICjqrzk3qbqVygpvjpMu/2rMk41x8HyWLOf457EkXyCiAAFrFR2XM3/c6PHWbtD+IhP8MHUV6JeyA==}
     requiresBuild: true
     dev: false
 
-  /billd-utils@0.0.9(typescript@4.9.5):
-    resolution: {integrity: sha512-vPGUOtKG725KKK7laSI0oXsfIuZpQsh2z3JSLMW/+V/eKXjQnj99n4ks4Jhh4/u+ub2g4h87+idrN2wmw9D5Cw==}
+  /billd-utils@0.0.22(typescript@4.9.5):
+    resolution: {integrity: sha512-koOfFzbzSkw6gMYyOKNMzAJHYMhUWHr3swPW48rT7PwZMvBkAtH93bHEVuDCwariWrSwxCGIqozOzp5YaeePqQ==}
     requiresBuild: true
     dependencies:
       '@babel/core': 7.21.0

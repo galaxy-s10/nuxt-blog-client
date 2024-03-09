@@ -7,7 +7,7 @@
 # FilePath: /nuxt-blog-client/deploy/nuxt-pm2.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2024-02-01 15:37:39
+# LastEditTime: 2024-03-09 15:36:27
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i

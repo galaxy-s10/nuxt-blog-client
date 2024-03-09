@@ -525,8 +525,8 @@ export default {
             el.style.top = '-50px';
             el.setAttribute('id', obj.id);
             item.appendChild(el);
-          } catch (err) {
-            console.log(err);
+          } catch (error) {
+            console.log(error);
           }
           arr.push(obj);
         }

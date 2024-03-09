@@ -77,8 +77,9 @@ export default {
     $route(to, from) {
       if (to.name !== 'article-id') {
         this.$nextTick(() => {
-          this.$refs.catalogRef &&
+          if (this.showCatalog && this.$refs.catalogRef) {
             this.catalogObserver.unobserve(this.$refs.catalogRef);
+          }
         });
       }
     },
@@ -86,8 +87,9 @@ export default {
       if (newVal) {
         this.catalogFixed = false;
         this.$nextTick(() => {
-          this.$refs.catalogRef &&
+          if (this.showCatalog && this.$refs.catalogRef) {
             this.handleCataLogObserver(this.$refs.catalogRef);
+          }
         });
       }
     },

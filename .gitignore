@@ -1,14 +1,5 @@
-# mac相关资源
-.DS_Store
-
-# eslint相关资源
-.eslintcache
-
-# 依赖相关资源
 node_modules
-
-# nuxt相关资源
 .nuxt
-
-# 部署相关资源
-deploy/index.js
+.eslintcache
+.DS_Store
+/deploy/index.js

@@ -31,14 +31,16 @@
       </div>
     </div>
 
-    <!-- about富文本 -->
-    <AsyncRenderMarkdownCpt
-      :md="frontendData.about_me.value"
-    ></AsyncRenderMarkdownCpt>
+    <template v-if="frontendData">
+      <!-- about富文本 -->
+      <LazyRenderMarkdown
+        :md="frontendData.about_me.value"
+      ></LazyRenderMarkdown>
 
-    <div class="update-time">
-      最后更新：{{ frontendData.about_me.updated_at }}
-    </div>
+      <div class="update-time">
+        最后更新：{{ frontendData.about_me.updated_at }}
+      </div>
+    </template>
   </div>
 </template>
 
@@ -47,10 +49,7 @@
 import { Api } from '@/api';
 
 export default {
-  components: {
-    AsyncRenderMarkdownCpt: () =>
-      import('@/components/RenderMarkdown/index.vue'),
-  },
+  components: {},
   layout: 'blog',
   /**
    * @typedef {Object} asyncDataType
@@ -62,10 +61,17 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    const { data } = await $myaxios.statis.detail();
-    return {
-      summary: data,
-    };
+    try {
+      const [summaryData] = await Promise.all([
+        $myaxios.statis.detail(),
+        store.dispatch('app/getFrontendData'),
+      ]);
+      return {
+        summary: summaryData.data,
+      };
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {};

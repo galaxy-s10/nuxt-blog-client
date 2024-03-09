@@ -49,12 +49,15 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    // 获取作品数据
-    const { data: worksData } = await $myaxios.works.list({
-      orderName: 'created_at',
-      orderBy: 'desc',
-    });
-    return { worksList: worksData.rows };
+    try {
+      const { data: worksData } = await $myaxios.works.list({
+        orderName: 'created_at',
+        orderBy: 'desc',
+      });
+      return { worksList: worksData.rows };
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {};

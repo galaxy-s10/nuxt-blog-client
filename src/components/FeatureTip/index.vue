@@ -7,13 +7,14 @@
       :width="dialogWidth"
       :top="dialogTop"
     >
-      <AsyncRenderMarkdownCpt
-        v-if="frontendData"
-        :md="frontendData.home_modal_content.value"
-      ></AsyncRenderMarkdownCpt>
-      <div class="update-time">
-        发布时间：{{ frontendData.home_modal_content.updated_at }}
-      </div>
+      <template v-if="frontendData">
+        <AsyncRenderMarkdownCpt
+          :md="frontendData.home_modal_content.value"
+        ></AsyncRenderMarkdownCpt>
+        <div class="update-time">
+          发布时间：{{ frontendData.home_modal_content.updated_at }}
+        </div>
+      </template>
       <span slot="footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button
@@ -28,6 +29,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   components: {
     AsyncRenderMarkdownCpt: () =>
@@ -48,14 +51,22 @@ export default {
   },
   watch: {},
   created() {},
-  mounted() {
-    const d = window.pageXOffset || document.documentElement.offsetWidth;
-    if (d <= 414) {
-      this.dialogWidth = '80%';
+  async mounted() {
+    try {
+      await this.appGetFrontendData();
+      const d = window.pageXOffset || document.documentElement.offsetWidth;
+      if (d <= 414) {
+        this.dialogWidth = '80%';
+      }
+      this.dialogVisible = this.frontendData.allow_home_modal.value === '1';
+    } catch (error) {
+      console.log(error);
     }
-    this.dialogVisible = this.frontendData.allow_home_modal.value === '1';
   },
   methods: {
+    ...mapActions({
+      appGetFrontendData: 'app/getFrontendData',
+    }),
     handleClose() {
       this.dialogVisible = false;
     },

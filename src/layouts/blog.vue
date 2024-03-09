@@ -2,62 +2,57 @@
   <div class="blog-wrap">
     <LyHeader />
     <LyTypeList />
-    <LyBacktop />
     <div class="main-wrap">
       <LyMain class="left" />
       <LyAside class="right" />
     </div>
 
-    <LazyDND
-      v-if="showMusicAudio === true"
-      ref="dndRef"
-      class="dnd-wrap"
-    >
-      <AudioCpt @changeRect="changeRect"></AudioCpt>
-    </LazyDND>
-
-    <LazyPlum v-if="showPlum === true"></LazyPlum>
-    <FeatureTipCpt></FeatureTipCpt>
-    <div
-      v-if="showMinCatalogIco"
-      class="mini-catalog-ico"
-      @click="showMinCatalog = !showMinCatalog"
-    >
-      <i class="el-icon-notebook-2"></i>
-    </div>
-    <div
-      v-if="showMinCatalog"
-      class="mini-catalog-wrap"
-    >
+    <client-only>
       <div
-        class="mask"
-        @click.self="showMinCatalog = !showMinCatalog"
+        v-if="showMinCatalogIco"
+        class="mini-catalog-ico"
+        @click="showMinCatalog = !showMinCatalog"
       >
-        <div class="content">
-          <CatalogCpt :list="catalogList"></CatalogCpt>
+        <i class="el-icon-notebook-2"></i>
+      </div>
+      <div
+        v-if="showMinCatalog"
+        class="mini-catalog-wrap"
+      >
+        <div
+          class="mask"
+          @click.self="showMinCatalog = !showMinCatalog"
+        >
+          <div class="content">
+            <CatalogCpt :list="catalogList"></CatalogCpt>
+          </div>
         </div>
       </div>
-    </div>
-    <LyFooter />
-    <LoginModalCpt v-model="loginModalVisiable"></LoginModalCpt>
+      <LazyDND
+        v-if="showMusicAudio === true"
+        ref="dndRef"
+        class="dnd-wrap"
+      >
+        <LazyMusicAudio @changeRect="changeRect"></LazyMusicAudio>
+      </LazyDND>
+      <LazyPlum v-if="showPlum === true"></LazyPlum>
+      <LazyFeatureTip></LazyFeatureTip>
+      <LazyLoginModal v-model="loginModalVisiable"></LazyLoginModal>
+      <LazyBacktop />
+      <LyFooter />
+    </client-only>
   </div>
 </template>
 <script>
 // import PlumCpt from '@/components/Plum/index.vue';
 import { generateStyle, imgPrereload } from 'billd-utils';
 import { mapActions, mapMutations } from 'vuex';
-import adapter from 'webrtc-adapter';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
 
-import AudioCpt from '@/components/Audio/index.vue';
-import CatalogCpt from '@/components/Catalog/index.vue';
-import FeatureTipCpt from '@/components/FeatureTip/index.vue';
-import LoginModalCpt from '@/components/LoginModal/index.vue';
 import { GOOGLE_AD } from '@/constant';
 import LyAside from '@/layouts/aside/index.vue';
-import LyBacktop from '@/layouts/backtop/index.vue';
 import LyFooter from '@/layouts/footer/index.vue';
 import LyHeader from '@/layouts/header/index.vue';
 import LyMain from '@/layouts/main/index.vue';
@@ -67,16 +62,11 @@ export default {
   components: {
     LyHeader,
     LyTypeList,
-    LyBacktop,
     LyAside,
     LyMain,
     LyFooter,
-    CatalogCpt,
-    AudioCpt,
     // AsnycAudioCpt: () => import('@/components/Audio/index.vue'),
     // PlumCpt,
-    FeatureTipCpt,
-    LoginModalCpt,
   },
   middleware: ['auth'],
   /**
@@ -148,7 +138,6 @@ export default {
     },
   },
   mounted() {
-    console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
     // try {
     //   // eslint-disable-next-line
     //   (adsbygoogle = window.adsbygoogle || []).push({});
@@ -203,7 +192,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUserInfo: 'user/getUserInfo',
+      userGetUserInfo: 'user/getUserInfo',
     }),
     ...mapMutations({
       setToken: 'user/setToken',
@@ -262,7 +251,7 @@ export default {
       const token = localStorage.token;
       if (token) {
         this.setToken(token);
-        this.getUserInfo();
+        this.userGetUserInfo();
       }
     },
     async messageFn(event) {
@@ -277,12 +266,11 @@ export default {
           token = data;
         }
       } catch (error) {
-        console.error(`${type}失败`);
         console.log(error);
       }
       if (token) {
         this.setToken(token);
-        this.getUserInfo();
+        this.userGetUserInfo();
       }
     },
   },

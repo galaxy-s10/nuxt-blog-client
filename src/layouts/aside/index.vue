@@ -227,6 +227,14 @@ export default {
   },
   mounted() {
     this.handleSidebarObserver(this.$refs.mainFolatRef);
+    const orderName =
+      this.sideBarArticleOrderName === 'click' ? 'updated_at' : 'click';
+    this.getSideBarArticleList({
+      nowPage: 1,
+      pageSize: 5,
+      orderName,
+      orderBy: 'desc',
+    });
   },
   methods: {
     ...mapActions('article', ['getSideBarArticleList']),

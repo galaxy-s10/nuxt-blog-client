@@ -49,16 +49,20 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    const query = {
-      nowPage: 1,
-      pageSize: 20,
-    };
-    const { data } = await $myaxios.article.list({
-      orderName: 'created_at',
-      orderBy: 'desc',
-      ...query,
-    });
-    return { ...query, historyArticleList: data.rows, total: data.total };
+    try {
+      const query = {
+        nowPage: 1,
+        pageSize: 20,
+      };
+      const { data } = await $myaxios.article.list({
+        orderName: 'created_at',
+        orderBy: 'desc',
+        ...query,
+      });
+      return { ...query, historyArticleList: data.rows, total: data.total };
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {};

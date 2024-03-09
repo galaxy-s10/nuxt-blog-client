@@ -50,7 +50,6 @@ export const mutations = {
 export const actions = {
   // eslint-disable-next-line no-shadow
   setWsInstanceAction({ commit }, data) {
-    console.log('setWsInstanceAction', data);
     commit('setWsInstance', 'data');
   },
 };

@@ -140,12 +140,12 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    const articleListParams = {
-      nowPage: 1,
-      pageSize: 3,
-    };
-    const tagId = params.id;
     try {
+      const articleListParams = {
+        nowPage: 1,
+        pageSize: 3,
+      };
+      const tagId = params.id;
       const { data: tagData } = await $myaxios.tag.list();
       const { data: articleData } = await $myaxios.tag.articleList({
         tagId,

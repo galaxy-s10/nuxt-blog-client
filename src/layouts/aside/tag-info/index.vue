@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   components: {
@@ -52,8 +52,11 @@ export default {
   },
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.getSideBarTagList({ nowPage: 1, pageSize: 10 });
+  },
   methods: {
+    ...mapActions('tag', ['getSideBarTagList']),
     tagClick(id) {
       this.$router.push({ path: `/tag/${id}` });
     },

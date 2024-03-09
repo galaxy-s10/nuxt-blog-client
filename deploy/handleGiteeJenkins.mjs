@@ -87,10 +87,10 @@ const newPkg = JSON.parse(newPkgStr);
 const newVersion = semver.inc(oldPkg.version, 'patch');
 
 clearOld().then(() => {
-  const gitignoreTxt = 'node_modules\n.DS_Store\ndist\n.nuxt\n.eslintcache\n';
-  fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
   findFile(dir);
   putFile();
+  const gitignoreTxt = 'node_modules\n.nuxt\n.eslintcache\n.DS_Store\n';
+  fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
   fs.writeFileSync(
     path.resolve(giteeDir, 'package.json'),
     // @ts-ignore

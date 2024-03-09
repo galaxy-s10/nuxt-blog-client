@@ -130,12 +130,15 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    // 获取友链数据
-    const { data: linkData } = await $myaxios.link.list({
-      orderName: 'created_at',
-      orderBy: 'desc',
-    });
-    return { linkList: linkData.rows };
+    try {
+      const { data: linkData } = await $myaxios.link.list({
+        orderName: 'created_at',
+        orderBy: 'desc',
+      });
+      return { linkList: linkData.rows };
+    } catch (error) {
+      console.log(error);
+    }
   },
   data() {
     return {

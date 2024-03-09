@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 import { loginMixin } from '@/mixin/login';
 
@@ -112,11 +112,6 @@ export default {
     window.removeEventListener('scroll', this.headershow);
   },
   methods: {
-    ...mapActions({
-      getFrontendData: 'app/getFrontendData',
-      userLogin: 'user/login',
-      getUserInfo: 'user/getUserInfo',
-    }),
     ...mapMutations({
       userLogout: 'user/logout',
     }),

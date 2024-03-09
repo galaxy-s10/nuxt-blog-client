@@ -126,7 +126,7 @@
 
 <script>
 import { getRangeRandom } from 'billd-utils';
-import { mapActions, mapMutations } from 'vuex';
+import { mapMutations } from 'vuex';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
@@ -148,14 +148,14 @@ export default {
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
   async asyncData({ $myaxios, store, params, req }) {
-    const params1 = {
-      orderName: 'created_at',
-      orderBy: 'desc',
-      types: store.state.type.typeId,
-      nowPage: 1,
-      pageSize: 20,
-    };
     try {
+      const params1 = {
+        orderName: 'created_at',
+        orderBy: 'desc',
+        types: store.state.type.typeId,
+        nowPage: 1,
+        pageSize: 20,
+      };
       const { data } = await $myaxios.article.list(params1);
       data.rows.forEach((v) => {
         v.mockImgHeight = getRangeRandom(200, 250) + getRangeRandom(0, 50);
@@ -285,10 +285,6 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {
-    ...mapActions({
-      userLogin: 'user/login',
-      getUserInfo: 'user/getUserInfo',
-    }),
     ...mapMutations({
       setIsWaterFall: 'app/setIsWaterFall',
     }),

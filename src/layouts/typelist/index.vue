@@ -23,6 +23,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
+// eslint-disable-next-line
+
 export default {
   data() {
     return {
@@ -40,9 +44,12 @@ export default {
       return this.$store.state.app.hiddenHeader;
     },
   },
-  mounted() {},
+  mounted() {
+    this.getTypeList();
+  },
   destroyed() {},
   methods: {
+    ...mapActions('type', ['getTypeList']),
     changeType(typeId) {
       this.$store.commit('type/changeTypeId', typeId);
       if (this.$route.path !== '/') {

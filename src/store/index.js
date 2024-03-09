@@ -1,7 +1,7 @@
 const actions = {
   // https://nuxtjs.org/docs/directory-structure/store/#the-nuxtserverinit-action
   // https://nuxtjs.org/docs/concepts/context-helpers
-  async nuxtServerInit({ state, commit, dispatch }, { app, req }) {
+  nuxtServerInit({ state, commit, dispatch }, { app, req }) {
     // console.log('客户端语言:', req.headers['accept-language']);
     const startTime = Date.now();
     console.log(`NODE_ENV: ${process.env.NODE_ENV})`);
@@ -10,17 +10,16 @@ const actions = {
     );
     try {
       commit('app/setCurrentNodeEnv', process.env.NODE_ENV);
-      await Promise.all([
-        dispatch('app/getFrontendData'),
-        dispatch('type/getTypeList'),
-        dispatch('tag/getSideBarTagList', { nowPage: 1, pageSize: 10 }),
-        dispatch('article/getSideBarArticleList', {
-          nowPage: 1,
-          pageSize: 5,
-          orderName: state.article.sideBarArticleOrderName,
-          orderBy: 'desc',
-        }),
-      ]);
+      // await Promise.all([
+      // dispatch('type/getTypeList'),
+      // dispatch('tag/getSideBarTagList', { nowPage: 1, pageSize: 10 }),
+      // dispatch('article/getSideBarArticleList', {
+      //   nowPage: 1,
+      //   pageSize: 5,
+      //   orderName: state.article.sideBarArticleOrderName,
+      //   orderBy: 'desc',
+      // }),
+      // ]);
       const endTime = Date.now();
       console.log(
         `nuxtServerInit完成: ${endTime}(${new Date().toLocaleString()}) 耗时: ${

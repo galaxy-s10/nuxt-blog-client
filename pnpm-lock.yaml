@@ -12,8 +12,8 @@ dependencies:
     specifier: ^0.27.2
     version: 0.27.2
   billd-deploy:
-    specifier: ^1.0.24
-    version: 1.0.24(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
+    specifier: ^1.0.25
+    version: 1.0.25(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
   billd-html-webpack-plugin:
     specifier: ^1.0.1
     version: 1.0.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)
@@ -4259,8 +4259,8 @@ packages:
   /big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  /billd-deploy@1.0.24(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3):
-    resolution: {integrity: sha512-zokjQnEIE1/A7m84ETtyE+GeRNI1d1Sj8LVk8UPjcd7MTExX/7F1f8f3rQoti3BnRoABErtmVBsSu9A5hBz8Sg==}
+  /billd-deploy@1.0.25(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3):
+    resolution: {integrity: sha512-gy9p3SvbZxCJIRPBkaO/Kb/BiH4wO7mkl/F34aJ2qZLvzuiFkJg5T7kkTujDcjPoDQxmuYR3eHuSJHdgZADxCg==}
     requiresBuild: true
     dependencies:
       ali-oss: 6.17.1

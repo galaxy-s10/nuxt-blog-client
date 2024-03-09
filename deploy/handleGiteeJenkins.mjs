@@ -86,24 +86,28 @@ const oldPkg = JSON.parse(oldPkgStr);
 const newPkg = JSON.parse(newPkgStr);
 const newVersion = semver.inc(oldPkg.version, 'patch');
 
-clearOld().then(() => {
-  findFile(dir);
-  putFile();
-  const gitignoreTxt = 'node_modules\n.nuxt\n.eslintcache\n.DS_Store\n';
-  fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
-  fs.writeFileSync(
-    path.resolve(giteeDir, 'package.json'),
-    // @ts-ignore
-    JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
-  );
-  execSync(`pnpm i`, { cwd: giteeDir });
-  execSync(`git add .`, { cwd: giteeDir });
-  execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
-    cwd: giteeDir,
+if (process.cwd().includes('jenkins')) {
+  console.log('当前目录错误');
+} else {
+  clearOld().then(() => {
+    findFile(dir);
+    putFile();
+    const gitignoreTxt = 'node_modules\n.nuxt\n.eslintcache\n.DS_Store\n';
+    fs.writeFileSync(path.resolve(giteeDir, './.gitignore'), gitignoreTxt);
+    fs.writeFileSync(
+      path.resolve(giteeDir, 'package.json'),
+      // @ts-ignore
+      JSON.stringify({ ...newPkg, version: newVersion }, {}, 2)
+    );
+    execSync(`pnpm i`, { cwd: giteeDir });
+    execSync(`git add .`, { cwd: giteeDir });
+    execSync(`git commit -m 'feat: ${new Date().toLocaleString()}'`, {
+      cwd: giteeDir,
+    });
+    execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
+      cwd: giteeDir,
+    });
+    execSync(`git push`, { cwd: giteeDir });
+    execSync(`git push origin v${newVersion}`, { cwd: giteeDir });
   });
-  execSync(`git tag v${newVersion} -m 'chore(release): ${newVersion}'`, {
-    cwd: giteeDir,
-  });
-  execSync(`git push`, { cwd: giteeDir });
-  execSync(`git push origin v${newVersion}`, { cwd: giteeDir });
-});
+}

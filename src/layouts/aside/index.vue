@@ -45,7 +45,7 @@
               </span>
             </div>
             <div v-loading="switchLoading">
-              <div v-if="sideBarArticleList && sideBarArticleList.length">
+              <div v-if="sideBarArticleList && sideBarArticleList?.length">
                 <!-- 信息流广告---侧边文章广告 -->
                 <div
                   v-if="GOOGLE_AD"

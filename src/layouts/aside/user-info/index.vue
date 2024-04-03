@@ -16,10 +16,10 @@
       <div class="item">累计发出评论: {{ summary.sendCommentsTotal }}</div>
       <div class="item">累计收到回复: {{ summary.receiveCommentsTotal }}</div>
       <div class="item">
-        qq绑定: {{ summary.qq_users.length ? '已绑定' : '未绑定' }}
+        qq绑定: {{ summary?.qq_users.length ? '已绑定' : '未绑定' }}
       </div>
       <div class="item">
-        github绑定: {{ summary.github_users.length ? '已绑定' : '未绑定' }}
+        github绑定: {{ summary?.github_users.length ? '已绑定' : '未绑定' }}
       </div>
     </div>
   </AsnycCollapseCpt>

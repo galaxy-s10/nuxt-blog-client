@@ -197,15 +197,15 @@ export default {
   },
   head() {
     return {
-      title: '友链 - 自然博客',
+      title: '友链 - 自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 友链',
+          content: '自然播客 - 友链',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 友链',
+          content: '自然播客 - 友链',
         },
       ],
     };

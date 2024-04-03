@@ -178,15 +178,15 @@ export default {
       }
     });
     return {
-      title: `标签 - ${title} - 自然博客`,
+      title: `标签 - ${title} - 自然播客`,
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 标签',
+          content: '自然播客 - 标签',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 标签',
+          content: '自然播客 - 标签',
         },
       ],
     };

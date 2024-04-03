@@ -64,15 +64,15 @@ export default {
   },
   head() {
     return {
-      title: '作品 - 自然博客',
+      title: '作品 - 自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 作品',
+          content: '自然播客 - 作品',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 作品',
+          content: '自然播客 - 作品',
         },
       ],
     };

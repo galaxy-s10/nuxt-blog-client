@@ -4,9 +4,9 @@
 # Date: 2022-04-26 01:54:48
 # Description: https://github.com/galaxy-s10/sh/blob/master/build.sh
 # Email: 2274751790@qq.com
-# FilePath: /nuxt-blog-client/nuxt-build.sh
+# FilePath: /galaxy-s10/nuxt-blog-client/deploy/nuxt-build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2024-01-25 18:09:07
+# LastEditTime: 2024-03-14 14:16:05
 # LastEditors: shuisheng
 ###
 
@@ -51,7 +51,7 @@ pnpm -v
 
 echo 设置pnpm淘宝镜像:
 pnpm config set registry https://registry.npmmirror.com/
-pnpm config set @billd:registry http://registry.hsslive.cn/
+pnpm config set @billd:registry https://registry.hsslive.cn/
 
 echo 查看当前pnpm镜像:
 pnpm config get registry

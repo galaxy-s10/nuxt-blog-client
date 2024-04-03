@@ -78,15 +78,15 @@ export default {
   },
   head() {
     return {
-      title: '关于 - 自然博客',
+      title: '关于 - 自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 关于',
+          content: '自然播客 - 关于',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 关于',
+          content: '自然播客 - 关于',
         },
       ],
     };

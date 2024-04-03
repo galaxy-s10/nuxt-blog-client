@@ -78,15 +78,15 @@ export default {
   },
   head() {
     return {
-      title: '互动 - 自然博客',
+      title: '互动 - 自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 互动',
+          content: '自然播客 - 互动',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 互动',
+          content: '自然播客 - 互动',
         },
       ],
     };

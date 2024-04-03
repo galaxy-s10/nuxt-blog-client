@@ -4,10 +4,10 @@
 # Date: 2022-08-09 12:55:48
 # Description: https://github.com/galaxy-s10/sh/
 # Email: 2274751790@qq.com
-# FilePath: /nuxt-blog-client/deploy/nuxt-pm2.sh
+# FilePath: /galaxy-s10/nuxt-blog-client/deploy/nuxt-pm2.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2024-03-13 09:39:39
+# LastEditTime: 2024-03-14 14:16:17
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i
@@ -48,7 +48,7 @@ pnpm -v
 
 echo 设置pnpm淘宝镜像:
 pnpm config set registry https://registry.npmmirror.com/
-pnpm config set @billd:registry http://registry.hsslive.cn/
+pnpm config set @billd:registry https://registry.hsslive.cn/
 
 echo 查看当前pnpm镜像:
 pnpm config get registry

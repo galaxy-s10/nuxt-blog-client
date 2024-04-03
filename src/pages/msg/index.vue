@@ -108,15 +108,15 @@ export default {
   },
   head() {
     return {
-      title: '留言 - 自然博客',
+      title: '留言 - 自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 留言',
+          content: '自然播客 - 留言',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 留言',
+          content: '自然播客 - 留言',
         },
       ],
     };

@@ -66,7 +66,7 @@
             <p v-else>该文章暂无简介~</p>
 
             <div class="tag-list">
-              <div v-if="item.tags.length">
+              <div v-if="item.tags?.length">
                 <el-tag
                   v-for="tagItem in item.tags"
                   :key="tagItem.id"
@@ -188,15 +188,15 @@ export default {
   },
   head() {
     return {
-      title: '自然博客',
+      title: '自然播客',
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 首页',
+          content: '自然播客 - 首页',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 首页',
+          content: '自然播客 - 首页',
         },
       ],
       script: [
@@ -223,28 +223,32 @@ export default {
         this.offsetList = [];
         this.handleWaterfall();
       } else {
-        const waterfallItem = this.$refs['article-item'];
-        const waterfallWrap = this.$refs['article-list'];
-        waterfallWrap.style.height = 'initial';
+        try {
+          const waterfallItem = this.$refs['article-item'];
+          const waterfallWrap = this.$refs['article-list'];
+          waterfallWrap.style.height = 'initial';
 
-        waterfallItem.forEach((v) => {
-          v.$el.setAttribute('style', 'width:100%');
-          const articleItem = v.$el.querySelector('.article-item');
-          const headImg = v.$el.querySelector('.head-img');
-          const noHeadImg = v.$el.querySelector('.no-head-img');
-          if (articleItem) {
-            articleItem.style.removeProperty('display');
-            articleItem.style.removeProperty('height');
-          }
-          if (headImg) {
-            headImg.style.removeProperty('height');
-            headImg.style.removeProperty('line-height');
-          }
-          if (noHeadImg) {
-            noHeadImg.style.removeProperty('height');
-            noHeadImg.style.removeProperty('line-height');
-          }
-        });
+          waterfallItem.forEach((v) => {
+            v.$el.setAttribute('style', 'width:100%');
+            const articleItem = v.$el.querySelector('.article-item');
+            const headImg = v.$el.querySelector('.head-img');
+            const noHeadImg = v.$el.querySelector('.no-head-img');
+            if (articleItem) {
+              articleItem.style.removeProperty('display');
+              articleItem.style.removeProperty('height');
+            }
+            if (headImg) {
+              headImg.style.removeProperty('height');
+              headImg.style.removeProperty('line-height');
+            }
+            if (noHeadImg) {
+              noHeadImg.style.removeProperty('height');
+              noHeadImg.style.removeProperty('line-height');
+            }
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
     },
     async typeId() {

@@ -8,7 +8,7 @@
       <i class="el-icon-collection-tag"></i>
     </template>
     <div>
-      <div v-if="sideBarTagList && sideBarTagList.length">
+      <div v-if="sideBarTagList && sideBarTagList?.length">
         <el-tooltip
           v-for="item in sideBarTagList"
           :key="item.id"

@@ -275,15 +275,15 @@ export default {
   },
   head() {
     return {
-      title: this.detail && `${this.detail.title} - 自然博客`,
+      title: this.detail && `${this.detail.title} - 自然播客`,
       meta: [
         {
           name: 'description',
-          content: '自然博客 - 文章',
+          content: '自然播客 - 文章',
         },
         {
           name: 'keywords',
-          content: '自然博客 - 文章',
+          content: '自然播客 - 文章',
         },
       ],
     };

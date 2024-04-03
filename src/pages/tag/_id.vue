@@ -178,15 +178,15 @@ export default {
       }
     });
     return {
-      title: `标签 - ${title} - 自然播客`,
+      title: `标签 - ${title} - 记录生活与技术`,
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 标签',
+          content: '记录生活与技术 - 标签',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 标签',
+          content: '记录生活与技术 - 标签',
         },
       ],
     };

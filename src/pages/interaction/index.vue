@@ -78,15 +78,15 @@ export default {
   },
   head() {
     return {
-      title: '互动 - 自然播客',
+      title: '互动 - 记录生活与技术',
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 互动',
+          content: '记录生活与技术 - 互动',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 互动',
+          content: '记录生活与技术 - 互动',
         },
       ],
     };

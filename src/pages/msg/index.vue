@@ -108,15 +108,15 @@ export default {
   },
   head() {
     return {
-      title: '留言 - 自然播客',
+      title: '留言 - 记录生活与技术',
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 留言',
+          content: '记录生活与技术 - 留言',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 留言',
+          content: '记录生活与技术 - 留言',
         },
       ],
     };

@@ -69,15 +69,15 @@ export default {
   },
   head() {
     return {
-      title: '归档 - 自然播客',
+      title: '归档 - 记录生活与技术',
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 归档',
+          content: '记录生活与技术 - 归档',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 归档',
+          content: '记录生活与技术 - 归档',
         },
       ],
     };

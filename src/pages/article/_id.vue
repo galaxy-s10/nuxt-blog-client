@@ -275,15 +275,15 @@ export default {
   },
   head() {
     return {
-      title: this.detail && `${this.detail.title} - 自然播客`,
+      title: this.detail && `${this.detail.title} - 记录生活与技术`,
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 文章',
+          content: '记录生活与技术 - 文章',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 文章',
+          content: '记录生活与技术 - 文章',
         },
       ],
     };

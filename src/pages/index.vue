@@ -188,15 +188,15 @@ export default {
   },
   head() {
     return {
-      title: '自然播客',
+      title: '记录生活与技术',
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 首页',
+          content: '记录生活与技术 - 首页',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 首页',
+          content: '记录生活与技术 - 首页',
         },
       ],
       script: [

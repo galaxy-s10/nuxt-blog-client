@@ -197,15 +197,15 @@ export default {
   },
   head() {
     return {
-      title: '友链 - 自然播客',
+      title: '友链 - 记录生活与技术',
       meta: [
         {
           name: 'description',
-          content: '自然播客 - 友链',
+          content: '记录生活与技术 - 友链',
         },
         {
           name: 'keywords',
-          content: '自然播客 - 友链',
+          content: '记录生活与技术 - 友链',
         },
       ],
     };

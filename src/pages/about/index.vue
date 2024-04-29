@@ -101,6 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 以pc端样式为主
 .about-wrap {
   .title {
     display: block;
@@ -109,7 +110,7 @@ export default {
   .summary {
     position: relative;
     margin: 30px 0;
-    padding: 15px 10px;
+    padding: 20px 10px;
     border: 1px solid $theme-color4;
     border-radius: 6px;
     .badge {
@@ -131,7 +132,7 @@ export default {
       }
       .num {
         padding: 10px 0;
-        font-size: 20px;
+        font-size: 24px;
       }
       .type {
         font-size: 12px;
@@ -140,6 +141,19 @@ export default {
   }
   .update-time {
     text-align: right;
+  }
+}
+// 当屏幕小于540px时，覆盖掉pc端样式
+@media screen and (max-width: 540px) {
+  .about-wrap {
+    .summary {
+      padding: 15px 10px;
+      .list {
+        .num {
+          font-size: 20px;
+        }
+      }
+    }
   }
 }
 </style>

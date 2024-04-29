@@ -51,6 +51,7 @@ export default {
       width: '',
       catalogFixed: false,
       catalogObserver: null,
+      GOOGLE_AD,
     };
   },
   head() {

@@ -178,15 +178,15 @@ export default {
       }
     });
     return {
-      title: `标签 - ${title} - 记录生活与技术`,
+      title: `标签 - ${title} - Billd博客`,
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 标签',
+          content: 'Billd博客 - 标签',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 标签',
+          content: 'Billd博客 - 标签',
         },
       ],
     };

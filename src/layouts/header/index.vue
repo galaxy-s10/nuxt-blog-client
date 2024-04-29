@@ -8,9 +8,9 @@
             to="/"
             custom
           >
-            <span @click="navigate">Natural</span>
+            <span @click="navigate">Billd</span>
           </nuxt-link>
-          <sup>Blog</sup>
+          <sup>blog</sup>
         </div>
         <nav class="nav">
           <ul class="nav-menu">

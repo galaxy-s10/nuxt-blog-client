@@ -69,15 +69,15 @@ export default {
   },
   head() {
     return {
-      title: '归档 - 记录生活与技术',
+      title: '归档 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 归档',
+          content: 'Billd博客 - 归档',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 归档',
+          content: 'Billd博客 - 归档',
         },
       ],
     };

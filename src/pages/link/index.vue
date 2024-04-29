@@ -197,15 +197,15 @@ export default {
   },
   head() {
     return {
-      title: '友链 - 记录生活与技术',
+      title: '友链 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 友链',
+          content: 'Billd博客 - 友链',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 友链',
+          content: 'Billd博客 - 友链',
         },
       ],
     };

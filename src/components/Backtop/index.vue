@@ -90,7 +90,7 @@ export default {
     height: 40px;
     border-radius: 50%;
     background-color: $theme-color6;
-    box-shadow: 0 0 5px $theme-color2;
+    box-shadow: 1px 1px 5px 3px $theme-color2;
     text-align: center;
     opacity: 0;
     cursor: pointer;

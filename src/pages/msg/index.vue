@@ -108,15 +108,15 @@ export default {
   },
   head() {
     return {
-      title: '留言 - 记录生活与技术',
+      title: '留言 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 留言',
+          content: 'Billd博客 - 留言',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 留言',
+          content: 'Billd博客 - 留言',
         },
       ],
     };

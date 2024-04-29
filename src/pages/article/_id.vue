@@ -275,15 +275,15 @@ export default {
   },
   head() {
     return {
-      title: this.detail && `${this.detail.title} - 记录生活与技术`,
+      title: this.detail && `${this.detail.title} - Billd博客`,
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 文章',
+          content: 'Billd博客 - 文章',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 文章',
+          content: 'Billd博客 - 文章',
         },
       ],
     };

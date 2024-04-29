@@ -188,15 +188,15 @@ export default {
   },
   head() {
     return {
-      title: '记录生活与技术',
+      title: 'Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 首页',
+          content: 'Billd博客 - 首页',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 首页',
+          content: 'Billd博客 - 首页',
         },
       ],
       script: [

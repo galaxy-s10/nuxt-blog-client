@@ -78,15 +78,15 @@ export default {
   },
   head() {
     return {
-      title: '关于 - 记录生活与技术',
+      title: '关于 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 关于',
+          content: 'Billd博客 - 关于',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 关于',
+          content: 'Billd博客 - 关于',
         },
       ],
     };
@@ -109,19 +109,19 @@ export default {
   .summary {
     position: relative;
     margin: 30px 0;
-    padding: 20px;
+    padding: 15px 10px;
     border: 1px solid $theme-color4;
     border-radius: 6px;
     .badge {
       position: absolute;
       top: 0;
       left: 0;
-      padding: 4px;
+      padding: 2px 6px;
       border-radius: 4px;
       background: $theme-color7;
       color: $theme-color6;
       font-size: 12px;
-      transform: translate(50%, -50%);
+      transform: translate(35%, -50%);
     }
     .list {
       display: flex;
@@ -131,7 +131,7 @@ export default {
       }
       .num {
         padding: 10px 0;
-        font-size: 24px;
+        font-size: 20px;
       }
       .type {
         font-size: 12px;

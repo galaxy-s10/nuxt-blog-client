@@ -15,9 +15,8 @@ import { QINIU_CDN_URL } from './src/constant';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const seo = {
-  title: '记录生活与技术',
-  description:
-    '记录生活与技术 | 前端 | 大前端 | javascript | vue | react | node',
+  title: 'Billd博客',
+  description: 'Billd博客 | 前端 | 大前端 | javascript | vue | react | node',
   keywords:
     '前端 | 大前端 | 开源 | 开源博客 | javascript | vue | react | node | nuxt | nuxt2 | next',
 };

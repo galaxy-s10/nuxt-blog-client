@@ -64,15 +64,15 @@ export default {
   },
   head() {
     return {
-      title: '作品 - 记录生活与技术',
+      title: '作品 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 作品',
+          content: 'Billd博客 - 作品',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 作品',
+          content: 'Billd博客 - 作品',
         },
       ],
     };

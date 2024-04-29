@@ -78,15 +78,15 @@ export default {
   },
   head() {
     return {
-      title: '互动 - 记录生活与技术',
+      title: '互动 - Billd博客',
       meta: [
         {
           name: 'description',
-          content: '记录生活与技术 - 互动',
+          content: 'Billd博客 - 互动',
         },
         {
           name: 'keywords',
-          content: '记录生活与技术 - 互动',
+          content: 'Billd博客 - 互动',
         },
       ],
     };

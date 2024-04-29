@@ -1,7 +1,7 @@
 <template>
   <div class="error-wrap">
     <div class="err-txt">
-      <h1 class="title">Natural blog</h1>
+      <h1 class="title">Billd blog</h1>
       <h1 v-if="apiError.errorCode.value !== -1">
         {{ apiError.message }}
       </h1>

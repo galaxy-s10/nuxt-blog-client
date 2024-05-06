@@ -157,7 +157,7 @@ export default {
       }ms`
     );
     if (this.currentNodeEnv !== 'development') {
-      this.$myaxios.visitorLog.create(); // 新增访客记录
+      this.$myaxios.visitorLog.create({ pageUrl: window.location?.href }); // 新增访客记录
     }
     if (this.$route.name === 'article-id') {
       this.handleResize();

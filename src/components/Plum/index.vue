@@ -84,10 +84,10 @@ export default {
     },
     handleStep() {
       this.queue.push(
-        () => this.step(Math.random() * this.width, this.height, -this.r90), // 下边的梅花
-        () => this.step(Math.random() * this.width, 0, this.r90), // 上边的梅花
-        () => this.step(0, Math.random() * this.height, 0), // 左边的梅花
-        () => this.step(this.width, Math.random() * this.height, -this.r180) // 右边的梅花
+        () => this.step(Math.random() * this.width, this.height, -this.r90), // 下边的樱花
+        () => this.step(Math.random() * this.width, 0, this.r90), // 上边的樱花
+        () => this.step(0, Math.random() * this.height, 0), // 左边的樱花
+        () => this.step(this.width, Math.random() * this.height, -this.r180) // 右边的樱花
       );
       if (this.width < 500) {
         this.duration = 4500;

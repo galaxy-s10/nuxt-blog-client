@@ -419,48 +419,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* 响应式布局 - 小于 720px */
-@media screen and (max-width: 720px) {
-  .pages-wrap {
-    .article-list {
-      .article-item {
-        display: block !important;
-        height: initial !important;
-      }
-    }
-  }
-}
-
-/* 响应式布局 - 小于 540px */
-@media screen and (max-width: 540px) {
-  .pages-wrap {
-    .detail {
-      .info {
-        flex-wrap: wrap;
-        justify-content: center !important;
-        .avatar {
-          margin-right: 10px;
-        }
-        .relation {
-          flex: auto !important;
-          justify-content: center !important;
-          margin-top: 5px;
-          width: 100%;
-          & > div {
-            margin-right: 10px;
-          }
-        }
-      }
-    }
-    .article-list {
-      .article-item {
-        display: block !important;
-        height: initial !important;
-      }
-    }
-  }
-}
-
 @keyframes loading {
   to {
     background-position-x: -50%;
@@ -589,6 +547,72 @@ export default {
 
   .no-more {
     text-align: center;
+  }
+}
+
+/* 响应式布局 - 小于 720px */
+@media screen and (max-width: 720px) {
+  .pages-wrap {
+    .article-list {
+      .article-item {
+        display: block !important;
+        height: initial !important;
+      }
+    }
+  }
+}
+
+/* 响应式布局 - 小于 540px */
+@media screen and (max-width: 540px) {
+  .pages-wrap {
+    .article-list {
+      .article-item-a {
+        .article-item {
+          display: block;
+          height: initial;
+          .head-img-wrap {
+            .no-head-img {
+              height: 230px;
+              line-height: 230px;
+            }
+            .head-img {
+              height: 230px;
+            }
+          }
+          .detail {
+            .title {
+              font-size: 17px;
+              margin: 4px 0;
+            }
+            p {
+              margin: 3px 0;
+              font-size: 15px;
+            }
+            .tag-list {
+              margin: 2px 0;
+            }
+
+            .info {
+              flex-wrap: wrap;
+              justify-content: center;
+              padding: 2px 0 0 0;
+              .avatar {
+                margin-right: 10px;
+              }
+              .relation {
+                flex: auto !important;
+                justify-content: center !important;
+                margin-top: 5px;
+                width: 100%;
+                & > div {
+                  margin-right: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

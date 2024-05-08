@@ -19,11 +19,23 @@
         {{ item.name }}
       </li>
     </ul>
+    <div
+      v-if="isMobileEnv"
+      class="switch"
+    >
+      <span class="txt">樱花:</span>
+      <el-switch
+        :value="showPlum"
+        :width="35"
+        @change="setShowPlum(!showPlum)"
+      ></el-switch>
+    </div>
   </nav>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { isMobile, throttle } from 'billd-utils';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
 // eslint-disable-next-line
 
@@ -31,9 +43,16 @@ export default {
   data() {
     return {
       visible: false,
+      isMobileEnv: false,
+      handleResize: throttle(this.resizeFn, 50, true),
     };
   },
   computed: {
+    ...mapState({
+      showPlum(state) {
+        return state.app.showPlum;
+      },
+    }),
     typeList() {
       return this.$store.state.type.typeList;
     },
@@ -46,10 +65,18 @@ export default {
   },
   mounted() {
     this.getTypeList();
+    this.resizeFn();
+    window.addEventListener('resize', this.handleResize);
   },
   destroyed() {},
   methods: {
+    ...mapMutations({
+      setShowPlum: 'app/setShowPlum',
+    }),
     ...mapActions('type', ['getTypeList']),
+    resizeFn() {
+      this.isMobileEnv = isMobile();
+    },
     changeType(typeId) {
       this.$store.commit('type/changeTypeId', typeId);
       if (this.$route.path !== '/') {
@@ -100,6 +127,9 @@ export default {
   top: 60px;
   left: 0;
   z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid $theme-color4;
   background-color: $theme-color6;
@@ -122,6 +152,14 @@ export default {
       cursor: pointer;
 
       user-select: none;
+    }
+  }
+}
+/* 响应式布局,小于540px */
+@media screen and (max-width: 540px) {
+  .fix-type-wrap {
+    .type-wrap {
+      margin: 0;
     }
   }
 }

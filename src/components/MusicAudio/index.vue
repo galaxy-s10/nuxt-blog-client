@@ -70,7 +70,7 @@
 
 <script>
 // import analyze from 'rgbaster';
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   data() {
@@ -375,6 +375,10 @@ export default {
       position: relative;
       top: 0;
       left: 0;
+      img {
+        user-select: none;
+        -webkit-user-drag: none;
+      }
     }
   }
 
@@ -548,8 +552,11 @@ export default {
     height: 90px;
     transition: all 0.1s ease;
     pointer-events: all;
+    img {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
 
-    user-select: none;
     &::after {
       position: absolute;
       top: 50%;

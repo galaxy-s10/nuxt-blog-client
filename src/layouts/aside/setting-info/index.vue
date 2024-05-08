@@ -20,7 +20,7 @@
       </div>
       <div class="item">
         <div class="switch">
-          <span class="txt">梅花特效：</span>
+          <span class="txt">樱花特效：</span>
           <el-switch
             :value="showPlum"
             :width="35"
@@ -30,7 +30,7 @@
       </div>
       <div class="item">
         <div class="switch">
-          <span class="txt">瀑布流展示：</span>
+          <span class="txt">瀑布流效果：</span>
           <el-switch
             :value="isWaterFall"
             :width="35"
@@ -40,7 +40,7 @@
       </div>
       <div class="item">
         <div class="switch">
-          <span class="txt">音乐播放器(支持拖动)：</span>
+          <span class="txt">音乐播放器：</span>
           <el-switch
             :value="showMusicAudio"
             :width="35"
@@ -53,7 +53,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
+
 export default {
   components: {
     AsnycCollapseCpt: () => import('@/components/Collapse/index.vue'),

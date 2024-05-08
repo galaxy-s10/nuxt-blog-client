@@ -12,7 +12,7 @@ export const state = () => ({
   statisData: null,
   // 是否显示文章目录
   showCatalog: false,
-  // 是否显示梅花特效
+  // 是否显示樱花特效
   showPlum: false,
   // 是否显示音乐播放器
   showMusicAudio: true,

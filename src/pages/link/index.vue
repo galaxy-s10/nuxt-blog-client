@@ -132,7 +132,7 @@ export default {
   async asyncData({ $myaxios, store, params, req }) {
     try {
       const { data: linkData } = await $myaxios.link.list({
-        orderName: 'created_at',
+        orderName: 'priority',
         orderBy: 'desc',
       });
       return { linkList: linkData.rows };

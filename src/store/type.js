@@ -19,6 +19,8 @@ export const actions = {
     const params = {
       nowPage: 1,
       pageSize: 10,
+      orderName: 'priority',
+      orderBy: 'desc',
     };
     try {
       const { data } = await this.$myaxios.type.list(params);

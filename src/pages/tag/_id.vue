@@ -1,123 +1,91 @@
 <template>
   <div class="tag-wrap">
-    <div v-if="tagList">
-      <div class="tag-info">
-        <div
-          v-for="item in tagList"
-          :key="'tag-key-' + item.id"
-          class="tag-item"
-          :class="{ 'active-tag': currentTagId === item.id }"
-          @click="getTagArticle(item.id)"
-        >
-          <a
-            :href="'/tag/' + item.id"
-            style="display: none"
-          ></a>
-          <span>{{ item.name }}</span>
-          <span class="article-total">({{ item.article_total }})</span>
-        </div>
-      </div>
-      <p class="desc">目前一共：{{ tagList.length }}个标签</p>
-
-      <article
-        v-for="item in articleList"
-        :key="'article-key-' + item.id"
-        class="article-item"
-      >
-        <div class="article-left">
-          <nuxt-link
-            v-if="item['head_img']"
-            v-slot="{ navigate }"
-            :to="`/article/${item.id}`"
-            custom
-          >
-            <img
-              v-lazy="item['head_img']"
-              class="head-img"
-              alt=""
-              @click="navigate"
-            />
-          </nuxt-link>
-          <nuxt-link
-            v-else
-            v-slot="{ navigate }"
-            :to="`/article/${item.id}`"
-            custom
-          >
-            <div
-              class="head-img"
-              @click="navigate"
-            >
-              <NoHeadImgCpt></NoHeadImgCpt>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="article-right">
-          <nuxt-link
-            :to="'/article/' + item.id"
-            class="article-right-txt"
-          >
-            {{ item.title }}
-          </nuxt-link>
-          <el-divider></el-divider>
-          <el-tag
-            v-for="tagItem in item.tags"
-            :key="'article-tag-key-' + tagItem.id"
-            class="overwrite-el-tag"
-            size="mini"
-            :disable-transitions="false"
-            :color="tagItem.color"
-            >{{ tagItem.name }}</el-tag
-          >
-          <div class="summary">
-            <img
-              class="user-avatar"
-              :src="item.users[0] && item.users[0].avatar"
-              alt=""
-            />
-            <span class="jgh"></span>
-            <span>{{ item.created_at | convertDate }}</span>
-            <span class="jgh"></span>
-            <span>{{ item.click }}浏览</span>
-            <span class="jgh"></span>
-            <span>{{ item.comment_total }}评论</span>
-            <span class="jgh"></span>
-            <div>{{ item.star_total }}star</div>
-          </div>
-        </div>
-      </article>
-      <div
-        v-if="total"
-        class="page-btn"
-      >
-        <div>
-          <el-button
-            v-show="articleListParams && articleListParams.nowPage !== 1"
-            @click="handlePage('prev')"
-          >
-            上一页
-          </el-button>
-        </div>
-        <div>
-          <el-button
-            v-show="hasMore"
-            @click="handlePage('next')"
-            >下一页</el-button
-          >
-        </div>
-      </div>
-      <div
-        v-else
-        class="no-data"
-      >
-        {{ currentTagName }}标签下暂无文章~
-      </div>
-    </div>
-    <div
-      v-else
-      class="no-data"
+    <article
+      v-for="item in articleList"
+      :key="'article-key-' + item.id"
+      class="article-item"
     >
-      暂无标签~
+      <div class="article-left">
+        <nuxt-link
+          v-if="item['head_img']"
+          v-slot="{ navigate }"
+          :to="`/article/${item.id}`"
+          custom
+        >
+          <img
+            v-lazy="item['head_img']"
+            class="head-img"
+            alt=""
+            @click="navigate"
+          />
+        </nuxt-link>
+        <nuxt-link
+          v-else
+          v-slot="{ navigate }"
+          :to="`/article/${item.id}`"
+          custom
+        >
+          <div
+            class="head-img"
+            @click="navigate"
+          >
+            <NoHeadImgCpt></NoHeadImgCpt>
+          </div>
+        </nuxt-link>
+      </div>
+      <div class="article-right">
+        <nuxt-link
+          :to="'/article/' + item.id"
+          class="article-right-txt"
+        >
+          {{ item.title }}
+        </nuxt-link>
+        <el-divider></el-divider>
+        <el-tag
+          v-for="tagItem in item.tags"
+          :key="'article-tag-key-' + tagItem.id"
+          class="overwrite-el-tag"
+          size="mini"
+          :disable-transitions="false"
+          :color="tagItem.color"
+          >{{ tagItem.name }}</el-tag
+        >
+        <div class="summary">
+          <img
+            class="user-avatar"
+            :src="item.users[0] && item.users[0].avatar"
+            alt=""
+          />
+          <span class="jgh"></span>
+          <span>{{ item.created_at | convertDate }}</span>
+          <span class="jgh"></span>
+          <span>{{ item.click }}浏览</span>
+          <span class="jgh"></span>
+          <span>{{ item.comment_total }}评论</span>
+          <span class="jgh"></span>
+          <div>{{ item.star_total }}star</div>
+        </div>
+      </div>
+    </article>
+    <div
+      v-if="total"
+      class="page-btn"
+    >
+      <div>
+        <el-button
+          v-show="articleListParams && articleListParams.nowPage !== 1"
+          @click="handlePage('prev')"
+        >
+          上一页
+        </el-button>
+      </div>
+      <div>
+        <el-button
+          v-show="hasMore"
+          @click="handlePage('next')"
+          >下一页</el-button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -141,24 +109,22 @@ export default {
    */
   async asyncData({ $myaxios, store, params, req }) {
     try {
+      const tagId = params.id;
+      console.log(tagId, params, 'kkk1112');
       const articleListParams = {
         nowPage: 1,
         pageSize: 3,
       };
-      const tagId = params.id;
-      const { data: tagData } = await $myaxios.tag.list();
       const { data: articleData } = await $myaxios.tag.articleList({
         tagId,
         params: articleListParams,
       });
-
       return {
         articleListParams,
         currentTagId: +tagId,
         articleList: articleData.rows,
         hasMore: articleData.hasMore,
         total: articleData.total,
-        tagList: tagData.rows,
       };
     } catch (error) {
       console.log(error);

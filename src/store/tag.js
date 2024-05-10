@@ -14,6 +14,8 @@ export const actions = {
     const params = {
       nowPage: payload.nowPage,
       pageSize: payload.pageSize,
+      orderName: 'priority',
+      orderBy: 'desc',
     };
     try {
       const { data } = await this.$myaxios.tag.list(params);

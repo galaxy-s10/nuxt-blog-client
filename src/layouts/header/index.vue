@@ -101,7 +101,7 @@ export default {
         },
         {
           title: '标签',
-          path: '/tag/1',
+          path: '/tag',
         },
         {
           title: '作品',

@@ -51,7 +51,7 @@ export default {
   async asyncData({ $myaxios, store, params, req }) {
     try {
       const { data: worksData } = await $myaxios.works.list({
-        orderName: 'created_at',
+        orderName: 'priority',
         orderBy: 'desc',
       });
       return { worksList: worksData.rows };

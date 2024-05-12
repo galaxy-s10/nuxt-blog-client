@@ -154,12 +154,13 @@ export default {
 
 <style lang="scss" scoped>
 .user-info {
+  overflow: hidden;
+  border-radius: 6px;
   background-color: white;
   .container {
     overflow: hidden;
     padding-bottom: 10px;
     border: 1px solid $theme-color4;
-    border-radius: 5px;
     background: $theme-color6;
     .bgc {
       height: 80px;

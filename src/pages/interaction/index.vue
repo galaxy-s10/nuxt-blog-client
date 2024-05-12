@@ -115,11 +115,7 @@ export default {
           if (flvJs.isSupported()) {
             const flvPlayer = flvJs.createPlayer({
               type: 'flv',
-              // url: 'http://localhost:9000/live/fddm_2.flv',
-              // url: 'http://42.193.157.44:9000/live/fddm_2.flv',
-              // url: 'https://www.hsslive.cn/stream/live/fddm_2.flv',
-              url: 'https://www.hsslive.cn/bilibilistream/live-bvc/173676/live_381307133_59434826.flv?expires=1680798150&len=0&oi=1900220676&pt=web&qn=0&trid=10002eb4d1a458684cc9a93d888d7b580cac&sigparams=cdn,expires,len,oi,pt,qn,trid&cdn=cn-gotcha15&sign=1724a76684e5e1f8d68346613a32f8c0&sk=3e2a893893799632504afbdef4a9e3d7&p2p_type=1&sl=1&free_type=0&mid=381307133&sche=ban&score=1&pp=rtmp&freeze=1&source=onetier&trace=10&site=12e2a543d23e1c612a7145eb5a5cfac4&order=1',
-              // url: 'https://xy117x149x235x203xy.mcdn.bilivideo.cn/live-bvc/173676/live_381307133_59434826.flv?expires=1680798150&len=0&oi=1900220676&pt=web&qn=0&trid=10002eb4d1a458684cc9a93d888d7b580cac&sigparams=cdn,expires,len,oi,pt,qn,trid&cdn=cn-gotcha15&sign=1724a76684e5e1f8d68346613a32f8c0&sk=3e2a893893799632504afbdef4a9e3d7&p2p_type=1&sl=1&free_type=0&mid=381307133&sche=ban&score=1&pp=rtmp&freeze=1&source=onetier&trace=10&site=12e2a543d23e1c612a7145eb5a5cfac4&order=1',
+              url: 'https://srs-pull.hsslive.cn/livestream/roomId___4.flv',
             });
             // @ts-ignore
             flvPlayer.attachMediaElement(this.$refs.videoRef);
@@ -197,6 +193,7 @@ export default {
   }
   .video-wrap {
     width: 100%;
+    height: 300px;
   }
   .interaction-list {
   }

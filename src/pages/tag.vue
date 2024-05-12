@@ -17,7 +17,7 @@
           <span class="article-total">({{ item.article_total }})</span>
         </div>
       </div>
-      <p class="desc">目前一共：{{ tagList.length }}个标签</p>
+      <p class="desc">标签总数：{{ tagList.length }}</p>
     </div>
     <div
       v-else
@@ -25,7 +25,7 @@
     >
       暂无标签~
     </div>
-    <nuxt-child v-if="tagList.length" />
+    <nuxt-child :tag-id="currentTagId" />
   </div>
 </template>
 
@@ -47,12 +47,18 @@ export default {
    */
   async asyncData({ $myaxios, store, params, req }) {
     try {
-      const { data: tagData } = await $myaxios.tag.list({
+      const tagId = params.id;
+      const { data } = await $myaxios.tag.list({
         orderName: 'priority',
         orderBy: 'desc',
       });
+      let id = Number(tagId);
+      if (tagId === undefined) {
+        id = data.rows[0]?.id;
+      }
       return {
-        tagList: tagData.rows,
+        tagList: data.rows,
+        currentTagId: id,
       };
     } catch (error) {
       console.log(error);
@@ -60,7 +66,7 @@ export default {
   },
   data() {
     return {
-      currentTagId: 1,
+      currentTagId: -1,
     };
   },
   head() {
@@ -82,13 +88,13 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    if (this.tagList.length) {
-      this.getTagArticle(this.tagList[0].id);
+    if (this.currentTagId !== undefined) {
+      this.getTagArticle(this.currentTagId);
     }
   },
   methods: {
     getTagArticle(id) {
-      console.log(id, 'iddd');
+      this.currentTagId = id;
       this.$router.push({ path: `/tag/${id}` });
     },
   },

@@ -29,174 +29,179 @@
       </template>
     </ModalCpt>
 
-    <div class="article-suspended-panel-wrap">
-      <div class="article-suspended-panel">
-        <div
-          class="panel-btn"
-          @click="showRewardModal"
-        >
-          <span class="reward">赏</span>
-        </div>
-        <div
-          v-loading="starLoaing"
-          element-loading-background="rgba(0, 0, 0, 0)"
-          class="panel-btn"
-          @click="starForArticle(detail.is_star || isStar ? 0 : 1, detail)"
-        >
-          <i
-            :class="{
-              [detail.is_star || isStar
-                ? 'el-icon-star-on'
-                : 'el-icon-star-off']: true,
-              ico: true,
-              rotate: true,
-            }"
-          ></i>
-          <span
-            v-if="detail.star_info.count"
-            class="badge"
+    <template v-if="detail">
+      <div class="article-suspended-panel-wrap">
+        <div class="article-suspended-panel">
+          <div
+            class="panel-btn"
+            @click="showRewardModal"
           >
+            <span class="reward">赏</span>
+          </div>
+          <div
+            v-loading="starLoaing"
+            element-loading-background="rgba(0, 0, 0, 0)"
+            class="panel-btn"
+            @click="starForArticle(detail.is_star || isStar ? 0 : 1, detail)"
+          >
+            <i
+              :class="{
+                [detail.is_star || isStar
+                  ? 'el-icon-star-on'
+                  : 'el-icon-star-off']: true,
+                ico: true,
+                rotate: true,
+              }"
+            ></i>
+            <span
+              v-if="detail.star_info.count"
+              class="badge"
+            >
+              {{ detail.star_info.count }}
+            </span>
+          </div>
+
+          <a
+            href="#comment-anchor"
+            class="comment-anchor-a"
+          >
+            <div
+              class="panel-btn"
+              @click="jumpToComment"
+            >
+              <i class="el-icon-chat-dot-round ico"></i>
+              <span
+                v-if="detail.comment_total"
+                class="badge"
+              >
+                {{ detail.comment_total }}
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <h1 class="title">
+        {{ detail.title }}
+      </h1>
+
+      <div class="summary-wrap">
+        <div class="summary">
+          <img
+            v-if="detail.users[0]"
+            class="user-avatar"
+            :src="detail.users[0].avatar"
+            alt=""
+          />
+          <span
+            v-if="detail.types[0]"
+            class="type"
+          >
+            <i class="el-icon-folder-opened"></i>
+            {{ detail.types[0].name }}
+          </span>
+          <span>
+            <i class="el-icon-chat-line-round"></i>
+            {{ detail.comment_total || 0 }}
+          </span>
+          <span>
+            <i class="el-icon-view"></i>
+            {{ detail.click }}
+          </span>
+          <span>
+            <i class="el-icon-star-on"></i>
             {{ detail.star_info.count }}
           </span>
         </div>
-
-        <a
-          href="#comment-anchor"
-          class="comment-anchor-a"
-        >
-          <div
-            class="panel-btn"
-            @click="jumpToComment"
-          >
-            <i class="el-icon-chat-dot-round ico"></i>
-            <span
-              v-if="detail.comment_total"
-              class="badge"
-            >
-              {{ detail.comment_total }}
-            </span>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <h1 class="title">
-      {{ detail.title }}
-    </h1>
-
-    <div class="summary-wrap">
-      <div class="summary">
-        <img
-          v-if="detail.users[0]"
-          class="user-avatar"
-          :src="detail.users[0].avatar"
-          alt=""
-        />
-        <span
-          v-if="detail.types[0]"
-          class="type"
-        >
-          <i class="el-icon-folder-opened"></i>
-          {{ detail.types[0].name }}
-        </span>
-        <span>
-          <i class="el-icon-chat-line-round"></i>
-          {{ detail.comment_total || 0 }}
-        </span>
-        <span>
-          <i class="el-icon-view"></i>
-          {{ detail.click }}
-        </span>
-        <span>
-          <i class="el-icon-star-on"></i>
-          {{ detail.star_info.count }}
-        </span>
-      </div>
-      <div class="date">
-        <span>发表于: {{ detail.created_at | formatDate }}</span>
-      </div>
-    </div>
-
-    <img
-      v-if="detail['head_img']"
-      v-lazy="detail['head_img']"
-      class="head-img"
-    />
-    <div v-else></div>
-
-    <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
-
-    <RenderMarkdownCpt
-      ref="hss-md"
-      :md="detail.content"
-    ></RenderMarkdownCpt>
-
-    <div class="tag-list">
-      <span class="el-icon-collection-tag"></span>
-      <div v-if="detail.tags.length">
-        <el-tag
-          v-for="item in detail.tags"
-          :key="item.id"
-          class="hss-el-tag"
-          :color="item.color"
-          size="mini"
-        >
-          {{ item.name }}
-        </el-tag>
-      </div>
-      <span v-else>该文章没有关联标签~</span>
-    </div>
-
-    <div
-      v-if="detail.star_info.rows.length"
-      class="star-wrap"
-    >
-      最近他们赞了该文章：
-      <AvatarGroupCpt
-        class="avatar-list"
-        :list="detail.star_info.rows.slice(0, 10)"
-      ></AvatarGroupCpt>
-    </div>
-
-    <p class="last-update">最后更新于：{{ detail.updated_at | formatDate }}</p>
-
-    <div class="comment-wrap">
-      <div id="comment-anchor"></div>
-      <div v-if="detail.is_comment === 1">
-        <el-divider>欢迎评论留言~</el-divider>
-        <div>
-          <AsyncTextareaInputCpt @contentChange="contentChange">
-          </AsyncTextareaInputCpt>
-          <div class="btn">
-            <el-button
-              type="primary"
-              :loading="submitCommentLoading"
-              @click="addComment"
-            >
-              发表评论
-            </el-button>
-          </div>
-
-          <!-- 评论组件 -->
-          <CommentCpt
-            v-loading="isLoading"
-            :list="commentList"
-            :total="total"
-            :sort="sort"
-            :has-more="hasMore"
-            :now-page="nowPage"
-            :page-size="pageSize"
-            :children-page-size="childrenPageSize"
-            @refresh="refreshCommentList"
-            @deleteReply="deleteReply"
-            @sortChange="sortChange"
-            @handleParentPage="handleParentPage"
-            @handleChildrenPage="handleChildrenPage"
-          />
+        <div class="date">
+          <span>发表于: {{ detail.created_at | formatDate }}</span>
         </div>
       </div>
-      <el-divider v-else>该文章暂未开启评论~</el-divider>
-    </div>
+
+      <img
+        v-if="detail['head_img']"
+        v-lazy="detail['head_img']"
+        class="head-img"
+      />
+      <div v-else></div>
+
+      <p class="desc">简介: {{ detail.desc || '暂无~' }}</p>
+
+      <RenderMarkdownCpt
+        ref="hss-md"
+        :md="detail.content"
+      ></RenderMarkdownCpt>
+
+      <div class="tag-list">
+        <span class="el-icon-collection-tag"></span>
+        <div v-if="detail.tags.length">
+          <el-tag
+            v-for="item in detail.tags"
+            :key="item.id"
+            class="hss-el-tag"
+            :color="item.color"
+            size="mini"
+          >
+            {{ item.name }}
+          </el-tag>
+        </div>
+        <span v-else>该文章没有关联标签~</span>
+      </div>
+
+      <div
+        v-if="detail.star_info.rows.length"
+        class="star-wrap"
+      >
+        最近他们赞了该文章：
+        <AvatarGroupCpt
+          class="avatar-list"
+          :list="detail.star_info.rows.slice(0, 10)"
+        ></AvatarGroupCpt>
+      </div>
+
+      <p class="last-update">
+        最后更新于：{{ detail.updated_at | formatDate }}
+      </p>
+
+      <div class="comment-wrap">
+        <div id="comment-anchor"></div>
+        <div v-if="detail.is_comment === 1">
+          <el-divider>欢迎评论留言~</el-divider>
+          <div>
+            <AsyncTextareaInputCpt @contentChange="contentChange">
+            </AsyncTextareaInputCpt>
+            <div class="btn">
+              <el-button
+                type="primary"
+                :loading="submitCommentLoading"
+                @click="addComment"
+              >
+                发表评论
+              </el-button>
+            </div>
+
+            <!-- 评论组件 -->
+            <CommentCpt
+              v-loading="isLoading"
+              :list="commentList"
+              :total="total"
+              :sort="sort"
+              :has-more="hasMore"
+              :now-page="nowPage"
+              :page-size="pageSize"
+              :children-page-size="childrenPageSize"
+              @refresh="refreshCommentList"
+              @deleteReply="deleteReply"
+              @sortChange="sortChange"
+              @handleParentPage="handleParentPage"
+              @handleChildrenPage="handleChildrenPage"
+            />
+          </div>
+        </div>
+        <el-divider v-else>该文章暂未开启评论~</el-divider>
+      </div>
+    </template>
+    <div v-else>找不到该文章</div>
   </div>
 </template>
 
@@ -236,7 +241,7 @@ export default {
       let commentData = {};
       let commentParams = {};
       const orderName = 'created_at';
-      if (data.is_comment === 1) {
+      if (data?.is_comment === 1) {
         commentParams = {
           article_id: articleId,
           nowPage: 1, // 当前父评论页数
@@ -271,6 +276,7 @@ export default {
       pageSize: undefined,
       isStar: false, // 是否已经点赞了
       rewardModal: false,
+      detail: null,
     };
   },
   head() {
@@ -312,12 +318,14 @@ export default {
   mounted() {
     window.scrollTo({ top: 0 });
     this.$store.commit('app/setShowCatalog', true);
-    if (this.$refs['hss-md'].$el) {
+    if (this.$refs['hss-md']?.$el) {
       this.renderCatalog();
     }
     const articleId = this.$route.params.id;
     this.articleId = articleId;
-    if (this.detail.star_info.rows.includes((v) => v.id === this.userInfo.id)) {
+    if (
+      this.detail?.star_info.rows.includes((v) => v.id === this.userInfo.id)
+    ) {
       this.isStar = true;
     }
   },

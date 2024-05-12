@@ -7,17 +7,16 @@
     >
       <div class="article-left">
         <nuxt-link
-          v-if="item['head_img']"
+          v-if="item.head_img"
           v-slot="{ navigate }"
           :to="`/article/${item.id}`"
           custom
         >
-          <img
-            v-lazy="item['head_img']"
+          <div
+            v-lazy:background-image="item.head_img"
             class="head-img"
-            alt=""
             @click="navigate"
-          />
+          ></div>
         </nuxt-link>
         <nuxt-link
           v-else
@@ -83,8 +82,9 @@
         <el-button
           v-show="hasMore"
           @click="handlePage('next')"
-          >下一页</el-button
         >
+          下一页
+        </el-button>
       </div>
     </div>
   </div>
@@ -98,6 +98,12 @@ import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
 export default {
   components: { NoHeadImgCpt },
   layout: 'blog',
+  props: {
+    tagId: {
+      type: Number,
+      default: -1,
+    },
+  },
   /**
    * @typedef {Object} asyncDataType
    * @property {Api} $myaxios
@@ -107,18 +113,22 @@ export default {
    * @param {asyncDataType} value
    * https://nuxtjs.org/docs/concepts/context-helpers
    */
-  async asyncData({ $myaxios, store, params, req }) {
+  async asyncData({ $myaxios, store, params, req, route, query, props }) {
     try {
       const tagId = params.id;
-      console.log(tagId, params, 'kkk1112');
+      if (tagId === undefined) return;
       const articleListParams = {
         nowPage: 1,
         pageSize: 3,
       };
-      const { data: articleData } = await $myaxios.tag.articleList({
-        tagId,
-        params: articleListParams,
-      });
+      let articleData;
+      if (tagId !== undefined) {
+        const { data } = await $myaxios.tag.articleList({
+          tagId,
+          params: articleListParams,
+        });
+        articleData = data;
+      }
       return {
         articleListParams,
         currentTagId: +tagId,
@@ -132,8 +142,9 @@ export default {
   },
   data() {
     return {
-      currentTagId: 1,
       currentTagName: '',
+      articleList: [],
+      articleListParams: { nowPage: 1, pageSize: 3 },
     };
   },
   head() {
@@ -160,11 +171,13 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.getArticleList();
+  },
   methods: {
     // 获取当前标签下的文章
     async getArticleList() {
-      const tagId = this.$route.params.id;
+      const tagId = this.$props.tagId;
       this.currentTagId = +tagId;
       try {
         const { data } = await this.$myaxios.tag.articleList({
@@ -196,9 +209,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    getTagArticle(id) {
-      this.$router.push({ path: `/tag/${id}` });
     },
   },
 };
@@ -292,7 +302,7 @@ export default {
     margin: 20px;
     .head-img {
       width: 100%;
-      height: 100%;
+      height: 200px;
       background-position: 50% 50%;
       background-size: cover;
       background-repeat: no-repeat;

@@ -65,51 +65,46 @@
                 <div
                   v-for="(item, index) in sideBarArticleList"
                   :key="index"
-                  class="item"
                 >
-                  <div class="head-img">
-                    <nuxt-link
-                      v-if="item['head_img']"
-                      v-slot="{ navigate }"
-                      :to="'/article/' + item.id"
-                      custom
+                  <nuxt-link
+                    v-slot="{ navigate }"
+                    :to="'/article/' + item.id"
+                    custom
+                  >
+                    <div
+                      class="item"
+                      @click="navigate"
                     >
-                      <img
-                        v-lazy="item['head_img']"
-                        alt=""
-                        @click="navigate"
-                      />
-                    </nuxt-link>
-                    <nuxt-link
-                      v-else
-                      v-slot="{ navigate }"
-                      :to="`/article/${item.id}`"
-                      custom
-                    >
-                      <NoHeadImgCpt @click="navigate"></NoHeadImgCpt>
-                    </nuxt-link>
-                  </div>
-                  <div class="desc">
-                    <nuxt-link
-                      :to="'/article/' + item.id"
-                      class="b-hover"
-                    >
-                      <b> #{{ item.title }} </b>
-                    </nuxt-link>
-                    <div class="info">
-                      <span class="view">
-                        <i class="el-icon-view"></i>
-                        {{ item.click }}
-                      </span>
-                      <div v-if="sideBarArticleOrderName === 'click'">
-                        <i class="el-icon-star-off"></i>{{ item.star_total }}
+                      <div class="head-img">
+                        <img
+                          v-if="item.head_img"
+                          v-lazy="item.head_img"
+                          alt=""
+                          @click="navigate"
+                        />
+                        <NoHeadImgCpt v-else></NoHeadImgCpt>
                       </div>
-                      <div v-else>
-                        <i class="el-icon-date"></i>
-                        {{ item.updated_at | convertDate }}更新
+                      <div class="desc">
+                        <div class="b-hover">
+                          <b># {{ item.title }} </b>
+                        </div>
+                        <div class="info">
+                          <span class="view">
+                            <i class="el-icon-view"></i>
+                            {{ item.click }}
+                          </span>
+                          <div v-if="sideBarArticleOrderName === 'click'">
+                            <i class="el-icon-star-off"></i
+                            >{{ item.star_total }}
+                          </div>
+                          <div v-else>
+                            <i class="el-icon-date"></i>
+                            {{ item.updated_at | convertDate }}更新
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </nuxt-link>
                 </div>
               </div>
               <div v-else>暂无文章~</div>
@@ -359,7 +354,7 @@ export default {
       margin-top: 20px;
       padding: 10px;
       border: 1px solid $theme-color4;
-      border-radius: 5px;
+      border-radius: 6px;
       background: $theme-color6;
       // background-color: red;
 
@@ -376,7 +371,7 @@ export default {
         overflow: hidden;
         align-items: center;
         margin-bottom: 10px;
-        height: 60px;
+        height: 80px;
         &:last-child {
           margin-bottom: 0 !important;
         }
@@ -423,6 +418,7 @@ export default {
             color: inherit;
             text-decoration: none;
             @include multiEllipsis(2);
+            cursor: pointer;
             &:hover {
               transform: translateX(4px);
             }

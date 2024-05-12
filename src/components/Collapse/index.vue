@@ -63,7 +63,7 @@ export default {
   margin-top: 20px;
   padding: 10px;
   border: 1px solid $theme-color4;
-  border-radius: 5px;
+  border-radius: 6px;
   background: $theme-color6;
 
   .header {

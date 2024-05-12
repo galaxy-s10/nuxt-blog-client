@@ -6,7 +6,6 @@
 export const tagApi = (request) => {
   return {
     list: (params) => {
-      console.log(params, 'kkk1');
       return request({
         url: `/tag/list`,
         method: 'get',

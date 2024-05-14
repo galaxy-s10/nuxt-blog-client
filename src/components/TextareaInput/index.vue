@@ -6,7 +6,7 @@
       resize="none"
       :rows="5"
       show-word-limit
-      maxlength="200"
+      maxlength="400"
     ></el-input>
     <span class="tip">支持markdown</span>
   </div>

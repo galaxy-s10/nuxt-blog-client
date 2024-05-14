@@ -87,6 +87,7 @@
         </el-button>
       </div>
     </div>
+    <div v-else>该标签暂无文章</div>
   </div>
 </template>
 
@@ -145,6 +146,9 @@ export default {
       currentTagName: '',
       articleList: [],
       articleListParams: { nowPage: 1, pageSize: 3 },
+      total: 0,
+      hasMore: false,
+      currentTagId: -1,
     };
   },
   head() {

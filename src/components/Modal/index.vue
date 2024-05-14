@@ -114,4 +114,12 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 540px) {
+  .mask-cpt-wrap {
+    .modal-wrap {
+      max-width: 80% !important;
+    }
+  }
+}
 </style>

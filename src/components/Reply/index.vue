@@ -1,23 +1,29 @@
 <template>
-  <ModalCpt
-    :visiable="visiable"
-    :title="'回复@' + username"
-    @update:visiable="closeModal"
-  >
-    <template #content>
-      <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
-    </template>
-    <template #footer>
-      <el-button
-        type="primary"
-        :loading="loading"
-        round
-        @click="reply"
-      >
-        回复
-      </el-button>
-    </template>
-  </ModalCpt>
+  <div class="reply-wrap">
+    <ModalCpt
+      :visiable="visiable"
+      :title="'回复@' + username"
+      :width="width"
+      @update:visiable="closeModal"
+    >
+      <template #content>
+        <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
+      </template>
+      <template #footer>
+        <div class="btn">
+          <div class="err">{{ errMsg }}</div>
+          <el-button
+            type="primary"
+            :loading="loading"
+            round
+            @click="reply"
+          >
+            回复
+          </el-button>
+        </div>
+      </template>
+    </ModalCpt>
+  </div>
 </template>
 
 <script>
@@ -37,15 +43,21 @@ export default {
   },
   data() {
     return {
+      width: '50%',
       visiable: true,
       loading: false,
       content: '',
+      errMsg: '',
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    if (document.documentElement.clientWidth < 600) {
+      this.width = '80%';
+    }
+  },
   methods: {
     ...mapMutations({
       setShowLoginModal: 'app/setShowLoginModal',
@@ -59,10 +71,12 @@ export default {
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }
-      if (this.content.length < 5) {
-        this.$newmessage('回复内容至少5个字符~', 'warning');
+      if (this.content.length < 2) {
+        this.errMsg = '回复内容至少2个字符~';
+        this.$newmessage(this.errMsg, 'warning');
         return;
       }
+      this.errMsg = '';
       this.loading = !this.loading;
       this.$emit('reply', this.content);
     },
@@ -76,38 +90,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mask-wrap {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  background-color: $theme-color8;
-  .reply-wrap {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding: 20px;
-    width: 600px;
-    border: 1px solid $theme-color4;
-    border-radius: 12px;
-    background: $theme-color6;
-    transform: translate(-50%, -50%);
-    .title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .username {
-        font-weight: bold;
-      }
-    }
-    .content {
-      margin-top: 26px;
-    }
-    .btn {
-      margin-top: 20px;
-      text-align: right;
+.reply-wrap {
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    .err {
+      color: $theme-color7;
     }
   }
 }

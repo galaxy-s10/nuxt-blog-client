@@ -171,6 +171,7 @@
             <AsyncTextareaInputCpt @contentChange="contentChange">
             </AsyncTextareaInputCpt>
             <div class="btn">
+              <div class="err">{{ errMsg }}</div>
               <el-button
                 type="primary"
                 :loading="submitCommentLoading"
@@ -277,6 +278,7 @@ export default {
       isStar: false, // 是否已经点赞了
       rewardModal: false,
       detail: null,
+      errMsg: '',
     };
   },
   head() {
@@ -451,10 +453,12 @@ export default {
         this.$newmessage('暂未登录，请登录！', 'warning');
         return;
       }
-      if (this.commentContent.length < 5) {
-        this.$newmessage('评论内容至少5个字符~', 'warning');
+      if (this.commentContent.length < 2) {
+        this.errMsg = '评论内容至少2个字符~';
+        this.$newmessage(this.errMsg, 'warning');
         return;
       }
+      this.errMsg = '';
       try {
         this.submitCommentLoading = true;
         await this.$myaxios.comment.create({
@@ -705,8 +709,13 @@ export default {
       top: -50px;
     }
     .btn {
+      .err {
+        color: $theme-color7;
+      }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-top: 20px;
-      text-align: right;
     }
   }
 }

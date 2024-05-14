@@ -54,6 +54,7 @@
       :visiable="currentComment !== null"
       :title="currentComment.children_comment_total + '条回复'"
       top="20%"
+      :width="width"
       class="comment-modal-wrap"
       @update:visiable="closeModal"
     >
@@ -116,12 +117,12 @@ import { deepCloneByJson } from 'billd-utils';
 import { MessageBox } from 'element-ui';
 import { mapMutations } from 'vuex';
 
-import ItemCpt from './components/Item/index.vue';
-import SortTabCpt from './components/SortTab/index.vue';
-
 import LoginCpt from '@/components/Login/index.vue';
 import ModalCpt from '@/components/Modal/index.vue';
 import ReplyCpt from '@/components/Reply/index.vue';
+
+import ItemCpt from './components/Item/index.vue';
+import SortTabCpt from './components/SortTab/index.vue';
 
 export default {
   components: {
@@ -188,6 +189,7 @@ export default {
       childListLoading: false,
       childListHasMore: false,
       childListIsBottom: false, // 是否触底
+      width: '50%',
     };
   },
   computed: {},
@@ -200,7 +202,11 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    if (document.documentElement.clientWidth < 600) {
+      this.width = '90%';
+    }
+  },
   methods: {
     ...mapMutations({
       setShowLoginModal: 'app/setShowLoginModal',

@@ -25,7 +25,7 @@ COPY .npmrc .
 RUN cd /billd/nuxt-blog-client
 
 RUN echo 开始全局安装pnpm:
-RUN npm i pnpm -g
+RUN npm i pnpm@7.33.7 -g
 
 RUN echo 开始全局安装pm2:
 RUN pnpm i pm2 -g

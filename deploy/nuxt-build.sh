@@ -4,9 +4,9 @@
 # Date: 2022-04-26 01:54:48
 # Description: https://github.com/galaxy-s10/sh/blob/master/build.sh
 # Email: 2274751790@qq.com
-# FilePath: /galaxy-s10/nuxt-blog-client/deploy/nuxt-build.sh
+# FilePath: /nuxt-blog-client/deploy/nuxt-build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2024-03-14 14:16:05
+# LastEditTime: 2024-06-02 06:28:32
 # LastEditors: shuisheng
 ###
 
@@ -23,6 +23,8 @@ WORKSPACE=$3    #约定$3为Jenkins工作区
 PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
+
+echo nuxt-build.sh开始
 
 echo 删除node_modules:
 rm -rf node_modules
@@ -41,10 +43,14 @@ npm get registry
 
 if ! type pnpm >/dev/null 2>&1; then
   echo 'pnpm未安装,先全局安装pnpm'
-  npm i pnpm -g
+  npm i pnpm@8.15.8 -g
 else
   echo 'pnpm已安装'
+  npm i pnpm@8.15.8 -g
 fi
+
+# echo 执行pnpm setup
+# pnpm setup
 
 echo 查看pnpm版本:
 pnpm -v
@@ -61,4 +67,7 @@ echo 开始安装依赖:
 pnpm install
 
 echo 开始构建:
-npx cross-env JENKINS_WORKSPACE=$3 npm run deploy:beta
+# npm run deploy:prod
+npx cross-env JENKINS_WORKSPACE=$3 npm run deploy:prod
+
+echo nuxt-build.sh结束

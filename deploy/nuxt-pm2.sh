@@ -4,10 +4,10 @@
 # Date: 2022-08-09 12:55:48
 # Description: https://github.com/galaxy-s10/sh/
 # Email: 2274751790@qq.com
-# FilePath: /galaxy-s10/nuxt-blog-client/deploy/nuxt-pm2.sh
+# FilePath: /nuxt-blog-client/deploy/nuxt-pm2.sh
 # Github: https://github.com/galaxy-s10
 # LastEditors: shuisheng
-# LastEditTime: 2024-03-14 14:16:17
+# LastEditTime: 2024-06-02 06:28:43
 ###
 
 # 生成头部文件快捷键: ctrl+cmd+i
@@ -24,6 +24,8 @@ PORT=$4         #约定$4为端口号
 TAG=$5          #约定$5为git标签
 PUBLICDIR=/node #约定公共目录为/node
 
+echo nuxt-pm2.sh开始
+
 echo 查看node版本:
 node -v
 
@@ -38,10 +40,14 @@ npm get registry
 
 if ! type pnpm >/dev/null 2>&1; then
   echo 'pnpm未安装,先全局安装pnpm'
-  npm i pnpm -g
+  npm i pnpm@8.15.8 -g
 else
   echo 'pnpm已安装'
+  npm i pnpm@8.15.8 -g
 fi
+
+# echo 执行pnpm setup
+# pnpm setup
 
 echo 查看pnpm版本:
 pnpm -v
@@ -82,3 +88,5 @@ pm2 start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i 1 -- s
 
 # pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name nuxt-blog-client-null-3000 -i 2 -- start
 # pm2-runtime start './node_modules/nuxt/bin/nuxt.js' --name $JOBNAME-$ENV-$PORT -i 2 -- start
+
+echo nuxt-pm2.sh结束

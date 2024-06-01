@@ -32,7 +32,8 @@ export default function ({ $axios, store }, inject) {
       baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
       break;
   }
-
+  console.log('env', env);
+  console.log('baseURL', baseURL);
   const service = axios.create({
     baseURL,
     timeout: 10000,

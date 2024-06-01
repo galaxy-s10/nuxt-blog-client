@@ -75,7 +75,7 @@ async function clearOld() {
 }
 
 const newPkgStr = fs.readFileSync(
-  path.resolve(giteeDir, 'package.json'),
+  path.resolve(localDir, 'package.json'),
   'utf-8'
 );
 const oldPkgStr = fs.readFileSync(

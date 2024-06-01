@@ -7,6 +7,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 // import { version as vueVersion } from 'vue';
 // import { version as vueRouterVersion } from 'vue-router';
 // import vuex from 'vuex';
+
 import webpack from 'webpack';
 
 import pkg from './package.json';
@@ -166,7 +167,8 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'http://localhost:3300',
+      target: 'http://localhost:3200',
+      // target: 'https://api.hsslive.cn/prodapi',
       pathRewrite: {
         '^/api': '',
       },

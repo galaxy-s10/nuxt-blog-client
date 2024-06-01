@@ -32,7 +32,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.allow_qq_login.value !== '1'"
+                :disabled="frontendData?.allow_qq_login?.value !== '1'"
                 @click="qqLogin"
               >
                 QQ登录
@@ -41,7 +41,7 @@
             <el-dropdown-item>
               <el-button
                 type="text"
-                :disabled="frontendData.allow_github_login.value !== '1'"
+                :disabled="frontendData?.allow_github_login?.value !== '1'"
                 @click="githubLogin"
               >
                 GitHub登录

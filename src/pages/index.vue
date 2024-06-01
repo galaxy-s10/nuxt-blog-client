@@ -83,7 +83,7 @@
             </div>
             <div class="info">
               <img
-                :src="item.users[0] && item.users[0].avatar"
+                :src="item.users?.[0]?.avatar"
                 class="avatar"
                 alt=""
               />

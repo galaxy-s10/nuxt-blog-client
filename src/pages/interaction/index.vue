@@ -39,7 +39,7 @@
     </template>
     <template v-else>Tips: 登录后可以点歌~</template>
 
-    <WebSocketCpt></WebSocketCpt>
+    <!-- <WebSocketCpt></WebSocketCpt> -->
   </div>
 </template>
 

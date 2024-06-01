@@ -9,10 +9,10 @@
     >
       <template v-if="frontendData">
         <AsyncRenderMarkdownCpt
-          :md="frontendData.home_modal_content.value"
+          :md="frontendData?.home_modal_content?.value"
         ></AsyncRenderMarkdownCpt>
         <div class="update-time">
-          发布时间：{{ frontendData.home_modal_content.updated_at }}
+          发布时间：{{ frontendData?.home_modal_content?.updated_at }}
         </div>
       </template>
       <span slot="footer">
@@ -58,7 +58,7 @@ export default {
       if (d <= 414) {
         this.dialogWidth = '80%';
       }
-      this.dialogVisible = this.frontendData.allow_home_modal.value === '1';
+      this.dialogVisible = this.frontendData?.allow_home_modal?.value === '1';
     } catch (error) {
       console.log(error);
     }

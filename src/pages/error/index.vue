@@ -5,10 +5,8 @@
       <h1 v-if="apiError.errorCode.value !== -1">
         {{ apiError.message }}
       </h1>
-      <h1
-        v-if="frontendData && frontendData.allow_shutdown_modal.value === '1'"
-      >
-        {{ frontendData.shutdown_modal_content.value || '停机维护中' }}
+      <h1 v-if="frontendData?.allow_shutdown_modal?.value === '1'">
+        {{ frontendData?.shutdown_modal_content?.value || '停机维护中' }}
       </h1>
     </div>
 

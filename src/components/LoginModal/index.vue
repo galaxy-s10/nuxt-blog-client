@@ -12,7 +12,7 @@
         <div class="logo-list">
           <div class="item">
             <img
-              v-if="frontendData.allow_qq_login.value === '1'"
+              v-if="frontendData?.allow_qq_login?.value === '1'"
               class="logo"
               src="@/assets/img/qq_logo.svg"
               alt=""
@@ -22,7 +22,7 @@
           </div>
           <div class="item">
             <img
-              v-if="frontendData.allow_github_login.value === '1'"
+              v-if="frontendData?.allow_github_login?.value === '1'"
               class="logo"
               src="@/assets/img/github_logo.svg"
               alt=""

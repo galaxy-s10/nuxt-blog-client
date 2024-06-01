@@ -5,42 +5,43 @@
     <hr class="hr-class" />
 
     <!-- 数据统计 -->
-    <div class="summary">
+    <div
+      v-if=""
+      class="summary"
+    >
       <div class="badge">数据统计</div>
       <div class="list">
         <div class="item">
-          <div class="num">{{ summary.article.total | filterNum }}</div>
+          <div class="num">{{ summary?.article?.total | filterNum }}</div>
           <div class="type">文章</div>
         </div>
         <div class="item">
-          <div class="num">{{ summary.comment.total | filterNum }}</div>
+          <div class="num">{{ summary?.comment?.total | filterNum }}</div>
           <div class="type">评论</div>
         </div>
         <div class="item">
-          <div class="num">{{ summary.article.read | filterNum }}</div>
+          <div class="num">{{ summary?.article?.read | filterNum }}</div>
           <div class="type">阅读</div>
         </div>
         <div class="item">
-          <div class="num">{{ summary.user.total | filterNum }}</div>
+          <div class="num">{{ summary?.user?.total | filterNum }}</div>
           <div class="type">用户</div>
         </div>
         <div class="item">
-          <div class="num">{{ summary.visit.total | filterNum }}</div>
+          <div class="num">{{ summary?.visit?.total | filterNum }}</div>
           <div class="type">访问量</div>
         </div>
       </div>
     </div>
 
-    <template v-if="frontendData">
-      <!-- about富文本 -->
-      <LazyRenderMarkdown
-        :md="frontendData.about_me.value"
-      ></LazyRenderMarkdown>
+    <!-- about富文本 -->
+    <LazyRenderMarkdown
+      :md="frontendData?.about_me?.value"
+    ></LazyRenderMarkdown>
 
-      <div class="update-time">
-        最后更新：{{ frontendData.about_me.updated_at }}
-      </div>
-    </template>
+    <div class="update-time">
+      最后更新：{{ frontendData?.about_me?.updated_at }}
+    </div>
   </div>
 </template>
 

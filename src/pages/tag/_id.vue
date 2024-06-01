@@ -183,6 +183,9 @@ export default {
     async getArticleList() {
       const tagId = this.$props.tagId;
       this.currentTagId = +tagId;
+      if (tagId === -1) {
+        return;
+      }
       try {
         const { data } = await this.$myaxios.tag.articleList({
           tagId,

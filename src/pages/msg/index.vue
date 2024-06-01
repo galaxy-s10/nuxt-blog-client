@@ -7,15 +7,12 @@
     <!-- 发表留言 -->
     <div class="comment-wrap">
       <TextareaInputCpt @contentChange="contentChange"></TextareaInputCpt>
-      <div
-        v-if="frontendData"
-        class="btn"
-      >
+      <div class="btn">
         <div class="err">{{ errMsg }}</div>
         <el-button
           type="primary"
           :loading="submitCommentLoading"
-          :disabled="frontendData.allow_comment.value !== '1'"
+          :disabled="frontendData?.allow_comment?.value !== '1'"
           @click="addComment"
         >
           发表留言

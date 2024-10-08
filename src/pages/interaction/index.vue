@@ -1,6 +1,6 @@
 <template>
   <div class="interaction-wrap">
-    <h1 class="title">在线互动(Beta)</h1>
+    <h1 class="title">在线互动</h1>
     <hr class="hr-class" />
 
     <div class="muted-wrap">
@@ -39,7 +39,7 @@
     </template>
     <template v-else>Tips: 登录后可以点歌~</template>
 
-    <!-- <WebSocketCpt></WebSocketCpt> -->
+    <WebSocketCpt></WebSocketCpt>
   </div>
 </template>
 

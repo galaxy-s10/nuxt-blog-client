@@ -22,12 +22,13 @@
         </ins>
       </div>
 
-      <nuxt-link
+      <a
         v-for="(item, index) in articleList"
         :key="index"
         ref="article-item"
         :class="{ 'article-item-a': true, 'water-fall': isWaterFall }"
-        :to="`/article/${item.id}`"
+        :href="`/article/${item.id}`"
+        @click="goArticle($event, item)"
       >
         <article :class="{ 'article-item': true }">
           <div
@@ -94,7 +95,7 @@
               <div class="relation">
                 <div>
                   <i class="el-icon-view"></i>
-                  {{ item.click }}
+                  {{ item.visit }}
                 </div>
                 <div>
                   <i class="el-icon-chat-line-round"></i>
@@ -108,7 +109,7 @@
             </div>
           </div>
         </article>
-      </nuxt-link>
+      </a>
 
       <div
         ref="loadMoreRef"
@@ -126,7 +127,7 @@
 
 <script>
 import { getRangeRandom } from 'billd-utils';
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 // eslint-disable-next-line
 import { Api } from '@/api';
@@ -209,6 +210,11 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      userInfo(state) {
+        return state.user.userInfo;
+      },
+    }),
     typeId() {
       return this.$store.state.type.typeId;
     },
@@ -298,6 +304,19 @@ export default {
         this.waterfallParams.column = 2;
       }
       this.handlePage();
+    },
+    goArticle(e, article) {
+      e.preventDefault();
+      this.$myaxios.article.click(article?.id);
+      this.$myaxios.buryingPoint.create({
+        article_id: article?.id,
+        user_id: this.userInfo?.id || -1,
+        field_a: 'article',
+        field_b: 'click',
+        field_c: 'home',
+        field_d: article?.title,
+      });
+      this.$router.push(`/article/${article?.id}`);
     },
     switchShowMethod() {
       this.setIsWaterFall(!this.isWaterFall);

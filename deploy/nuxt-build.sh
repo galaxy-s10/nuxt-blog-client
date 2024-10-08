@@ -6,7 +6,7 @@
 # Email: 2274751790@qq.com
 # FilePath: /nuxt-blog-client/deploy/nuxt-build.sh
 # Github: https://github.com/galaxy-s10
-# LastEditTime: 2024-06-02 06:28:32
+# LastEditTime: 2024-06-02 06:32:17
 # LastEditors: shuisheng
 ###
 
@@ -43,10 +43,10 @@ npm get registry
 
 if ! type pnpm >/dev/null 2>&1; then
   echo 'pnpm未安装,先全局安装pnpm'
-  npm i pnpm@8.15.8 -g
+  npm i pnpm@7.33.7 -g
 else
   echo 'pnpm已安装'
-  npm i pnpm@8.15.8 -g
+  npm i pnpm@7.33.7 -g
 fi
 
 # echo 执行pnpm setup

@@ -94,6 +94,9 @@ export default {
       currMusic(state) {
         return state.app.currMusic;
       },
+      userInfo(state) {
+        return state.user.userInfo;
+      },
     }),
 
     duration2() {
@@ -112,7 +115,10 @@ export default {
   async mounted() {
     this.handleResize(true);
     window.addEventListener('resize', this.handleResize);
-    const { data } = await this.$myaxios.music.list();
+    const { data } = await this.$myaxios.music.list({
+      orderName: 'priority',
+      orderBy: 'desc',
+    });
     this.setMusicList(data.rows);
     this.songList = data.rows;
     if (!this.songList.length) return;
@@ -182,6 +188,7 @@ export default {
     switchBtn() {
       this.start = !this.start;
       if (this.start === true) {
+        this.handleBuryingPoint('start');
         this.duration = this.audio.duration;
         if (this.nowTime !== 0) {
           this.audio.currentTime = this.nowTime;
@@ -194,6 +201,7 @@ export default {
             console.log(error);
           });
       } else {
+        this.handleBuryingPoint('stop');
         this.stopRotate();
         this.audio.pause();
         this.audio.currentTime = this.nowTime;
@@ -217,6 +225,21 @@ export default {
           });
       }, 500);
     },
+    handleBuryingPoint(type) {
+      let articleId = -1;
+      if (this.$route.name === 'article-id') {
+        articleId = Number(this.$route.params.id);
+      }
+      this.$myaxios.buryingPoint.create({
+        article_id: articleId,
+        user_id: this.userInfo?.id || -1,
+        field_a: 'music',
+        field_b: 'click',
+        field_c: this.songList?.[this.currentIndex]?.id,
+        field_d: this.songList?.[this.currentIndex]?.name,
+        field_e: type,
+      });
+    },
     preSong() {
       if (this.currentIndex === 0) {
         this.currentIndex = this.songList.length - 1;
@@ -228,6 +251,7 @@ export default {
         this.start = !this.start;
       }
       this.changeSong(this.currentIndex);
+      this.handleBuryingPoint('pre');
     },
     nextSong() {
       if (this.currentIndex < this.songList.length - 1) {
@@ -236,6 +260,7 @@ export default {
         this.currentIndex = 0;
       }
       this.changeSong(this.currentIndex);
+      this.handleBuryingPoint('next');
     },
     // 停止转盘转动
     stopRotate() {

@@ -5,10 +5,7 @@
     <hr class="hr-class" />
 
     <!-- 数据统计 -->
-    <div
-      v-if=""
-      class="summary"
-    >
+    <div class="summary">
       <div class="badge">数据统计</div>
       <div class="list">
         <div class="item">
@@ -20,7 +17,7 @@
           <div class="type">评论</div>
         </div>
         <div class="item">
-          <div class="num">{{ summary?.article?.read | filterNum }}</div>
+          <div class="num">{{ summary?.article?.visit | filterNum }}</div>
           <div class="type">阅读</div>
         </div>
         <div class="item">

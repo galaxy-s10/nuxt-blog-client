@@ -19,5 +19,7 @@ export const articleApi = (request) => {
         params,
       }),
     find: (id) => request.get(`/article/find/${id}`),
+    click: (id) => request.post(`/article/click`, { id }),
+    visit: (id) => request.post(`/article/visit`, { id }),
   };
 };

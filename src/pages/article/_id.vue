@@ -106,7 +106,7 @@
           </span>
           <span>
             <i class="el-icon-view"></i>
-            {{ detail.click }}
+            {{ detail.visit }}
           </span>
           <span>
             <i class="el-icon-star-on"></i>
@@ -318,13 +318,14 @@ export default {
   },
   created() {},
   mounted() {
+    const articleId = this.$route.params.id;
+    this.articleId = articleId;
+    this.$myaxios.article.visit(articleId);
     window.scrollTo({ top: 0 });
     this.$store.commit('app/setShowCatalog', true);
     if (this.$refs['hss-md']?.$el) {
       this.renderCatalog();
     }
-    const articleId = this.$route.params.id;
-    this.articleId = articleId;
     if (
       this.detail?.star_info.rows.includes((v) => v.id === this.userInfo.id)
     ) {

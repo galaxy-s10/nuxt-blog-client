@@ -62,50 +62,46 @@
                     ></ins>
                   </client-only>
                 </div>
-                <div
+
+                <a
                   v-for="(item, index) in sideBarArticleList"
                   :key="index"
+                  class="item-a"
+                  :href="'/article/' + item.id"
+                  custom
                 >
-                  <nuxt-link
-                    v-slot="{ navigate }"
-                    :to="'/article/' + item.id"
-                    custom
+                  <div
+                    class="item"
+                    @click="goArticle($event, item)"
                   >
-                    <div
-                      class="item"
-                      @click="navigate"
-                    >
-                      <div class="head-img">
-                        <img
-                          v-if="item.head_img"
-                          v-lazy="item.head_img"
-                          alt=""
-                          @click="navigate"
-                        />
-                        <NoHeadImgCpt v-else></NoHeadImgCpt>
+                    <div class="head-img">
+                      <img
+                        v-if="item.head_img"
+                        v-lazy="item.head_img"
+                        alt=""
+                      />
+                      <NoHeadImgCpt v-else></NoHeadImgCpt>
+                    </div>
+                    <div class="desc">
+                      <div class="b-hover">
+                        <b># {{ item.title }} </b>
                       </div>
-                      <div class="desc">
-                        <div class="b-hover">
-                          <b># {{ item.title }} </b>
+                      <div class="info">
+                        <span class="view">
+                          <i class="el-icon-view"></i>
+                          {{ item.visit }}
+                        </span>
+                        <div v-if="sideBarArticleOrderName === 'click'">
+                          <i class="el-icon-star-off"></i>{{ item.star_total }}
                         </div>
-                        <div class="info">
-                          <span class="view">
-                            <i class="el-icon-view"></i>
-                            {{ item.click }}
-                          </span>
-                          <div v-if="sideBarArticleOrderName === 'click'">
-                            <i class="el-icon-star-off"></i
-                            >{{ item.star_total }}
-                          </div>
-                          <div v-else>
-                            <i class="el-icon-date"></i>
-                            {{ item.updated_at | convertDate }}更新
-                          </div>
+                        <div v-else>
+                          <i class="el-icon-date"></i>
+                          {{ item.updated_at | convertDate }}更新
                         </div>
                       </div>
                     </div>
-                  </nuxt-link>
-                </div>
+                  </div>
+                </a>
               </div>
               <div v-else>暂无文章~</div>
             </div>
@@ -186,6 +182,9 @@ export default {
       sideBarArticleOrderName(state) {
         return state.article.sideBarArticleOrderName;
       },
+      userInfo(state) {
+        return state.user.userInfo;
+      },
     }),
     sideBarTagList() {
       return this.$store.state.tag.sideBarTagList;
@@ -236,6 +235,20 @@ export default {
     ...mapMutations({
       changeSideBarArticleOrderName: 'article/changeSideBarArticleOrderName',
     }),
+    goArticle(e, article) {
+      e.preventDefault();
+      this.$myaxios.article.click(article?.id);
+      this.$myaxios.buryingPoint.create({
+        article_id: article?.id,
+        user_id: this.userInfo?.id || -1,
+        field_a: 'article',
+        field_b: 'click',
+        field_c:
+          this.sideBarArticleOrderName === 'click' ? 'hot' : 'recent_update',
+        field_d: article?.title,
+      });
+      this.$router.push(`/article/${article?.id}`);
+    },
     async ajaxArticleList(orderName) {
       try {
         const params = {
@@ -366,65 +379,74 @@ export default {
           cursor: pointer;
         }
       }
-      .item {
-        display: flex;
-        overflow: hidden;
-        align-items: center;
-        margin-bottom: 10px;
-        height: 80px;
-        &:last-child {
-          margin-bottom: 0 !important;
-        }
-        .head-img {
-          overflow: hidden;
-          width: 40%;
-          cursor: pointer;
-
-          :deep(.no-head-img) {
-            // ::v-deep .no-head-img {
-            font-size: 12px !important;
-            &:hover {
-              transform: scale(1.1);
-            }
-          }
-
-          img {
-            display: block;
-            width: 100%;
-            border-radius: 5px;
-            transition: all 0.3s;
-            &:hover {
-              transform: scale(1.1);
-            }
-          }
-        }
-        .desc {
+      .item-a {
+        display: block;
+        margin-bottom: 5px;
+        color: inherit;
+        text-decoration: none;
+        .item {
           display: flex;
-          flex: 1;
-          flex-wrap: wrap;
-          padding-left: 4px;
+          overflow: hidden;
+          align-items: center;
+          margin-bottom: 10px;
+          height: 80px;
 
-          justify-items: center;
-          .info {
-            display: flex;
-            margin-top: 4px;
-            width: 100%;
-            font-size: 12px;
-            .view {
-              margin-right: 6px;
+          &:last-child {
+            margin-bottom: 0 !important;
+          }
+          .head-img {
+            overflow: hidden;
+            width: 40%;
+            cursor: pointer;
+
+            :deep(.no-head-img) {
+              // ::v-deep .no-head-img {
+              font-size: 12px !important;
+              &:hover {
+                transform: scale(1.1);
+              }
+            }
+
+            img {
+              display: block;
+              width: 100%;
+              border-radius: 5px;
+              transition: all 0.3s;
+              &:hover {
+                transform: scale(1.1);
+              }
             }
           }
-          .b-hover {
-            color: inherit;
-            text-decoration: none;
-            @include multiEllipsis(2);
-            cursor: pointer;
-            &:hover {
-              transform: translateX(4px);
+          .desc {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            padding-left: 4px;
+
+            justify-items: center;
+            .info {
+              display: flex;
+              margin-top: 4px;
+              width: 100%;
+              font-size: 12px;
+              .view {
+                margin-right: 6px;
+              }
+            }
+            .b-hover {
+              color: inherit;
+              text-decoration: none;
+              cursor: pointer;
+
+              @include multiEllipsis(2);
+              &:hover {
+                transform: translateX(4px);
+              }
             }
           }
         }
       }
+
       .ad {
         width: 250px;
         height: 80px;

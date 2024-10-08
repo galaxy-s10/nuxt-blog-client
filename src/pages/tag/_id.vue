@@ -1,71 +1,62 @@
 <template>
   <div class="tag-wrap">
-    <article
+    <a
       v-for="item in articleList"
       :key="'article-key-' + item.id"
-      class="article-item"
+      :href="`/article/${item.id}`"
+      class="a-css"
+      @click="goArticle($event, item)"
     >
-      <div class="article-left">
-        <nuxt-link
-          v-if="item.head_img"
-          v-slot="{ navigate }"
-          :to="`/article/${item.id}`"
-          custom
-        >
+      <article class="article-item">
+        <div class="article-left">
           <div
+            v-if="item.head_img"
             v-lazy:background-image="item.head_img"
             class="head-img"
-            @click="navigate"
           ></div>
-        </nuxt-link>
-        <nuxt-link
-          v-else
-          v-slot="{ navigate }"
-          :to="`/article/${item.id}`"
-          custom
-        >
           <div
+            v-else
             class="head-img"
-            @click="navigate"
           >
             <NoHeadImgCpt></NoHeadImgCpt>
           </div>
-        </nuxt-link>
-      </div>
-      <div class="article-right">
-        <nuxt-link
-          :to="'/article/' + item.id"
-          class="article-right-txt"
-        >
-          {{ item.title }}
-        </nuxt-link>
-        <el-divider></el-divider>
-        <el-tag
-          v-for="tagItem in item.tags"
-          :key="'article-tag-key-' + tagItem.id"
-          class="overwrite-el-tag"
-          size="mini"
-          :disable-transitions="false"
-          :color="tagItem.color"
-          >{{ tagItem.name }}</el-tag
-        >
-        <div class="summary">
-          <img
-            class="user-avatar"
-            :src="item.users[0] && item.users[0].avatar"
-            alt=""
-          />
-          <span class="jgh"></span>
-          <span>{{ item.created_at | convertDate }}</span>
-          <span class="jgh"></span>
-          <span>{{ item.click }}浏览</span>
-          <span class="jgh"></span>
-          <span>{{ item.comment_total }}评论</span>
-          <span class="jgh"></span>
-          <div>{{ item.star_total }}star</div>
         </div>
-      </div>
-    </article>
+
+        <div class="article-right">
+          <nuxt-link
+            :to="'/article/' + item.id"
+            class="article-right-txt"
+          >
+            {{ item.title }}
+          </nuxt-link>
+          <el-divider></el-divider>
+          <el-tag
+            v-for="tagItem in item.tags"
+            :key="'article-tag-key-' + tagItem.id"
+            class="overwrite-el-tag"
+            size="mini"
+            :disable-transitions="false"
+            :color="tagItem.color"
+            >{{ tagItem.name }}</el-tag
+          >
+          <div class="summary">
+            <img
+              class="user-avatar"
+              :src="item.users[0] && item.users[0].avatar"
+              alt=""
+            />
+            <span class="jgh"></span>
+            <span>{{ item.created_at | convertDate }}</span>
+            <span class="jgh"></span>
+            <span>{{ item.visit }}浏览</span>
+            <span class="jgh"></span>
+            <span>{{ item.comment_total }}评论</span>
+            <span class="jgh"></span>
+            <div>{{ item.star_total }}star</div>
+          </div>
+        </div>
+      </article>
+    </a>
     <div
       v-if="total"
       class="page-btn"
@@ -92,6 +83,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 // eslint-disable-next-line
 import { Api } from '@/api';
 import NoHeadImgCpt from '@/components/NoHeadImg/index.vue';
@@ -172,13 +165,32 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      userInfo(state) {
+        return state.user.userInfo;
+      },
+    }),
+  },
   watch: {},
   created() {},
   mounted() {
     this.getArticleList();
   },
   methods: {
+    goArticle(e, article) {
+      e.preventDefault();
+      this.$myaxios.article.click(article?.id);
+      this.$myaxios.buryingPoint.create({
+        article_id: article?.id,
+        user_id: this.userInfo?.id || -1,
+        field_a: 'article',
+        field_b: 'click',
+        field_c: 'tag',
+        field_d: article?.title,
+      });
+      this.$router.push(`/article/${article?.id}`);
+    },
     // 获取当前标签下的文章
     async getArticleList() {
       const tagId = this.$props.tagId;
@@ -296,17 +308,24 @@ export default {
   justify-content: space-between;
 }
 
+.a-css {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
 .article-item {
   display: flex;
   margin-bottom: 15px;
   width: 100%;
   border-radius: 5px;
   background: white;
+
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
   .article-left {
     overflow: hidden;
     flex: 0 0 40%;
     margin: 20px;
+
     .head-img {
       width: 100%;
       height: 200px;

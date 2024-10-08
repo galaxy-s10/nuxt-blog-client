@@ -167,8 +167,7 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'http://localhost:3200',
-      // target: 'https://api.hsslive.cn/prodapi',
+      target: 'http://localhost:3300',
       pathRewrite: {
         '^/api': '',
       },

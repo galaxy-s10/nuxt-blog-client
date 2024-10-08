@@ -1,4 +1,5 @@
 import { articleApi } from '@/api/article';
+import { buryingPointApi } from '@/api/buryingPoint';
 import { commentApi } from '@/api/comment';
 import { frontendApi } from '@/api/frontend';
 import { githubUserApi } from '@/api/githubUser';
@@ -35,6 +36,7 @@ export class Api {
   qqUser;
   githubUser;
   interaction;
+  buryingPoint;
   constructor(service) {
     this.service = service;
     this.visitorLog = visitorLogApi(service);
@@ -54,5 +56,6 @@ export class Api {
     this.qqUser = qqUserApi(service);
     this.githubUser = githubUserApi(service);
     this.interaction = interactionApi(service);
+    this.buryingPoint = buryingPointApi(service);
   }
 }

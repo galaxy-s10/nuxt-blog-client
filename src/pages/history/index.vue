@@ -10,12 +10,13 @@
           :key="index"
           :timestamp="item.created_at"
         >
-          <nuxt-link
-            :to="'/article/' + item.id"
+          <a
+            :href="'/article/' + item.id"
             class="a-link"
+            @click="goArticle($event, item)"
           >
             <span> {{ item.title }} </span>
-          </nuxt-link>
+          </a>
         </el-timeline-item>
       </template>
     </el-timeline>
@@ -30,6 +31,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 // eslint-disable-next-line
 import { Api } from '@/api';
 import pagingCpt from '@/components/Paging/index.vue';
@@ -82,10 +85,29 @@ export default {
       ],
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      userInfo(state) {
+        return state.user.userInfo;
+      },
+    }),
+  },
   created() {},
   mounted() {},
   methods: {
+    goArticle(e, article) {
+      e.preventDefault();
+      this.$myaxios.article.click(article?.id);
+      this.$myaxios.buryingPoint.create({
+        article_id: article?.id,
+        user_id: this.userInfo?.id || -1,
+        field_a: 'article',
+        field_b: 'click',
+        field_c: 'history',
+        field_d: article?.title,
+      });
+      this.$router.push(`/article/${article?.id}`);
+    },
     async currentChange(nowPage) {
       const { data } = await this.$myaxios.article.list({
         orderName: 'created_at',
@@ -104,9 +126,9 @@ export default {
 .history-wrap {
   .a-link {
     color: $theme-color5;
+    text-decoration: none;
     // text-decoration: none;
     font-size: 18px;
-    text-decoration: none;
     &:hover {
       color: $theme-color1;
     }

@@ -145,7 +145,7 @@
             <span>
               {{ JSON.parse(item.ip_data) | parseIpInfo }}
             </span>
-            <span class="ua">{{ (item.ua || '') | parseUa }}</span>
+            <span class="ua">{{ (item.user_agent || '') | parseUa }}</span>
           </div>
         </div>
       </div>

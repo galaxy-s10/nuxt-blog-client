@@ -167,14 +167,14 @@ export default {
     window.addEventListener('scroll', this.handleHiddenHeader);
     window.addEventListener('resize', this.handleResize);
 
-    const { code: authCode, loginEnv } = this.$route.query;
+    const { code: authCode, state } = this.$route.query;
     const oldQuery = { ...this.$router.query };
     delete oldQuery.code;
-    delete oldQuery.loginEnv;
+    delete oldQuery.state;
     this.$router.push({ query: oldQuery });
-    if (!loginEnv) return;
+    if (!state) return;
     try {
-      const { env } = JSON.parse(loginEnv);
+      const { env } = JSON.parse(state);
       if (env === 'qq') {
         this.messageFn({ data: { type: 'qq_login', data: authCode } });
       } else if (env === 'github') {

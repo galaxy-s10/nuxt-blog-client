@@ -1,7 +1,6 @@
 import path from 'path';
 
 // import { VERSION as axiosVersion } from 'axios';
-import BilldHtmlWebpackPlugin from 'billd-html-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 // import { version as vueVersion } from 'vue';
@@ -191,7 +190,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    publicPath: `${QINIU_CDN_URL}${pkg.name}/${pkg.version}/dist/client`,
+    publicPath: `${QINIU_CDN_URL}/nuxt-blog-client/client`,
 
     // styleResources此属性已弃用。请改用style-resources-module以提高性能和更好的 DX！
     // styleResources: {},
@@ -212,7 +211,7 @@ export default {
         },
       }),
       // 注入项目信息
-      new BilldHtmlWebpackPlugin({ env: 'nuxt2' }),
+      // new BilldHtmlWebpackPlugin({ env: 'nuxt2' }),
     ].filter(Boolean),
 
     babel: {

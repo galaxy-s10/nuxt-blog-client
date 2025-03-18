@@ -7,8 +7,8 @@
 
   // 保存时进行一些操作
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.fixAll.eslint": "explicit"
+    // "source.organizeImports": "explicit"
   },
 
   // "eslint.autoFixOnSave": true, // 废弃,使用editor.codeActionsOnSave替代

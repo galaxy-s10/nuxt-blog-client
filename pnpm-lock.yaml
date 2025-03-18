@@ -15,17 +15,17 @@ importers:
         specifier: ^0.27.2
         version: 0.27.2
       billd-deploy:
-        specifier: ^1.0.26
-        version: 1.0.26(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
+        specifier: ^1.2.0
+        version: 1.2.0(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
       billd-html-webpack-plugin:
-        specifier: ^1.0.6
-        version: 1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
+        specifier: ^1.2.1
+        version: 1.2.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
       billd-scss:
         specifier: ^0.0.8
         version: 0.0.8
       billd-utils:
-        specifier: ^0.0.22
-        version: 0.0.22(tslib@2.5.0)(typescript@4.9.5)
+        specifier: ^0.0.26
+        version: 0.0.26(tslib@2.5.0)(typescript@4.9.5)
       core-js:
         specifier: ^3.19.3
         version: 3.29.0
@@ -1709,6 +1709,7 @@ packages:
 
   acorn-import-assertions@1.8.0:
     resolution: {integrity: sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
 
@@ -2065,17 +2066,17 @@ packages:
   big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
 
-  billd-deploy@1.0.26:
-    resolution: {integrity: sha512-NoBKnWA5dbzI5fgK42GXcul7WfatzIirlWhY0w0SwKx1i7dWn5LvgKk0y3jIR3z9uXG1uVVLcVPW05jp1/rmeQ==}
+  billd-deploy@1.2.0:
+    resolution: {integrity: sha512-23gMc+EM/GP9UljnF3fkz6M4OXQqAGBIE7NYu1N6NobufkHmslEzj2316ywKXwwnsXmicXuJHyGOVviM0GTWIQ==}
 
-  billd-html-webpack-plugin@1.0.6:
-    resolution: {integrity: sha512-zM294oAMqRD1rlqoyC1E9QbFsBgMPYStODmQKwUjI+xd02Rwo+3iZhmlQ8q0EuF2KnyhwDwhxyZfDGSo6Ow8Tw==}
+  billd-html-webpack-plugin@1.2.1:
+    resolution: {integrity: sha512-mcdvJHDV4tulkwfsc7luzQr8dMWpKpGo740TJa8W/dhMwyByPruzAH85mzx49BGbA3iPsD6dGKI7/8CYIbQSIQ==}
 
   billd-scss@0.0.8:
     resolution: {integrity: sha512-42gyDYnmRICjqrzk3qbqVygpvjpMu/2rMk41x8HyWLOf457EkXyCiAAFrFR2XM3/c6PHWbtD+IhP8MHUV6JeyA==}
 
-  billd-utils@0.0.22:
-    resolution: {integrity: sha512-koOfFzbzSkw6gMYyOKNMzAJHYMhUWHr3swPW48rT7PwZMvBkAtH93bHEVuDCwariWrSwxCGIqozOzp5YaeePqQ==}
+  billd-utils@0.0.26:
+    resolution: {integrity: sha512-m/Ce0Cz3lgpf4f9whdr4dn/P9WMhWLWOIDUgVrDTQyvdG/sDSKRe+ujOhWTR7l6USH0CKNLxqSpxeNQpaxQhOQ==}
 
   binary-extensions@1.13.1:
     resolution: {integrity: sha512-Un7MIEDdUC5gNpcGDV97op1Ywk748MpHcFTHoYs6qnj1Z3j7I53VG3nwZhKzoBZmbdRNnb6WRdFlwl7tSDuZGw==}
@@ -4144,7 +4145,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
+    deprecated: Upgrade to fsevents v2 to mitigate potential security issues
 
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -10655,10 +10656,10 @@ snapshots:
 
   big.js@5.2.2: {}
 
-  billd-deploy@1.0.26(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5):
+  billd-deploy@1.2.0(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5):
     dependencies:
       ali-oss: 6.17.1
-      billd-html-webpack-plugin: 1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
+      billd-html-webpack-plugin: 1.2.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5)
       cos-nodejs-sdk-v5: 2.13.3
       esdk-obs-nodejs: 3.21.6
       inquirer: 8.2.5
@@ -10678,7 +10679,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  billd-html-webpack-plugin@1.0.6(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5):
+  billd-html-webpack-plugin@1.2.1(@types/node@18.14.6)(esbuild@0.15.18)(sass@1.58.3)(terser@5.16.5):
     dependencies:
       vite: 4.1.4(@types/node@18.14.6)(sass@1.58.3)(terser@5.16.5)
       webpack: 5.75.0(esbuild@0.15.18)
@@ -10696,7 +10697,7 @@ snapshots:
 
   billd-scss@0.0.8: {}
 
-  billd-utils@0.0.22(tslib@2.5.0)(typescript@4.9.5):
+  billd-utils@0.0.26(tslib@2.5.0)(typescript@4.9.5):
     dependencies:
       '@babel/core': 7.21.0
       '@babel/plugin-transform-runtime': 7.21.0(@babel/core@7.21.0)

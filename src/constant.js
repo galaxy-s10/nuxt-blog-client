@@ -6,7 +6,7 @@ export const QQ_OAUTH_URL = `https://graph.qq.com/oauth2.0`;
 export const GITHUB_CLIENT_ID = '8c2c07b574ae70ecfa9d';
 export const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize?';
 
-export const QINIU_CDN_URL = 'https://resource.hsslive.cn/';
+export const QINIU_CDN_URL = 'https://tencentcos-res.hsslive.cn';
 export const GITHUB_REPO = 'https://github.com/galaxy-s10/nuxt-blog-client';
 
 export const GOOGLE_AD = false;

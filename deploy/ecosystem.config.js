@@ -1,16 +1,14 @@
 module.exports = {
   apps: [
     {
-      name: 'nuxt-blog-client-null-3000',
-      exec_mode: 'cluster', // cluster,fork
-      instances: '2',
-      // cwd: `/Users/huangshuisheng/Desktop/hss/galaxy-s10/nuxt-blog-client`,
-      // cwd: `${process.cwd()}`,
+      name: 'billd-blog',
+      exec_mode: 'fork', // cluster,fork
+      instances: '1',
       script: './node_modules/nuxt/bin/nuxt.js',
       args: `start`,
-      // watch: false,
       env: {
         BASE_ENV: 'prod',
+        PORT: 3000,
       },
     },
   ],

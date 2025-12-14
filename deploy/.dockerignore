@@ -1,6 +1,0 @@
-Dockerfile
-node_modules
-.DS_Store
-.eslintcache
-.nuxt
-deploy

@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "nuxt build",
-    "build:beta": "nuxt build",
-    "build:prod": "nuxt build",
+    "build:beta": "nuxt generate",
+    "build:prod": "nuxt generate",
     "copy": "node ./deploy/handleGiteeJenkins.mjs",
     "cz": "cz",
     "deploy:beta": "node ./deploy/index.js --beta",
@@ -23,7 +23,8 @@
     "prettier": "prettier --write .",
     "release": "standard-version",
     "release:first": "standard-version --first-release",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "sync-codeup": "node ./deploy/handleSyncCodeup.mjs"
   },
   "config": {
     "commitizen": {

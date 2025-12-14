@@ -3,3 +3,4 @@ node_modules
 .eslintcache
 .DS_Store
 /deploy/index.js
+dist

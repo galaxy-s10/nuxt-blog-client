@@ -19,7 +19,7 @@ export default function ({ $axios, store }, inject) {
 
   switch (env) {
     case 'prod':
-      baseURL = `https://api.hsslive.cn/prodapi/`; // 调用线上的接口
+      baseURL = `https://api.hsslive.cn/`; // 调用线上的接口
       break;
     case 'dev':
       if (isBrowser()) {
@@ -29,7 +29,7 @@ export default function ({ $axios, store }, inject) {
       }
       break;
     case 'beta':
-      baseURL = `https://api.hsslive.cn/betaapi/`; // 调用线上的接口
+      baseURL = `https://api.hsslive.cn/`; // 调用线上的接口
       break;
   }
   console.log('env', env);

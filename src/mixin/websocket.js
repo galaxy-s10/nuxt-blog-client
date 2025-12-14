@@ -7,6 +7,7 @@ import { liveExp, wsConnectStatus, wsMsgType, wsUserType } from '@/constant';
 
 import { wsInstance2, WsInstanceClass } from './ws';
 
+const flag = false;
 export const websocketMixin = {
   data() {
     return {
@@ -128,6 +129,9 @@ export const websocketMixin = {
     // 创建WebSocket
     createWebSocket() {
       try {
+        if (!flag) {
+          return;
+        }
         if ('WebSocket' in window) {
           this.wsInstance = io(this.wsUrl, { transports: ['websocket'] });
           // this.wsInstance存在vuex会报错：Error: [vuex] do not mutate vuex store state outside mutation handlers.

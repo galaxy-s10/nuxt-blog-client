@@ -10,7 +10,6 @@ import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 
 import pkg from './package.json';
-import { QINIU_CDN_URL } from './src/constant';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -25,6 +24,12 @@ export default {
   // rootDir: process.cwd(),
   // buildDir: ``,
   // Global page headers: https://go.nuxtjs.dev/config-head
+  ssr: false,
+  generate: {
+    fallback: '404.html', // 关键！生成 404 回退页面
+    subFolders: true,
+  },
+
   head: {
     title: 'nuxt-blog-client',
     htmlAttrs: {
@@ -190,7 +195,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    publicPath: `${QINIU_CDN_URL}/nuxt-blog-client/client`,
+    publicPath: `https://tencentcos-res.hsslive.cn/billd-blog/client`,
 
     // styleResources此属性已弃用。请改用style-resources-module以提高性能和更好的 DX！
     // styleResources: {},
